@@ -7,14 +7,16 @@ SOURCES += main.cpp \
     fishield.cpp \
     fs_scheduler.cpp \
     protobuf/file_transfer.pb.cc \
-    fs_task.cpp
+    fs_task.cpp \
+    fs_callback.cpp
 
 HEADERS += \
     fishield.h \
     fs_scheduler.h \
     protobuf/file_transfer.pb.h \
     fs_task_info.h \
-    fs_task.h
+    fs_task.h \
+    fs_callback.h
 
 DISTFILES += \
     Makefile \

@@ -5,7 +5,6 @@ fs_task::fs_task(){
 
 }
 
-
 fs_task::fs_task(fs_task_info task_info){
     this->task_info = task_info;
 }
