@@ -11,3 +11,6 @@ HEADERS += \
 
 DISTFILES += \
     Makefile
+
+
+LIBS += -lboost_system

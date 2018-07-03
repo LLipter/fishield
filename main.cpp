@@ -1,10 +1,15 @@
 #include <iostream>
 #include "fishield.h"
-
-using namespace std;
+#include <boost/asio.hpp>
 
 int main()
 {
-    foo();
-    return 0;
+  boost::asio::io_service io;
+
+  boost::asio::deadline_timer t(io, boost::posix_time::seconds(5));
+  t.wait();
+
+  std::cout << "Hello, world!" << std::endl;
+
+  return 0;
 }
