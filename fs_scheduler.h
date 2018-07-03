@@ -1,11 +1,24 @@
-#ifndef SEC_SCHEDULER_H
-#define SEC_SCHEDULER_H
+#ifndef FS_SCHEDULER_H
+#define FS_SCHEDULER_H
+
+#define DEFAULE_MAX_TASKNO  5
 
 
-class sec_scheduler
+class fs_scheduler
 {
+private:
+
+    fs_scheduler();                     // private constructor, Singleton Pattern
+    static fs_scheduler* scheduler_ptr;
+    void scheduler();                   // main sechedule method
+
+    // member variables
+    int max_task_num;
+    int task_count;
+
 public:
-    sec_scheduler();
+    static fs_scheduler* instance();
+    void set_task_max(int num);
 };
 
-#endif // SEC_SCHEDULER_H
+#endif // FS_SCHEDULER_H

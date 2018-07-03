@@ -1,15 +1,16 @@
 #include <iostream>
-#include "fishield.h"
+#include <thread>
+
 #include <boost/asio.hpp>
+
+#include <unistd.h>
+
+#include "fs_scheduler.h"
+
+using namespace std;
 
 int main()
 {
-  boost::asio::io_service io;
 
-  boost::asio::deadline_timer t(io, boost::posix_time::seconds(5));
-  t.wait();
-
-  std::cout << "Hello, world!" << std::endl;
-
-  return 0;
+    return 0;
 }

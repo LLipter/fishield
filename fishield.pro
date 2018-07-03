@@ -4,13 +4,16 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    fishield.cpp
+    fishield.cpp \
+    fs_scheduler.cpp
 
 HEADERS += \
-    fishield.h
+    fishield.h \
+    fs_scheduler.h
 
 DISTFILES += \
     Makefile
 
 
 LIBS += -lboost_system
+LIBS += -lpthread
