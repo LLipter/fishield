@@ -11,7 +11,7 @@ class fs_scheduler
 private:
 
     fs_scheduler();                     // private constructor, Singleton Pattern
-    static fs_scheduler* scheduler_ptr;
+    static fs_scheduler scheduler_instance;
     void scheduler();                   // main sechedule method
 
     // member variables

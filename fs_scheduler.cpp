@@ -3,12 +3,10 @@
 #include <unistd.h>
 #include <iostream>
 
-fs_scheduler* fs_scheduler::scheduler_ptr = nullptr;
+fs_scheduler fs_scheduler::scheduler_instance;
 
 fs_scheduler* fs_scheduler::instance(){
-    if(scheduler_ptr != nullptr)
-        return scheduler_ptr;
-    return scheduler_ptr = new fs_scheduler();
+    return &scheduler_instance;
 }
 
 fs_scheduler::fs_scheduler(){
