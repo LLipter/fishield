@@ -9,4 +9,5 @@ SOURCES += main.cpp \
 HEADERS += \
     fishield.h
 
-DISTFILES +=
+DISTFILES += \
+    Makefile
