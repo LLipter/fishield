@@ -5,15 +5,18 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     fishield.cpp \
-    fs_scheduler.cpp
+    fs_scheduler.cpp \
+    protobuf/file_transfer.pb.cc
 
 HEADERS += \
     fishield.h \
     fs_scheduler.h \
-    fs_stream_item.h
+    fs_stream_item.h \
+    protobuf/file_transfer.pb.h
 
 DISTFILES += \
-    Makefile
+    Makefile \
+    protobuf/file_transfer.proto
 
 
 LIBS += -lboost_system

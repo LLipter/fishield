@@ -1,4 +1,7 @@
+syntax = "proto2";
+
 package secft.proto.file_transfer_packet;
+
 
 enum Status
 {
