@@ -6,7 +6,9 @@
 class fs_task
 {
 public:
+    fs_task(fs_task_info task_info);
     fs_task_info task_info;
+    void stop();
 
 };
 

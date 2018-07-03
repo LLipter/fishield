@@ -29,3 +29,17 @@ void fs_scheduler::scheduler(){
 void fs_scheduler::set_task_max(int num){
     max_task_num = num;
 }
+
+int task_id = 1;
+
+int fs_scheduler::add_task(fs_task_info task_info){
+    task_info.task_id = task_id;
+    fs_task task(task_info);
+    task_map[task_id] = task;
+    return task_id++;
+}
+
+void fs_scheduler::stop_task(int task_id){
+    if(task_map.find(task_id) != task_map.end())
+        task_map[task_id].stop();
+}

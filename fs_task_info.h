@@ -24,14 +24,14 @@ typedef enum fs_task_status{
 
 struct fs_task_info
 {
-    int stream_id;
+    int task_id;
     std::string local_path;
     std::string remote_path;
     unsigned char md5[MD5_DIGEST_LENGTH];
     ssize_t offset;
     ssize_t size;
-    fs_stream_status stream_status;
-    std::vector<fs_stream_item> children;
+    fs_task_status task_status;
+    std::vector<fs_task_info> children;
     std::map<std::string,std::string> config;
 
 };
