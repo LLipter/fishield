@@ -1,6 +1,11 @@
 #include "fs_task.h"
 #include <iostream>
 
+fs_task::fs_task(){
+
+}
+
+
 fs_task::fs_task(fs_task_info task_info){
     this->task_info = task_info;
 }
