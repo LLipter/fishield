@@ -1,12 +1,12 @@
-#ifndef FS_STREAM_ITEM_H
-#define FS_STREAM_ITEM_H
+#ifndef FS_TASK_INTO_H
+#define FS_TASK_INTO_H
 
 #include <string>
 #include <vector>
 #include <map>
 #include <openssl/md5.h>
 
-typedef enum fs_stream_status{
+typedef enum fs_task_status{
     START_UPLOAD = 0,
     START_DOWNLOAD,
     UPLOADED,
@@ -19,10 +19,10 @@ typedef enum fs_stream_status{
     DOWNLOADING,
     UPLOAD_FAILED,
     DOWNLOAD_FAILED,
-}fs_stream_status;
+}fs_task_status;
 
 
-struct fs_stream_item
+struct fs_task_info
 {
     int stream_id;
     std::string local_path;
@@ -36,4 +36,4 @@ struct fs_stream_item
 
 };
 
-#endif // FS_STREAM_ITEM_H
+#endif // FS_TASK_INTO_H

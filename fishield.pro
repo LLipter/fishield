@@ -11,8 +11,8 @@ SOURCES += main.cpp \
 HEADERS += \
     fishield.h \
     fs_scheduler.h \
-    fs_stream_item.h \
-    protobuf/file_transfer.pb.h
+    protobuf/file_transfer.pb.h \
+    fs_task_info.h
 
 DISTFILES += \
     Makefile \
@@ -21,3 +21,4 @@ DISTFILES += \
 
 LIBS += -lboost_system
 LIBS += -lpthread
+LIBS += -lprotobuf
