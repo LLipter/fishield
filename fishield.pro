@@ -6,13 +6,15 @@ CONFIG -= qt
 SOURCES += main.cpp \
     fishield.cpp \
     fs_scheduler.cpp \
-    protobuf/file_transfer.pb.cc
+    protobuf/file_transfer.pb.cc \
+    fs_task.cpp
 
 HEADERS += \
     fishield.h \
     fs_scheduler.h \
     protobuf/file_transfer.pb.h \
-    fs_task_info.h
+    fs_task_info.h \
+    fs_task.h
 
 DISTFILES += \
     Makefile \
