@@ -1,9 +1,10 @@
 #include <iostream>
+#include "fishield.h"
 
 using namespace std;
 
 int main()
 {
-    cout << "Hello World!" << endl;
+    foo();
     return 0;
 }
