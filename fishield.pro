@@ -9,7 +9,8 @@ SOURCES += main.cpp \
 
 HEADERS += \
     fishield.h \
-    fs_scheduler.h
+    fs_scheduler.h \
+    fs_stream_item.h
 
 DISTFILES += \
     Makefile
