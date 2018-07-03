@@ -46,9 +46,9 @@ struct TableStruct {
 };
 void AddDescriptors();
 }  // namespace protobuf_protobuf_2ffile_5ftransfer_2eproto
-namespace secft {
+namespace fs {
 namespace proto {
-namespace file_transfer_packet {
+namespace packet {
 class CreateDirectoryRequest;
 class CreateDirectoryRequestDefaultTypeInternal;
 extern CreateDirectoryRequestDefaultTypeInternal _CreateDirectoryRequest_default_instance_;
@@ -91,30 +91,30 @@ extern RequestDefaultTypeInternal _Request_default_instance_;
 class UploadRequest;
 class UploadRequestDefaultTypeInternal;
 extern UploadRequestDefaultTypeInternal _UploadRequest_default_instance_;
-}  // namespace file_transfer_packet
+}  // namespace packet
 }  // namespace proto
-}  // namespace secft
+}  // namespace fs
 namespace google {
 namespace protobuf {
-template<> ::secft::proto::file_transfer_packet::CreateDirectoryRequest* Arena::CreateMaybeMessage<::secft::proto::file_transfer_packet::CreateDirectoryRequest>(Arena*);
-template<> ::secft::proto::file_transfer_packet::DownloadRequest* Arena::CreateMaybeMessage<::secft::proto::file_transfer_packet::DownloadRequest>(Arena*);
-template<> ::secft::proto::file_transfer_packet::DriveList* Arena::CreateMaybeMessage<::secft::proto::file_transfer_packet::DriveList>(Arena*);
-template<> ::secft::proto::file_transfer_packet::DriveList_Item* Arena::CreateMaybeMessage<::secft::proto::file_transfer_packet::DriveList_Item>(Arena*);
-template<> ::secft::proto::file_transfer_packet::FileList* Arena::CreateMaybeMessage<::secft::proto::file_transfer_packet::FileList>(Arena*);
-template<> ::secft::proto::file_transfer_packet::FileListRequest* Arena::CreateMaybeMessage<::secft::proto::file_transfer_packet::FileListRequest>(Arena*);
-template<> ::secft::proto::file_transfer_packet::FileList_Item* Arena::CreateMaybeMessage<::secft::proto::file_transfer_packet::FileList_Item>(Arena*);
-template<> ::secft::proto::file_transfer_packet::Packet* Arena::CreateMaybeMessage<::secft::proto::file_transfer_packet::Packet>(Arena*);
-template<> ::secft::proto::file_transfer_packet::PacketRequest* Arena::CreateMaybeMessage<::secft::proto::file_transfer_packet::PacketRequest>(Arena*);
-template<> ::secft::proto::file_transfer_packet::RemoveRequest* Arena::CreateMaybeMessage<::secft::proto::file_transfer_packet::RemoveRequest>(Arena*);
-template<> ::secft::proto::file_transfer_packet::RenameRequest* Arena::CreateMaybeMessage<::secft::proto::file_transfer_packet::RenameRequest>(Arena*);
-template<> ::secft::proto::file_transfer_packet::Reply* Arena::CreateMaybeMessage<::secft::proto::file_transfer_packet::Reply>(Arena*);
-template<> ::secft::proto::file_transfer_packet::Request* Arena::CreateMaybeMessage<::secft::proto::file_transfer_packet::Request>(Arena*);
-template<> ::secft::proto::file_transfer_packet::UploadRequest* Arena::CreateMaybeMessage<::secft::proto::file_transfer_packet::UploadRequest>(Arena*);
+template<> ::fs::proto::packet::CreateDirectoryRequest* Arena::CreateMaybeMessage<::fs::proto::packet::CreateDirectoryRequest>(Arena*);
+template<> ::fs::proto::packet::DownloadRequest* Arena::CreateMaybeMessage<::fs::proto::packet::DownloadRequest>(Arena*);
+template<> ::fs::proto::packet::DriveList* Arena::CreateMaybeMessage<::fs::proto::packet::DriveList>(Arena*);
+template<> ::fs::proto::packet::DriveList_Item* Arena::CreateMaybeMessage<::fs::proto::packet::DriveList_Item>(Arena*);
+template<> ::fs::proto::packet::FileList* Arena::CreateMaybeMessage<::fs::proto::packet::FileList>(Arena*);
+template<> ::fs::proto::packet::FileListRequest* Arena::CreateMaybeMessage<::fs::proto::packet::FileListRequest>(Arena*);
+template<> ::fs::proto::packet::FileList_Item* Arena::CreateMaybeMessage<::fs::proto::packet::FileList_Item>(Arena*);
+template<> ::fs::proto::packet::Packet* Arena::CreateMaybeMessage<::fs::proto::packet::Packet>(Arena*);
+template<> ::fs::proto::packet::PacketRequest* Arena::CreateMaybeMessage<::fs::proto::packet::PacketRequest>(Arena*);
+template<> ::fs::proto::packet::RemoveRequest* Arena::CreateMaybeMessage<::fs::proto::packet::RemoveRequest>(Arena*);
+template<> ::fs::proto::packet::RenameRequest* Arena::CreateMaybeMessage<::fs::proto::packet::RenameRequest>(Arena*);
+template<> ::fs::proto::packet::Reply* Arena::CreateMaybeMessage<::fs::proto::packet::Reply>(Arena*);
+template<> ::fs::proto::packet::Request* Arena::CreateMaybeMessage<::fs::proto::packet::Request>(Arena*);
+template<> ::fs::proto::packet::UploadRequest* Arena::CreateMaybeMessage<::fs::proto::packet::UploadRequest>(Arena*);
 }  // namespace protobuf
 }  // namespace google
-namespace secft {
+namespace fs {
 namespace proto {
-namespace file_transfer_packet {
+namespace packet {
 
 enum DriveList_Item_Type {
   DriveList_Item_Type_TYPE_UNKNOWN = 0,
@@ -194,7 +194,7 @@ inline bool Status_Parse(
 }
 // ===================================================================
 
-class DriveList_Item : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:secft.proto.file_transfer_packet.DriveList.Item) */ {
+class DriveList_Item : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:fs.proto.packet.DriveList.Item) */ {
  public:
   DriveList_Item();
   virtual ~DriveList_Item();
@@ -341,14 +341,14 @@ class DriveList_Item : public ::google::protobuf::Message /* @@protoc_insertion_
   ::std::string* release_path();
   void set_allocated_path(::std::string* path);
 
-  // required .secft.proto.file_transfer_packet.DriveList.Item.Type type = 1;
+  // required .fs.proto.packet.DriveList.Item.Type type = 1;
   bool has_type() const;
   void clear_type();
   static const int kTypeFieldNumber = 1;
-  ::secft::proto::file_transfer_packet::DriveList_Item_Type type() const;
-  void set_type(::secft::proto::file_transfer_packet::DriveList_Item_Type value);
+  ::fs::proto::packet::DriveList_Item_Type type() const;
+  void set_type(::fs::proto::packet::DriveList_Item_Type value);
 
-  // @@protoc_insertion_point(class_scope:secft.proto.file_transfer_packet.DriveList.Item)
+  // @@protoc_insertion_point(class_scope:fs.proto.packet.DriveList.Item)
  private:
   void set_has_type();
   void clear_has_type();
@@ -367,7 +367,7 @@ class DriveList_Item : public ::google::protobuf::Message /* @@protoc_insertion_
 };
 // -------------------------------------------------------------------
 
-class DriveList : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:secft.proto.file_transfer_packet.DriveList) */ {
+class DriveList : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:fs.proto.packet.DriveList) */ {
  public:
   DriveList();
   virtual ~DriveList();
@@ -463,30 +463,30 @@ class DriveList : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   // accessors -------------------------------------------------------
 
-  // repeated .secft.proto.file_transfer_packet.DriveList.Item item = 1;
+  // repeated .fs.proto.packet.DriveList.Item item = 1;
   int item_size() const;
   void clear_item();
   static const int kItemFieldNumber = 1;
-  ::secft::proto::file_transfer_packet::DriveList_Item* mutable_item(int index);
-  ::google::protobuf::RepeatedPtrField< ::secft::proto::file_transfer_packet::DriveList_Item >*
+  ::fs::proto::packet::DriveList_Item* mutable_item(int index);
+  ::google::protobuf::RepeatedPtrField< ::fs::proto::packet::DriveList_Item >*
       mutable_item();
-  const ::secft::proto::file_transfer_packet::DriveList_Item& item(int index) const;
-  ::secft::proto::file_transfer_packet::DriveList_Item* add_item();
-  const ::google::protobuf::RepeatedPtrField< ::secft::proto::file_transfer_packet::DriveList_Item >&
+  const ::fs::proto::packet::DriveList_Item& item(int index) const;
+  ::fs::proto::packet::DriveList_Item* add_item();
+  const ::google::protobuf::RepeatedPtrField< ::fs::proto::packet::DriveList_Item >&
       item() const;
 
-  // @@protoc_insertion_point(class_scope:secft.proto.file_transfer_packet.DriveList)
+  // @@protoc_insertion_point(class_scope:fs.proto.packet.DriveList)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
-  ::google::protobuf::RepeatedPtrField< ::secft::proto::file_transfer_packet::DriveList_Item > item_;
+  ::google::protobuf::RepeatedPtrField< ::fs::proto::packet::DriveList_Item > item_;
   friend struct ::protobuf_protobuf_2ffile_5ftransfer_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
 
-class FileList_Item : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:secft.proto.file_transfer_packet.FileList.Item) */ {
+class FileList_Item : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:fs.proto.packet.FileList.Item) */ {
  public:
   FileList_Item();
   virtual ~FileList_Item();
@@ -616,7 +616,7 @@ class FileList_Item : public ::google::protobuf::Message /* @@protoc_insertion_p
   bool is_directory() const;
   void set_is_directory(bool value);
 
-  // @@protoc_insertion_point(class_scope:secft.proto.file_transfer_packet.FileList.Item)
+  // @@protoc_insertion_point(class_scope:fs.proto.packet.FileList.Item)
  private:
   void set_has_name();
   void clear_has_name();
@@ -641,7 +641,7 @@ class FileList_Item : public ::google::protobuf::Message /* @@protoc_insertion_p
 };
 // -------------------------------------------------------------------
 
-class FileList : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:secft.proto.file_transfer_packet.FileList) */ {
+class FileList : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:fs.proto.packet.FileList) */ {
  public:
   FileList();
   virtual ~FileList();
@@ -737,30 +737,30 @@ class FileList : public ::google::protobuf::Message /* @@protoc_insertion_point(
 
   // accessors -------------------------------------------------------
 
-  // repeated .secft.proto.file_transfer_packet.FileList.Item item = 1;
+  // repeated .fs.proto.packet.FileList.Item item = 1;
   int item_size() const;
   void clear_item();
   static const int kItemFieldNumber = 1;
-  ::secft::proto::file_transfer_packet::FileList_Item* mutable_item(int index);
-  ::google::protobuf::RepeatedPtrField< ::secft::proto::file_transfer_packet::FileList_Item >*
+  ::fs::proto::packet::FileList_Item* mutable_item(int index);
+  ::google::protobuf::RepeatedPtrField< ::fs::proto::packet::FileList_Item >*
       mutable_item();
-  const ::secft::proto::file_transfer_packet::FileList_Item& item(int index) const;
-  ::secft::proto::file_transfer_packet::FileList_Item* add_item();
-  const ::google::protobuf::RepeatedPtrField< ::secft::proto::file_transfer_packet::FileList_Item >&
+  const ::fs::proto::packet::FileList_Item& item(int index) const;
+  ::fs::proto::packet::FileList_Item* add_item();
+  const ::google::protobuf::RepeatedPtrField< ::fs::proto::packet::FileList_Item >&
       item() const;
 
-  // @@protoc_insertion_point(class_scope:secft.proto.file_transfer_packet.FileList)
+  // @@protoc_insertion_point(class_scope:fs.proto.packet.FileList)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
-  ::google::protobuf::RepeatedPtrField< ::secft::proto::file_transfer_packet::FileList_Item > item_;
+  ::google::protobuf::RepeatedPtrField< ::fs::proto::packet::FileList_Item > item_;
   friend struct ::protobuf_protobuf_2ffile_5ftransfer_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
 
-class FileListRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:secft.proto.file_transfer_packet.FileListRequest) */ {
+class FileListRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:fs.proto.packet.FileListRequest) */ {
  public:
   FileListRequest();
   virtual ~FileListRequest();
@@ -869,7 +869,7 @@ class FileListRequest : public ::google::protobuf::Message /* @@protoc_insertion
   ::std::string* release_path();
   void set_allocated_path(::std::string* path);
 
-  // @@protoc_insertion_point(class_scope:secft.proto.file_transfer_packet.FileListRequest)
+  // @@protoc_insertion_point(class_scope:fs.proto.packet.FileListRequest)
  private:
   void set_has_path();
   void clear_has_path();
@@ -882,7 +882,7 @@ class FileListRequest : public ::google::protobuf::Message /* @@protoc_insertion
 };
 // -------------------------------------------------------------------
 
-class UploadRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:secft.proto.file_transfer_packet.UploadRequest) */ {
+class UploadRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:fs.proto.packet.UploadRequest) */ {
  public:
   UploadRequest();
   virtual ~UploadRequest();
@@ -998,7 +998,7 @@ class UploadRequest : public ::google::protobuf::Message /* @@protoc_insertion_p
   bool overwrite() const;
   void set_overwrite(bool value);
 
-  // @@protoc_insertion_point(class_scope:secft.proto.file_transfer_packet.UploadRequest)
+  // @@protoc_insertion_point(class_scope:fs.proto.packet.UploadRequest)
  private:
   void set_has_path();
   void clear_has_path();
@@ -1017,7 +1017,7 @@ class UploadRequest : public ::google::protobuf::Message /* @@protoc_insertion_p
 };
 // -------------------------------------------------------------------
 
-class DownloadRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:secft.proto.file_transfer_packet.DownloadRequest) */ {
+class DownloadRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:fs.proto.packet.DownloadRequest) */ {
  public:
   DownloadRequest();
   virtual ~DownloadRequest();
@@ -1126,7 +1126,7 @@ class DownloadRequest : public ::google::protobuf::Message /* @@protoc_insertion
   ::std::string* release_path();
   void set_allocated_path(::std::string* path);
 
-  // @@protoc_insertion_point(class_scope:secft.proto.file_transfer_packet.DownloadRequest)
+  // @@protoc_insertion_point(class_scope:fs.proto.packet.DownloadRequest)
  private:
   void set_has_path();
   void clear_has_path();
@@ -1139,7 +1139,7 @@ class DownloadRequest : public ::google::protobuf::Message /* @@protoc_insertion
 };
 // -------------------------------------------------------------------
 
-class PacketRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:secft.proto.file_transfer_packet.PacketRequest) */ {
+class PacketRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:fs.proto.packet.PacketRequest) */ {
  public:
   PacketRequest();
   virtual ~PacketRequest();
@@ -1254,7 +1254,7 @@ class PacketRequest : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::google::protobuf::uint32 dummy() const;
   void set_dummy(::google::protobuf::uint32 value);
 
-  // @@protoc_insertion_point(class_scope:secft.proto.file_transfer_packet.PacketRequest)
+  // @@protoc_insertion_point(class_scope:fs.proto.packet.PacketRequest)
  private:
   void set_has_dummy();
   void clear_has_dummy();
@@ -1273,7 +1273,7 @@ class PacketRequest : public ::google::protobuf::Message /* @@protoc_insertion_p
 };
 // -------------------------------------------------------------------
 
-class Packet : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:secft.proto.file_transfer_packet.Packet) */ {
+class Packet : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:fs.proto.packet.Packet) */ {
  public:
   Packet();
   virtual ~Packet();
@@ -1463,7 +1463,7 @@ class Packet : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   ::google::protobuf::uint32 flags() const;
   void set_flags(::google::protobuf::uint32 value);
 
-  // @@protoc_insertion_point(class_scope:secft.proto.file_transfer_packet.Packet)
+  // @@protoc_insertion_point(class_scope:fs.proto.packet.Packet)
  private:
   void set_has_flags();
   void clear_has_flags();
@@ -1494,7 +1494,7 @@ class Packet : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
 };
 // -------------------------------------------------------------------
 
-class CreateDirectoryRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:secft.proto.file_transfer_packet.CreateDirectoryRequest) */ {
+class CreateDirectoryRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:fs.proto.packet.CreateDirectoryRequest) */ {
  public:
   CreateDirectoryRequest();
   virtual ~CreateDirectoryRequest();
@@ -1603,7 +1603,7 @@ class CreateDirectoryRequest : public ::google::protobuf::Message /* @@protoc_in
   ::std::string* release_path();
   void set_allocated_path(::std::string* path);
 
-  // @@protoc_insertion_point(class_scope:secft.proto.file_transfer_packet.CreateDirectoryRequest)
+  // @@protoc_insertion_point(class_scope:fs.proto.packet.CreateDirectoryRequest)
  private:
   void set_has_path();
   void clear_has_path();
@@ -1616,7 +1616,7 @@ class CreateDirectoryRequest : public ::google::protobuf::Message /* @@protoc_in
 };
 // -------------------------------------------------------------------
 
-class RenameRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:secft.proto.file_transfer_packet.RenameRequest) */ {
+class RenameRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:fs.proto.packet.RenameRequest) */ {
  public:
   RenameRequest();
   virtual ~RenameRequest();
@@ -1740,7 +1740,7 @@ class RenameRequest : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::std::string* release_new_name();
   void set_allocated_new_name(::std::string* new_name);
 
-  // @@protoc_insertion_point(class_scope:secft.proto.file_transfer_packet.RenameRequest)
+  // @@protoc_insertion_point(class_scope:fs.proto.packet.RenameRequest)
  private:
   void set_has_old_name();
   void clear_has_old_name();
@@ -1759,7 +1759,7 @@ class RenameRequest : public ::google::protobuf::Message /* @@protoc_insertion_p
 };
 // -------------------------------------------------------------------
 
-class RemoveRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:secft.proto.file_transfer_packet.RemoveRequest) */ {
+class RemoveRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:fs.proto.packet.RemoveRequest) */ {
  public:
   RemoveRequest();
   virtual ~RemoveRequest();
@@ -1868,7 +1868,7 @@ class RemoveRequest : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::std::string* release_path();
   void set_allocated_path(::std::string* path);
 
-  // @@protoc_insertion_point(class_scope:secft.proto.file_transfer_packet.RemoveRequest)
+  // @@protoc_insertion_point(class_scope:fs.proto.packet.RemoveRequest)
  private:
   void set_has_path();
   void clear_has_path();
@@ -1881,7 +1881,7 @@ class RemoveRequest : public ::google::protobuf::Message /* @@protoc_insertion_p
 };
 // -------------------------------------------------------------------
 
-class Reply : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:secft.proto.file_transfer_packet.Reply) */ {
+class Reply : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:fs.proto.packet.Reply) */ {
  public:
   Reply();
   virtual ~Reply();
@@ -1975,38 +1975,38 @@ class Reply : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
 
   // accessors -------------------------------------------------------
 
-  // optional .secft.proto.file_transfer_packet.FileList file_list = 2;
+  // optional .fs.proto.packet.FileList file_list = 2;
   bool has_file_list() const;
   void clear_file_list();
   static const int kFileListFieldNumber = 2;
   private:
-  const ::secft::proto::file_transfer_packet::FileList& _internal_file_list() const;
+  const ::fs::proto::packet::FileList& _internal_file_list() const;
   public:
-  const ::secft::proto::file_transfer_packet::FileList& file_list() const;
-  ::secft::proto::file_transfer_packet::FileList* release_file_list();
-  ::secft::proto::file_transfer_packet::FileList* mutable_file_list();
-  void set_allocated_file_list(::secft::proto::file_transfer_packet::FileList* file_list);
+  const ::fs::proto::packet::FileList& file_list() const;
+  ::fs::proto::packet::FileList* release_file_list();
+  ::fs::proto::packet::FileList* mutable_file_list();
+  void set_allocated_file_list(::fs::proto::packet::FileList* file_list);
 
-  // optional .secft.proto.file_transfer_packet.Packet packet = 3;
+  // optional .fs.proto.packet.Packet packet = 3;
   bool has_packet() const;
   void clear_packet();
   static const int kPacketFieldNumber = 3;
   private:
-  const ::secft::proto::file_transfer_packet::Packet& _internal_packet() const;
+  const ::fs::proto::packet::Packet& _internal_packet() const;
   public:
-  const ::secft::proto::file_transfer_packet::Packet& packet() const;
-  ::secft::proto::file_transfer_packet::Packet* release_packet();
-  ::secft::proto::file_transfer_packet::Packet* mutable_packet();
-  void set_allocated_packet(::secft::proto::file_transfer_packet::Packet* packet);
+  const ::fs::proto::packet::Packet& packet() const;
+  ::fs::proto::packet::Packet* release_packet();
+  ::fs::proto::packet::Packet* mutable_packet();
+  void set_allocated_packet(::fs::proto::packet::Packet* packet);
 
-  // required .secft.proto.file_transfer_packet.Status status = 1;
+  // required .fs.proto.packet.Status status = 1;
   bool has_status() const;
   void clear_status();
   static const int kStatusFieldNumber = 1;
-  ::secft::proto::file_transfer_packet::Status status() const;
-  void set_status(::secft::proto::file_transfer_packet::Status value);
+  ::fs::proto::packet::Status status() const;
+  void set_status(::fs::proto::packet::Status value);
 
-  // @@protoc_insertion_point(class_scope:secft.proto.file_transfer_packet.Reply)
+  // @@protoc_insertion_point(class_scope:fs.proto.packet.Reply)
  private:
   void set_has_status();
   void clear_has_status();
@@ -2018,14 +2018,14 @@ class Reply : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
-  ::secft::proto::file_transfer_packet::FileList* file_list_;
-  ::secft::proto::file_transfer_packet::Packet* packet_;
+  ::fs::proto::packet::FileList* file_list_;
+  ::fs::proto::packet::Packet* packet_;
   int status_;
   friend struct ::protobuf_protobuf_2ffile_5ftransfer_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
 
-class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:secft.proto.file_transfer_packet.Request) */ {
+class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:fs.proto.packet.Request) */ {
  public:
   Request();
   virtual ~Request();
@@ -2119,103 +2119,103 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
 
   // accessors -------------------------------------------------------
 
-  // optional .secft.proto.file_transfer_packet.FileListRequest file_list_request = 1;
+  // optional .fs.proto.packet.FileListRequest file_list_request = 1;
   bool has_file_list_request() const;
   void clear_file_list_request();
   static const int kFileListRequestFieldNumber = 1;
   private:
-  const ::secft::proto::file_transfer_packet::FileListRequest& _internal_file_list_request() const;
+  const ::fs::proto::packet::FileListRequest& _internal_file_list_request() const;
   public:
-  const ::secft::proto::file_transfer_packet::FileListRequest& file_list_request() const;
-  ::secft::proto::file_transfer_packet::FileListRequest* release_file_list_request();
-  ::secft::proto::file_transfer_packet::FileListRequest* mutable_file_list_request();
-  void set_allocated_file_list_request(::secft::proto::file_transfer_packet::FileListRequest* file_list_request);
+  const ::fs::proto::packet::FileListRequest& file_list_request() const;
+  ::fs::proto::packet::FileListRequest* release_file_list_request();
+  ::fs::proto::packet::FileListRequest* mutable_file_list_request();
+  void set_allocated_file_list_request(::fs::proto::packet::FileListRequest* file_list_request);
 
-  // optional .secft.proto.file_transfer_packet.CreateDirectoryRequest create_directory_request = 2;
+  // optional .fs.proto.packet.CreateDirectoryRequest create_directory_request = 2;
   bool has_create_directory_request() const;
   void clear_create_directory_request();
   static const int kCreateDirectoryRequestFieldNumber = 2;
   private:
-  const ::secft::proto::file_transfer_packet::CreateDirectoryRequest& _internal_create_directory_request() const;
+  const ::fs::proto::packet::CreateDirectoryRequest& _internal_create_directory_request() const;
   public:
-  const ::secft::proto::file_transfer_packet::CreateDirectoryRequest& create_directory_request() const;
-  ::secft::proto::file_transfer_packet::CreateDirectoryRequest* release_create_directory_request();
-  ::secft::proto::file_transfer_packet::CreateDirectoryRequest* mutable_create_directory_request();
-  void set_allocated_create_directory_request(::secft::proto::file_transfer_packet::CreateDirectoryRequest* create_directory_request);
+  const ::fs::proto::packet::CreateDirectoryRequest& create_directory_request() const;
+  ::fs::proto::packet::CreateDirectoryRequest* release_create_directory_request();
+  ::fs::proto::packet::CreateDirectoryRequest* mutable_create_directory_request();
+  void set_allocated_create_directory_request(::fs::proto::packet::CreateDirectoryRequest* create_directory_request);
 
-  // optional .secft.proto.file_transfer_packet.RenameRequest rename_request = 3;
+  // optional .fs.proto.packet.RenameRequest rename_request = 3;
   bool has_rename_request() const;
   void clear_rename_request();
   static const int kRenameRequestFieldNumber = 3;
   private:
-  const ::secft::proto::file_transfer_packet::RenameRequest& _internal_rename_request() const;
+  const ::fs::proto::packet::RenameRequest& _internal_rename_request() const;
   public:
-  const ::secft::proto::file_transfer_packet::RenameRequest& rename_request() const;
-  ::secft::proto::file_transfer_packet::RenameRequest* release_rename_request();
-  ::secft::proto::file_transfer_packet::RenameRequest* mutable_rename_request();
-  void set_allocated_rename_request(::secft::proto::file_transfer_packet::RenameRequest* rename_request);
+  const ::fs::proto::packet::RenameRequest& rename_request() const;
+  ::fs::proto::packet::RenameRequest* release_rename_request();
+  ::fs::proto::packet::RenameRequest* mutable_rename_request();
+  void set_allocated_rename_request(::fs::proto::packet::RenameRequest* rename_request);
 
-  // optional .secft.proto.file_transfer_packet.RemoveRequest remove_request = 4;
+  // optional .fs.proto.packet.RemoveRequest remove_request = 4;
   bool has_remove_request() const;
   void clear_remove_request();
   static const int kRemoveRequestFieldNumber = 4;
   private:
-  const ::secft::proto::file_transfer_packet::RemoveRequest& _internal_remove_request() const;
+  const ::fs::proto::packet::RemoveRequest& _internal_remove_request() const;
   public:
-  const ::secft::proto::file_transfer_packet::RemoveRequest& remove_request() const;
-  ::secft::proto::file_transfer_packet::RemoveRequest* release_remove_request();
-  ::secft::proto::file_transfer_packet::RemoveRequest* mutable_remove_request();
-  void set_allocated_remove_request(::secft::proto::file_transfer_packet::RemoveRequest* remove_request);
+  const ::fs::proto::packet::RemoveRequest& remove_request() const;
+  ::fs::proto::packet::RemoveRequest* release_remove_request();
+  ::fs::proto::packet::RemoveRequest* mutable_remove_request();
+  void set_allocated_remove_request(::fs::proto::packet::RemoveRequest* remove_request);
 
-  // required .secft.proto.file_transfer_packet.DownloadRequest download_request = 5;
+  // required .fs.proto.packet.DownloadRequest download_request = 5;
   bool has_download_request() const;
   void clear_download_request();
   static const int kDownloadRequestFieldNumber = 5;
   private:
-  const ::secft::proto::file_transfer_packet::DownloadRequest& _internal_download_request() const;
+  const ::fs::proto::packet::DownloadRequest& _internal_download_request() const;
   public:
-  const ::secft::proto::file_transfer_packet::DownloadRequest& download_request() const;
-  ::secft::proto::file_transfer_packet::DownloadRequest* release_download_request();
-  ::secft::proto::file_transfer_packet::DownloadRequest* mutable_download_request();
-  void set_allocated_download_request(::secft::proto::file_transfer_packet::DownloadRequest* download_request);
+  const ::fs::proto::packet::DownloadRequest& download_request() const;
+  ::fs::proto::packet::DownloadRequest* release_download_request();
+  ::fs::proto::packet::DownloadRequest* mutable_download_request();
+  void set_allocated_download_request(::fs::proto::packet::DownloadRequest* download_request);
 
-  // required .secft.proto.file_transfer_packet.UploadRequest upload_request = 6;
+  // required .fs.proto.packet.UploadRequest upload_request = 6;
   bool has_upload_request() const;
   void clear_upload_request();
   static const int kUploadRequestFieldNumber = 6;
   private:
-  const ::secft::proto::file_transfer_packet::UploadRequest& _internal_upload_request() const;
+  const ::fs::proto::packet::UploadRequest& _internal_upload_request() const;
   public:
-  const ::secft::proto::file_transfer_packet::UploadRequest& upload_request() const;
-  ::secft::proto::file_transfer_packet::UploadRequest* release_upload_request();
-  ::secft::proto::file_transfer_packet::UploadRequest* mutable_upload_request();
-  void set_allocated_upload_request(::secft::proto::file_transfer_packet::UploadRequest* upload_request);
+  const ::fs::proto::packet::UploadRequest& upload_request() const;
+  ::fs::proto::packet::UploadRequest* release_upload_request();
+  ::fs::proto::packet::UploadRequest* mutable_upload_request();
+  void set_allocated_upload_request(::fs::proto::packet::UploadRequest* upload_request);
 
-  // required .secft.proto.file_transfer_packet.PacketRequest packet_request = 7;
+  // required .fs.proto.packet.PacketRequest packet_request = 7;
   bool has_packet_request() const;
   void clear_packet_request();
   static const int kPacketRequestFieldNumber = 7;
   private:
-  const ::secft::proto::file_transfer_packet::PacketRequest& _internal_packet_request() const;
+  const ::fs::proto::packet::PacketRequest& _internal_packet_request() const;
   public:
-  const ::secft::proto::file_transfer_packet::PacketRequest& packet_request() const;
-  ::secft::proto::file_transfer_packet::PacketRequest* release_packet_request();
-  ::secft::proto::file_transfer_packet::PacketRequest* mutable_packet_request();
-  void set_allocated_packet_request(::secft::proto::file_transfer_packet::PacketRequest* packet_request);
+  const ::fs::proto::packet::PacketRequest& packet_request() const;
+  ::fs::proto::packet::PacketRequest* release_packet_request();
+  ::fs::proto::packet::PacketRequest* mutable_packet_request();
+  void set_allocated_packet_request(::fs::proto::packet::PacketRequest* packet_request);
 
-  // required .secft.proto.file_transfer_packet.Packet packet = 8;
+  // required .fs.proto.packet.Packet packet = 8;
   bool has_packet() const;
   void clear_packet();
   static const int kPacketFieldNumber = 8;
   private:
-  const ::secft::proto::file_transfer_packet::Packet& _internal_packet() const;
+  const ::fs::proto::packet::Packet& _internal_packet() const;
   public:
-  const ::secft::proto::file_transfer_packet::Packet& packet() const;
-  ::secft::proto::file_transfer_packet::Packet* release_packet();
-  ::secft::proto::file_transfer_packet::Packet* mutable_packet();
-  void set_allocated_packet(::secft::proto::file_transfer_packet::Packet* packet);
+  const ::fs::proto::packet::Packet& packet() const;
+  ::fs::proto::packet::Packet* release_packet();
+  ::fs::proto::packet::Packet* mutable_packet();
+  void set_allocated_packet(::fs::proto::packet::Packet* packet);
 
-  // @@protoc_insertion_point(class_scope:secft.proto.file_transfer_packet.Request)
+  // @@protoc_insertion_point(class_scope:fs.proto.packet.Request)
  private:
   void set_has_file_list_request();
   void clear_has_file_list_request();
@@ -2240,14 +2240,14 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
-  ::secft::proto::file_transfer_packet::FileListRequest* file_list_request_;
-  ::secft::proto::file_transfer_packet::CreateDirectoryRequest* create_directory_request_;
-  ::secft::proto::file_transfer_packet::RenameRequest* rename_request_;
-  ::secft::proto::file_transfer_packet::RemoveRequest* remove_request_;
-  ::secft::proto::file_transfer_packet::DownloadRequest* download_request_;
-  ::secft::proto::file_transfer_packet::UploadRequest* upload_request_;
-  ::secft::proto::file_transfer_packet::PacketRequest* packet_request_;
-  ::secft::proto::file_transfer_packet::Packet* packet_;
+  ::fs::proto::packet::FileListRequest* file_list_request_;
+  ::fs::proto::packet::CreateDirectoryRequest* create_directory_request_;
+  ::fs::proto::packet::RenameRequest* rename_request_;
+  ::fs::proto::packet::RemoveRequest* remove_request_;
+  ::fs::proto::packet::DownloadRequest* download_request_;
+  ::fs::proto::packet::UploadRequest* upload_request_;
+  ::fs::proto::packet::PacketRequest* packet_request_;
+  ::fs::proto::packet::Packet* packet_;
   friend struct ::protobuf_protobuf_2ffile_5ftransfer_2eproto::TableStruct;
 };
 // ===================================================================
@@ -2261,7 +2261,7 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
 #endif  // __GNUC__
 // DriveList_Item
 
-// required .secft.proto.file_transfer_packet.DriveList.Item.Type type = 1;
+// required .fs.proto.packet.DriveList.Item.Type type = 1;
 inline bool DriveList_Item::has_type() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -2275,15 +2275,15 @@ inline void DriveList_Item::clear_type() {
   type_ = 0;
   clear_has_type();
 }
-inline ::secft::proto::file_transfer_packet::DriveList_Item_Type DriveList_Item::type() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.DriveList.Item.type)
-  return static_cast< ::secft::proto::file_transfer_packet::DriveList_Item_Type >(type_);
+inline ::fs::proto::packet::DriveList_Item_Type DriveList_Item::type() const {
+  // @@protoc_insertion_point(field_get:fs.proto.packet.DriveList.Item.type)
+  return static_cast< ::fs::proto::packet::DriveList_Item_Type >(type_);
 }
-inline void DriveList_Item::set_type(::secft::proto::file_transfer_packet::DriveList_Item_Type value) {
-  assert(::secft::proto::file_transfer_packet::DriveList_Item_Type_IsValid(value));
+inline void DriveList_Item::set_type(::fs::proto::packet::DriveList_Item_Type value) {
+  assert(::fs::proto::packet::DriveList_Item_Type_IsValid(value));
   set_has_type();
   type_ = value;
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.DriveList.Item.type)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.DriveList.Item.type)
 }
 
 // required string path = 2;
@@ -2301,41 +2301,41 @@ inline void DriveList_Item::clear_path() {
   clear_has_path();
 }
 inline const ::std::string& DriveList_Item::path() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.DriveList.Item.path)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.DriveList.Item.path)
   return path_.GetNoArena();
 }
 inline void DriveList_Item::set_path(const ::std::string& value) {
   set_has_path();
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.DriveList.Item.path)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.DriveList.Item.path)
 }
 #if LANG_CXX11
 inline void DriveList_Item::set_path(::std::string&& value) {
   set_has_path();
   path_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:secft.proto.file_transfer_packet.DriveList.Item.path)
+  // @@protoc_insertion_point(field_set_rvalue:fs.proto.packet.DriveList.Item.path)
 }
 #endif
 inline void DriveList_Item::set_path(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   set_has_path();
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:secft.proto.file_transfer_packet.DriveList.Item.path)
+  // @@protoc_insertion_point(field_set_char:fs.proto.packet.DriveList.Item.path)
 }
 inline void DriveList_Item::set_path(const char* value, size_t size) {
   set_has_path();
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:secft.proto.file_transfer_packet.DriveList.Item.path)
+  // @@protoc_insertion_point(field_set_pointer:fs.proto.packet.DriveList.Item.path)
 }
 inline ::std::string* DriveList_Item::mutable_path() {
   set_has_path();
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.DriveList.Item.path)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.DriveList.Item.path)
   return path_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* DriveList_Item::release_path() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.DriveList.Item.path)
+  // @@protoc_insertion_point(field_release:fs.proto.packet.DriveList.Item.path)
   if (!has_path()) {
     return NULL;
   }
@@ -2349,40 +2349,40 @@ inline void DriveList_Item::set_allocated_path(::std::string* path) {
     clear_has_path();
   }
   path_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), path);
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.DriveList.Item.path)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.DriveList.Item.path)
 }
 
 // -------------------------------------------------------------------
 
 // DriveList
 
-// repeated .secft.proto.file_transfer_packet.DriveList.Item item = 1;
+// repeated .fs.proto.packet.DriveList.Item item = 1;
 inline int DriveList::item_size() const {
   return item_.size();
 }
 inline void DriveList::clear_item() {
   item_.Clear();
 }
-inline ::secft::proto::file_transfer_packet::DriveList_Item* DriveList::mutable_item(int index) {
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.DriveList.item)
+inline ::fs::proto::packet::DriveList_Item* DriveList::mutable_item(int index) {
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.DriveList.item)
   return item_.Mutable(index);
 }
-inline ::google::protobuf::RepeatedPtrField< ::secft::proto::file_transfer_packet::DriveList_Item >*
+inline ::google::protobuf::RepeatedPtrField< ::fs::proto::packet::DriveList_Item >*
 DriveList::mutable_item() {
-  // @@protoc_insertion_point(field_mutable_list:secft.proto.file_transfer_packet.DriveList.item)
+  // @@protoc_insertion_point(field_mutable_list:fs.proto.packet.DriveList.item)
   return &item_;
 }
-inline const ::secft::proto::file_transfer_packet::DriveList_Item& DriveList::item(int index) const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.DriveList.item)
+inline const ::fs::proto::packet::DriveList_Item& DriveList::item(int index) const {
+  // @@protoc_insertion_point(field_get:fs.proto.packet.DriveList.item)
   return item_.Get(index);
 }
-inline ::secft::proto::file_transfer_packet::DriveList_Item* DriveList::add_item() {
-  // @@protoc_insertion_point(field_add:secft.proto.file_transfer_packet.DriveList.item)
+inline ::fs::proto::packet::DriveList_Item* DriveList::add_item() {
+  // @@protoc_insertion_point(field_add:fs.proto.packet.DriveList.item)
   return item_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::secft::proto::file_transfer_packet::DriveList_Item >&
+inline const ::google::protobuf::RepeatedPtrField< ::fs::proto::packet::DriveList_Item >&
 DriveList::item() const {
-  // @@protoc_insertion_point(field_list:secft.proto.file_transfer_packet.DriveList.item)
+  // @@protoc_insertion_point(field_list:fs.proto.packet.DriveList.item)
   return item_;
 }
 
@@ -2405,41 +2405,41 @@ inline void FileList_Item::clear_name() {
   clear_has_name();
 }
 inline const ::std::string& FileList_Item::name() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.FileList.Item.name)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.FileList.Item.name)
   return name_.GetNoArena();
 }
 inline void FileList_Item::set_name(const ::std::string& value) {
   set_has_name();
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.FileList.Item.name)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.FileList.Item.name)
 }
 #if LANG_CXX11
 inline void FileList_Item::set_name(::std::string&& value) {
   set_has_name();
   name_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:secft.proto.file_transfer_packet.FileList.Item.name)
+  // @@protoc_insertion_point(field_set_rvalue:fs.proto.packet.FileList.Item.name)
 }
 #endif
 inline void FileList_Item::set_name(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   set_has_name();
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:secft.proto.file_transfer_packet.FileList.Item.name)
+  // @@protoc_insertion_point(field_set_char:fs.proto.packet.FileList.Item.name)
 }
 inline void FileList_Item::set_name(const char* value, size_t size) {
   set_has_name();
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:secft.proto.file_transfer_packet.FileList.Item.name)
+  // @@protoc_insertion_point(field_set_pointer:fs.proto.packet.FileList.Item.name)
 }
 inline ::std::string* FileList_Item::mutable_name() {
   set_has_name();
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.FileList.Item.name)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.FileList.Item.name)
   return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* FileList_Item::release_name() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.FileList.Item.name)
+  // @@protoc_insertion_point(field_release:fs.proto.packet.FileList.Item.name)
   if (!has_name()) {
     return NULL;
   }
@@ -2453,7 +2453,7 @@ inline void FileList_Item::set_allocated_name(::std::string* name) {
     clear_has_name();
   }
   name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.FileList.Item.name)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.FileList.Item.name)
 }
 
 // required uint64 size = 2;
@@ -2471,13 +2471,13 @@ inline void FileList_Item::clear_size() {
   clear_has_size();
 }
 inline ::google::protobuf::uint64 FileList_Item::size() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.FileList.Item.size)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.FileList.Item.size)
   return size_;
 }
 inline void FileList_Item::set_size(::google::protobuf::uint64 value) {
   set_has_size();
   size_ = value;
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.FileList.Item.size)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.FileList.Item.size)
 }
 
 // required int64 modification_time = 3;
@@ -2495,13 +2495,13 @@ inline void FileList_Item::clear_modification_time() {
   clear_has_modification_time();
 }
 inline ::google::protobuf::int64 FileList_Item::modification_time() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.FileList.Item.modification_time)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.FileList.Item.modification_time)
   return modification_time_;
 }
 inline void FileList_Item::set_modification_time(::google::protobuf::int64 value) {
   set_has_modification_time();
   modification_time_ = value;
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.FileList.Item.modification_time)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.FileList.Item.modification_time)
 }
 
 // required bool is_directory = 4;
@@ -2519,46 +2519,46 @@ inline void FileList_Item::clear_is_directory() {
   clear_has_is_directory();
 }
 inline bool FileList_Item::is_directory() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.FileList.Item.is_directory)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.FileList.Item.is_directory)
   return is_directory_;
 }
 inline void FileList_Item::set_is_directory(bool value) {
   set_has_is_directory();
   is_directory_ = value;
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.FileList.Item.is_directory)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.FileList.Item.is_directory)
 }
 
 // -------------------------------------------------------------------
 
 // FileList
 
-// repeated .secft.proto.file_transfer_packet.FileList.Item item = 1;
+// repeated .fs.proto.packet.FileList.Item item = 1;
 inline int FileList::item_size() const {
   return item_.size();
 }
 inline void FileList::clear_item() {
   item_.Clear();
 }
-inline ::secft::proto::file_transfer_packet::FileList_Item* FileList::mutable_item(int index) {
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.FileList.item)
+inline ::fs::proto::packet::FileList_Item* FileList::mutable_item(int index) {
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.FileList.item)
   return item_.Mutable(index);
 }
-inline ::google::protobuf::RepeatedPtrField< ::secft::proto::file_transfer_packet::FileList_Item >*
+inline ::google::protobuf::RepeatedPtrField< ::fs::proto::packet::FileList_Item >*
 FileList::mutable_item() {
-  // @@protoc_insertion_point(field_mutable_list:secft.proto.file_transfer_packet.FileList.item)
+  // @@protoc_insertion_point(field_mutable_list:fs.proto.packet.FileList.item)
   return &item_;
 }
-inline const ::secft::proto::file_transfer_packet::FileList_Item& FileList::item(int index) const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.FileList.item)
+inline const ::fs::proto::packet::FileList_Item& FileList::item(int index) const {
+  // @@protoc_insertion_point(field_get:fs.proto.packet.FileList.item)
   return item_.Get(index);
 }
-inline ::secft::proto::file_transfer_packet::FileList_Item* FileList::add_item() {
-  // @@protoc_insertion_point(field_add:secft.proto.file_transfer_packet.FileList.item)
+inline ::fs::proto::packet::FileList_Item* FileList::add_item() {
+  // @@protoc_insertion_point(field_add:fs.proto.packet.FileList.item)
   return item_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::secft::proto::file_transfer_packet::FileList_Item >&
+inline const ::google::protobuf::RepeatedPtrField< ::fs::proto::packet::FileList_Item >&
 FileList::item() const {
-  // @@protoc_insertion_point(field_list:secft.proto.file_transfer_packet.FileList.item)
+  // @@protoc_insertion_point(field_list:fs.proto.packet.FileList.item)
   return item_;
 }
 
@@ -2581,41 +2581,41 @@ inline void FileListRequest::clear_path() {
   clear_has_path();
 }
 inline const ::std::string& FileListRequest::path() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.FileListRequest.path)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.FileListRequest.path)
   return path_.GetNoArena();
 }
 inline void FileListRequest::set_path(const ::std::string& value) {
   set_has_path();
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.FileListRequest.path)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.FileListRequest.path)
 }
 #if LANG_CXX11
 inline void FileListRequest::set_path(::std::string&& value) {
   set_has_path();
   path_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:secft.proto.file_transfer_packet.FileListRequest.path)
+  // @@protoc_insertion_point(field_set_rvalue:fs.proto.packet.FileListRequest.path)
 }
 #endif
 inline void FileListRequest::set_path(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   set_has_path();
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:secft.proto.file_transfer_packet.FileListRequest.path)
+  // @@protoc_insertion_point(field_set_char:fs.proto.packet.FileListRequest.path)
 }
 inline void FileListRequest::set_path(const char* value, size_t size) {
   set_has_path();
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:secft.proto.file_transfer_packet.FileListRequest.path)
+  // @@protoc_insertion_point(field_set_pointer:fs.proto.packet.FileListRequest.path)
 }
 inline ::std::string* FileListRequest::mutable_path() {
   set_has_path();
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.FileListRequest.path)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.FileListRequest.path)
   return path_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* FileListRequest::release_path() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.FileListRequest.path)
+  // @@protoc_insertion_point(field_release:fs.proto.packet.FileListRequest.path)
   if (!has_path()) {
     return NULL;
   }
@@ -2629,7 +2629,7 @@ inline void FileListRequest::set_allocated_path(::std::string* path) {
     clear_has_path();
   }
   path_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), path);
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.FileListRequest.path)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.FileListRequest.path)
 }
 
 // -------------------------------------------------------------------
@@ -2651,41 +2651,41 @@ inline void UploadRequest::clear_path() {
   clear_has_path();
 }
 inline const ::std::string& UploadRequest::path() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.UploadRequest.path)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.UploadRequest.path)
   return path_.GetNoArena();
 }
 inline void UploadRequest::set_path(const ::std::string& value) {
   set_has_path();
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.UploadRequest.path)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.UploadRequest.path)
 }
 #if LANG_CXX11
 inline void UploadRequest::set_path(::std::string&& value) {
   set_has_path();
   path_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:secft.proto.file_transfer_packet.UploadRequest.path)
+  // @@protoc_insertion_point(field_set_rvalue:fs.proto.packet.UploadRequest.path)
 }
 #endif
 inline void UploadRequest::set_path(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   set_has_path();
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:secft.proto.file_transfer_packet.UploadRequest.path)
+  // @@protoc_insertion_point(field_set_char:fs.proto.packet.UploadRequest.path)
 }
 inline void UploadRequest::set_path(const char* value, size_t size) {
   set_has_path();
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:secft.proto.file_transfer_packet.UploadRequest.path)
+  // @@protoc_insertion_point(field_set_pointer:fs.proto.packet.UploadRequest.path)
 }
 inline ::std::string* UploadRequest::mutable_path() {
   set_has_path();
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.UploadRequest.path)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.UploadRequest.path)
   return path_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* UploadRequest::release_path() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.UploadRequest.path)
+  // @@protoc_insertion_point(field_release:fs.proto.packet.UploadRequest.path)
   if (!has_path()) {
     return NULL;
   }
@@ -2699,7 +2699,7 @@ inline void UploadRequest::set_allocated_path(::std::string* path) {
     clear_has_path();
   }
   path_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), path);
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.UploadRequest.path)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.UploadRequest.path)
 }
 
 // required bool overwrite = 2;
@@ -2717,13 +2717,13 @@ inline void UploadRequest::clear_overwrite() {
   clear_has_overwrite();
 }
 inline bool UploadRequest::overwrite() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.UploadRequest.overwrite)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.UploadRequest.overwrite)
   return overwrite_;
 }
 inline void UploadRequest::set_overwrite(bool value) {
   set_has_overwrite();
   overwrite_ = value;
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.UploadRequest.overwrite)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.UploadRequest.overwrite)
 }
 
 // -------------------------------------------------------------------
@@ -2745,41 +2745,41 @@ inline void DownloadRequest::clear_path() {
   clear_has_path();
 }
 inline const ::std::string& DownloadRequest::path() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.DownloadRequest.path)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.DownloadRequest.path)
   return path_.GetNoArena();
 }
 inline void DownloadRequest::set_path(const ::std::string& value) {
   set_has_path();
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.DownloadRequest.path)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.DownloadRequest.path)
 }
 #if LANG_CXX11
 inline void DownloadRequest::set_path(::std::string&& value) {
   set_has_path();
   path_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:secft.proto.file_transfer_packet.DownloadRequest.path)
+  // @@protoc_insertion_point(field_set_rvalue:fs.proto.packet.DownloadRequest.path)
 }
 #endif
 inline void DownloadRequest::set_path(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   set_has_path();
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:secft.proto.file_transfer_packet.DownloadRequest.path)
+  // @@protoc_insertion_point(field_set_char:fs.proto.packet.DownloadRequest.path)
 }
 inline void DownloadRequest::set_path(const char* value, size_t size) {
   set_has_path();
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:secft.proto.file_transfer_packet.DownloadRequest.path)
+  // @@protoc_insertion_point(field_set_pointer:fs.proto.packet.DownloadRequest.path)
 }
 inline ::std::string* DownloadRequest::mutable_path() {
   set_has_path();
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.DownloadRequest.path)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.DownloadRequest.path)
   return path_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* DownloadRequest::release_path() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.DownloadRequest.path)
+  // @@protoc_insertion_point(field_release:fs.proto.packet.DownloadRequest.path)
   if (!has_path()) {
     return NULL;
   }
@@ -2793,7 +2793,7 @@ inline void DownloadRequest::set_allocated_path(::std::string* path) {
     clear_has_path();
   }
   path_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), path);
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.DownloadRequest.path)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.DownloadRequest.path)
 }
 
 // -------------------------------------------------------------------
@@ -2815,13 +2815,13 @@ inline void PacketRequest::clear_dummy() {
   clear_has_dummy();
 }
 inline ::google::protobuf::uint32 PacketRequest::dummy() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.PacketRequest.dummy)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.PacketRequest.dummy)
   return dummy_;
 }
 inline void PacketRequest::set_dummy(::google::protobuf::uint32 value) {
   set_has_dummy();
   dummy_ = value;
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.PacketRequest.dummy)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.PacketRequest.dummy)
 }
 
 // optional uint64 file_size = 2;
@@ -2839,13 +2839,13 @@ inline void PacketRequest::clear_file_size() {
   clear_has_file_size();
 }
 inline ::google::protobuf::uint64 PacketRequest::file_size() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.PacketRequest.file_size)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.PacketRequest.file_size)
   return file_size_;
 }
 inline void PacketRequest::set_file_size(::google::protobuf::uint64 value) {
   set_has_file_size();
   file_size_ = value;
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.PacketRequest.file_size)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.PacketRequest.file_size)
 }
 
 // optional uint64 offset = 3;
@@ -2863,13 +2863,13 @@ inline void PacketRequest::clear_offset() {
   clear_has_offset();
 }
 inline ::google::protobuf::uint64 PacketRequest::offset() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.PacketRequest.offset)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.PacketRequest.offset)
   return offset_;
 }
 inline void PacketRequest::set_offset(::google::protobuf::uint64 value) {
   set_has_offset();
   offset_ = value;
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.PacketRequest.offset)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.PacketRequest.offset)
 }
 
 // -------------------------------------------------------------------
@@ -2891,13 +2891,13 @@ inline void Packet::clear_flags() {
   clear_has_flags();
 }
 inline ::google::protobuf::uint32 Packet::flags() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.Packet.flags)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.Packet.flags)
   return flags_;
 }
 inline void Packet::set_flags(::google::protobuf::uint32 value) {
   set_has_flags();
   flags_ = value;
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.Packet.flags)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.Packet.flags)
 }
 
 // required uint64 file_size = 2;
@@ -2915,13 +2915,13 @@ inline void Packet::clear_file_size() {
   clear_has_file_size();
 }
 inline ::google::protobuf::uint64 Packet::file_size() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.Packet.file_size)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.Packet.file_size)
   return file_size_;
 }
 inline void Packet::set_file_size(::google::protobuf::uint64 value) {
   set_has_file_size();
   file_size_ = value;
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.Packet.file_size)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.Packet.file_size)
 }
 
 // required bytes data = 3;
@@ -2939,41 +2939,41 @@ inline void Packet::clear_data() {
   clear_has_data();
 }
 inline const ::std::string& Packet::data() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.Packet.data)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.Packet.data)
   return data_.GetNoArena();
 }
 inline void Packet::set_data(const ::std::string& value) {
   set_has_data();
   data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.Packet.data)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.Packet.data)
 }
 #if LANG_CXX11
 inline void Packet::set_data(::std::string&& value) {
   set_has_data();
   data_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:secft.proto.file_transfer_packet.Packet.data)
+  // @@protoc_insertion_point(field_set_rvalue:fs.proto.packet.Packet.data)
 }
 #endif
 inline void Packet::set_data(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   set_has_data();
   data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:secft.proto.file_transfer_packet.Packet.data)
+  // @@protoc_insertion_point(field_set_char:fs.proto.packet.Packet.data)
 }
 inline void Packet::set_data(const void* value, size_t size) {
   set_has_data();
   data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:secft.proto.file_transfer_packet.Packet.data)
+  // @@protoc_insertion_point(field_set_pointer:fs.proto.packet.Packet.data)
 }
 inline ::std::string* Packet::mutable_data() {
   set_has_data();
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.Packet.data)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.Packet.data)
   return data_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* Packet::release_data() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.Packet.data)
+  // @@protoc_insertion_point(field_release:fs.proto.packet.Packet.data)
   if (!has_data()) {
     return NULL;
   }
@@ -2987,7 +2987,7 @@ inline void Packet::set_allocated_data(::std::string* data) {
     clear_has_data();
   }
   data_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), data);
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.Packet.data)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.Packet.data)
 }
 
 // required string user_name = 4;
@@ -3005,41 +3005,41 @@ inline void Packet::clear_user_name() {
   clear_has_user_name();
 }
 inline const ::std::string& Packet::user_name() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.Packet.user_name)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.Packet.user_name)
   return user_name_.GetNoArena();
 }
 inline void Packet::set_user_name(const ::std::string& value) {
   set_has_user_name();
   user_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.Packet.user_name)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.Packet.user_name)
 }
 #if LANG_CXX11
 inline void Packet::set_user_name(::std::string&& value) {
   set_has_user_name();
   user_name_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:secft.proto.file_transfer_packet.Packet.user_name)
+  // @@protoc_insertion_point(field_set_rvalue:fs.proto.packet.Packet.user_name)
 }
 #endif
 inline void Packet::set_user_name(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   set_has_user_name();
   user_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:secft.proto.file_transfer_packet.Packet.user_name)
+  // @@protoc_insertion_point(field_set_char:fs.proto.packet.Packet.user_name)
 }
 inline void Packet::set_user_name(const char* value, size_t size) {
   set_has_user_name();
   user_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:secft.proto.file_transfer_packet.Packet.user_name)
+  // @@protoc_insertion_point(field_set_pointer:fs.proto.packet.Packet.user_name)
 }
 inline ::std::string* Packet::mutable_user_name() {
   set_has_user_name();
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.Packet.user_name)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.Packet.user_name)
   return user_name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* Packet::release_user_name() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.Packet.user_name)
+  // @@protoc_insertion_point(field_release:fs.proto.packet.Packet.user_name)
   if (!has_user_name()) {
     return NULL;
   }
@@ -3053,7 +3053,7 @@ inline void Packet::set_allocated_user_name(::std::string* user_name) {
     clear_has_user_name();
   }
   user_name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), user_name);
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.Packet.user_name)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.Packet.user_name)
 }
 
 // required string token = 5;
@@ -3071,41 +3071,41 @@ inline void Packet::clear_token() {
   clear_has_token();
 }
 inline const ::std::string& Packet::token() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.Packet.token)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.Packet.token)
   return token_.GetNoArena();
 }
 inline void Packet::set_token(const ::std::string& value) {
   set_has_token();
   token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.Packet.token)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.Packet.token)
 }
 #if LANG_CXX11
 inline void Packet::set_token(::std::string&& value) {
   set_has_token();
   token_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:secft.proto.file_transfer_packet.Packet.token)
+  // @@protoc_insertion_point(field_set_rvalue:fs.proto.packet.Packet.token)
 }
 #endif
 inline void Packet::set_token(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   set_has_token();
   token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:secft.proto.file_transfer_packet.Packet.token)
+  // @@protoc_insertion_point(field_set_char:fs.proto.packet.Packet.token)
 }
 inline void Packet::set_token(const char* value, size_t size) {
   set_has_token();
   token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:secft.proto.file_transfer_packet.Packet.token)
+  // @@protoc_insertion_point(field_set_pointer:fs.proto.packet.Packet.token)
 }
 inline ::std::string* Packet::mutable_token() {
   set_has_token();
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.Packet.token)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.Packet.token)
   return token_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* Packet::release_token() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.Packet.token)
+  // @@protoc_insertion_point(field_release:fs.proto.packet.Packet.token)
   if (!has_token()) {
     return NULL;
   }
@@ -3119,7 +3119,7 @@ inline void Packet::set_allocated_token(::std::string* token) {
     clear_has_token();
   }
   token_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), token);
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.Packet.token)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.Packet.token)
 }
 
 // optional uint64 offset = 6;
@@ -3137,13 +3137,13 @@ inline void Packet::clear_offset() {
   clear_has_offset();
 }
 inline ::google::protobuf::uint64 Packet::offset() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.Packet.offset)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.Packet.offset)
   return offset_;
 }
 inline void Packet::set_offset(::google::protobuf::uint64 value) {
   set_has_offset();
   offset_ = value;
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.Packet.offset)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.Packet.offset)
 }
 
 // -------------------------------------------------------------------
@@ -3165,41 +3165,41 @@ inline void CreateDirectoryRequest::clear_path() {
   clear_has_path();
 }
 inline const ::std::string& CreateDirectoryRequest::path() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.CreateDirectoryRequest.path)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.CreateDirectoryRequest.path)
   return path_.GetNoArena();
 }
 inline void CreateDirectoryRequest::set_path(const ::std::string& value) {
   set_has_path();
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.CreateDirectoryRequest.path)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.CreateDirectoryRequest.path)
 }
 #if LANG_CXX11
 inline void CreateDirectoryRequest::set_path(::std::string&& value) {
   set_has_path();
   path_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:secft.proto.file_transfer_packet.CreateDirectoryRequest.path)
+  // @@protoc_insertion_point(field_set_rvalue:fs.proto.packet.CreateDirectoryRequest.path)
 }
 #endif
 inline void CreateDirectoryRequest::set_path(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   set_has_path();
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:secft.proto.file_transfer_packet.CreateDirectoryRequest.path)
+  // @@protoc_insertion_point(field_set_char:fs.proto.packet.CreateDirectoryRequest.path)
 }
 inline void CreateDirectoryRequest::set_path(const char* value, size_t size) {
   set_has_path();
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:secft.proto.file_transfer_packet.CreateDirectoryRequest.path)
+  // @@protoc_insertion_point(field_set_pointer:fs.proto.packet.CreateDirectoryRequest.path)
 }
 inline ::std::string* CreateDirectoryRequest::mutable_path() {
   set_has_path();
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.CreateDirectoryRequest.path)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.CreateDirectoryRequest.path)
   return path_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* CreateDirectoryRequest::release_path() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.CreateDirectoryRequest.path)
+  // @@protoc_insertion_point(field_release:fs.proto.packet.CreateDirectoryRequest.path)
   if (!has_path()) {
     return NULL;
   }
@@ -3213,7 +3213,7 @@ inline void CreateDirectoryRequest::set_allocated_path(::std::string* path) {
     clear_has_path();
   }
   path_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), path);
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.CreateDirectoryRequest.path)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.CreateDirectoryRequest.path)
 }
 
 // -------------------------------------------------------------------
@@ -3235,41 +3235,41 @@ inline void RenameRequest::clear_old_name() {
   clear_has_old_name();
 }
 inline const ::std::string& RenameRequest::old_name() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.RenameRequest.old_name)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.RenameRequest.old_name)
   return old_name_.GetNoArena();
 }
 inline void RenameRequest::set_old_name(const ::std::string& value) {
   set_has_old_name();
   old_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.RenameRequest.old_name)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.RenameRequest.old_name)
 }
 #if LANG_CXX11
 inline void RenameRequest::set_old_name(::std::string&& value) {
   set_has_old_name();
   old_name_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:secft.proto.file_transfer_packet.RenameRequest.old_name)
+  // @@protoc_insertion_point(field_set_rvalue:fs.proto.packet.RenameRequest.old_name)
 }
 #endif
 inline void RenameRequest::set_old_name(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   set_has_old_name();
   old_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:secft.proto.file_transfer_packet.RenameRequest.old_name)
+  // @@protoc_insertion_point(field_set_char:fs.proto.packet.RenameRequest.old_name)
 }
 inline void RenameRequest::set_old_name(const char* value, size_t size) {
   set_has_old_name();
   old_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:secft.proto.file_transfer_packet.RenameRequest.old_name)
+  // @@protoc_insertion_point(field_set_pointer:fs.proto.packet.RenameRequest.old_name)
 }
 inline ::std::string* RenameRequest::mutable_old_name() {
   set_has_old_name();
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.RenameRequest.old_name)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.RenameRequest.old_name)
   return old_name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* RenameRequest::release_old_name() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.RenameRequest.old_name)
+  // @@protoc_insertion_point(field_release:fs.proto.packet.RenameRequest.old_name)
   if (!has_old_name()) {
     return NULL;
   }
@@ -3283,7 +3283,7 @@ inline void RenameRequest::set_allocated_old_name(::std::string* old_name) {
     clear_has_old_name();
   }
   old_name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), old_name);
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.RenameRequest.old_name)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.RenameRequest.old_name)
 }
 
 // required string new_name = 2;
@@ -3301,41 +3301,41 @@ inline void RenameRequest::clear_new_name() {
   clear_has_new_name();
 }
 inline const ::std::string& RenameRequest::new_name() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.RenameRequest.new_name)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.RenameRequest.new_name)
   return new_name_.GetNoArena();
 }
 inline void RenameRequest::set_new_name(const ::std::string& value) {
   set_has_new_name();
   new_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.RenameRequest.new_name)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.RenameRequest.new_name)
 }
 #if LANG_CXX11
 inline void RenameRequest::set_new_name(::std::string&& value) {
   set_has_new_name();
   new_name_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:secft.proto.file_transfer_packet.RenameRequest.new_name)
+  // @@protoc_insertion_point(field_set_rvalue:fs.proto.packet.RenameRequest.new_name)
 }
 #endif
 inline void RenameRequest::set_new_name(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   set_has_new_name();
   new_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:secft.proto.file_transfer_packet.RenameRequest.new_name)
+  // @@protoc_insertion_point(field_set_char:fs.proto.packet.RenameRequest.new_name)
 }
 inline void RenameRequest::set_new_name(const char* value, size_t size) {
   set_has_new_name();
   new_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:secft.proto.file_transfer_packet.RenameRequest.new_name)
+  // @@protoc_insertion_point(field_set_pointer:fs.proto.packet.RenameRequest.new_name)
 }
 inline ::std::string* RenameRequest::mutable_new_name() {
   set_has_new_name();
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.RenameRequest.new_name)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.RenameRequest.new_name)
   return new_name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* RenameRequest::release_new_name() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.RenameRequest.new_name)
+  // @@protoc_insertion_point(field_release:fs.proto.packet.RenameRequest.new_name)
   if (!has_new_name()) {
     return NULL;
   }
@@ -3349,7 +3349,7 @@ inline void RenameRequest::set_allocated_new_name(::std::string* new_name) {
     clear_has_new_name();
   }
   new_name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), new_name);
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.RenameRequest.new_name)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.RenameRequest.new_name)
 }
 
 // -------------------------------------------------------------------
@@ -3371,41 +3371,41 @@ inline void RemoveRequest::clear_path() {
   clear_has_path();
 }
 inline const ::std::string& RemoveRequest::path() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.RemoveRequest.path)
+  // @@protoc_insertion_point(field_get:fs.proto.packet.RemoveRequest.path)
   return path_.GetNoArena();
 }
 inline void RemoveRequest::set_path(const ::std::string& value) {
   set_has_path();
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.RemoveRequest.path)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.RemoveRequest.path)
 }
 #if LANG_CXX11
 inline void RemoveRequest::set_path(::std::string&& value) {
   set_has_path();
   path_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:secft.proto.file_transfer_packet.RemoveRequest.path)
+  // @@protoc_insertion_point(field_set_rvalue:fs.proto.packet.RemoveRequest.path)
 }
 #endif
 inline void RemoveRequest::set_path(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   set_has_path();
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:secft.proto.file_transfer_packet.RemoveRequest.path)
+  // @@protoc_insertion_point(field_set_char:fs.proto.packet.RemoveRequest.path)
 }
 inline void RemoveRequest::set_path(const char* value, size_t size) {
   set_has_path();
   path_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:secft.proto.file_transfer_packet.RemoveRequest.path)
+  // @@protoc_insertion_point(field_set_pointer:fs.proto.packet.RemoveRequest.path)
 }
 inline ::std::string* RemoveRequest::mutable_path() {
   set_has_path();
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.RemoveRequest.path)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.RemoveRequest.path)
   return path_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* RemoveRequest::release_path() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.RemoveRequest.path)
+  // @@protoc_insertion_point(field_release:fs.proto.packet.RemoveRequest.path)
   if (!has_path()) {
     return NULL;
   }
@@ -3419,14 +3419,14 @@ inline void RemoveRequest::set_allocated_path(::std::string* path) {
     clear_has_path();
   }
   path_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), path);
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.RemoveRequest.path)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.RemoveRequest.path)
 }
 
 // -------------------------------------------------------------------
 
 // Reply
 
-// required .secft.proto.file_transfer_packet.Status status = 1;
+// required .fs.proto.packet.Status status = 1;
 inline bool Reply::has_status() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -3440,18 +3440,18 @@ inline void Reply::clear_status() {
   status_ = 0;
   clear_has_status();
 }
-inline ::secft::proto::file_transfer_packet::Status Reply::status() const {
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.Reply.status)
-  return static_cast< ::secft::proto::file_transfer_packet::Status >(status_);
+inline ::fs::proto::packet::Status Reply::status() const {
+  // @@protoc_insertion_point(field_get:fs.proto.packet.Reply.status)
+  return static_cast< ::fs::proto::packet::Status >(status_);
 }
-inline void Reply::set_status(::secft::proto::file_transfer_packet::Status value) {
-  assert(::secft::proto::file_transfer_packet::Status_IsValid(value));
+inline void Reply::set_status(::fs::proto::packet::Status value) {
+  assert(::fs::proto::packet::Status_IsValid(value));
   set_has_status();
   status_ = value;
-  // @@protoc_insertion_point(field_set:secft.proto.file_transfer_packet.Reply.status)
+  // @@protoc_insertion_point(field_set:fs.proto.packet.Reply.status)
 }
 
-// optional .secft.proto.file_transfer_packet.FileList file_list = 2;
+// optional .fs.proto.packet.FileList file_list = 2;
 inline bool Reply::has_file_list() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -3465,32 +3465,32 @@ inline void Reply::clear_file_list() {
   if (file_list_ != NULL) file_list_->Clear();
   clear_has_file_list();
 }
-inline const ::secft::proto::file_transfer_packet::FileList& Reply::_internal_file_list() const {
+inline const ::fs::proto::packet::FileList& Reply::_internal_file_list() const {
   return *file_list_;
 }
-inline const ::secft::proto::file_transfer_packet::FileList& Reply::file_list() const {
-  const ::secft::proto::file_transfer_packet::FileList* p = file_list_;
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.Reply.file_list)
-  return p != NULL ? *p : *reinterpret_cast<const ::secft::proto::file_transfer_packet::FileList*>(
-      &::secft::proto::file_transfer_packet::_FileList_default_instance_);
+inline const ::fs::proto::packet::FileList& Reply::file_list() const {
+  const ::fs::proto::packet::FileList* p = file_list_;
+  // @@protoc_insertion_point(field_get:fs.proto.packet.Reply.file_list)
+  return p != NULL ? *p : *reinterpret_cast<const ::fs::proto::packet::FileList*>(
+      &::fs::proto::packet::_FileList_default_instance_);
 }
-inline ::secft::proto::file_transfer_packet::FileList* Reply::release_file_list() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.Reply.file_list)
+inline ::fs::proto::packet::FileList* Reply::release_file_list() {
+  // @@protoc_insertion_point(field_release:fs.proto.packet.Reply.file_list)
   clear_has_file_list();
-  ::secft::proto::file_transfer_packet::FileList* temp = file_list_;
+  ::fs::proto::packet::FileList* temp = file_list_;
   file_list_ = NULL;
   return temp;
 }
-inline ::secft::proto::file_transfer_packet::FileList* Reply::mutable_file_list() {
+inline ::fs::proto::packet::FileList* Reply::mutable_file_list() {
   set_has_file_list();
   if (file_list_ == NULL) {
-    auto* p = CreateMaybeMessage<::secft::proto::file_transfer_packet::FileList>(GetArenaNoVirtual());
+    auto* p = CreateMaybeMessage<::fs::proto::packet::FileList>(GetArenaNoVirtual());
     file_list_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.Reply.file_list)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.Reply.file_list)
   return file_list_;
 }
-inline void Reply::set_allocated_file_list(::secft::proto::file_transfer_packet::FileList* file_list) {
+inline void Reply::set_allocated_file_list(::fs::proto::packet::FileList* file_list) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete file_list_;
@@ -3506,10 +3506,10 @@ inline void Reply::set_allocated_file_list(::secft::proto::file_transfer_packet:
     clear_has_file_list();
   }
   file_list_ = file_list;
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.Reply.file_list)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.Reply.file_list)
 }
 
-// optional .secft.proto.file_transfer_packet.Packet packet = 3;
+// optional .fs.proto.packet.Packet packet = 3;
 inline bool Reply::has_packet() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -3523,32 +3523,32 @@ inline void Reply::clear_packet() {
   if (packet_ != NULL) packet_->Clear();
   clear_has_packet();
 }
-inline const ::secft::proto::file_transfer_packet::Packet& Reply::_internal_packet() const {
+inline const ::fs::proto::packet::Packet& Reply::_internal_packet() const {
   return *packet_;
 }
-inline const ::secft::proto::file_transfer_packet::Packet& Reply::packet() const {
-  const ::secft::proto::file_transfer_packet::Packet* p = packet_;
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.Reply.packet)
-  return p != NULL ? *p : *reinterpret_cast<const ::secft::proto::file_transfer_packet::Packet*>(
-      &::secft::proto::file_transfer_packet::_Packet_default_instance_);
+inline const ::fs::proto::packet::Packet& Reply::packet() const {
+  const ::fs::proto::packet::Packet* p = packet_;
+  // @@protoc_insertion_point(field_get:fs.proto.packet.Reply.packet)
+  return p != NULL ? *p : *reinterpret_cast<const ::fs::proto::packet::Packet*>(
+      &::fs::proto::packet::_Packet_default_instance_);
 }
-inline ::secft::proto::file_transfer_packet::Packet* Reply::release_packet() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.Reply.packet)
+inline ::fs::proto::packet::Packet* Reply::release_packet() {
+  // @@protoc_insertion_point(field_release:fs.proto.packet.Reply.packet)
   clear_has_packet();
-  ::secft::proto::file_transfer_packet::Packet* temp = packet_;
+  ::fs::proto::packet::Packet* temp = packet_;
   packet_ = NULL;
   return temp;
 }
-inline ::secft::proto::file_transfer_packet::Packet* Reply::mutable_packet() {
+inline ::fs::proto::packet::Packet* Reply::mutable_packet() {
   set_has_packet();
   if (packet_ == NULL) {
-    auto* p = CreateMaybeMessage<::secft::proto::file_transfer_packet::Packet>(GetArenaNoVirtual());
+    auto* p = CreateMaybeMessage<::fs::proto::packet::Packet>(GetArenaNoVirtual());
     packet_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.Reply.packet)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.Reply.packet)
   return packet_;
 }
-inline void Reply::set_allocated_packet(::secft::proto::file_transfer_packet::Packet* packet) {
+inline void Reply::set_allocated_packet(::fs::proto::packet::Packet* packet) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete packet_;
@@ -3564,14 +3564,14 @@ inline void Reply::set_allocated_packet(::secft::proto::file_transfer_packet::Pa
     clear_has_packet();
   }
   packet_ = packet;
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.Reply.packet)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.Reply.packet)
 }
 
 // -------------------------------------------------------------------
 
 // Request
 
-// optional .secft.proto.file_transfer_packet.FileListRequest file_list_request = 1;
+// optional .fs.proto.packet.FileListRequest file_list_request = 1;
 inline bool Request::has_file_list_request() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -3585,32 +3585,32 @@ inline void Request::clear_file_list_request() {
   if (file_list_request_ != NULL) file_list_request_->Clear();
   clear_has_file_list_request();
 }
-inline const ::secft::proto::file_transfer_packet::FileListRequest& Request::_internal_file_list_request() const {
+inline const ::fs::proto::packet::FileListRequest& Request::_internal_file_list_request() const {
   return *file_list_request_;
 }
-inline const ::secft::proto::file_transfer_packet::FileListRequest& Request::file_list_request() const {
-  const ::secft::proto::file_transfer_packet::FileListRequest* p = file_list_request_;
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.Request.file_list_request)
-  return p != NULL ? *p : *reinterpret_cast<const ::secft::proto::file_transfer_packet::FileListRequest*>(
-      &::secft::proto::file_transfer_packet::_FileListRequest_default_instance_);
+inline const ::fs::proto::packet::FileListRequest& Request::file_list_request() const {
+  const ::fs::proto::packet::FileListRequest* p = file_list_request_;
+  // @@protoc_insertion_point(field_get:fs.proto.packet.Request.file_list_request)
+  return p != NULL ? *p : *reinterpret_cast<const ::fs::proto::packet::FileListRequest*>(
+      &::fs::proto::packet::_FileListRequest_default_instance_);
 }
-inline ::secft::proto::file_transfer_packet::FileListRequest* Request::release_file_list_request() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.Request.file_list_request)
+inline ::fs::proto::packet::FileListRequest* Request::release_file_list_request() {
+  // @@protoc_insertion_point(field_release:fs.proto.packet.Request.file_list_request)
   clear_has_file_list_request();
-  ::secft::proto::file_transfer_packet::FileListRequest* temp = file_list_request_;
+  ::fs::proto::packet::FileListRequest* temp = file_list_request_;
   file_list_request_ = NULL;
   return temp;
 }
-inline ::secft::proto::file_transfer_packet::FileListRequest* Request::mutable_file_list_request() {
+inline ::fs::proto::packet::FileListRequest* Request::mutable_file_list_request() {
   set_has_file_list_request();
   if (file_list_request_ == NULL) {
-    auto* p = CreateMaybeMessage<::secft::proto::file_transfer_packet::FileListRequest>(GetArenaNoVirtual());
+    auto* p = CreateMaybeMessage<::fs::proto::packet::FileListRequest>(GetArenaNoVirtual());
     file_list_request_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.Request.file_list_request)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.Request.file_list_request)
   return file_list_request_;
 }
-inline void Request::set_allocated_file_list_request(::secft::proto::file_transfer_packet::FileListRequest* file_list_request) {
+inline void Request::set_allocated_file_list_request(::fs::proto::packet::FileListRequest* file_list_request) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete file_list_request_;
@@ -3626,10 +3626,10 @@ inline void Request::set_allocated_file_list_request(::secft::proto::file_transf
     clear_has_file_list_request();
   }
   file_list_request_ = file_list_request;
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.Request.file_list_request)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.Request.file_list_request)
 }
 
-// optional .secft.proto.file_transfer_packet.CreateDirectoryRequest create_directory_request = 2;
+// optional .fs.proto.packet.CreateDirectoryRequest create_directory_request = 2;
 inline bool Request::has_create_directory_request() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -3643,32 +3643,32 @@ inline void Request::clear_create_directory_request() {
   if (create_directory_request_ != NULL) create_directory_request_->Clear();
   clear_has_create_directory_request();
 }
-inline const ::secft::proto::file_transfer_packet::CreateDirectoryRequest& Request::_internal_create_directory_request() const {
+inline const ::fs::proto::packet::CreateDirectoryRequest& Request::_internal_create_directory_request() const {
   return *create_directory_request_;
 }
-inline const ::secft::proto::file_transfer_packet::CreateDirectoryRequest& Request::create_directory_request() const {
-  const ::secft::proto::file_transfer_packet::CreateDirectoryRequest* p = create_directory_request_;
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.Request.create_directory_request)
-  return p != NULL ? *p : *reinterpret_cast<const ::secft::proto::file_transfer_packet::CreateDirectoryRequest*>(
-      &::secft::proto::file_transfer_packet::_CreateDirectoryRequest_default_instance_);
+inline const ::fs::proto::packet::CreateDirectoryRequest& Request::create_directory_request() const {
+  const ::fs::proto::packet::CreateDirectoryRequest* p = create_directory_request_;
+  // @@protoc_insertion_point(field_get:fs.proto.packet.Request.create_directory_request)
+  return p != NULL ? *p : *reinterpret_cast<const ::fs::proto::packet::CreateDirectoryRequest*>(
+      &::fs::proto::packet::_CreateDirectoryRequest_default_instance_);
 }
-inline ::secft::proto::file_transfer_packet::CreateDirectoryRequest* Request::release_create_directory_request() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.Request.create_directory_request)
+inline ::fs::proto::packet::CreateDirectoryRequest* Request::release_create_directory_request() {
+  // @@protoc_insertion_point(field_release:fs.proto.packet.Request.create_directory_request)
   clear_has_create_directory_request();
-  ::secft::proto::file_transfer_packet::CreateDirectoryRequest* temp = create_directory_request_;
+  ::fs::proto::packet::CreateDirectoryRequest* temp = create_directory_request_;
   create_directory_request_ = NULL;
   return temp;
 }
-inline ::secft::proto::file_transfer_packet::CreateDirectoryRequest* Request::mutable_create_directory_request() {
+inline ::fs::proto::packet::CreateDirectoryRequest* Request::mutable_create_directory_request() {
   set_has_create_directory_request();
   if (create_directory_request_ == NULL) {
-    auto* p = CreateMaybeMessage<::secft::proto::file_transfer_packet::CreateDirectoryRequest>(GetArenaNoVirtual());
+    auto* p = CreateMaybeMessage<::fs::proto::packet::CreateDirectoryRequest>(GetArenaNoVirtual());
     create_directory_request_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.Request.create_directory_request)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.Request.create_directory_request)
   return create_directory_request_;
 }
-inline void Request::set_allocated_create_directory_request(::secft::proto::file_transfer_packet::CreateDirectoryRequest* create_directory_request) {
+inline void Request::set_allocated_create_directory_request(::fs::proto::packet::CreateDirectoryRequest* create_directory_request) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete create_directory_request_;
@@ -3684,10 +3684,10 @@ inline void Request::set_allocated_create_directory_request(::secft::proto::file
     clear_has_create_directory_request();
   }
   create_directory_request_ = create_directory_request;
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.Request.create_directory_request)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.Request.create_directory_request)
 }
 
-// optional .secft.proto.file_transfer_packet.RenameRequest rename_request = 3;
+// optional .fs.proto.packet.RenameRequest rename_request = 3;
 inline bool Request::has_rename_request() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -3701,32 +3701,32 @@ inline void Request::clear_rename_request() {
   if (rename_request_ != NULL) rename_request_->Clear();
   clear_has_rename_request();
 }
-inline const ::secft::proto::file_transfer_packet::RenameRequest& Request::_internal_rename_request() const {
+inline const ::fs::proto::packet::RenameRequest& Request::_internal_rename_request() const {
   return *rename_request_;
 }
-inline const ::secft::proto::file_transfer_packet::RenameRequest& Request::rename_request() const {
-  const ::secft::proto::file_transfer_packet::RenameRequest* p = rename_request_;
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.Request.rename_request)
-  return p != NULL ? *p : *reinterpret_cast<const ::secft::proto::file_transfer_packet::RenameRequest*>(
-      &::secft::proto::file_transfer_packet::_RenameRequest_default_instance_);
+inline const ::fs::proto::packet::RenameRequest& Request::rename_request() const {
+  const ::fs::proto::packet::RenameRequest* p = rename_request_;
+  // @@protoc_insertion_point(field_get:fs.proto.packet.Request.rename_request)
+  return p != NULL ? *p : *reinterpret_cast<const ::fs::proto::packet::RenameRequest*>(
+      &::fs::proto::packet::_RenameRequest_default_instance_);
 }
-inline ::secft::proto::file_transfer_packet::RenameRequest* Request::release_rename_request() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.Request.rename_request)
+inline ::fs::proto::packet::RenameRequest* Request::release_rename_request() {
+  // @@protoc_insertion_point(field_release:fs.proto.packet.Request.rename_request)
   clear_has_rename_request();
-  ::secft::proto::file_transfer_packet::RenameRequest* temp = rename_request_;
+  ::fs::proto::packet::RenameRequest* temp = rename_request_;
   rename_request_ = NULL;
   return temp;
 }
-inline ::secft::proto::file_transfer_packet::RenameRequest* Request::mutable_rename_request() {
+inline ::fs::proto::packet::RenameRequest* Request::mutable_rename_request() {
   set_has_rename_request();
   if (rename_request_ == NULL) {
-    auto* p = CreateMaybeMessage<::secft::proto::file_transfer_packet::RenameRequest>(GetArenaNoVirtual());
+    auto* p = CreateMaybeMessage<::fs::proto::packet::RenameRequest>(GetArenaNoVirtual());
     rename_request_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.Request.rename_request)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.Request.rename_request)
   return rename_request_;
 }
-inline void Request::set_allocated_rename_request(::secft::proto::file_transfer_packet::RenameRequest* rename_request) {
+inline void Request::set_allocated_rename_request(::fs::proto::packet::RenameRequest* rename_request) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete rename_request_;
@@ -3742,10 +3742,10 @@ inline void Request::set_allocated_rename_request(::secft::proto::file_transfer_
     clear_has_rename_request();
   }
   rename_request_ = rename_request;
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.Request.rename_request)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.Request.rename_request)
 }
 
-// optional .secft.proto.file_transfer_packet.RemoveRequest remove_request = 4;
+// optional .fs.proto.packet.RemoveRequest remove_request = 4;
 inline bool Request::has_remove_request() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
@@ -3759,32 +3759,32 @@ inline void Request::clear_remove_request() {
   if (remove_request_ != NULL) remove_request_->Clear();
   clear_has_remove_request();
 }
-inline const ::secft::proto::file_transfer_packet::RemoveRequest& Request::_internal_remove_request() const {
+inline const ::fs::proto::packet::RemoveRequest& Request::_internal_remove_request() const {
   return *remove_request_;
 }
-inline const ::secft::proto::file_transfer_packet::RemoveRequest& Request::remove_request() const {
-  const ::secft::proto::file_transfer_packet::RemoveRequest* p = remove_request_;
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.Request.remove_request)
-  return p != NULL ? *p : *reinterpret_cast<const ::secft::proto::file_transfer_packet::RemoveRequest*>(
-      &::secft::proto::file_transfer_packet::_RemoveRequest_default_instance_);
+inline const ::fs::proto::packet::RemoveRequest& Request::remove_request() const {
+  const ::fs::proto::packet::RemoveRequest* p = remove_request_;
+  // @@protoc_insertion_point(field_get:fs.proto.packet.Request.remove_request)
+  return p != NULL ? *p : *reinterpret_cast<const ::fs::proto::packet::RemoveRequest*>(
+      &::fs::proto::packet::_RemoveRequest_default_instance_);
 }
-inline ::secft::proto::file_transfer_packet::RemoveRequest* Request::release_remove_request() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.Request.remove_request)
+inline ::fs::proto::packet::RemoveRequest* Request::release_remove_request() {
+  // @@protoc_insertion_point(field_release:fs.proto.packet.Request.remove_request)
   clear_has_remove_request();
-  ::secft::proto::file_transfer_packet::RemoveRequest* temp = remove_request_;
+  ::fs::proto::packet::RemoveRequest* temp = remove_request_;
   remove_request_ = NULL;
   return temp;
 }
-inline ::secft::proto::file_transfer_packet::RemoveRequest* Request::mutable_remove_request() {
+inline ::fs::proto::packet::RemoveRequest* Request::mutable_remove_request() {
   set_has_remove_request();
   if (remove_request_ == NULL) {
-    auto* p = CreateMaybeMessage<::secft::proto::file_transfer_packet::RemoveRequest>(GetArenaNoVirtual());
+    auto* p = CreateMaybeMessage<::fs::proto::packet::RemoveRequest>(GetArenaNoVirtual());
     remove_request_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.Request.remove_request)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.Request.remove_request)
   return remove_request_;
 }
-inline void Request::set_allocated_remove_request(::secft::proto::file_transfer_packet::RemoveRequest* remove_request) {
+inline void Request::set_allocated_remove_request(::fs::proto::packet::RemoveRequest* remove_request) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete remove_request_;
@@ -3800,10 +3800,10 @@ inline void Request::set_allocated_remove_request(::secft::proto::file_transfer_
     clear_has_remove_request();
   }
   remove_request_ = remove_request;
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.Request.remove_request)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.Request.remove_request)
 }
 
-// required .secft.proto.file_transfer_packet.DownloadRequest download_request = 5;
+// required .fs.proto.packet.DownloadRequest download_request = 5;
 inline bool Request::has_download_request() const {
   return (_has_bits_[0] & 0x00000010u) != 0;
 }
@@ -3817,32 +3817,32 @@ inline void Request::clear_download_request() {
   if (download_request_ != NULL) download_request_->Clear();
   clear_has_download_request();
 }
-inline const ::secft::proto::file_transfer_packet::DownloadRequest& Request::_internal_download_request() const {
+inline const ::fs::proto::packet::DownloadRequest& Request::_internal_download_request() const {
   return *download_request_;
 }
-inline const ::secft::proto::file_transfer_packet::DownloadRequest& Request::download_request() const {
-  const ::secft::proto::file_transfer_packet::DownloadRequest* p = download_request_;
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.Request.download_request)
-  return p != NULL ? *p : *reinterpret_cast<const ::secft::proto::file_transfer_packet::DownloadRequest*>(
-      &::secft::proto::file_transfer_packet::_DownloadRequest_default_instance_);
+inline const ::fs::proto::packet::DownloadRequest& Request::download_request() const {
+  const ::fs::proto::packet::DownloadRequest* p = download_request_;
+  // @@protoc_insertion_point(field_get:fs.proto.packet.Request.download_request)
+  return p != NULL ? *p : *reinterpret_cast<const ::fs::proto::packet::DownloadRequest*>(
+      &::fs::proto::packet::_DownloadRequest_default_instance_);
 }
-inline ::secft::proto::file_transfer_packet::DownloadRequest* Request::release_download_request() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.Request.download_request)
+inline ::fs::proto::packet::DownloadRequest* Request::release_download_request() {
+  // @@protoc_insertion_point(field_release:fs.proto.packet.Request.download_request)
   clear_has_download_request();
-  ::secft::proto::file_transfer_packet::DownloadRequest* temp = download_request_;
+  ::fs::proto::packet::DownloadRequest* temp = download_request_;
   download_request_ = NULL;
   return temp;
 }
-inline ::secft::proto::file_transfer_packet::DownloadRequest* Request::mutable_download_request() {
+inline ::fs::proto::packet::DownloadRequest* Request::mutable_download_request() {
   set_has_download_request();
   if (download_request_ == NULL) {
-    auto* p = CreateMaybeMessage<::secft::proto::file_transfer_packet::DownloadRequest>(GetArenaNoVirtual());
+    auto* p = CreateMaybeMessage<::fs::proto::packet::DownloadRequest>(GetArenaNoVirtual());
     download_request_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.Request.download_request)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.Request.download_request)
   return download_request_;
 }
-inline void Request::set_allocated_download_request(::secft::proto::file_transfer_packet::DownloadRequest* download_request) {
+inline void Request::set_allocated_download_request(::fs::proto::packet::DownloadRequest* download_request) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete download_request_;
@@ -3858,10 +3858,10 @@ inline void Request::set_allocated_download_request(::secft::proto::file_transfe
     clear_has_download_request();
   }
   download_request_ = download_request;
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.Request.download_request)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.Request.download_request)
 }
 
-// required .secft.proto.file_transfer_packet.UploadRequest upload_request = 6;
+// required .fs.proto.packet.UploadRequest upload_request = 6;
 inline bool Request::has_upload_request() const {
   return (_has_bits_[0] & 0x00000020u) != 0;
 }
@@ -3875,32 +3875,32 @@ inline void Request::clear_upload_request() {
   if (upload_request_ != NULL) upload_request_->Clear();
   clear_has_upload_request();
 }
-inline const ::secft::proto::file_transfer_packet::UploadRequest& Request::_internal_upload_request() const {
+inline const ::fs::proto::packet::UploadRequest& Request::_internal_upload_request() const {
   return *upload_request_;
 }
-inline const ::secft::proto::file_transfer_packet::UploadRequest& Request::upload_request() const {
-  const ::secft::proto::file_transfer_packet::UploadRequest* p = upload_request_;
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.Request.upload_request)
-  return p != NULL ? *p : *reinterpret_cast<const ::secft::proto::file_transfer_packet::UploadRequest*>(
-      &::secft::proto::file_transfer_packet::_UploadRequest_default_instance_);
+inline const ::fs::proto::packet::UploadRequest& Request::upload_request() const {
+  const ::fs::proto::packet::UploadRequest* p = upload_request_;
+  // @@protoc_insertion_point(field_get:fs.proto.packet.Request.upload_request)
+  return p != NULL ? *p : *reinterpret_cast<const ::fs::proto::packet::UploadRequest*>(
+      &::fs::proto::packet::_UploadRequest_default_instance_);
 }
-inline ::secft::proto::file_transfer_packet::UploadRequest* Request::release_upload_request() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.Request.upload_request)
+inline ::fs::proto::packet::UploadRequest* Request::release_upload_request() {
+  // @@protoc_insertion_point(field_release:fs.proto.packet.Request.upload_request)
   clear_has_upload_request();
-  ::secft::proto::file_transfer_packet::UploadRequest* temp = upload_request_;
+  ::fs::proto::packet::UploadRequest* temp = upload_request_;
   upload_request_ = NULL;
   return temp;
 }
-inline ::secft::proto::file_transfer_packet::UploadRequest* Request::mutable_upload_request() {
+inline ::fs::proto::packet::UploadRequest* Request::mutable_upload_request() {
   set_has_upload_request();
   if (upload_request_ == NULL) {
-    auto* p = CreateMaybeMessage<::secft::proto::file_transfer_packet::UploadRequest>(GetArenaNoVirtual());
+    auto* p = CreateMaybeMessage<::fs::proto::packet::UploadRequest>(GetArenaNoVirtual());
     upload_request_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.Request.upload_request)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.Request.upload_request)
   return upload_request_;
 }
-inline void Request::set_allocated_upload_request(::secft::proto::file_transfer_packet::UploadRequest* upload_request) {
+inline void Request::set_allocated_upload_request(::fs::proto::packet::UploadRequest* upload_request) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete upload_request_;
@@ -3916,10 +3916,10 @@ inline void Request::set_allocated_upload_request(::secft::proto::file_transfer_
     clear_has_upload_request();
   }
   upload_request_ = upload_request;
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.Request.upload_request)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.Request.upload_request)
 }
 
-// required .secft.proto.file_transfer_packet.PacketRequest packet_request = 7;
+// required .fs.proto.packet.PacketRequest packet_request = 7;
 inline bool Request::has_packet_request() const {
   return (_has_bits_[0] & 0x00000040u) != 0;
 }
@@ -3933,32 +3933,32 @@ inline void Request::clear_packet_request() {
   if (packet_request_ != NULL) packet_request_->Clear();
   clear_has_packet_request();
 }
-inline const ::secft::proto::file_transfer_packet::PacketRequest& Request::_internal_packet_request() const {
+inline const ::fs::proto::packet::PacketRequest& Request::_internal_packet_request() const {
   return *packet_request_;
 }
-inline const ::secft::proto::file_transfer_packet::PacketRequest& Request::packet_request() const {
-  const ::secft::proto::file_transfer_packet::PacketRequest* p = packet_request_;
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.Request.packet_request)
-  return p != NULL ? *p : *reinterpret_cast<const ::secft::proto::file_transfer_packet::PacketRequest*>(
-      &::secft::proto::file_transfer_packet::_PacketRequest_default_instance_);
+inline const ::fs::proto::packet::PacketRequest& Request::packet_request() const {
+  const ::fs::proto::packet::PacketRequest* p = packet_request_;
+  // @@protoc_insertion_point(field_get:fs.proto.packet.Request.packet_request)
+  return p != NULL ? *p : *reinterpret_cast<const ::fs::proto::packet::PacketRequest*>(
+      &::fs::proto::packet::_PacketRequest_default_instance_);
 }
-inline ::secft::proto::file_transfer_packet::PacketRequest* Request::release_packet_request() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.Request.packet_request)
+inline ::fs::proto::packet::PacketRequest* Request::release_packet_request() {
+  // @@protoc_insertion_point(field_release:fs.proto.packet.Request.packet_request)
   clear_has_packet_request();
-  ::secft::proto::file_transfer_packet::PacketRequest* temp = packet_request_;
+  ::fs::proto::packet::PacketRequest* temp = packet_request_;
   packet_request_ = NULL;
   return temp;
 }
-inline ::secft::proto::file_transfer_packet::PacketRequest* Request::mutable_packet_request() {
+inline ::fs::proto::packet::PacketRequest* Request::mutable_packet_request() {
   set_has_packet_request();
   if (packet_request_ == NULL) {
-    auto* p = CreateMaybeMessage<::secft::proto::file_transfer_packet::PacketRequest>(GetArenaNoVirtual());
+    auto* p = CreateMaybeMessage<::fs::proto::packet::PacketRequest>(GetArenaNoVirtual());
     packet_request_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.Request.packet_request)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.Request.packet_request)
   return packet_request_;
 }
-inline void Request::set_allocated_packet_request(::secft::proto::file_transfer_packet::PacketRequest* packet_request) {
+inline void Request::set_allocated_packet_request(::fs::proto::packet::PacketRequest* packet_request) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete packet_request_;
@@ -3974,10 +3974,10 @@ inline void Request::set_allocated_packet_request(::secft::proto::file_transfer_
     clear_has_packet_request();
   }
   packet_request_ = packet_request;
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.Request.packet_request)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.Request.packet_request)
 }
 
-// required .secft.proto.file_transfer_packet.Packet packet = 8;
+// required .fs.proto.packet.Packet packet = 8;
 inline bool Request::has_packet() const {
   return (_has_bits_[0] & 0x00000080u) != 0;
 }
@@ -3991,32 +3991,32 @@ inline void Request::clear_packet() {
   if (packet_ != NULL) packet_->Clear();
   clear_has_packet();
 }
-inline const ::secft::proto::file_transfer_packet::Packet& Request::_internal_packet() const {
+inline const ::fs::proto::packet::Packet& Request::_internal_packet() const {
   return *packet_;
 }
-inline const ::secft::proto::file_transfer_packet::Packet& Request::packet() const {
-  const ::secft::proto::file_transfer_packet::Packet* p = packet_;
-  // @@protoc_insertion_point(field_get:secft.proto.file_transfer_packet.Request.packet)
-  return p != NULL ? *p : *reinterpret_cast<const ::secft::proto::file_transfer_packet::Packet*>(
-      &::secft::proto::file_transfer_packet::_Packet_default_instance_);
+inline const ::fs::proto::packet::Packet& Request::packet() const {
+  const ::fs::proto::packet::Packet* p = packet_;
+  // @@protoc_insertion_point(field_get:fs.proto.packet.Request.packet)
+  return p != NULL ? *p : *reinterpret_cast<const ::fs::proto::packet::Packet*>(
+      &::fs::proto::packet::_Packet_default_instance_);
 }
-inline ::secft::proto::file_transfer_packet::Packet* Request::release_packet() {
-  // @@protoc_insertion_point(field_release:secft.proto.file_transfer_packet.Request.packet)
+inline ::fs::proto::packet::Packet* Request::release_packet() {
+  // @@protoc_insertion_point(field_release:fs.proto.packet.Request.packet)
   clear_has_packet();
-  ::secft::proto::file_transfer_packet::Packet* temp = packet_;
+  ::fs::proto::packet::Packet* temp = packet_;
   packet_ = NULL;
   return temp;
 }
-inline ::secft::proto::file_transfer_packet::Packet* Request::mutable_packet() {
+inline ::fs::proto::packet::Packet* Request::mutable_packet() {
   set_has_packet();
   if (packet_ == NULL) {
-    auto* p = CreateMaybeMessage<::secft::proto::file_transfer_packet::Packet>(GetArenaNoVirtual());
+    auto* p = CreateMaybeMessage<::fs::proto::packet::Packet>(GetArenaNoVirtual());
     packet_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:secft.proto.file_transfer_packet.Request.packet)
+  // @@protoc_insertion_point(field_mutable:fs.proto.packet.Request.packet)
   return packet_;
 }
-inline void Request::set_allocated_packet(::secft::proto::file_transfer_packet::Packet* packet) {
+inline void Request::set_allocated_packet(::fs::proto::packet::Packet* packet) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete packet_;
@@ -4032,7 +4032,7 @@ inline void Request::set_allocated_packet(::secft::proto::file_transfer_packet::
     clear_has_packet();
   }
   packet_ = packet;
-  // @@protoc_insertion_point(field_set_allocated:secft.proto.file_transfer_packet.Request.packet)
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.packet.Request.packet)
 }
 
 #ifdef __GNUC__
@@ -4067,27 +4067,27 @@ inline void Request::set_allocated_packet(::secft::proto::file_transfer_packet::
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace file_transfer_packet
+}  // namespace packet
 }  // namespace proto
-}  // namespace secft
+}  // namespace fs
 
 namespace google {
 namespace protobuf {
 
-template <> struct is_proto_enum< ::secft::proto::file_transfer_packet::DriveList_Item_Type> : ::std::true_type {};
+template <> struct is_proto_enum< ::fs::proto::packet::DriveList_Item_Type> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::secft::proto::file_transfer_packet::DriveList_Item_Type>() {
-  return ::secft::proto::file_transfer_packet::DriveList_Item_Type_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::fs::proto::packet::DriveList_Item_Type>() {
+  return ::fs::proto::packet::DriveList_Item_Type_descriptor();
 }
-template <> struct is_proto_enum< ::secft::proto::file_transfer_packet::Packet_Flags> : ::std::true_type {};
+template <> struct is_proto_enum< ::fs::proto::packet::Packet_Flags> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::secft::proto::file_transfer_packet::Packet_Flags>() {
-  return ::secft::proto::file_transfer_packet::Packet_Flags_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::fs::proto::packet::Packet_Flags>() {
+  return ::fs::proto::packet::Packet_Flags_descriptor();
 }
-template <> struct is_proto_enum< ::secft::proto::file_transfer_packet::Status> : ::std::true_type {};
+template <> struct is_proto_enum< ::fs::proto::packet::Status> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::secft::proto::file_transfer_packet::Status>() {
-  return ::secft::proto::file_transfer_packet::Status_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::fs::proto::packet::Status>() {
+  return ::fs::proto::packet::Status_descriptor();
 }
 
 }  // namespace protobuf
