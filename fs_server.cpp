@@ -5,8 +5,12 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
+typedef boost::shared_ptr<fs_server> server_ptr;
+
 extern boost::asio::io_service service;
 std::map<std::string, std::string> username_token_map;
+int _port = SERV_PORT;
+std::vector<server_ptr> clients;
 
 fs_server::fs_server() : _sock(service){
     memset(data_buffer,0,sizeof(data_buffer));
@@ -288,3 +292,13 @@ bool auth_username_token(std::string username, std::string token){
         return false;
     return find_iter->second == token;
 }
+
+void accept_thread() {
+    boost::asio::ip::tcp::acceptor acceptor(service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), _port));
+    while ( true) {
+        server_ptr new_server( new fs_server);
+        acceptor.accept(new_server->sock());
+        clients.push_back(new_server);
+    }
+}
+

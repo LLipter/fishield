@@ -8,7 +8,7 @@
 #include <boost/enable_shared_from_this.hpp>
 
 bool auth_username_token(std::string username, std::string token);
-
+void accept_thread();
 
 class fs_server :
         public boost::enable_shared_from_this<fs_server>,
