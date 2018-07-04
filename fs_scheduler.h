@@ -13,8 +13,7 @@ private:
     fs_scheduler();                     // private constructor, Singleton Pattern
     static fs_scheduler scheduler_instance;
     void scheduler();                   // main sechedule method
-    void increase_count();
-    void decrease_count();
+
 
     // member variables
     int max_task_num;
@@ -28,6 +27,8 @@ public:
     int add_task(fs_task_info task_info);
     void remove_task(int task_id);
     void stop_task(int task_id);
+    void increase_count();
+    void decrease_count();
 };
 
 #endif // FS_SCHEDULER_H
