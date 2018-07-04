@@ -6,11 +6,11 @@
 #define FS_EVENT_SYSTEM     "event.system"
 #define FS_EVENT_PROCESS    "event.process"
 
-typedef int (*secft_func_ptr)(void* user_data, std::map<std::string,std::string> msg);
+typedef int (*fs_func_ptr)(void* user_data, std::map<std::string,std::string> msg);
 
 struct fs_callback{
     void* user_data;
-    secft_func_ptr callback;
+    fs_func_ptr callback;
 };
 
 
