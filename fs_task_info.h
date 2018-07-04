@@ -1,7 +1,7 @@
 #ifndef FS_TASK_INTO_H
 #define FS_TASK_INTO_H
 
-#include "config.h"
+#include "fs_config.h"
 #include <openssl/md5.h>
 
 typedef enum fs_task_status{

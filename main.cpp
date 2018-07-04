@@ -1,6 +1,4 @@
-#include "config.h"
-#include "fs_scheduler.h"
-#include "fs_callback.h"
+#include "fishield.h"
 
 using namespace std;
 
@@ -35,6 +33,10 @@ int user_process_callback(void* user_data, map<string,string> data){
 
 int main()
 {
+
+    fs_register_event(FS_EVENT_SYSTEM, &user_system_callback, nullptr);
+    fs_register_event(FS_EVENT_PROCESS, &user_process_callback, nullptr);
+
 
     return 0;
 }

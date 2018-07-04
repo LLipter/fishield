@@ -1,7 +1,7 @@
 #ifndef FS_TASK_H
 #define FS_TASK_H
 
-#include "config.h"
+#include "fs_config.h"
 #include "fs_task_info.h"
 #include "protobuf/file_transfer.pb.h"
 

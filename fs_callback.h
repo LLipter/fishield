@@ -1,7 +1,7 @@
 #ifndef FS_CALLBACK_H
 #define FS_CALLBACK_H
 
-#include "config.h"
+#include "fs_config.h"
 
 #define FS_EVENT_SYSTEM     "event.system"
 #define FS_EVENT_PROCESS    "event.process"
