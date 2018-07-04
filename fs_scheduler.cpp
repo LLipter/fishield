@@ -24,12 +24,12 @@ void fs_scheduler::scheduler(){
                 case START_UPLOAD:
                     iter->second.task_info.task_status = UPLOADING;
                     iter->second.upload_file();
-                    task_count++;
+                    increase_count();
                     break;
 //                case START_DOWNLOAD:
 //                    iter->second.task_info.task_status = DOWNLOADING;
 //                    iter->second.download_file();
-//                    task_count++;
+//                    increase_count();
 //                    break;
                 default:
                     break;
@@ -55,4 +55,16 @@ int fs_scheduler::add_task(fs_task_info task_info){
 void fs_scheduler::stop_task(int task_id){
     if(task_map.find(task_id) != task_map.end())
         task_map[task_id].stop();
+}
+
+void fs_scheduler::increase_count(){
+    task_count_mutex.lock();
+    task_count++;
+    task_count_mutex.unlock();
+}
+
+void fs_scheduler::decrease_count(){
+    task_count_mutex.lock();
+    task_count--;
+    task_count_mutex.unlock();
 }

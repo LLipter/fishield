@@ -1,6 +1,7 @@
 #include "fs_task.h"
 #include "fs_callback.h"
 #include "fs_client.h"
+#include <fs_scheduler.h>
 #include <boost/asio.hpp>
 
 
@@ -99,7 +100,11 @@ void fs_task::_upload()
     while (this->task_info.offset < this->task_info.size) {
         if(this->task_info.task_status == UPLOAD_CANCELED ||
                 this->task_info.task_status == UPLOAD_PAUSED ||
-                this->task_info.task_status == UPLOADED){
+                this->task_info.task_status == UPLOADED ||
+                this->task_info.task_status == UPLOAD_FAILED){
+            fs_scheduler* scduler = fs_scheduler::instance();
+            scduler->decrease_count();
+
             break;
         }
         // task_status is UPLOADING
@@ -113,7 +118,6 @@ void fs_task::_upload()
             this->task_info.task_status = UPLOAD_FAILED;
             process_callback_data["type"] = std::to_string(fs_process_failed);
             callback(FS_EVENT_PROCESS,process_callback_data);
-            break;
         }
 
         fs::proto::packet::Reply reply;
@@ -122,17 +126,13 @@ void fs_task::_upload()
             if(reply_status == fs::proto::packet::Status::STATUS_SUCCESS){
                 process_callback_data["type"] = fs_process_upload;
                 callback(FS_EVENT_PROCESS,process_callback_data);
-                continue;
             }
         }
         else {
             std::cerr << "send failed\n";
             this->task_info.task_status = UPLOAD_FAILED;
             process_callback_data["type"] = std::to_string(fs_process_failed);
-            if(callback_map[FS_EVENT_PROCESS].callback){
-                callback(FS_EVENT_PROCESS,process_callback_data);
-                break;
-            }
+            callback(FS_EVENT_PROCESS,process_callback_data);
 
         }
 

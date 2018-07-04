@@ -13,11 +13,14 @@ private:
     fs_scheduler();                     // private constructor, Singleton Pattern
     static fs_scheduler scheduler_instance;
     void scheduler();                   // main sechedule method
+    void increase_count();
+    void decrease_count();
 
     // member variables
     int max_task_num;
     int task_count;
     std::map<int, fs_task> task_map;
+    std::mutex task_count_mutex;
 
 public:
     static fs_scheduler* instance();
