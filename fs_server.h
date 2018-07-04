@@ -32,6 +32,8 @@ private:
     // member functions
     void read_request();
     void process_request();
+    void do_download();
+    void check_download();
 };
 
 #endif // FS_SERVER_H

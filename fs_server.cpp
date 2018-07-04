@@ -70,29 +70,75 @@ void fs_server::process_request() {
 
     last_packet = boost::posix_time::microsec_clock::local_time();
     //Step 1. handle auth
-    if(auth_username_token(client_req.packet().user_name(),
-                           client_req.packet().token())) {
-        LOG_DEBUG << "Auth ok: user_name is " << client_req.packet().user_name()
-                  << " token is " << client_req.packet().token();
+    std::string username = client_req.packet().user_name();
+    std::string token = client_req.packet().token();
+    if(auth_username_token(username, token)) {
+        _username = username;
+        std::cout << "Auth ok: user_name is " << username
+                  << " token is " << token << std::endl;
     }
     else {
-        LOG_DEBUG << "Auth failed: user_name is " << client_req.packet().user_name()
-                  << " token is " << client_req.packet().token();
+        std::cout << "Auth failed: user_name is " << username
+                  << " token is " << token << std::endl;
         stop();
         return;
     }
     //Step 2. handle packet
-    string download_path = client_req.download_request().path();
-    string upload_path = client_req.upload_request().path();
-    if(download_path.size() != 0) {
+    std::string download_path = client_req.download_request().path();
+    std::string upload_path = client_req.upload_request().path();
+    if(download_path.size() != 0)
         do_download();
-    }
     else if (upload_path.size() != 0) {
         do_upload();
     }
     else{
         LOG_DEBUG << "Invaliad packet: no upload request and download request;";
         stop();
+    }
+}
+
+void fs_server::check_download()
+{
+    std::string path = client_req.download_request().path();
+    std::filesystem::path p(path);
+    std::string root_path = "./";
+    std::string file_path = root_path + path;
+    fs::proto::packet::Reply reply;
+    LOG_DEBUG << "Try to find " << client_req.download_request().path();
+    if(std::filesystem::exists(file_path)){
+        reply.set_status(STATUS_PATH_ALREADY_EXISTS);
+        if(std::filesystem::is_directory(file_path)){
+            //TODO FIX IT
+            reply.set_status(STATUS_PATH_NOT_FOUND);
+        }
+        else {
+            FileList *file_list = new FileList();
+            FileList::Item *item = file_list->add_item();
+            item->set_name(path);
+            item->set_is_directory(false);
+            item->set_size(std::filesystem::file_size(p));
+            std::filesystem::file_time_type ftime
+                    = std::filesystem::last_write_time(path);
+            //wtime.clock.time_point
+            item->set_modification_time(ftime.time_since_epoch().count());
+            reply.set_allocated_file_list(file_list);
+        }
+        send_reply(reply);
+    }
+    else {
+        reply.set_status(STATUS_PATH_NOT_FOUND);
+        send_reply(reply);
+        stop();
+    }
+}
+
+void fs_server::do_download(){
+    int packet_flag = client_req.packet().flags();
+    if(packet_flag == fs::proto::packet::Packet::Flags::Packet_Flags_FLAG_FIRST_PACKET){
+        check_download();
+    }
+    else if(packet_flag == Packet::Flags::Packet_Flags_FLAG_PACKET){
+        send_download_packet();
     }
 }
 
