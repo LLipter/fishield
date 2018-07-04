@@ -3,6 +3,7 @@
 
 #include "protobuf/file_transfer.pb.h"
 #include <boost/asio.hpp>
+#include <google/protobuf/io/zero_copy_stream_impl.h>   // google::protobuf::io::ArrayOutputStream
 
 class fs_client
 {
@@ -10,9 +11,13 @@ public:
     fs_client(boost::asio::ip::tcp::endpoint ep);
     bool connect();
     void close();
+    bool send_request(fs::proto::packet::Request request);
 private:
     boost::asio::ip::tcp::socket _sock;
     boost::asio::ip::tcp::endpoint _ep;
 };
+
+
+
 
 #endif // FS_CLIENT_H
