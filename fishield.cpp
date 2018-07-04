@@ -54,7 +54,6 @@ int check_upload_task(std::string path,std::map<std::string, std::string> params
     if(S_ISDIR(statbuf.st_mode)) {
         err_quit("check_upload_task() %s is a directory", path.c_str());
         //todo upload or download dir
-        return -1;
     }
     else {
         size_t file_size =  statbuf.st_size;
@@ -91,22 +90,15 @@ int fs_start_task(std::string path, std::map<std::string, std::string> params)
         return -1;
     }
     fs_task_info task_info;
-    int check_res = 0;
     switch (std::stoi(params[FS_TASK_TYPE])) {
     case START_UPLOAD:
-        check_res = check_upload_task(path, params, task_info);
-        if(check_res != 0) {
-            return -1;
-        }
+        check_upload_task(path, params, task_info);
         break;
     case START_DOWNLOAD:
-        check_res = check_download_task(path, params, task_info);
-        if(check_res != 0) {
-            return -1;
-        }
+        check_download_task(path, params, task_info);
         break;
     default:
-        break;
+        err_quit("fs_start_task() unknow FS_TASK_TYPE");
     }
     std::map<std::string, std::string> config;
     task_info.config = config;
