@@ -1,18 +1,16 @@
 project: libfishield.so
-	rm -rf build/*
 	mkdir build/server
 	mkdir build/client
-	g++ main_server.cpp -L.build -lfishield -lboost_system -lboost_thread \
+	g++ main_server.cpp -L./build -lfishield -lboost_system -lboost_thread \
      -lpthread -lprotobuf -lssl -lcrypto -o build/server/server.out
-	g++ main_client.cpp -L.build -lfishield -lboost_system -lboost_thread \
+	g++ main_client.cpp -L./build -lfishield -lboost_system -lboost_thread \
      -lpthread -lprotobuf -lssl -lcrypto -o build/client/client.out
 
 libfishield.so: fs_protobuf.o fishield.o fs_callback.o fs_client.o \
  fs_error.o fs_scheduler.o fs_server.o fs_task.o
-	g++ -shared build/fs_protobuf.o build/fishield.o fs_callback.o \
-     fs_client.o fs_error.o fs_scheduler.o fs_server.o fs_task.o \
-     -o build/libfisheild.so
-	g++ -L./build/ -lfishield -lboost_system main.cpp -o main.out
+	g++ -shared build/fs_protobuf.o build/fishield.o build/fs_callback.o \
+     build/fs_client.o build/fs_error.o build/fs_scheduler.o \
+     build/fs_server.o build/fs_task.o -o build/libfishield.so
 
 fishield.o: fishield.cpp fishield.h fs_callback.h fs_config.h fs_client.h \
  protobuf/file_transfer.pb.h fs_scheduler.h fs_task.h fs_task_info.h \
