@@ -37,6 +37,17 @@ int main()
     fs_register_event(FS_EVENT_SYSTEM, &user_system_callback, nullptr);
     fs_register_event(FS_EVENT_PROCESS, &user_process_callback, nullptr);
 
+    string serv_addr = "127.0.0.1";
+    string username = "LLipter";
+    string token = "qwertyuiop";
+    int port = 7614;
+
+    if(!fs_start_up(serv_addr, port, username, token)){
+        cerr << "client startup error" << endl;
+        return 1;
+    }
+
+
 
     return 0;
 }
