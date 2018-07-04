@@ -164,6 +164,44 @@ void fs_server::send_reply(fs::proto::packet::Reply reply){
     delete[] pkt;
 }
 
+void fs_server::send_download_packet(){
+    std::string path = client_req.download_request().path();
+    std::string root_path = "./";
+    std::string file_path = root_path + path;
+    fs::proto::packet::Reply reply;
+    fs::proto::packet::Packet packet;
+    ssize_t offset = 0;
+
+    struct stat statbuf;
+    if(stat(file_path.c_str(), &statbuf) == -1)
+        err_quit("fs_server::send_download_packet() stat error");
+    off_t file_size = statbuf.st_size;
+
+    std::ifstream infile;
+    infile.open(file_path, std::ios::in|std::ios::binary);
+    if(!infile.is_open()){
+        reply.set_status(fs::proto::packet::STATUS_FILE_OPEN_ERROR);
+        send_reply(reply);
+    }
+    else {
+        while(offset < file_size){
+            reply.set_status(fs::proto::packet::STATUS_SUCCESS);
+            ssize_t acc_read = get_packet(file_path, packet);
+            if(acc_read > 0) {
+                offset += acc_read;
+                reply.set_allocated_packet(&packet);
+                send_reply(reply);
+            }
+            else {
+                reply.set_status(STATUS_FILE_READ_ERROR);
+                send_reply(reply);
+                break;
+            }
+        }
+    }
+    stop();
+}
+
 bool auth_username_token(std::string username, std::string token){
     std::map<std::string, std::string>::iterator find_iter = username_token_map.find(username);
     if(find_iter == username_token_map.end())

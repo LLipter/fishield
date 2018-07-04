@@ -35,6 +35,7 @@ private:
     void do_download();
     void check_download();
     void send_reply(fs::proto::packet::Reply reply);
+    void send_download_packet();
 };
 
 #endif // FS_SERVER_H
