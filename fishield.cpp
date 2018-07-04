@@ -1,5 +1,6 @@
 #include "fishield.h"
 #include <sys/mman.h>
+#include <boost/thread.hpp>
 
 extern std::map<std::string, fs_callback> callback_map;
 
@@ -103,6 +104,17 @@ int fs_start_task(std::string path, std::map<std::string, std::string> params)
     std::map<std::string, std::string> config;
     task_info.config = config;
     return fs_scheduler::instance()->add_task(task_info);
+}
+
+extern int _port;
+int fs_server_start_up(int port)
+{
+    _port = port;
+    boost::thread_group threads;
+    threads.create_thread(accept_thread);
+    threads.create_thread(handle_clients_thread);
+    threads.join_all();
+    return 0;
 }
 
 

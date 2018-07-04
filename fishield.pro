@@ -11,7 +11,8 @@ SOURCES += main.cpp \
     fs_callback.cpp \
     fs_client.cpp \
     fs_error.cpp \
-    fs_server.cpp
+    fs_server.cpp \
+    server_main.cpp
 
 HEADERS += \
     fishield.h \
