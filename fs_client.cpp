@@ -4,7 +4,7 @@
 
 
 boost::asio::io_service service;
-std::string _server_addr = "127.0.0.1";
+std::string _server_addr = SERV_ADDR;
 int _server_port = SERV_PORT;
 std::string _user_name = "no such user";
 std::string _token = "no such token";
