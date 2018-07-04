@@ -38,9 +38,8 @@ void fs_talk_to_client::read_request() {
         coded_input_hdr.ReadVarint32(&size);//Decode the HDR and get the size
 
         already_read = _sock.read_some(boost::asio::buffer(data_buffer, 4+size));
-        if(already_read <= 0) {
-            return;
-        }
+        if(already_read <= 0)
+            err_quit("fs_talk_to_client::read_request() - read_some() return negetive value");
         google::protobuf::io::ArrayInputStream ais(data_buffer,size+4);
         google::protobuf::io::CodedInputStream coded_input(&ais);
         //Read an unsigned integer with Varint encoding, truncating to 32 bits.
