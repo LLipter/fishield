@@ -18,9 +18,24 @@ fs_scheduler::fs_scheduler(){
 
 void fs_scheduler::scheduler(){
     while(true){
-        // todo :  upload or download
-        std::cout << "in scheduler..." << std::endl;
-        sleep(1);
+        if(task_count < max_task_num) {
+            for(auto iter = task_map.begin(); iter != task_map.end(); ++iter) {
+                switch (iter->second.task_info.task_status) {
+                case START_UPLOAD:
+                    iter->second.task_info.task_status = UPLOADING;
+                    iter->second.upload_file();
+                    task_count++;
+                    break;
+//                case START_DOWNLOAD:
+//                    iter->second.task_info.task_status = DOWNLOADING;
+//                    iter->second.download_file();
+//                    task_count++;
+//                    break;
+                default:
+                    break;
+                }
+            }
+        }
     }
 }
 
