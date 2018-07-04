@@ -3,7 +3,7 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
-SOURCES += main.cpp \
+SOURCES += \
     fishield.cpp \
     fs_scheduler.cpp \
     protobuf/file_transfer.pb.cc \
@@ -12,7 +12,8 @@ SOURCES += main.cpp \
     fs_client.cpp \
     fs_error.cpp \
     fs_server.cpp \
-    server_main.cpp
+    main_client.cpp \
+    main_server.cpp
 
 HEADERS += \
     fishield.h \
