@@ -1,9 +1,11 @@
 #include "fs_client.h"
+#include <string>
 
 boost::asio::io_service service;
+std::string _server_addr = "127.0.0.1";
+int _server_port = SERV_PORT;
 
-fs_client::fs_client(boost::asio::ip::tcp::endpoint ep):_sock(service){
-    _ep = ep;
+fs_client::fs_client():_sock(service),_ep(boost::asio::ip::address::from_string(_server_addr), _server_port){
     _already_read = 0;
 }
 
@@ -45,7 +47,7 @@ int fs_client::read_reply(fs::proto::packet::Reply& reply) {
     char buff[4] = {0};
     _already_read = 0;
     try{
-        int acc_read = _sock.receive(boost::asio::buffer(buff, 4), boost::asio::ip::tcp::socket::message_peek);
+        (void) _sock.receive(boost::asio::buffer(buff, 4), boost::asio::ip::tcp::socket::message_peek);
 //        LOG_DEBUG << "acc_read is " << acc_read << std::endl;
         google::protobuf::uint32 size;
         google::protobuf::io::ArrayInputStream ais_hdr(buff, 4);
@@ -53,7 +55,7 @@ int fs_client::read_reply(fs::proto::packet::Reply& reply) {
 
         coded_input_hdr.ReadVarint32(&size);
 //        LOG_DEBUG << "size of payload is " << size << std::endl;
-        _already_read = read(_sock, boost::asio::buffer(_buffer, 4 + size),4 + size);
+        _already_read = read(_sock, boost::asio::buffer(_buffer, 4 + size));
 
         if(_already_read <= 0) {
 //            LOG_DEBUG << "alread_read_ is " << alread_read_;

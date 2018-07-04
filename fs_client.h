@@ -6,11 +6,12 @@
 #include <google/protobuf/io/zero_copy_stream_impl.h>   // google::protobuf::io::ArrayOutputStream
 
 #define MAX_MSG 4096*2
+#define SERV_PORT 7614
 
 class fs_client
 {
 public:
-    fs_client(boost::asio::ip::tcp::endpoint ep);
+    fs_client();
     bool connect();
     void close();
     bool send_request(fs::proto::packet::Request request);
