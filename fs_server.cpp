@@ -193,7 +193,7 @@ void fs_server::send_download_packet(){
                 send_reply(reply);
             }
             else {
-                reply.set_status(STATUS_FILE_READ_ERROR);
+                reply.set_status(fs::proto::packet::STATUS_FILE_READ_ERROR);
                 send_reply(reply);
                 break;
             }
@@ -202,6 +202,12 @@ void fs_server::send_download_packet(){
     stop();
 }
 
+ssize_t fs_server::get_packet(std::string file_path, fs::proto::packet::Packet &packet){
+    // todo aaaa finish it!
+    (void) file_path;
+    (void) packet;
+    return 0;
+}
 bool auth_username_token(std::string username, std::string token){
     std::map<std::string, std::string>::iterator find_iter = username_token_map.find(username);
     if(find_iter == username_token_map.end())

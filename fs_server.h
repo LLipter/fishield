@@ -36,6 +36,7 @@ private:
     void check_download();
     void send_reply(fs::proto::packet::Reply reply);
     void send_download_packet();
+    ssize_t get_packet(std::string file_path, fs::proto::packet::Packet& packet);
 };
 
 #endif // FS_SERVER_H
