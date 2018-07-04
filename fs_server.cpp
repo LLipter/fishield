@@ -1,6 +1,9 @@
 #include "fs_server.h"
 #include "fs_error.h"
 #include <google/protobuf/io/zero_copy_stream_impl.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/stat.h>
 
 extern boost::asio::io_service service;
 std::map<std::string, std::string> username_token_map;
@@ -100,36 +103,45 @@ void fs_server::process_request() {
 void fs_server::check_download()
 {
     std::string path = client_req.download_request().path();
-    std::filesystem::path p(path);
     std::string root_path = "./";
     std::string file_path = root_path + path;
     fs::proto::packet::Reply reply;
-    LOG_DEBUG << "Try to find " << client_req.download_request().path();
-    if(std::filesystem::exists(file_path)){
-        reply.set_status(STATUS_PATH_ALREADY_EXISTS);
-        if(std::filesystem::is_directory(file_path)){
-            //TODO FIX IT
-            reply.set_status(STATUS_PATH_NOT_FOUND);
-        }
-        else {
-            FileList *file_list = new FileList();
-            FileList::Item *item = file_list->add_item();
+
+
+    struct stat statbuf;
+    if(stat(file_path.c_str(), &statbuf) == 0){ // file exists
+        if(S_ISDIR(statbuf.st_mode)){
+            // todo check if path refers to a directory
+        }else{
+            reply.set_status(fs::proto::packet::STATUS_PATH_ALREADY_EXISTS);
+            fs::proto::packet::FileList *file_list = new fs::proto::packet::FileList();
+            fs::proto::packet::FileList::Item *item = file_list->add_item();
             item->set_name(path);
             item->set_is_directory(false);
-            item->set_size(std::filesystem::file_size(p));
-            std::filesystem::file_time_type ftime
-                    = std::filesystem::last_write_time(path);
-            //wtime.clock.time_point
-            item->set_modification_time(ftime.time_since_epoch().count());
+            off_t file_size = statbuf.st_size;
+            item->set_size(file_size);
+            long mtime = statbuf.st_mtim.tv_sec;
+            item->set_modification_time(mtime);
             reply.set_allocated_file_list(file_list);
+            send_reply(reply);
         }
-        send_reply(reply);
-    }
-    else {
-        reply.set_status(STATUS_PATH_NOT_FOUND);
+    }else if(errno == ENOENT){                  // file doesn't exist
+        reply.set_status(fs::proto::packet::STATUS_PATH_NOT_FOUND);
         send_reply(reply);
         stop();
-    }
+    }else
+        err_quit("fs_server::check_download() stat error");
+
+
+
+
+
+
+
+
+
+
+
 }
 
 void fs_server::do_download(){
