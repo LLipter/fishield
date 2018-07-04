@@ -46,7 +46,7 @@ int check_upload_task(std::string path,std::map<std::string, std::string> params
     //generate task_info
     int file_descript = open(path.c_str(), O_RDONLY);
     if(file_descript < 0)
-        err_quit("heck_upload_task() open error");
+        err_quit("check_upload_task() open error %s", path.c_str());
 
     struct stat statbuf;
     if(fstat(file_descript, &statbuf) < 0)
