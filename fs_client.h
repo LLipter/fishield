@@ -4,8 +4,6 @@
 #include "config.h"
 #include "protobuf/file_transfer.pb.h"
 #include <boost/asio.hpp>
-#include <google/protobuf/io/zero_copy_stream_impl.h>   // google::protobuf::io::ArrayOutputStream
-
 
 
 class fs_client

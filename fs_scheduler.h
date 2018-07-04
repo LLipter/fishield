@@ -3,7 +3,6 @@
 
 #define DEFAULE_MAX_TASKNO  5
 
-#include "config.h"
 #include "fs_task.h"
 
 

@@ -1,4 +1,7 @@
 #include "fs_client.h"
+#include <boost/asio.hpp>
+#include <google/protobuf/io/zero_copy_stream_impl.h>   // google::protobuf::io::ArrayOutputStream
+
 
 boost::asio::io_service service;
 std::string _server_addr = "127.0.0.1";
