@@ -1,6 +1,7 @@
 #include "fishield.h"
 #include <sys/mman.h>
 #include <boost/thread.hpp>
+#include <boost/algorithm/string.hpp>
 
 extern std::map<std::string, fs_callback> callback_map;
 
@@ -114,6 +115,28 @@ int fs_server_start_up(int port)
     threads.create_thread(accept_thread);
     threads.create_thread(handle_clients_thread);
     threads.join_all();
+    return 0;
+}
+
+extern std::map<std::string, std::string> username_token_map;
+int fs_server_set_property(const char* prop, const char* value){
+    //"SECFT_SERVER_ADD_AUTH"
+    //"SECFT_SERVER_RM_AUTH"
+    //"SECFT_SERVER_LOG"
+    if(prop == nullptr || value == nullptr) {
+        return -1;
+    }
+    std::vector<std::string> strs;
+    boost::split(strs, value, boost::is_any_of(":"));
+    if(strs.size() != 2)
+        return -2;
+    if(!strcmp(prop, FS_SERVER_ADD_AUTH))
+        username_token_map[strs[0]] = strs[1];
+    else if(!strcmp(prop, FS_SERVER_RM_AUTH))
+        username_token_map.erase(prop);
+    else
+        return -3;
+
     return 0;
 }
 

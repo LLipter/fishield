@@ -16,5 +16,6 @@ int fs_start_task(std::string path, std::map<std::string, std::string> params);
 
 // interface for server program
 int fs_server_start_up(int port);
+int fs_server_set_property(const char* prop, const char* value);
 
 #endif
