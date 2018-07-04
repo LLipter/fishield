@@ -42,10 +42,10 @@ int main()
     string token = "qwertyuiop";
     int port = 7614;
 
-    if(!fs_start_up(serv_addr, port, username, token)){
-        cerr << "client startup error" << endl;
+    if(!fs_start_up(serv_addr, port, username, token))
         return 1;
-    }
+
+    cout << "client startp successfully!" << endl;
 
 
 
