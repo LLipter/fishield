@@ -1,12 +1,12 @@
 #ifndef FS_CLIENT_H
 #define FS_CLIENT_H
 
+#include "config.h"
 #include "protobuf/file_transfer.pb.h"
 #include <boost/asio.hpp>
 #include <google/protobuf/io/zero_copy_stream_impl.h>   // google::protobuf::io::ArrayOutputStream
 
-#define MAX_MSG 4096*2
-#define SERV_PORT 7614
+
 
 class fs_client
 {
@@ -20,7 +20,7 @@ private:
     boost::asio::ip::tcp::socket _sock;
     boost::asio::ip::tcp::endpoint _ep;
     int _already_read;
-    char _buffer[MAX_MSG];
+    char _buffer[BUFFER_SIZE];
 };
 
 

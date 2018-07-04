@@ -18,7 +18,8 @@ HEADERS += \
     fs_task_info.h \
     fs_task.h \
     fs_callback.h \
-    fs_client.h
+    fs_client.h \
+    config.h
 
 DISTFILES += \
     Makefile \

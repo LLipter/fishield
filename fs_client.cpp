@@ -1,9 +1,10 @@
 #include "fs_client.h"
-#include <string>
 
 boost::asio::io_service service;
 std::string _server_addr = "127.0.0.1";
 int _server_port = SERV_PORT;
+std::string _user_name = "no such user";
+std::string _token = "no such token";
 
 fs_client::fs_client():_sock(service),_ep(boost::asio::ip::address::from_string(_server_addr), _server_port){
     _already_read = 0;
