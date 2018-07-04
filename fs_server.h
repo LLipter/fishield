@@ -20,6 +20,7 @@ public:
     void login();
     std::string username();
     void stop();
+    void answer_to_client();
 private:
     // member varibales
     boost::asio::ip::tcp::socket _sock;

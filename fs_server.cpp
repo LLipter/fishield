@@ -262,6 +262,19 @@ void fs_server::do_upload() {
     //uint64_t file_size = client_req.packet().file_size();
 }
 
+void fs_server::answer_to_client() {
+    try {
+        read_request();
+        process_request();
+    } catch ( boost::system::system_error&) {
+        stop();
+    }
+    if (timed_out()) {
+        stop();
+        std::cout << "stopping " << username_ << " - no ping in time" << std::endl;
+    }
+}
+
 bool auth_username_token(std::string username, std::string token){
     std::map<std::string, std::string>::iterator find_iter = username_token_map.find(username);
     if(find_iter == username_token_map.end())
