@@ -30,7 +30,7 @@ DISTFILES += \
     protobuf/file_transfer.proto
 
 
-LIBS += -lboost_system
+LIBS += -lboost_system -lboost_thread
 LIBS += -lpthread
 LIBS += -lprotobuf
 LIBS += -lssl -lcrypto

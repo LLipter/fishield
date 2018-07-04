@@ -3,6 +3,7 @@
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <boost/thread.hpp>
 #include <sys/stat.h>
 
 typedef boost::shared_ptr<fs_server> server_ptr;
@@ -299,6 +300,17 @@ void accept_thread() {
         server_ptr new_server( new fs_server);
         acceptor.accept(new_server->sock());
         clients.push_back(new_server);
+    }
+}
+
+void handle_clients_thread() {
+    while ( true) {
+        boost::this_thread::sleep( boost::posix_time::millisec(1));
+        for ( auto it = clients.begin(); it != clients.end(); it++)
+            (*it)->answer_to_client();
+        // erase clients that timed out
+        clients.erase(std::remove_if(clients.begin(), clients.end(),
+                                     boost::bind(&fs_server::timed_out,_1)), clients.end());
     }
 }
 
