@@ -1,33 +1,34 @@
-#include "fs_talk_to_client.h"
+#include "fs_server.h"
 #include "fs_error.h"
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 
 extern boost::asio::io_service service;
+std::map<std::string, std::string> username_token_map;
 
-fs_talk_to_client::fs_talk_to_client() : _sock(service){
+fs_server::fs_server() : _sock(service){
     memset(data_buffer,0,sizeof(data_buffer));
     is_login = false;
     already_read = 0;
 }
 
-boost::asio::ip::tcp::socket& fs_talk_to_client::sock(){
+boost::asio::ip::tcp::socket& fs_server::sock(){
     return _sock;
 }
 
-void fs_talk_to_client::login(){
+void fs_server::login(){
     is_login = true;
 }
 
-std::string fs_talk_to_client::username(){
+std::string fs_server::username(){
     return _username;
 }
 
-void fs_talk_to_client::stop(){
+void fs_server::stop(){
     boost::system::error_code err;
     _sock.close(err);
 }
 
-void fs_talk_to_client::read_request() {
+void fs_server::read_request() {
     char buff[4] = {0};
     already_read = 0;
     if ( _sock.available()){
@@ -39,7 +40,7 @@ void fs_talk_to_client::read_request() {
 
         already_read = _sock.read_some(boost::asio::buffer(data_buffer, 4+size));
         if(already_read <= 0)
-            err_quit("fs_talk_to_client::read_request() - read_some() return negetive value");
+            err_quit("fs_talk_to_client::read_request() - read_some() return non-positive value");
         google::protobuf::io::ArrayInputStream ais(data_buffer,size+4);
         google::protobuf::io::CodedInputStream coded_input(&ais);
         //Read an unsigned integer with Varint encoding, truncating to 32 bits.
@@ -60,4 +61,45 @@ void fs_talk_to_client::read_request() {
         //Print the message
     }else
         err_quit("fs_talk_to_client::read_request() error - _sock is not available");
+}
+
+
+void fs_server::process_request() {
+    if(already_read <= 0)
+        err_quit("fs_talk_to_client::process_request() error - already_read is not positive");
+
+    last_packet = boost::posix_time::microsec_clock::local_time();
+    //Step 1. handle auth
+    if(auth_username_token(client_req.packet().user_name(),
+                           client_req.packet().token())) {
+        LOG_DEBUG << "Auth ok: user_name is " << client_req.packet().user_name()
+                  << " token is " << client_req.packet().token();
+    }
+    else {
+        LOG_DEBUG << "Auth failed: user_name is " << client_req.packet().user_name()
+                  << " token is " << client_req.packet().token();
+        stop();
+        return;
+    }
+    //Step 2. handle packet
+    string download_path = client_req.download_request().path();
+    string upload_path = client_req.upload_request().path();
+    if(download_path.size() != 0) {
+        do_download();
+    }
+    else if (upload_path.size() != 0) {
+        do_upload();
+    }
+    else{
+        LOG_DEBUG << "Invaliad packet: no upload request and download request;";
+        stop();
+    }
+}
+
+
+bool auth_username_token(std::string username, std::string token){
+    std::map<std::string, std::string>::iterator find_iter = username_token_map.find(username);
+    if(find_iter == username_token_map.end())
+        return false;
+    return find_iter->second == token;
 }

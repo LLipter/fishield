@@ -1,5 +1,5 @@
-#ifndef FS_TALK_TO_CLIENT_H
-#define FS_TALK_TO_CLIENT_H
+#ifndef FS_SERVER_H
+#define FS_SERVER_H
 
 #include "fs_config.h"
 #include "protobuf/file_transfer.pb.h"
@@ -7,12 +7,15 @@
 #include <boost/noncopyable.hpp>
 #include <boost/enable_shared_from_this.hpp>
 
-class fs_talk_to_client :
-        public boost::enable_shared_from_this<fs_talk_to_client>,
+bool auth_username_token(std::string username, std::string token);
+
+
+class fs_server :
+        public boost::enable_shared_from_this<fs_server>,
         public boost::noncopyable
 {
 public:
-    fs_talk_to_client();
+    fs_server();
     boost::asio::ip::tcp::socket& sock();
     void login();
     std::string username();
@@ -25,8 +28,10 @@ private:
     std::string _username;
     int already_read;
     fs::proto::packet::Request client_req;
+    boost::posix_time::ptime last_packet;
     // member functions
     void read_request();
+    void process_request();
 };
 
-#endif // FS_TALK_TO_CLIENT_H
+#endif // FS_SERVER_H
