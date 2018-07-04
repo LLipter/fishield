@@ -31,3 +31,4 @@ DISTFILES += \
 LIBS += -lboost_system
 LIBS += -lpthread
 LIBS += -lprotobuf
+LIBS += -lssl -lcrypto

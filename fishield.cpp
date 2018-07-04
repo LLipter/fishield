@@ -1,4 +1,5 @@
 #include "fishield.h"
+#include <sys/mman.h>
 
 extern std::map<std::string, fs_callback> callback_map;
 
@@ -38,26 +39,68 @@ bool fs_start_up(std::string addr, int port,std::string user_name,std::string to
 
 }
 
+int check_upload_task(std::string path,std::map<std::string, std::string> params, fs_task_info& task_info){
+
+    //generate task_info
+    int file_descript = open(path.c_str(), O_RDONLY);
+    if(file_descript < 0)
+        err_quit("heck_upload_task() open error");
+
+    struct stat statbuf;
+    if(fstat(file_descript, &statbuf) < 0)
+        err_quit("check_upload_task() fstat error");
+
+    task_info.local_path = path;
+    if(S_ISDIR(statbuf.st_mode)) {
+        err_quit("check_upload_task() %s is a directory", path.c_str());
+        //todo upload or download dir
+        return -1;
+    }
+    else {
+        size_t file_size =  statbuf.st_size;
+        char* file_buffer = (char*)mmap(0, file_size, PROT_READ, MAP_SHARED, file_descript, 0);
+        unsigned char result[MD5_DIGEST_LENGTH];
+        MD5((unsigned char*) file_buffer, file_size, result);
+        munmap(file_buffer, file_size);
+        task_info.size = file_size;
+        memcpy(task_info.md5, result, MD5_DIGEST_LENGTH);
+        task_info.offset = 0;
+        task_info.task_status = (fs_task_status)std::stoi(params[FS_TASK_TYPE]);
+    }
+    close(file_descript);
+    return 0;
+}
+int check_download_task(std::string path, std::map<std::string, std::string> params, fs_task_info& task_info){
+    task_info.remote_path = path;
+    task_info.offset = 0;
+    task_info.size = -1;
+    task_info.task_status = (fs_task_status)std::stoi(params[FS_TASK_TYPE]);
+    //todo item.path
+    task_info.local_path = "./";
+    return 0;
+
+}
+
 
 int fs_start_task(std::string path, std::map<std::string, std::string> params)
 {
     //check params
     auto it_find = params.find(FS_TASK_TYPE);
     if(it_find == params.end()) {
-        std::cout << "fs_start_task error : unknown task type" << std::endl;
+        std::cerr << "fs_start_task error : unknown task type" << std::endl;
         return -1;
     }
     fs_task_info task_info;
     int check_res = 0;
     switch (std::stoi(params[FS_TASK_TYPE])) {
     case START_UPLOAD:
-        check_res = check_upload_stream(path, params, task_info);
+        check_res = check_upload_task(path, params, task_info);
         if(check_res != 0) {
             return -1;
         }
         break;
     case START_DOWNLOAD:
-        check_res = check_download_stream(path, params, task_info);
+        check_res = check_download_task(path, params, task_info);
         if(check_res != 0) {
             return -1;
         }
@@ -69,3 +112,5 @@ int fs_start_task(std::string path, std::map<std::string, std::string> params)
     task_info.config = config;
     return fs_scheduler::instance()->add_task(task_info);
 }
+
+
