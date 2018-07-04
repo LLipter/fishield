@@ -10,7 +10,8 @@ SOURCES += main.cpp \
     fs_task.cpp \
     fs_callback.cpp \
     fs_client.cpp \
-    fs_error.cpp
+    fs_error.cpp \
+    fs_talk_to_client.cpp
 
 HEADERS += \
     fishield.h \
@@ -21,7 +22,8 @@ HEADERS += \
     fs_callback.h \
     fs_client.h \
     fs_config.h \
-    fs_error.h
+    fs_error.h \
+    fs_talk_to_client.h
 
 DISTFILES += \
     Makefile \
