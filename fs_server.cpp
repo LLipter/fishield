@@ -100,6 +100,18 @@ void fs_server::process_request() {
     }
 }
 
+
+
+void fs_server::do_download(){
+    int packet_flag = client_req.packet().flags();
+    if(packet_flag == fs::proto::packet::Packet::Flags::Packet_Flags_FLAG_FIRST_PACKET){
+        check_download();
+    }
+    else if(packet_flag == fs::proto::packet::Packet::Flags::Packet_Flags_FLAG_PACKET){
+        send_download_packet();
+    }
+}
+
 void fs_server::check_download()
 {
     std::string path = client_req.download_request().path();
@@ -131,29 +143,26 @@ void fs_server::check_download()
         stop();
     }else
         err_quit("fs_server::check_download() stat error");
-
-
-
-
-
-
-
-
-
-
-
 }
 
-void fs_server::do_download(){
-    int packet_flag = client_req.packet().flags();
-    if(packet_flag == fs::proto::packet::Packet::Flags::Packet_Flags_FLAG_FIRST_PACKET){
-        check_download();
-    }
-    else if(packet_flag == Packet::Flags::Packet_Flags_FLAG_PACKET){
-        send_download_packet();
-    }
-}
 
+void fs_server::send_reply(fs::proto::packet::Reply reply){
+    std::cout << "reply status: " << reply.status() << std::endl;
+    int siz = reply.ByteSize()+4;
+    char *pkt = new char [siz];
+    google::protobuf::io::ArrayOutputStream aos(pkt,siz);
+    google::protobuf::io::CodedOutputStream *coded_output = new google::protobuf::io::CodedOutputStream(&aos);
+    coded_output->WriteVarint32(reply.ByteSize());
+    reply.SerializeToCodedStream(coded_output);
+    boost::system::error_code err;
+    _sock.write_some(boost::asio::buffer(pkt, siz), err);
+    if(err) {
+        delete[] pkt;
+        err_quit("fs_server::send_reply _sock write_some error");
+    }
+    //todo: read response
+    delete[] pkt;
+}
 
 bool auth_username_token(std::string username, std::string token){
     std::map<std::string, std::string>::iterator find_iter = username_token_map.find(username);
