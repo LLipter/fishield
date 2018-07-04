@@ -2,6 +2,7 @@
 #define FS_TALK_TO_CLIENT_H
 
 #include "fs_config.h"
+#include "protobuf/file_transfer.pb.h"
 #include <boost/asio.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/enable_shared_from_this.hpp>
@@ -22,6 +23,8 @@ private:
     char data_buffer[BUFFER_SIZE];
     bool is_login;
     std::string _username;
+    int already_read;
+    fs::proto::packet::Request client_req;
     // member functions
     void read_request();
 };
