@@ -4,9 +4,7 @@
 #include <boost/asio.hpp>
 
 
-fs_task::fs_task(){
-
-}
+fs_task::fs_task(){}
 
 fs_task::fs_task(fs_task_info task_info){
     this->task_info = task_info;
@@ -105,10 +103,11 @@ void fs_task::_upload()
             break;
         }
         // task_status is UPLOADING
+        fs::proto::packet::Request request = get_packet();
         std::map<std::string, std::string> process_callback_data;
         process_callback_data["local_path"] = this->task_info.local_path;
         process_callback_data["task_id"] = std::to_string(this->task_info.task_id);
-        fs::proto::packet::Request request = get_packet();
+        process_callback_data["process"] = std::to_string((double)this->task_info.offset / this->task_info.size);
 
         if(!client.send_request(request)) {
             this->task_info.task_status = UPLOAD_FAILED;
@@ -122,7 +121,6 @@ void fs_task::_upload()
             int reply_status = reply.status();
             if(reply_status == fs::proto::packet::Status::STATUS_SUCCESS){
                 process_callback_data["type"] = fs_process_upload;
-                process_callback_data["process"] = std::to_string((double)this->task_info.offset / this->task_info.size);
                 callback(FS_EVENT_PROCESS,process_callback_data);
                 continue;
             }

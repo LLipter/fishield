@@ -7,7 +7,7 @@
 #define FS_EVENT_PROCESS    "event.process"
 
 typedef enum fs_process_event {
-    fs_process_upload = 1,
+    fs_process_upload = 0,
     fs_process_download,
     fs_process_paused,
     fs_process_canceled,
@@ -16,6 +16,7 @@ typedef enum fs_process_event {
     fs_process_uploaded,
     fs_process_downloaded,
 } fs_process_event;
+
 
 typedef int (*fs_func_ptr)(void* user_data, std::map<std::string,std::string> msg);
 
