@@ -271,8 +271,15 @@ void fs_server::answer_to_client() {
     }
     if (timed_out()) {
         stop();
-        std::cout << "stopping " << username_ << " - no ping in time" << std::endl;
+        std::cout << "stopping " << _username << " - no ping in time" << std::endl;
     }
+}
+
+
+bool fs_server::timed_out() const {
+    boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
+    long long ms = (now - last_packet).total_milliseconds();
+    return ms > 5000 ;
 }
 
 bool auth_username_token(std::string username, std::string token){

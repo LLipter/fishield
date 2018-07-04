@@ -21,6 +21,7 @@ public:
     std::string username();
     void stop();
     void answer_to_client();
+    bool timed_out() const;
 private:
     // member varibales
     boost::asio::ip::tcp::socket _sock;
