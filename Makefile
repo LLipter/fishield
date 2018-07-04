@@ -1,10 +1,11 @@
 project: libfishield.so
 	mkdir build/server
 	mkdir build/client
-	g++ main_server.cpp -L./build -lfishield -lboost_system -lboost_thread \
+	g++ main_server.cpp -L./build/ -lfishield -lboost_system -lboost_thread \
      -lpthread -lprotobuf -lssl -lcrypto -o build/server/server.out
-	g++ main_client.cpp -L./build -lfishield -lboost_system -lboost_thread \
+	g++ main_client.cpp -L./build/ -lfishield -lboost_system -lboost_thread \
      -lpthread -lprotobuf -lssl -lcrypto -o build/client/client.out
+	rm build/*.o
 
 libfishield.so: fs_protobuf.o fishield.o fs_callback.o fs_client.o \
  fs_error.o fs_scheduler.o fs_server.o fs_task.o
@@ -20,8 +21,6 @@ fishield.o: fishield.cpp fishield.h fs_callback.h fs_config.h fs_client.h \
 fs_protobuf.o: protobuf/file_transfer.proto
 	protoc --cpp_out=. protobuf/file_transfer.proto
 	g++ protobuf/file_transfer.pb.cc -I. -c -fPIC -o build/fs_protobuf.o
-
-
 
 fs_callback.o: fs_callback.cpp fs_callback.h fs_config.h
 	g++ fs_callback.cpp -c -fPIC -o build/fs_callback.o
