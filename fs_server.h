@@ -33,6 +33,7 @@ private:
     void read_request();
     void process_request();
     void do_download();
+    void do_upload();
     void check_download();
     void send_reply(fs::proto::packet::Reply reply);
     void send_download_packet();

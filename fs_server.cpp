@@ -95,7 +95,7 @@ void fs_server::process_request() {
         do_upload();
     }
     else{
-        LOG_DEBUG << "Invaliad packet: no upload request and download request;";
+        std::cout << "Invaliad packet: no upload request and download request" << std::endl;
         stop();
     }
 }
@@ -208,6 +208,60 @@ ssize_t fs_server::get_packet(std::string file_path, fs::proto::packet::Packet &
     (void) packet;
     return 0;
 }
+
+void fs_server::do_upload() {
+    std::string path = client_req.upload_request().path();
+    bool overwrite = client_req.upload_request().overwrite();
+    std::cout << "upload path is " << path
+              << " and overwrite is " << overwrite << std::endl;
+    fs::proto::packet::Reply reply;
+    //save file
+    std::string root_path = "./";
+    std::string file_path = root_path + path;
+    std::ofstream outfile;
+    int packet_flag = client_req.packet().flags();
+    switch (packet_flag) {
+    case fs::proto::packet::Packet::Flags::Packet_Flags_FLAG_FIRST_PACKET:
+        std::cout << "Start recving packets";
+        if(overwrite){
+            outfile.open(file_path, std::ios::out|std::ios::binary);
+        }
+        else{
+            struct stat statbuf;
+            if(stat(file_path.c_str(), &statbuf) != -1){    // file already exists
+                reply.set_status(fs::proto::packet::Status::STATUS_PATH_ALREADY_EXISTS);
+                send_reply(reply);
+                stop();
+                return;
+            }
+        }
+        break;
+    case fs::proto::packet::Packet::Flags::Packet_Flags_FLAG_PACKET:
+        std::cout << "Recving packets" << std::endl;
+        outfile.open(file_path, std::ios::out|std::ios::binary|std::ios::app);
+        break;
+    case fs::proto::packet::Packet::Flags::Packet_Flags_FLAG_LAST_PACKET:
+        std::cout << "Last packet" << std::endl;
+        outfile.open(file_path, std::ios::out|std::ios::binary|std::ios::app);
+        break;
+    default:
+        break;
+    }
+
+    if(!outfile.is_open()){
+        std::cout << file_path <<"open failed" << std::endl;
+        return;
+    }
+    outfile.write(client_req.packet().data().c_str(), client_req.packet().data().size());
+    outfile.close();
+    reply.set_status(fs::proto::packet::Status::STATUS_SUCCESS);
+    send_reply(reply);
+    if(packet_flag == fs::proto::packet::Packet::Flags::Packet_Flags_FLAG_LAST_PACKET) {
+        stop();
+    }
+    //uint64_t file_size = client_req.packet().file_size();
+}
+
 bool auth_username_token(std::string username, std::string token){
     std::map<std::string, std::string>::iterator find_iter = username_token_map.find(username);
     if(find_iter == username_token_map.end())
