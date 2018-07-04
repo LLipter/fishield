@@ -53,8 +53,10 @@ int fs_scheduler::add_task(fs_task_info task_info){
 }
 
 void fs_scheduler::stop_task(int task_id){
-    if(task_map.find(task_id) != task_map.end())
+    if(task_map.find(task_id) != task_map.end()){
         task_map[task_id].stop();
+        decrease_count();
+    }
 }
 
 void fs_scheduler::increase_count(){
@@ -67,4 +69,8 @@ void fs_scheduler::decrease_count(){
     task_count_mutex.lock();
     task_count--;
     task_count_mutex.unlock();
+}
+
+void fs_scheduler::remove_task(int task_id){
+    task_map.erase(task_id);
 }
