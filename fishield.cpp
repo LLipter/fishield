@@ -37,3 +37,35 @@ bool fs_start_up(std::string addr, int port,std::string user_name,std::string to
     return true;
 
 }
+
+
+int fs_start_task(std::string path, std::map<std::string, std::string> params)
+{
+    //check params
+    auto it_find = params.find(FS_TASK_TYPE);
+    if(it_find == params.end()) {
+        std::cout << "fs_start_task error : unknown task type" << std::endl;
+        return -1;
+    }
+    fs_task_info task_info;
+    int check_res = 0;
+    switch (std::stoi(params[FS_TASK_TYPE])) {
+    case START_UPLOAD:
+        check_res = check_upload_stream(path, params, task_info);
+        if(check_res != 0) {
+            return -1;
+        }
+        break;
+    case START_DOWNLOAD:
+        check_res = check_download_stream(path, params, task_info);
+        if(check_res != 0) {
+            return -1;
+        }
+        break;
+    default:
+        break;
+    }
+    std::map<std::string, std::string> config;
+    task_info.config = config;
+    return fs_scheduler::instance()->add_task(task_info);
+}

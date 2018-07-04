@@ -9,7 +9,7 @@
 
 int fs_register_event(const char* event, fs_func_ptr handler, void* user_data);
 bool fs_start_up(std::string addr, int port,std::string user_name,std::string token);
-
+int fs_start_task(std::string path, std::map<std::string, std::string> params);
 
 
 #endif

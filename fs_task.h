@@ -5,6 +5,8 @@
 #include "fs_task_info.h"
 #include "protobuf/file_transfer.pb.h"
 
+#define FS_TASK_TYPE "task.type"
+
 class fs_task
 {
 public:
