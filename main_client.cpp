@@ -80,7 +80,7 @@ int main()
         std::cerr << "add task failed\n";
     }
 
-
+    cout << id << endl;
 
     while(true){
         sleep(1);

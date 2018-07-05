@@ -7,6 +7,7 @@
 #define FS_E_NOSUCHFILE     -4      // file not exists
 #define FS_E_UNKNOWN        -5      // unknown error
 #define FS_E_TODO           -6      // something hasn't been implemented
+#define FS_E_CBNULL         -7      // callback function ptr is not registered
 
 void err_quit(const char* msg,...);
 

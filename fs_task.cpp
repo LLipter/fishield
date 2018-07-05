@@ -14,10 +14,6 @@ void fs_task::stop(){
 }
 
 
-void fs_task::upload_file(){
-    std::thread upload_thread(&fs_task::_upload,this);
-    upload_thread.detach();
-}
 
 
 extern std::string _user_name;
@@ -70,12 +66,19 @@ fs::proto::packet::Request fs_task::get_packet()
 
 extern std::map<int, fs_callback> callback_map;
 
-void callback(int event, std::map<std::string, std::string> callback_data){
-    if(callback_map[event].callback){
-        void* user_data = callback_map[event].user_data;
-        fs_func_ptr func = callback_map[event].callback;
-        func(user_data, callback_data);
-    }
+int callback(int event, std::map<std::string, std::string> callback_data){
+    if(callback_map[event].callback == nullptr)
+        return FS_E_CBNULL;
+    void* user_data = callback_map[event].user_data;
+    fs_func_ptr func = callback_map[event].callback;
+    func(user_data, callback_data);
+    return 0;
+}
+
+
+void fs_task::upload_file(){
+    std::thread upload_thread(&fs_task::_upload,this);
+    upload_thread.detach();
 }
 
 void fs_task::_upload()
@@ -83,7 +86,12 @@ void fs_task::_upload()
     std::string msg = "start upload " + this->task_info.local_path;
     std::map<std::string, std::string> system_callback_data;
     system_callback_data["system.callback.msg"] = msg;
-    callback(FS_EVENT_SYSTEM,system_callback_data);
+
+    int ret = callback(FS_EVENT_SYSTEM,system_callback_data);
+    if(ret == FS_E_CBNULL){
+        std::cout << "fs_task::_upload() error : system callback function is not registered" << std::endl;
+        return;
+    }
     //read file and generate packet
     //new connect
     fs_client client;
