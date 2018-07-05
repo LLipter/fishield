@@ -29,7 +29,7 @@ int fs_client_start_up(std::string addr, int port, std::string user_name,std::st
         (void)iterator;
     }
     catch(std::exception& e){
-        return FS_E_ILLADDR;
+        return FS_E_ILLEGAL_VALUE;
     }
 
     _server_addr = addr;
@@ -99,7 +99,7 @@ int fs_start_task(std::string path, std::map<int, std::string> params)
     //check params
     auto it_find = params.find(FS_TASK_STATUS);
     if(it_find == params.end())
-        return FS_E_TSNOTFOUND;
+        return FS_E_NOT_SPECIFIED;
 
     fs_task_info task_info;
     int ret;
@@ -111,7 +111,7 @@ int fs_start_task(std::string path, std::map<int, std::string> params)
         ret = check_download_task(path, params, task_info);
         break;
     default:
-        return FS_E_TSILLEGAL;
+        return FS_E_ILLEGAL_VALUE;
     }
 
     if(ret != 0)
@@ -121,6 +121,8 @@ int fs_start_task(std::string path, std::map<int, std::string> params)
 }
 
 extern int _port;
+
+
 int fs_server_start_up(int port)
 {
     _port = port;
@@ -131,24 +133,23 @@ int fs_server_start_up(int port)
     return 0;
 }
 
+
 extern std::map<std::string, std::string> username_token_map;
-int fs_server_set_property(const char* prop, const char* value){
-    //"SECFT_SERVER_ADD_AUTH"
-    //"SECFT_SERVER_RM_AUTH"
-    //"SECFT_SERVER_LOG"
-    if(prop == nullptr || value == nullptr) {
-        return -1;
-    }
+int fs_server_set_property(int prop, std::string value){
     std::vector<std::string> strs;
     boost::split(strs, value, boost::is_any_of(":"));
     if(strs.size() != 2)
-        return -2;
-    if(!strcmp(prop, FS_SERVER_ADD_AUTH))
+        return FS_E_ILLEGAL_VALUE;
+    switch (prop) {
+    case FS_SERVER_ADD_AUTH:
         username_token_map[strs[0]] = strs[1];
-    else if(!strcmp(prop, FS_SERVER_RM_AUTH))
-        username_token_map.erase(prop);
-    else
-        return -3;
+        break;
+    case FS_SERVER_RM_AUTH:
+        username_token_map.erase(strs[0]);
+        break;
+    default:
+        return FS_E_ILLEGAL_VALUE;
+    }
 
     return 0;
 }

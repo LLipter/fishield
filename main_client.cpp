@@ -48,7 +48,7 @@ int main()
     fs_register_event(FS_EVENT_PROCESS, &user_process_callback, nullptr);
 
     string serv_addr = "127.0.0.1";
-    string username = "token";
+    string username = "LLipter";
     string token = "token";
     int port = 7614;
 

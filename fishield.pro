@@ -12,7 +12,7 @@ SOURCES += \
     fs_client.cpp \
     fs_error.cpp \
     fs_server.cpp \
-    main_client.cpp
+    main_server.cpp
 
 HEADERS += \
     fishield.h \

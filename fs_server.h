@@ -7,8 +7,6 @@
 #include <boost/noncopyable.hpp>
 #include <boost/enable_shared_from_this.hpp>
 
-#define FS_SERVER_ADD_AUTH "secft.server.add_auth"
-#define FS_SERVER_RM_AUTH  "secft.server.rm_auth"
 
 
 bool auth_username_token(std::string username, std::string token);

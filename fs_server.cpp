@@ -9,7 +9,7 @@
 typedef boost::shared_ptr<fs_server> server_ptr;
 
 extern boost::asio::io_service service;
-std::map<std::string, std::string> username_token_map;
+std::map<std::string, std::string> username_token_map;  // map from username to token
 int _port = SERV_PORT;
 std::vector<server_ptr> clients;
 
@@ -67,8 +67,7 @@ void fs_server::read_request() {
         std::cout << request.packet().token();
         client_req = request;
         //Print the message
-    }else
-        err_quit("fs_talk_to_client::read_request() error - _sock is not available");
+    }
 }
 
 
@@ -295,22 +294,27 @@ bool auth_username_token(std::string username, std::string token){
 }
 
 void accept_thread() {
-    boost::asio::ip::tcp::acceptor acceptor(service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), _port));
-    while ( true) {
-        server_ptr new_server( new fs_server);
-        acceptor.accept(new_server->sock());
-        clients.push_back(new_server);
+    typedef boost::asio::ip::tcp::acceptor acceptor;
+    typedef boost::asio::ip::tcp::endpoint endpoint;
+    acceptor acptor(service, endpoint(boost::asio::ip::tcp::v4(), _port));
+    while (true) {
+        server_ptr serptr(new fs_server);
+        acptor.accept(serptr->sock());
+        clients.push_back(serptr);
     }
 }
 
 void handle_clients_thread() {
-    while ( true) {
-        boost::this_thread::sleep( boost::posix_time::millisec(1));
+    while (true) {
+        boost::this_thread::sleep(boost::posix_time::millisec(1));
         for ( auto it = clients.begin(); it != clients.end(); it++)
             (*it)->answer_to_client();
         // erase clients that timed out
-        clients.erase(std::remove_if(clients.begin(), clients.end(),
-                                     boost::bind(&fs_server::timed_out,_1)), clients.end());
+        clients.erase(std::remove_if(clients.begin(),
+                                     clients.end(),
+                                     boost::bind(&fs_server::timed_out,_1)),
+                      clients.end());
+
     }
 }
 
