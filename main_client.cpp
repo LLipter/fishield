@@ -39,49 +39,38 @@ int main()
     fs_register_event(FS_EVENT_SYSTEM, &user_system_callback, nullptr);
     fs_register_event(FS_EVENT_PROCESS, &user_process_callback, nullptr);
 
-    string serv_addr = "127.0.0.1";
+    string serv_addr = "xxx";
     string username = "token";
     string token = "token";
     int port = 7614;
 
-    if(!fs_start_up(serv_addr, port, username, token))
+    if(fs_client_start_up(serv_addr, port, username, token) != 0){
+        cout << "client startup failed" << endl;
         return 1;
+    }
 
     cout << _user_name << endl;
     cout << _token << endl;
 
-    cout << "client startp successfully!" << endl;
+    cout << "client startup successfully!" << endl;
 
-    int id;
     //Test cases: Start upload without parameters
-    map<string, string> test;
-    test[FS_TASK_TYPE] = to_string(START_UPLOAD);
-    //Test case one: No such file
-//    id = fs_start_task("test", test);
-//    if(id == -1) {
-//        std::cerr << "add task failed\n";
-//    }
-    //Test cases: normal file
-    id = fs_start_task("/home/irran/Desktop/music.mp3", test);
+    int id;
+    map<string, string> param;
+    param[FS_TASK_STATUS] = to_string(START_UPLOAD);
+
+    //Test case 1: No such file
+    id = fs_start_task("no such file", param);
     if(id == -1) {
         std::cerr << "add task failed\n";
     }
-//    usleep(10000);
-//    secft_cancel_stream(id, test);
 
-    //Test case: cancel upload without parameters
 
-    //Test cases: download normal file download_test1 and download_test2
-//    test[FS_TASK_TYPE] = START_DOWNLOAD;
-//    id = secft_start_stream("download_test1", test);
-//    if(id == -1) {
-//        std::cerr << "add task failed\n";
-//    }
-
-//    id = secft_start_stream("download_test2", test);
-//    if(id == -1) {
-//        std::cerr << "add task failed\n";
-//    }
+    //Test cases: normal file
+    id = fs_start_task("/home/irran/Desktop/music.mp3", param);
+    if(id == -1) {
+        std::cerr << "add task failed\n";
+    }
 
 
 

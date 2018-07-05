@@ -1,7 +1,4 @@
-#include "fs_task.h"
-#include "fs_callback.h"
-#include "fs_client.h"
-#include "fs_scheduler.h"
+#include "fishield.h"
 #include <boost/asio.hpp>
 
 
@@ -71,9 +68,9 @@ fs::proto::packet::Request fs_task::get_packet()
 
 
 
-extern std::map<std::string, fs_callback> callback_map;
+extern std::map<int, fs_callback> callback_map;
 
-void callback(std::string event, std::map<std::string, std::string> callback_data){
+void callback(int event, std::map<std::string, std::string> callback_data){
     if(callback_map[event].callback){
         void* user_data = callback_map[event].user_data;
         fs_func_ptr func = callback_map[event].callback;

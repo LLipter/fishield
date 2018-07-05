@@ -4,6 +4,8 @@
 #include "fs_config.h"
 #include <openssl/md5.h>
 
+#define FS_TASK_STATUS "task.status"
+
 typedef enum fs_task_status{
     START_UPLOAD = 0,
     START_DOWNLOAD,

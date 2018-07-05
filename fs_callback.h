@@ -3,9 +3,6 @@
 
 #include "fs_config.h"
 
-#define FS_EVENT_SYSTEM     "event.system"
-#define FS_EVENT_PROCESS    "event.process"
-
 typedef enum fs_process_event {
     fs_process_upload = 0,
     fs_process_download,
