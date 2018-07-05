@@ -1,132 +1,74 @@
 syntax = "proto2";
 
-package fs.proto.packet;
+package fs.proto;
 
-
-enum Status
+enum FileType
 {
-    STATUS_UNKNOWN             = 0;
-    STATUS_SUCCESS             = 1;
-    STATUS_INVALID_REQUEST     = 2;
-    STATUS_INVALID_PATH_NAME   = 3;
-    STATUS_PATH_NOT_FOUND      = 4;
-    STATUS_PATH_ALREADY_EXISTS = 5;
-    STATUS_NO_DRIVES_FOUND     = 6;
-    STATUS_DISK_FULL           = 7;
-    STATUS_ACCESS_DENIED       = 8;
-    STATUS_FILE_OPEN_ERROR     = 9;
-    STATUS_FILE_CREATE_ERROR   = 10;
-    STATUS_FILE_WRITE_ERROR    = 11;
-    STATUS_FILE_READ_ERROR     = 12;
+	REGULAR				= 0;
+	DIRECTORY			= 1;
 }
-message DriveList
+
+message File
 {
-    message Item
-    {
-        enum Type
-        {
-            TYPE_UNKNOWN        = 0;
-            TYPE_CDROM          = 1;
-            TYPE_REMOVABLE      = 2;
-            TYPE_FIXED          = 3;
-            TYPE_REMOTE         = 4;
-            TYPE_RAM            = 5;
-            TYPE_HOME_FOLDER    = 6;
-            TYPE_DESKTOP_FOLDER = 7;
-        }
-
-        required Type type   = 1;
-        required string path = 2;
-    }
-
-    repeated Item item = 1;
+	required string filename	= 1;
+	required uint64 size		= 2;
+	required uint64 mtime		= 3;	// time of last data modification
+	required FileType file_type	= 4;
 }
 
 message FileList
 {
-    message Item
-    {
-        required string name             = 1;
-        required uint64 size             = 2;
-        required int64 modification_time = 3;
-        required bool is_directory       = 4;
-    }
-
-    repeated Item item = 1;
+	required string path		= 1;
+    	repeated File file		= 2;
 }
 
-message FileListRequest
+enum RequestType
 {
-    required string path = 1;
-}
-
-message UploadRequest
-{
-    required string path = 1;
-    required bool overwrite = 2;
-}
-
-message DownloadRequest
-{
-   required string path = 1;
-}
-
-message PacketRequest
-{
-    required uint32 dummy = 1;
-    optional uint64 file_size = 2;
-    optional uint64 offset = 3;
-}
-
-message Packet
-{
-    enum Flags
-    {
-        FLAG_ERROR        = 0;
-        FLAG_PACKET       = 1;
-        FLAG_FIRST_PACKET = 2;
-        FLAG_LAST_PACKET  = 4;
-    }
-    required uint32 flags = 1;
-    required uint64 file_size = 2;
-    required bytes data = 3;
-    required string user_name = 4;
-    required string token = 5;
-    optional uint64 offset = 6;
-}
-
-message CreateDirectoryRequest
-{
-    required string path = 1;
-}
-
-message RenameRequest
-{
-    required string old_name = 1;
-    required string new_name = 2;
-}
-
-message RemoveRequest
-{
-    required string path = 1;
-}
-
-message Reply
-{
-    required Status status                = 1;
-    optional FileList file_list           = 2;
-    optional Packet packet                = 3;
+	FILELIST			= 0;	// request for a filelist
+	UPLOAD				= 1;	// initiate a new UPLOAD task
+	DOWNLOAD			= 2;	// initiate a new DOWNLOAD task
+	CANCEL				= 3;	// cancel a task
+	PAUSE				= 4;	// pause a task
+	RESUME				= 5;	// resume a task
+	RENAME				= 6;	// rename or move a existing file
+	REMOVE				= 7;	// delete a file
+	MKDIR				= 8;	// create a new directory
 }
 
 message Request
 {
-    optional FileListRequest file_list_request               = 1;
-    optional CreateDirectoryRequest create_directory_request = 2;
-    optional RenameRequest rename_request                    = 3;
-    optional RemoveRequest remove_request                    = 4;
-    required DownloadRequest download_request                = 5;
-    required UploadRequest upload_request                    = 6;
-    required PacketRequest packet_request                    = 7;
-    required Packet packet                                   = 8;
+	required RequestType req_type	= 1;
+	required string token		= 2;
+	optional string remote_path	= 3;
+	optional uint64 packet_no	= 4;	// number of packets that a UPLOAD task will send
+	optional uint64 task_id		= 5;	// task_id of which CANCEL/PAUSE/RESUME
+	optional string new_path	= 6;	// new path of a RENAMEd file
 }
+
+message Packet
+{
+	required uint64 packet_id 	= 1;
+	required bytes data 		= 2;
+}
+
+
+enum ResponseType
+{
+	SUCCESS				= 0;
+	FAILED				= 1;
+	ILLEGAL_TOKEN			= 2;
+	PACKET_RECEIVED			= 3;
+}
+
+message Response
+{
+	required ResponseType resp_type	= 1;
+	optional FileList file_list   	= 2;
+	optional uint64 task_id		= 3;	// task_id of a UPLOAD task
+	optional uint64 packet_no	= 4;	// number of packets that a DOWNLOAD task will receive
+}
+
+
+
+
 
