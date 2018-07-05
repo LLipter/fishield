@@ -20,17 +20,6 @@ extern std::string _user_name;
 extern std::string _token;
 
 int fs_client_start_up(std::string addr, int port, std::string user_name,std::string token){
-
-    /***
-     * DESC:    Resolver will try to resolve the ip address.
-     *          Both domain like "www.irran.top" and digit address like "127.0.0.1" will be ok.
-     *
-     * RETURN:  0 upon successful completion, FS_E_ILLADDR if addr is a illegal address like "xxx"
-     *
-     * NOTE:    even if 0 is returned, it just means addr is a possible legal address.
-     *          It's still possible that addr is unreachable
-     */
-
     try{
         boost::asio::io_service io_service;
         boost::asio::ip::tcp::resolver resolver(io_service);
@@ -50,37 +39,49 @@ int fs_client_start_up(std::string addr, int port, std::string user_name,std::st
 
 }
 
-int check_upload_task(std::string path,std::map<std::string, std::string> params, fs_task_info& task_info){
+int check_upload_task(std::string path,std::map<int, std::string> params, fs_task_info& task_info){
 
     //generate task_info
-    int file_descript = open(path.c_str(), O_RDONLY);
-    if(file_descript < 0)
-        err_quit("check_upload_task() open error %s", path.c_str());
+    int fd = open(path.c_str(), O_RDONLY);
+    if(fd < 0){
+        err_print("check_upload_task() open error %s", path.c_str());
+        return FS_E_NOSUCHFILE;
+    }
 
     struct stat statbuf;
-    if(fstat(file_descript, &statbuf) < 0)
-        err_quit("check_upload_task() fstat error");
+    if(fstat(fd, &statbuf) < 0){
+        err_print("check_upload_task() fstat error %s", path.c_str());
+        return FS_E_UNKNOWN;
+    }
 
     task_info.local_path = path;
     if(S_ISDIR(statbuf.st_mode)) {
-        err_quit("check_upload_task() %s is a directory", path.c_str());
-        //todo upload or download dir
+        //TODO: upload or download dir
+        err_print("check_upload_task() %s is a directory", path.c_str());
+        return FS_E_TODO;
     }
     else {
         size_t file_size =  statbuf.st_size;
+        task_info.size = file_size;
+
+        // generate md5 verifying code
         char* file_buffer = (char*)mmap(0, file_size, PROT_READ, MAP_SHARED, file_descript, 0);
         unsigned char result[MD5_DIGEST_LENGTH];
         MD5((unsigned char*) file_buffer, file_size, result);
-        munmap(file_buffer, file_size);
-        task_info.size = file_size;
         memcpy(task_info.md5, result, MD5_DIGEST_LENGTH);
+        munmap(file_buffer, file_size);
+
         task_info.offset = 0;
         task_info.task_status = (fs_task_status)std::stoi(params[FS_TASK_STATUS]);
+
+        // TODO: finish configuration
+        std::map<int, std::string> config;
+        task_info.config = config;
     }
-    close(file_descript);
+    close(fd);
     return 0;
 }
-int check_download_task(std::string path, std::map<std::string, std::string> params, fs_task_info& task_info){
+int check_download_task(std::string path, std::map<int, std::string> params, fs_task_info& task_info){
     task_info.remote_path = path;
     task_info.offset = 0;
     task_info.size = -1;
@@ -92,12 +93,13 @@ int check_download_task(std::string path, std::map<std::string, std::string> par
 }
 
 
-int fs_start_task(std::string path, std::map<std::string, std::string> params)
+int fs_start_task(std::string path, std::map<int, std::string> params)
 {
     //check params
     auto it_find = params.find(FS_TASK_STATUS);
     if(it_find == params.end())
-        return FS_E_TASKSTATUS;
+        return FS_E_TSNOTFOUND;
+
     fs_task_info task_info;
     switch (std::stoi(params[FS_TASK_STATUS])) {
     case START_UPLOAD:
@@ -107,10 +109,9 @@ int fs_start_task(std::string path, std::map<std::string, std::string> params)
         check_download_task(path, params, task_info);
         break;
     default:
-        err_quit("fs_start_task() unknow FS_TASK_TYPE");
+        return FS_E_TSILLEGAL;
     }
-    std::map<std::string, std::string> config;
-    task_info.config = config;
+
     return fs_scheduler::instance()->add_task(task_info);
 }
 

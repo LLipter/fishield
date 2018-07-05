@@ -39,7 +39,7 @@ int main()
     fs_register_event(FS_EVENT_SYSTEM, &user_system_callback, nullptr);
     fs_register_event(FS_EVENT_PROCESS, &user_process_callback, nullptr);
 
-    string serv_addr = "xxx";
+    string serv_addr = "127.0.0.1";
     string username = "token";
     string token = "token";
     int port = 7614;
@@ -48,21 +48,20 @@ int main()
         cout << "client startup failed" << endl;
         return 1;
     }
-
-    cout << _user_name << endl;
-    cout << _token << endl;
-
     cout << "client startup successfully!" << endl;
 
     //Test cases: Start upload without parameters
     int id;
-    map<string, string> param;
+    map<int, string> param;
     param[FS_TASK_STATUS] = to_string(START_UPLOAD);
 
     //Test case 1: No such file
     id = fs_start_task("no such file", param);
-    if(id == -1) {
-        std::cerr << "add task failed\n";
+    if(id != 0)
+        cout << "Test case 1 pased" << endl;
+    else{
+        cout << "Test case 1 failed" << endl;
+        return 1;
     }
 
 
