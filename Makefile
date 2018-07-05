@@ -1,48 +1,52 @@
-project: libfishield.so
-	mkdir build/server
-	mkdir build/client
-	g++ main_server.cpp -L./build/ -lfishield -lboost_system -lboost_thread \
-     -lpthread -lprotobuf -lssl -lcrypto -o build/server/server.out
-	g++ main_client.cpp -L./build/ -lfishield -lboost_system -lboost_thread \
-     -lpthread -lprotobuf -lssl -lcrypto -o build/client/client.out
-	rm build/*.o
+objfile = file_transfer.pb.o fishield.o fs_callback.o fs_client.o \
+          fs_error.o fs_scheduler.o fs_server.o fs_task.o
 
-libfishield.so: fs_protobuf.o fishield.o fs_callback.o fs_client.o \
- fs_error.o fs_scheduler.o fs_server.o fs_task.o
-	g++ -shared build/fs_protobuf.o build/fishield.o build/fs_callback.o \
-     build/fs_client.o build/fs_error.o build/fs_scheduler.o \
-     build/fs_server.o build/fs_task.o -o build/libfishield.so
+headerfile = file_transfer.pb.h fishield.h fs_callback.h fs_client.h \
+             fs_error.h fs_scheduler.h fs_server.h fs_task.h
+
+srcfile = file_transfer.pb.cc fishield.cpp fs_callback.cpp fs_client.cpp \
+             fs_error.cpp fs_scheduler.cpp fs_server.cpp fs_task.cpp
+
+libfishield.so: $(objfile) main_server.cpp main_client.cpp
+	g++ -shared $(objfile) -o libfishield.so
+	g++ main_server.cpp -L. -lfishield -lboost_system -lboost_thread \
+     -lpthread -lprotobuf -lssl -lcrypto -o server.out
+	g++ main_client.cpp -L. -lfishield -lboost_system -lboost_thread \
+     -lpthread -lprotobuf -lssl -lcrypto -o client.out
 
 fishield.o: fishield.cpp fishield.h fs_callback.h fs_config.h fs_client.h \
- protobuf/file_transfer.pb.h fs_scheduler.h fs_task.h fs_task_info.h \
+ file_transfer.pb.h fs_scheduler.h fs_task.h fs_task_info.h \
  fs_error.h fs_server.h
-	g++ fishield.cpp -c -fPIC -o build/fishield.o
+	g++ fishield.cpp -c -fPIC
 
-fs_protobuf.o: protobuf/file_transfer.proto
-	protoc --cpp_out=. protobuf/file_transfer.proto
-	g++ protobuf/file_transfer.pb.cc -I. -c -fPIC -o build/fs_protobuf.o
+file_transfer.pb.o: file_transfer.proto
+	protoc --cpp_out=. file_transfer.proto
+	g++ file_transfer.pb.cc -c -fPIC
 
 fs_callback.o: fs_callback.cpp fs_callback.h fs_config.h
-	g++ fs_callback.cpp -c -fPIC -o build/fs_callback.o
+	g++ fs_callback.cpp -c -fPIC
 
 fs_client.o: fs_client.cpp fs_client.h fs_config.h \
- protobuf/file_transfer.pb.h
-	g++ fs_client.cpp -c -fPIC -o build/fs_client.o
+ file_transfer.pb.h
+	g++ fs_client.cpp -c -fPIC
 
 fs_error.o: fs_error.cpp fs_error.h fs_config.h
-	g++ fs_error.cpp -c -fPIC -o build/fs_error.o
+	g++ fs_error.cpp -c -fPIC
 
 fs_scheduler.o: fs_scheduler.cpp fs_scheduler.h fs_task.h fs_config.h \
- fs_task_info.h protobuf/file_transfer.pb.h
-	g++ fs_scheduler.cpp -c -fPIC -o build/fs_scheduler.o
+ fs_task_info.h file_transfer.pb.h
+	g++ fs_scheduler.cpp -c -fPIC
 
 fs_server.o: fs_server.cpp fs_server.h fs_config.h \
- protobuf/file_transfer.pb.h fs_error.h
-	g++ fs_server.cpp -c -fPIC -o build/fs_server.o
+ file_transfer.pb.h fs_error.h
+	g++ fs_server.cpp -c -fPIC
 
 fs_task.o: fs_task.cpp fs_task.h fs_config.h fs_task_info.h \
- protobuf/file_transfer.pb.h fs_callback.h fs_client.h
-	g++ fs_task.cpp -c -fPIC -o build/fs_task.o
+ file_transfer.pb.h fs_callback.h fs_client.h
+	g++ fs_task.cpp -c -fPIC
 
 clean:
-	rm -rf build/*
+	-rm *.o
+	-rm libfishield.so
+	-rm server.out
+	-rm client.out

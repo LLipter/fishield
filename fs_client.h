@@ -2,7 +2,7 @@
 #define FS_CLIENT_H
 
 #include "fs_config.h"
-#include "protobuf/file_transfer.pb.h"
+#include "file_transfer.pb.h"
 #include <boost/asio.hpp>
 
 

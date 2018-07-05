@@ -3,7 +3,7 @@
 
 #include "fs_config.h"
 #include "fs_task_info.h"
-#include "protobuf/file_transfer.pb.h"
+#include "file_transfer.pb.h"
 
 class fs_task
 {

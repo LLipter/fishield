@@ -2,7 +2,7 @@
 #define FS_SERVER_H
 
 #include "fs_config.h"
-#include "protobuf/file_transfer.pb.h"
+#include "file_transfer.pb.h"
 #include <boost/asio.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/enable_shared_from_this.hpp>
