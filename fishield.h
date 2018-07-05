@@ -15,6 +15,12 @@
 #define FS_TASK_STATUS      3
 
 // interface for client program
+
+/***
+ * DESC:    register callback function
+ *
+ * RETURN:  o upon successful completion
+ */
 int fs_register_event(int event, fs_func_ptr handler, void* user_data);
 
 /***
