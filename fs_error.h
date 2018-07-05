@@ -6,6 +6,7 @@
 #define FS_E_ILLADDR        -3      // illegal ip address
 #define FS_E_NOSUCHFILE     -4      // file not exists
 #define FS_E_UNKNOWN        -5      // unknown error
+#define FS_E_TODO           -6      // something hasn't been implemented
 
 void err_quit(const char* msg,...);
 

@@ -45,13 +45,13 @@ int check_upload_task(std::string path,std::map<int, std::string> params, fs_tas
     //generate task_info
     int fd = open(path.c_str(), O_RDONLY);
     if(fd < 0){
-        err_print("check_upload_task() open error %s", path.c_str());
+        err_print("check_upload_task() open %s error", path.c_str());
         return FS_E_NOSUCHFILE;
     }
 
     struct stat statbuf;
     if(fstat(fd, &statbuf) < 0){
-        err_print("check_upload_task() fstat error %s", path.c_str());
+        err_print("check_upload_task() fstat %s error", path.c_str());
         return FS_E_UNKNOWN;
     }
 
@@ -66,7 +66,7 @@ int check_upload_task(std::string path,std::map<int, std::string> params, fs_tas
         task_info.size = file_size;
 
         // generate md5 verifying code
-        char* file_buffer = (char*)mmap(0, file_size, PROT_READ, MAP_SHARED, file_descript, 0);
+        char* file_buffer = (char*)mmap(0, file_size, PROT_READ, MAP_SHARED, fd, 0);
         unsigned char result[MD5_DIGEST_LENGTH];
         MD5((unsigned char*) file_buffer, file_size, result);
         memcpy(task_info.md5, result, MD5_DIGEST_LENGTH);
@@ -102,16 +102,20 @@ int fs_start_task(std::string path, std::map<int, std::string> params)
         return FS_E_TSNOTFOUND;
 
     fs_task_info task_info;
+    int ret;
     switch (std::stoi(params[FS_TASK_STATUS])) {
     case START_UPLOAD:
-        check_upload_task(path, params, task_info);
+        ret = check_upload_task(path, params, task_info);
         break;
     case START_DOWNLOAD:
-        check_download_task(path, params, task_info);
+        ret = check_download_task(path, params, task_info);
         break;
     default:
         return FS_E_TSILLEGAL;
     }
+
+    if(ret != 0)
+        return ret;
 
     return fs_scheduler::instance()->add_task(task_info);
 }

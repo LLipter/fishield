@@ -6,6 +6,10 @@ extern std::string fs_process_event_str[];
 extern std::string _user_name;
 extern std::string _token;
 
+void splitline(){
+    cout << "------------------------------------" << endl;
+}
+
 int user_system_callback(void* user_data, std::map<string,string> data){
     (void) user_data;
     string msg_str = data["system.callback.msg"];
@@ -26,12 +30,16 @@ int user_process_callback(void* user_data, map<string,string> data){
     int task_id = stoi(data["task_id"]);
     double process = stod(data["process"]);
     string local_path = data["local_path"];
-    std::cout   <<  fs_process_event_str[type]          << std::endl
-                 <<  "local_path : "     <<  local_path  << std::endl
-                  <<  "task id : "        <<  task_id     << std::endl
-                   <<  "process : "        <<  process     << std::endl;
+
+    std::cout << fs_process_event_str[type] << std::endl;
+    std::cout << "local_path : "            <<  local_path  << std::endl;
+    std::cout << "task id : "               <<  task_id     << std::endl;
+    std::cout << "process : "               <<  process     << std::endl;
+    splitline();
     return 0;
 }
+
+
 
 int main()
 {
@@ -49,20 +57,21 @@ int main()
         return 1;
     }
     cout << "client startup successfully!" << endl;
+    splitline();
 
-    //Test cases: Start upload without parameters
     int id;
     map<int, string> param;
     param[FS_TASK_STATUS] = to_string(START_UPLOAD);
 
     //Test case 1: No such file
-    id = fs_start_task("no such file", param);
-    if(id != 0)
+    id = fs_start_task("no_such_file", param);
+    if(id < 0)
         cout << "Test case 1 pased" << endl;
     else{
         cout << "Test case 1 failed" << endl;
         return 1;
     }
+    splitline();
 
 
     //Test cases: normal file
