@@ -1,8 +1,8 @@
 #ifndef FS_CLIENT_H
 #define FS_CLIENT_H
 
-#include "file_transfer.pb.h"
 #include "fishield.h"
+#include "file_transfer.pb.h"
 
 
 class fs_client
@@ -10,7 +10,7 @@ class fs_client
 public:
     fs_client();
     bool connect();
-    bool send_request(const fs::proto::Request request);
+    bool send_request(const fs::proto::Request& request);
     bool receive_response(fs::proto::Response& response);
 private:
     boost::asio::ip::tcp::socket _sock;

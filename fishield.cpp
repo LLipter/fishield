@@ -5,7 +5,7 @@ extern int _server_port;
 extern boost::asio::io_service service;
 extern std::string _token;
 
-int fs_client_startup(const std::string addr, const short port){
+int fs_client_startup(const std::string& addr, const short port){
     try{
         boost::asio::ip::tcp::resolver resolver(service);
         boost::asio::ip::tcp::resolver::query qry(addr, std::to_string(port));
@@ -24,7 +24,7 @@ int fs_client_startup(const std::string addr, const short port){
     return 0;
 }
 
-void _fs_login(const std::string username, const std::string password, fs_funcptr cb_success, fs_funcptr cb_failed){
+void _fs_login(const std::string& username, const std::string& password, fs_funcptr cb_success, fs_funcptr cb_failed){
     using namespace fs::proto;
     Request login_request;
     login_request.set_req_type(Request::LOGIN);
@@ -64,35 +64,40 @@ void _fs_login(const std::string username, const std::string password, fs_funcpt
     }
 
     // check response type
-    if(response.resp_type() == Response.SUCCESS){
+    switch (response.resp_type()) {
+    case Response::SUCCESS:
         _token = response.token();
         std::cout << username << "-"
                   << password << " login success : token="
                   << _token
                   << std::endl << std::endl;
         cb_success();
-    }else if(response.resp_type() == Response.NOSUCHUSER){
-        std::cout << username << "-"
-                  << password << " login failed : "
-                  << "no such user"
-                  << std::endl << std::endl;
-        cb_failed();
-        return;
-    }else if(response.resp_type() == Response.ILLEGALPASSWD){
+        break;
+
+    case Response::ILLEGALPASSWD:
         std::cout << username << "-"
                   << password << " login failed : "
                   << "illegal password"
                   << std::endl << std::endl;
         cb_failed();
-        return;
-    }else{
+        break;
+    case Response::NOSUCHUSER:
+        std::cout << username << "-"
+                  << password << " login failed : "
+                  << "no such user"
+                  << std::endl << std::endl;
+        cb_failed();
+        break;
+    default:
         std::cout << username << "-"
                   << password << " login failed : "
                   << "unknow error"
                   << std::endl << std::endl;
         cb_failed();
-        return;
+        break;
     }
+
+
 }
 
 
@@ -102,12 +107,13 @@ void fs_login(const std::string username,const std::string password, fs_funcptr 
 }
 
 
-
-
-
 extern short _port;
 void fs_server_startup(const short port){
     _port = port;
-    std::thread thd(accept_thread);
-    thd.detach();
+
+    boost::thread_group threads;
+    threads.create_thread(accept_thread);
+    threads.create_thread(remove_clients_thread);
+    std::cout << "server startup ok" << std::endl;
+    threads.join_all();
 }

@@ -27,7 +27,7 @@ bool fs_client::connect(){
 }
 
 
-bool fs_client::send_request(const fs::proto::Request request){
+bool fs_client::send_request(const fs::proto::Request& request){
     using namespace fs::proto;
     std::cout << "start send request : "
               << Request::RequestType_Name(request.req_type())
@@ -37,7 +37,7 @@ bool fs_client::send_request(const fs::proto::Request request){
     *(int*)buf = len;
     request.SerializeToArray(buf+4,len);
     boost::system::error_code err;
-    _sock.write_some(boost::asio::buffer(buf,len+4), err);
+    boost::asio::write(_sock,boost::asio::buffer(buf,len+4), err);
     delete[] buf;
     if(err){
         std::cout << "send_request() failed : "
@@ -57,11 +57,13 @@ bool fs_client::receive_response(fs::proto::Response& response){
               << Response::ResponseType_Name(response.resp_type())
               << std::endl;
 
-    // read length of packet
+
+
+    // read length of response
     int len;
     int* lenptr = &len;
     boost::system::error_code err;
-    _sock.read_some(boost::asio::buffer((char*)lenptr,4),err);
+    boost::asio::read(_sock,boost::asio::buffer((char*)lenptr,4),err);
     if(err){
         std::cout << "receive_response() read len failed : "
                   << err.message()
@@ -69,21 +71,21 @@ bool fs_client::receive_response(fs::proto::Response& response){
         return false;
     }
 
-    // read packet
+    // read response
     char* buf = new char[len];
-    _sock.read_some(boost::asio::buffer(buf,len),err);
+    boost::asio::read(_sock,boost::asio::buffer(buf,len),err);
     if(err){
         delete[] buf;
-        std::cout << "receive_response() read packet failed : "
+        std::cout << "receive_response() read response failed : "
                   << err.message()
                   << std::endl;
         return false;
     }
 
-    // deserialize packet
+    // deserialize response
     if(response.ParseFromArray(buf,len) == false){
         delete[] buf;
-        std::cout << "receive_response() deserialize packet failed : "
+        std::cout << "receive_response() deserialize response failed : "
                   << std::endl;
         return false;
     }
