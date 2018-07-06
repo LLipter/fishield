@@ -25,21 +25,26 @@ void fs_server::set_stop(bool status){
 
 bool fs_server::receive_request(fs::proto::Request& request){
     using namespace fs::proto;
-    std::cout << "start receive request : "
-              << Request::RequestType_Name(request.req_type())
-              << std::endl;
 
     // read length of request
     int len;
     int* lenptr = &len;
     boost::system::error_code err;
     boost::asio::read(_sock,boost::asio::buffer((char*)lenptr,4),err);
+
+    if(err == boost::asio::error::eof)  // connection closed by other side
+        return false;
     if(err){
         std::cout << "receive_request() read len failed : "
                   << err.message()
                   << std::endl;
         return false;
     }
+
+
+    std::cout << "start receive request : "
+              << Request::RequestType_Name(request.req_type())
+              << std::endl;
 
     // read request
     char* buf = new char[len];
@@ -135,8 +140,18 @@ void communicate_thread(server_ptr serptr){
         if(ret_req == false)
             break;
         Response response;
+        switch (request.req_type()) {
+        case Request::LOGIN:
+            // TODO connect to database
+            // TODO generate a random token and stored it
+            response.set_resp_type(Response::SUCCESS);
+            response.set_token("ttttooookkkkeeeennnn");
+            break;
+        default:
+            break;
+        }
         ret_resp = serptr->send_response(response);
-        if(ret_resp != 0)
+        if(ret_resp == false)
             break;
     }
 

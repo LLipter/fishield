@@ -20,7 +20,7 @@ void cb_login_success(){
 }
 
 void cb_login_fail(){
-    cout << "callback : login successfully" << endl;
+    cout << "callback : login failed" << endl;
 }
 
 
@@ -36,10 +36,11 @@ int main()
         cout << "unknown error in fs_client_startup()" << endl;
     splitline();
 
-    string username = "LLipter";
-    string passwd = "123456";
-    fs_login(username,passwd,bind(cb_login_success),bind(cb_login_fail));
+    const std::string username = "LLipter";
+    const std::string passwd = "123456";
+    fs_login(username,passwd,boost::bind(cb_login_success),boost::bind(cb_login_fail));
 
+    splitline();
 
 
     while(true){

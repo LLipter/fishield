@@ -101,7 +101,7 @@ void _fs_login(const std::string& username, const std::string& password, fs_func
 }
 
 
-void fs_login(const std::string username,const std::string password, fs_funcptr cb_success, fs_funcptr cb_failed){
+void fs_login(const std::string& username,const std::string& password, fs_funcptr cb_success, fs_funcptr cb_failed){
     std::thread thd(_fs_login, username, password, cb_success, cb_failed);
     thd.detach();
 }

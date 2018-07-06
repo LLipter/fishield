@@ -9,7 +9,7 @@ SOURCES += \
     file_transfer.pb.cc \
     fs_client.cpp \
     fs_error.cpp \
-    main_server.cpp \
+    main_client.cpp \
     fs_server.cpp
 
 HEADERS += \
