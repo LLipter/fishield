@@ -33,6 +33,13 @@ enum RequestType
 	RENAME				= 6;	// rename or move a existing file
 	REMOVE				= 7;	// delete a file
 	MKDIR				= 8;	// create a new directory
+	PACKET				= 9;	// send a packet
+}
+
+message Packet
+{
+	required uint64 packet_id 	= 1;
+	required bytes data 		= 2;
 }
 
 message Request
@@ -41,15 +48,12 @@ message Request
 	required string token		= 2;
 	optional string remote_path	= 3;
 	optional uint64 packet_no	= 4;	// number of packets that a UPLOAD task will send
-	optional uint64 task_id		= 5;	// task_id of which CANCEL/PAUSE/RESUME
+	optional uint64 task_id		= 5;	// task_id of which CANCEL/PAUSE/RESUME/PACKET
 	optional string new_path	= 6;	// new path of a RENAMEd file
+	optional Packet packet		= 7;
 }
 
-message Packet
-{
-	required uint64 packet_id 	= 1;
-	required bytes data 		= 2;
-}
+
 
 
 enum ResponseType

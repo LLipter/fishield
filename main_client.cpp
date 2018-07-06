@@ -26,6 +26,12 @@ int main()
         cout << "unknown error in fs_client_startup()" << endl;
     splitline();
 
+    fs_client client;
+    if(client.connect())
+        cout << "connection built" << endl;
+    else
+        cout << "connection failed" << endl;
+
     while(true){
         boost::thread::sleep(boost::get_system_time() + boost::posix_time::seconds(5));
     }

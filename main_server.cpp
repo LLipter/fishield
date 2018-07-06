@@ -10,15 +10,15 @@ void splitline(){
 int main(){
 
 
-    if(fs_server_set_property(FS_SERVER_ADD_AUTH, "LLipter:token") != 0){
-        cout << "set property failed" << std::endl;
-        return 1;
-    }
-    cout << "set property successful!" << endl;
+
+    fs_server_startup(7614);
+    cout << "server startup ok" << endl;
     splitline();
 
-    fs_server_start_up(7614);
 
-    std::cout << "never print this" << std::endl;
+    while(true){
+        boost::thread::sleep(boost::get_system_time() + boost::posix_time::seconds(5));
+    }
+
 
 }

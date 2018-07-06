@@ -10,14 +10,10 @@ class fs_client
 public:
     fs_client();
     bool connect();
-    void close();
-//    bool send_request(fs::proto::packet::Request request);
-//    int read_reply(fs::proto::packet::Reply& reply);
 private:
     boost::asio::ip::tcp::socket _sock;
     boost::asio::ip::tcp::endpoint _ep;
-    int _already_read;
-    char _buffer[BUFFER_SIZE];
+    char data_buffer[BUFFER_SIZE];
 };
 
 
