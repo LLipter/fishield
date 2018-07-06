@@ -1,7 +1,4 @@
 #include "fs_scheduler.h"
-#include <thread>
-#include <unistd.h>
-#include <iostream>
 
 fs_scheduler fs_scheduler::scheduler_instance;
 

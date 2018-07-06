@@ -10,6 +10,8 @@ class fs_client
 public:
     fs_client();
     bool connect();
+    bool send_request(const fs::proto::Request request);
+    bool receive_response(fs::proto::Response& response);
 private:
     boost::asio::ip::tcp::socket _sock;
     boost::asio::ip::tcp::endpoint _ep;

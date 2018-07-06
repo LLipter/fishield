@@ -2,14 +2,13 @@ syntax = "proto2";
 
 package fs.proto;
 
-enum FileType
-{
-	REGULAR				= 0;
-	DIRECTORY			= 1;
-}
-
 message File
 {
+	enum FileType
+	{
+		REGULAR				= 0;
+		DIRECTORY			= 1;
+	}
 	required string filename	= 1;
 	required uint64 size		= 2;
 	required uint64 mtime		= 3;	// time of last data modification
@@ -22,19 +21,7 @@ message FileList
     	repeated File file		= 2;
 }
 
-enum RequestType
-{
-	FILELIST			= 0;	// request for a filelist
-	UPLOAD				= 1;	// initiate a new UPLOAD task
-	DOWNLOAD			= 2;	// initiate a new DOWNLOAD task
-	CANCEL				= 3;	// cancel a task
-	PAUSE				= 4;	// pause a task
-	RESUME				= 5;	// resume a task
-	RENAME				= 6;	// rename or move a existing file
-	REMOVE				= 7;	// delete a file
-	MKDIR				= 8;	// create a new directory
-	PACKET				= 9;	// send a packet
-}
+
 
 message Packet
 {
@@ -44,8 +31,27 @@ message Packet
 
 message Request
 {
+	enum RequestType
+	{
+		LOGIN				= 10;	// try to login
+
+		FILELIST			= 0;	// request for a filelist
+		UPLOAD				= 1;	// initiate a new UPLOAD task
+		DOWNLOAD			= 2;	// initiate a new DOWNLOAD task
+		CANCEL				= 3;	// cancel a task
+		PAUSE				= 4;	// pause a task
+		RESUME				= 5;	// resume a task
+		RENAME				= 6;	// rename or move a existing file
+		REMOVE				= 7;	// delete a file
+		MKDIR				= 8;	// create a new directory
+		PACKET				= 9;	// send a packet
+
+	}
 	required RequestType req_type	= 1;
-	required string token		= 2;
+	optional string username	= 8;
+	optional string password	= 9;
+
+	optional string token		= 2;
 	optional string remote_path	= 3;
 	optional uint64 packet_no	= 4;	// number of packets that a UPLOAD task will send
 	optional uint64 task_id		= 5;	// task_id of which CANCEL/PAUSE/RESUME/PACKET
@@ -54,22 +60,22 @@ message Request
 }
 
 
-
-
-enum ResponseType
-{
-	SUCCESS				= 0;
-	FAILED				= 1;
-	ILLEGAL_TOKEN			= 2;
-	PACKET_RECEIVED			= 3;
-}
-
 message Response
 {
+	enum ResponseType
+	{
+		SUCCESS				= 0;
+		NOSUCHUSER			= 3;
+		ILLEGALPASSWD			= 4;
+		
+		FAILED				= 1;
+		ILLEGAL_TOKEN			= 2;
+	}
 	required ResponseType resp_type	= 1;
 	optional FileList file_list   	= 2;
 	optional uint64 task_id		= 3;	// task_id of a UPLOAD task
 	optional uint64 packet_no	= 4;	// number of packets that a DOWNLOAD task will receive
+	optional string	token		= 5;	// token generate by server when login successfully
 }
 
 

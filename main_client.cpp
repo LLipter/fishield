@@ -27,10 +27,7 @@ int main()
     splitline();
 
     fs_client client;
-    if(client.connect())
-        cout << "connection built" << endl;
-    else
-        cout << "connection failed" << endl;
+    client.connect();
 
     while(true){
         boost::thread::sleep(boost::get_system_time() + boost::posix_time::seconds(5));
