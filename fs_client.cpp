@@ -80,7 +80,13 @@ bool fs_client::receive_response(fs::proto::Response& response){
         return false;
     }
 
-    response.ParseFromArray(buf,len);
+    // deserialize packet
+    if(response.ParseFromArray(buf,len) == false){
+        delete[] buf;
+        std::cout << "receive_response() deserialize packet failed : "
+                  << std::endl;
+        return false;
+    }
     delete[] buf;
     std::cout << "receive_response() success : "
               << std::endl;

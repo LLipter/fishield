@@ -31,6 +31,7 @@ void _fs_login(const std::string username, const std::string password, fs_funcpt
     login_request.set_username(username);
     login_request.set_password(password);
 
+    // connect to server
     fs_client client;
     if(client.connect() == false){
         std::cout << username << "-"
@@ -41,6 +42,7 @@ void _fs_login(const std::string username, const std::string password, fs_funcpt
         return;
     }
 
+    // send request
     if(client.send_request(login_request) == false){
         std::cout << username << "-"
                   << password << " login failed : "
@@ -50,6 +52,7 @@ void _fs_login(const std::string username, const std::string password, fs_funcpt
         return;
     }
 
+    // receive response
     Response response;
     if(client.receive_response(response) == false){
         std::cout << username << "-"
@@ -60,14 +63,36 @@ void _fs_login(const std::string username, const std::string password, fs_funcpt
         return;
     }
 
-    _token = response.token();
-    std::cout << username << "-"
-              << password << " login success : token="
-              << _token
-              << std::endl << std::endl;
-    cb_success();
-    return;
-
+    // check response type
+    if(response.resp_type() == Response.SUCCESS){
+        _token = response.token();
+        std::cout << username << "-"
+                  << password << " login success : token="
+                  << _token
+                  << std::endl << std::endl;
+        cb_success();
+    }else if(response.resp_type() == Response.NOSUCHUSER){
+        std::cout << username << "-"
+                  << password << " login failed : "
+                  << "no such user"
+                  << std::endl << std::endl;
+        cb_failed();
+        return;
+    }else if(response.resp_type() == Response.ILLEGALPASSWD){
+        std::cout << username << "-"
+                  << password << " login failed : "
+                  << "illegal password"
+                  << std::endl << std::endl;
+        cb_failed();
+        return;
+    }else{
+        std::cout << username << "-"
+                  << password << " login failed : "
+                  << "unknow error"
+                  << std::endl << std::endl;
+        cb_failed();
+        return;
+    }
 }
 
 
