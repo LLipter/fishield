@@ -2,7 +2,7 @@
 #define FS_CLIENT_H
 
 #include "file_transfer.pb.h"
-#include <fishield.h>
+#include "fishield.h"
 
 
 class fs_client
