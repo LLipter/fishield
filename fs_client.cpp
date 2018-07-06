@@ -4,8 +4,8 @@
 
 
 boost::asio::io_service service;
-std::string _server_addr = SERV_ADDR;
-int _server_port = SERV_PORT;
+std::string _server_addr = DEFAULT_SERV_ADDR;
+int _server_port = DEFAULT_SERV_PORT;
 std::string _user_name = "no such user";
 std::string _token = "no such token";
 
@@ -26,52 +26,52 @@ void fs_client::close(){
 }
 
 
-bool fs_client::send_request(fs::proto::packet::Request request){
-    //https://stackoverflow.com/questions/9496101/protocol-buffer-over-socket-in-c
-    int siz = request.ByteSize()+4;
-    char *pkt = new char [siz];
-    google::protobuf::io::ArrayOutputStream aos(pkt,siz);
-    google::protobuf::io::CodedOutputStream *coded_output = new google::protobuf::io::CodedOutputStream(&aos);
-    coded_output->WriteVarint32(request.ByteSize());
-    request.SerializeToCodedStream(coded_output);
+//bool fs_client::send_request(fs::proto::packet::Request request){
+//    //https://stackoverflow.com/questions/9496101/protocol-buffer-over-socket-in-c
+//    int siz = request.ByteSize()+4;
+//    char *pkt = new char [siz];
+//    google::protobuf::io::ArrayOutputStream aos(pkt,siz);
+//    google::protobuf::io::CodedOutputStream *coded_output = new google::protobuf::io::CodedOutputStream(&aos);
+//    coded_output->WriteVarint32(request.ByteSize());
+//    request.SerializeToCodedStream(coded_output);
 
-    boost::system::error_code err;
-    _sock.write_some(boost::asio::buffer(pkt, siz), err);
-    if(err) {
-        delete[] pkt;
-        return false;
-    }
-    //todo: read response
-    delete[] pkt;
-    return true;
-}
+//    boost::system::error_code err;
+//    _sock.write_some(boost::asio::buffer(pkt, siz), err);
+//    if(err) {
+//        delete[] pkt;
+//        return false;
+//    }
+//    //todo: read response
+//    delete[] pkt;
+//    return true;
+//}
 
 
-int fs_client::read_reply(fs::proto::packet::Reply& reply) {
-    char buff[4] = {0};
-    _already_read = 0;
-    try{
-        (void) _sock.receive(boost::asio::buffer(buff, 4), boost::asio::ip::tcp::socket::message_peek);
-        google::protobuf::uint32 size;
-        google::protobuf::io::ArrayInputStream ais_hdr(buff, 4);
-        google::protobuf::io::CodedInputStream coded_input_hdr(&ais_hdr);
+//int fs_client::read_reply(fs::proto::packet::Reply& reply) {
+//    char buff[4] = {0};
+//    _already_read = 0;
+//    try{
+//        (void) _sock.receive(boost::asio::buffer(buff, 4), boost::asio::ip::tcp::socket::message_peek);
+//        google::protobuf::uint32 size;
+//        google::protobuf::io::ArrayInputStream ais_hdr(buff, 4);
+//        google::protobuf::io::CodedInputStream coded_input_hdr(&ais_hdr);
 
-        coded_input_hdr.ReadVarint32(&size);
-        _already_read = read(_sock, boost::asio::buffer(_buffer, 4 + size));
+//        coded_input_hdr.ReadVarint32(&size);
+//        _already_read = read(_sock, boost::asio::buffer(_buffer, 4 + size));
 
-        if(_already_read <= 0) {
-            return -1;
-        }
-        google::protobuf::io::ArrayInputStream ais(_buffer, size+4);
-        google::protobuf::io::CodedInputStream coded_input(&ais);
-        coded_input.ReadVarint32(&size);
-        google::protobuf::io::CodedInputStream::Limit msgLimit =
-                coded_input.PushLimit(size);
-        reply.ParseFromCodedStream(&coded_input);
-        coded_input.PopLimit(msgLimit);
-    }catch(std::exception& e) {
-        return -1;
-    }
-    return 0;
-}
+//        if(_already_read <= 0) {
+//            return -1;
+//        }
+//        google::protobuf::io::ArrayInputStream ais(_buffer, size+4);
+//        google::protobuf::io::CodedInputStream coded_input(&ais);
+//        coded_input.ReadVarint32(&size);
+//        google::protobuf::io::CodedInputStream::Limit msgLimit =
+//                coded_input.PushLimit(size);
+//        reply.ParseFromCodedStream(&coded_input);
+//        coded_input.PopLimit(msgLimit);
+//    }catch(std::exception& e) {
+//        return -1;
+//    }
+//    return 0;
+//}
 
