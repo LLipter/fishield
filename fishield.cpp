@@ -92,6 +92,7 @@ void _fs_get_filelist(const std::string& dirpath, fs_fp_filelist cb_success, fs_
     Request filelist_request;
     filelist_request.set_req_type(Request::FILELIST);
     filelist_request.set_remote_path(dirpath);
+    filelist_request.set_token(_token);
 
     // send request and receive response
     Response response;

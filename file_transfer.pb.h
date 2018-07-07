@@ -101,6 +101,7 @@ inline bool File_FileType_Parse(
 enum Request_RequestType {
   Request_RequestType_LOGIN = 10,
   Request_RequestType_FILELIST = 0,
+  Request_RequestType_MKDIR = 8,
   Request_RequestType_UPLOAD = 1,
   Request_RequestType_DOWNLOAD = 2,
   Request_RequestType_CANCEL = 3,
@@ -108,7 +109,6 @@ enum Request_RequestType {
   Request_RequestType_RESUME = 5,
   Request_RequestType_RENAME = 6,
   Request_RequestType_REMOVE = 7,
-  Request_RequestType_MKDIR = 8,
   Request_RequestType_PACKET = 9
 };
 bool Request_RequestType_IsValid(int value);
@@ -292,7 +292,7 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_filename();
   void set_allocated_filename(::std::string* filename);
 
-  // required uint64 size = 2;
+  // optional uint64 size = 2;
   bool has_size() const;
   void clear_size();
   static const int kSizeFieldNumber = 2;
@@ -705,6 +705,8 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
     Request_RequestType_LOGIN;
   static const RequestType FILELIST =
     Request_RequestType_FILELIST;
+  static const RequestType MKDIR =
+    Request_RequestType_MKDIR;
   static const RequestType UPLOAD =
     Request_RequestType_UPLOAD;
   static const RequestType DOWNLOAD =
@@ -719,8 +721,6 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
     Request_RequestType_RENAME;
   static const RequestType REMOVE =
     Request_RequestType_REMOVE;
-  static const RequestType MKDIR =
-    Request_RequestType_MKDIR;
   static const RequestType PACKET =
     Request_RequestType_PACKET;
   static inline bool RequestType_IsValid(int value) {
@@ -1171,7 +1171,7 @@ inline void File::set_allocated_filename(::std::string* filename) {
   // @@protoc_insertion_point(field_set_allocated:fs.proto.File.filename)
 }
 
-// required uint64 size = 2;
+// optional uint64 size = 2;
 inline bool File::has_size() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }

@@ -247,7 +247,7 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\023file_transfer.proto\022\010fs.proto\"\241\001\n\004File"
-      "\022\020\n\010filename\030\001 \002(\t\022\014\n\004size\030\002 \002(\004\022\r\n\005mtim"
+      "\022\020\n\010filename\030\001 \002(\t\022\014\n\004size\030\002 \001(\004\022\r\n\005mtim"
       "e\030\003 \002(\004\022*\n\tfile_type\030\004 \002(\0162\027.fs.proto.Fi"
       "le.FileType\">\n\010FileType\022\013\n\007REGULAR\020\000\022\r\n\t"
       "DIRECTORY\020\001\022\013\n\007SYMLINK\020\002\022\t\n\005OTHER\020\003\"6\n\010F"
@@ -259,10 +259,10 @@ void AddDescriptorsImpl() {
       "\030\002 \001(\t\022\023\n\013remote_path\030\003 \001(\t\022\021\n\tpacket_no"
       "\030\004 \001(\004\022\017\n\007task_id\030\005 \001(\004\022\020\n\010new_path\030\006 \001("
       "\t\022 \n\006packet\030\007 \001(\0132\020.fs.proto.Packet\"\222\001\n\013"
-      "RequestType\022\t\n\005LOGIN\020\n\022\014\n\010FILELIST\020\000\022\n\n\006"
-      "UPLOAD\020\001\022\014\n\010DOWNLOAD\020\002\022\n\n\006CANCEL\020\003\022\t\n\005PA"
-      "USE\020\004\022\n\n\006RESUME\020\005\022\n\n\006RENAME\020\006\022\n\n\006REMOVE\020"
-      "\007\022\t\n\005MKDIR\020\010\022\n\n\006PACKET\020\t\"\245\002\n\010Response\0222\n"
+      "RequestType\022\t\n\005LOGIN\020\n\022\014\n\010FILELIST\020\000\022\t\n\005"
+      "MKDIR\020\010\022\n\n\006UPLOAD\020\001\022\014\n\010DOWNLOAD\020\002\022\n\n\006CAN"
+      "CEL\020\003\022\t\n\005PAUSE\020\004\022\n\n\006RESUME\020\005\022\n\n\006RENAME\020\006"
+      "\022\n\n\006REMOVE\020\007\022\n\n\006PACKET\020\t\"\245\002\n\010Response\0222\n"
       "\tresp_type\030\001 \002(\0162\037.fs.proto.Response.Res"
       "ponseType\022\r\n\005token\030\005 \001(\t\022%\n\tfile_list\030\002 "
       "\001(\0132\022.fs.proto.FileList\022\017\n\007task_id\030\003 \001(\004"
@@ -341,6 +341,7 @@ bool Request_RequestType_IsValid(int value) {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const Request_RequestType Request::LOGIN;
 const Request_RequestType Request::FILELIST;
+const Request_RequestType Request::MKDIR;
 const Request_RequestType Request::UPLOAD;
 const Request_RequestType Request::DOWNLOAD;
 const Request_RequestType Request::CANCEL;
@@ -348,7 +349,6 @@ const Request_RequestType Request::PAUSE;
 const Request_RequestType Request::RESUME;
 const Request_RequestType Request::RENAME;
 const Request_RequestType Request::REMOVE;
-const Request_RequestType Request::MKDIR;
 const Request_RequestType Request::PACKET;
 const Request_RequestType Request::RequestType_MIN;
 const Request_RequestType Request::RequestType_MAX;
@@ -496,7 +496,7 @@ bool File::MergePartialFromCodedStream(
         break;
       }
 
-      // required uint64 size = 2;
+      // optional uint64 size = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
@@ -581,7 +581,7 @@ void File::SerializeWithCachedSizes(
       1, this->filename(), output);
   }
 
-  // required uint64 size = 2;
+  // optional uint64 size = 2;
   if (cached_has_bits & 0x00000002u) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->size(), output);
   }
@@ -623,7 +623,7 @@ void File::SerializeWithCachedSizes(
         1, this->filename(), target);
   }
 
-  // required uint64 size = 2;
+  // optional uint64 size = 2;
   if (cached_has_bits & 0x00000002u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->size(), target);
   }
@@ -658,13 +658,6 @@ size_t File::RequiredFieldsByteSizeFallback() const {
         this->filename());
   }
 
-  if (has_size()) {
-    // required uint64 size = 2;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::UInt64Size(
-        this->size());
-  }
-
   if (has_mtime()) {
     // required uint64 mtime = 3;
     total_size += 1 +
@@ -689,16 +682,11 @@ size_t File::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         _internal_metadata_.unknown_fields());
   }
-  if (((_has_bits_[0] & 0x0000000f) ^ 0x0000000f) == 0) {  // All required fields are present.
+  if (((_has_bits_[0] & 0x0000000d) ^ 0x0000000d) == 0) {  // All required fields are present.
     // required string filename = 1;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->filename());
-
-    // required uint64 size = 2;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::UInt64Size(
-        this->size());
 
     // required uint64 mtime = 3;
     total_size += 1 +
@@ -712,6 +700,13 @@ size_t File::ByteSizeLong() const {
   } else {
     total_size += RequiredFieldsByteSizeFallback();
   }
+  // optional uint64 size = 2;
+  if (has_size()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt64Size(
+        this->size());
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
@@ -773,7 +768,7 @@ void File::CopyFrom(const File& from) {
 }
 
 bool File::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
+  if ((_has_bits_[0] & 0x0000000d) != 0x0000000d) return false;
   return true;
 }
 

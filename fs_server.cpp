@@ -129,7 +129,7 @@ void remove_clients_thread() {
     }
 }
 
-// TODO : finish it !
+
 void getFilelist(const std::string& dirpath, fs::proto::Response& response){
     using namespace fs::proto;
     std::string realpath_str = rootdir + dirpath;
