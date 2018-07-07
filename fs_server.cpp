@@ -5,6 +5,7 @@ short _port = DEFAULT_SERV_PORT;
 std::string rootdir = DEFAULT_ROOT_DIR;
 std::string hidden_prefix = DEFAULT_HIDDEN_PREFIX;
 std::vector<server_ptr> clients;
+unsigned long long task_id;
 
 fs_server::fs_server():_sock(service){
     memset(data_buffer,0,sizeof(data_buffer));
@@ -25,8 +26,18 @@ void fs_server::set_stop(bool status){
 }
 
 void fs_server::init(){
-    if(!boost::filesystem::exists(rootdir))
-        boost::filesystem::create_directories(rootdir);
+    using namespace boost::filesystem;
+    if(!exists(rootdir))
+        create_directories(rootdir);
+    std::string taskid_path = std::string(".") + SEPARATOR + DEFAULT_TASKID_FILE;
+    if(!exists(taskid_path)){
+        std::ofstream file(taskid_path);
+        file << 1;
+        file.close();
+    }
+    std::ifstream file(taskid_path);
+    file >> task_id;
+
 }
 
 
