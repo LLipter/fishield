@@ -24,7 +24,7 @@ int fs_client_startup(const std::string& addr, const short port){
     return 0;
 }
 
-void _fs_login(const std::string& username, const std::string& password, fs_funcptr cb_success, fs_funcptr cb_failed){
+void _fs_login(const std::string& username, const std::string& password, fs_fp_void cb_success, fs_fp_error cb_failed){
     using namespace fs::proto;
     Request login_request;
     login_request.set_req_type(Request::LOGIN);
@@ -34,32 +34,26 @@ void _fs_login(const std::string& username, const std::string& password, fs_func
     // connect to server
     fs_client client;
     if(client.connect() == false){
-        std::cout << username << "-"
-                  << password << " login failed : "
-                  << "connect() failed"
-                  << std::endl << std::endl;
-        cb_failed();
+        std::cout << "connect() failed"
+                  << std::endl;
+        cb_failed(Response::NORESPONSE);
         return;
     }
 
     // send request
     if(client.send_request(login_request) == false){
-        std::cout << username << "-"
-                  << password << " login failed : "
-                  << "send_request() failed"
-                  << std::endl << std::endl;
-        cb_failed();
+        std::cout << "send_request() failed"
+                  << std::endl;
+        cb_failed(Response::NORESPONSE);
         return;
     }
 
     // receive response
     Response response;
     if(client.receive_response(response) == false){
-        std::cout << username << "-"
-                  << password << " login failed : "
-                  << "receive_response() failed"
-                  << std::endl << std::endl;
-        cb_failed();
+        std::cout << "receive_response() failed"
+                  << std::endl;
+        cb_failed(Response::NORESPONSE);
         return;
     }
 
@@ -67,41 +61,20 @@ void _fs_login(const std::string& username, const std::string& password, fs_func
     switch (response.resp_type()) {
     case Response::SUCCESS:
         _token = response.token();
-        std::cout << username << "-"
-                  << password << " login success : token="
-                  << _token
-                  << std::endl << std::endl;
         cb_success();
         break;
-
     case Response::ILLEGALPASSWD:
-        std::cout << username << "-"
-                  << password << " login failed : "
-                  << "illegal password"
-                  << std::endl << std::endl;
-        cb_failed();
-        break;
     case Response::NOSUCHUSER:
-        std::cout << username << "-"
-                  << password << " login failed : "
-                  << "no such user"
-                  << std::endl << std::endl;
-        cb_failed();
+        cb_failed(response.resp_type());
         break;
     default:
-        std::cout << username << "-"
-                  << password << " login failed : "
-                  << "unknow error"
-                  << std::endl << std::endl;
-        cb_failed();
+        cb_failed(Response::UNKNOWN);
         break;
     }
-
-
 }
 
 
-void fs_login(const std::string& username,const std::string& password, fs_funcptr cb_success, fs_funcptr cb_failed){
+void fs_login(const std::string& username, const std::string& password, fs_fp_void cb_success, fs_fp_error cb_failed){
     std::thread thd(_fs_login, username, password, cb_success, cb_failed);
     thd.detach();
 }

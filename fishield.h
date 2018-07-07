@@ -20,10 +20,16 @@
 #include "fs_server.h"
 #include "fs_error.h"
 
-typedef boost::function<void()> fs_funcptr;
+// fs stands for "fishield" or "file security"
+// fp stands for "function pointer"
+// cb stands for "callback"
+typedef boost::function<void()> fs_fp_void;
+typedef boost::function<void(fs::proto::Response::ResponseType)> fs_fp_error;
+typedef boost::function<void(fs::proto::FileList)> fs_fp_filelist;
 
 int fs_client_startup(const std::string& addr, const short port);
-void fs_login(const std::string& username, const std::string& password, fs_funcptr cb_success, fs_funcptr cb_failed);
+void fs_login(const std::string& username, const std::string& password, fs_fp_void cb_success, fs_fp_error cb_failed);
+void fs_get_file_list(const std::string& dirpath, fs_fp_filelist cb_success, fs_fp_error cb_failed);
 
 void fs_server_startup(const short port);
 

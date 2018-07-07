@@ -67,6 +67,8 @@ message Response
 		SUCCESS				= 0;
 		NOSUCHUSER			= 3;
 		ILLEGALPASSWD			= 4;
+		UNKNOWN				= 5;	// unkown error
+		NORESPONSE			= 6;	// cannot get response from server
 		
 		FAILED				= 1;
 		ILLEGAL_TOKEN			= 2;

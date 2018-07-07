@@ -128,12 +128,14 @@ enum Response_ResponseType {
   Response_ResponseType_SUCCESS = 0,
   Response_ResponseType_NOSUCHUSER = 3,
   Response_ResponseType_ILLEGALPASSWD = 4,
+  Response_ResponseType_UNKNOWN = 5,
+  Response_ResponseType_NORESPONSE = 6,
   Response_ResponseType_FAILED = 1,
   Response_ResponseType_ILLEGAL_TOKEN = 2
 };
 bool Response_ResponseType_IsValid(int value);
 const Response_ResponseType Response_ResponseType_ResponseType_MIN = Response_ResponseType_SUCCESS;
-const Response_ResponseType Response_ResponseType_ResponseType_MAX = Response_ResponseType_ILLEGALPASSWD;
+const Response_ResponseType Response_ResponseType_ResponseType_MAX = Response_ResponseType_NORESPONSE;
 const int Response_ResponseType_ResponseType_ARRAYSIZE = Response_ResponseType_ResponseType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* Response_ResponseType_descriptor();
@@ -981,6 +983,10 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
     Response_ResponseType_NOSUCHUSER;
   static const ResponseType ILLEGALPASSWD =
     Response_ResponseType_ILLEGALPASSWD;
+  static const ResponseType UNKNOWN =
+    Response_ResponseType_UNKNOWN;
+  static const ResponseType NORESPONSE =
+    Response_ResponseType_NORESPONSE;
   static const ResponseType FAILED =
     Response_ResponseType_FAILED;
   static const ResponseType ILLEGAL_TOKEN =

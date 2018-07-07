@@ -262,16 +262,16 @@ void AddDescriptorsImpl() {
       "\n\010FILELIST\020\000\022\n\n\006UPLOAD\020\001\022\014\n\010DOWNLOAD\020\002\022\n"
       "\n\006CANCEL\020\003\022\t\n\005PAUSE\020\004\022\n\n\006RESUME\020\005\022\n\n\006REN"
       "AME\020\006\022\n\n\006REMOVE\020\007\022\t\n\005MKDIR\020\010\022\n\n\006PACKET\020\t"
-      "\"\367\001\n\010Response\0222\n\tresp_type\030\001 \002(\0162\037.fs.pr"
+      "\"\224\002\n\010Response\0222\n\tresp_type\030\001 \002(\0162\037.fs.pr"
       "oto.Response.ResponseType\022%\n\tfile_list\030\002"
       " \001(\0132\022.fs.proto.FileList\022\017\n\007task_id\030\003 \001("
-      "\004\022\021\n\tpacket_no\030\004 \001(\004\022\r\n\005token\030\005 \001(\t\"]\n\014R"
+      "\004\022\021\n\tpacket_no\030\004 \001(\004\022\r\n\005token\030\005 \001(\t\"z\n\014R"
       "esponseType\022\013\n\007SUCCESS\020\000\022\016\n\nNOSUCHUSER\020\003"
-      "\022\021\n\rILLEGALPASSWD\020\004\022\n\n\006FAILED\020\001\022\021\n\rILLEG"
-      "AL_TOKEN\020\002"
+      "\022\021\n\rILLEGALPASSWD\020\004\022\013\n\007UNKNOWN\020\005\022\016\n\nNORE"
+      "SPONSE\020\006\022\n\n\006FAILED\020\001\022\021\n\rILLEGAL_TOKEN\020\002"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 890);
+      descriptor, 919);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "file_transfer.proto", &protobuf_RegisterTypes);
 }
@@ -360,6 +360,8 @@ bool Response_ResponseType_IsValid(int value) {
     case 2:
     case 3:
     case 4:
+    case 5:
+    case 6:
       return true;
     default:
       return false;
@@ -370,6 +372,8 @@ bool Response_ResponseType_IsValid(int value) {
 const Response_ResponseType Response::SUCCESS;
 const Response_ResponseType Response::NOSUCHUSER;
 const Response_ResponseType Response::ILLEGALPASSWD;
+const Response_ResponseType Response::UNKNOWN;
+const Response_ResponseType Response::NORESPONSE;
 const Response_ResponseType Response::FAILED;
 const Response_ResponseType Response::ILLEGAL_TOKEN;
 const Response_ResponseType Response::ResponseType_MIN;

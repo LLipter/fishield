@@ -8,7 +8,5 @@
 #define FS_E_ILLEGAL_VALUE  -3      // illegal value
 
 
-void err_print(const char* msg,...);
-
 
 #endif // FS_ERROR_H
