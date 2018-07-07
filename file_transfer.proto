@@ -56,8 +56,8 @@ message Request
 	optional string token		= 4;
 	optional string remote_path	= 5;
 	optional string filename	= 6;
-	
 	optional uint64 packet_no	= 7;	// number of packets that a UPLOAD task will send
+	
 	optional uint64 task_id		= 8;	// task_id of which CANCEL/PAUSE/RESUME/PACKET
 	optional string new_path	= 9;	// new path of a RENAMEd file
 	optional Packet packet		= 10;

@@ -3,6 +3,7 @@
 extern boost::asio::io_service service;
 std::string _token = "NO_SUCH_TOKEN";
 
+
 boost::asio::ip::address _server_addr = DEFAULT_SERV_ADDR;
 short _server_port = DEFAULT_SERV_PORT;
 

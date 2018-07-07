@@ -15,10 +15,11 @@
 #include <boost/algorithm/string.hpp>
 
 #define BUFFER_SIZE             4096
+#define PACKET_SIZE             4096
 #define SEPARATOR               boost::filesystem::path::preferred_separator
 #define DEFAULT_SERV_ADDR       boost::asio::ip::address::from_string("127.0.0.1")
 #define DEFAULT_SERV_PORT       7614
-#define DEFAULT_ROOT_DIR        "."+SEPARATOR+"fs_root"
+#define DEFAULT_ROOT_DIR        std::string(".")+SEPARATOR+"fs_root"
 #define DEFAULT_HIDDEN_PREFIX   ".fs_"
 
 

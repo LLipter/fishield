@@ -51,6 +51,7 @@ void _fs_login(const std::string& username,
         break;
     case Response::ILLEGALPASSWD:
     case Response::NOSUCHUSER:
+    case Response::ILLEGALREQUEST:
         cb_failed(response.resp_type());
         break;
     default:
@@ -96,6 +97,7 @@ void _fs_get_filelist(const std::string& dirpath,
         break;
     case Response::ILLEGALTOKEN:
     case Response::ILLEGALPATH:
+    case Response::ILLEGALREQUEST:
         cb_failed(response.resp_type());
         break;
     default:
@@ -142,6 +144,7 @@ void _fs_mkdir(const std::string& basepath,
         break;
     case Response::ILLEGALTOKEN:
     case Response::ILLEGALPATH:
+    case Response::ILLEGALREQUEST:
         cb_failed(response.resp_type());
         break;
     default:
@@ -164,31 +167,43 @@ void fs_mkdir(const std::string& basepath,
 }
 
 void _fs_upload(const std::string& localbasepath,
-               const std::string& remotebasepath,
-               const std::string& filename,
-               fs_fp_int cb_start_upload,
-               fs_fp_void cb_progress,
-               fs_fp_int cb_success,
-               fs_fp_error cb_failed){
+                const std::string& remotebasepath,
+                const std::string& filename,
+                fs_fp_int cb_start_upload,
+                fs_fp_void cb_progress,
+                fs_fp_int cb_success,
+                fs_fp_error cb_failed){
 
     using namespace boost::filesystem;
     using namespace fs::proto;
 
-    path local_path(localbasepath + SEPARATOR + );
+    path local_path(localbasepath + SEPARATOR + filename);
     if(!exists(local_path)){
-        cb_failed(Response::ILLEGALTOKEN);
+        cb_failed(Response::ILLEGALPATH);
+        return;
+    }
+
+    // TODO : upload a directory
+    if(is_directory(local_path)){
+        cb_failed(Response::ILLEGALPATH);
         return;
     }
 
     Request upload_request;
     upload_request.set_req_type(Request::UPLOAD);
-    mkdir_request.set_remote_path(basepath);
-    mkdir_request.set_filename(dirname);
-    mkdir_request.set_token(_token);
+    upload_request.set_remote_path(remotebasepath);
+    upload_request.set_filename(filename);
+    upload_request.set_token(_token);
+    int size = file_size(local_path);
+    int packet_no = size / PACKET_SIZE;
+    if(size % PACKET_SIZE != 0)
+        packet_no++;
+    upload_request.set_packet_no(packet_no);
+
 
     // send request and receive response
     Response response;
-    if(send_receive(mkdir_request,response) == false){
+    if(send_receive(upload_request,response) == false){
         cb_failed(Response::NORESPONSE);
         return;
     }
@@ -196,10 +211,12 @@ void _fs_upload(const std::string& localbasepath,
     // check response type
     switch (response.resp_type()) {
     case Response::SUCCESS:
-        cb_success();
+        cb_start_upload(response.task_id());
+        // TODO : start uploading process
         break;
     case Response::ILLEGALTOKEN:
     case Response::ILLEGALPATH:
+    case Response::ILLEGALREQUEST:
         cb_failed(response.resp_type());
         break;
     default:
