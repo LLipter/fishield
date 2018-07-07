@@ -28,5 +28,6 @@ typedef boost::shared_ptr<fs_server> server_ptr;
 void accept_thread();
 void remove_clients_thread();
 void communicate_thread(server_ptr serptr);
+void save_thread();
 
 #endif // FS_SERVER_H

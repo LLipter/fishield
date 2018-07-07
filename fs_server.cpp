@@ -4,6 +4,7 @@ boost::asio::io_service service;
 short _port = DEFAULT_SERV_PORT;
 std::string rootdir = DEFAULT_ROOT_DIR;
 std::string hidden_prefix = DEFAULT_HIDDEN_PREFIX;
+std::string taskid_path = std::string(".") + SEPARATOR + DEFAULT_TASKID_FILE;
 std::vector<server_ptr> clients;
 unsigned long long task_id;
 
@@ -29,10 +30,9 @@ void fs_server::init(){
     using namespace boost::filesystem;
     if(!exists(rootdir))
         create_directories(rootdir);
-    std::string taskid_path = std::string(".") + SEPARATOR + DEFAULT_TASKID_FILE;
     if(!exists(taskid_path)){
         std::ofstream file(taskid_path);
-        file << 1;
+        file << 0;
         file.close();
     }
     std::ifstream file(taskid_path);
@@ -238,9 +238,10 @@ void confirm_upload(const std::string& basepath,
         return;
     }
 
-    // TODO : generate task_id and stored it
+    // TODO : stored task_id and task object in a map
+    // TODO : stored task_id in hidden file
     response.set_resp_type(Response::SUCCESS);
-    response.set_task_id(1);
+    response.set_task_id(++task_id);
 }
 
 // TODO verify token
@@ -305,3 +306,11 @@ void communicate_thread(server_ptr serptr){
               << std::endl;
 }
 
+
+void save_thread(){
+    while(true){
+        boost::this_thread::sleep(boost::posix_time::seconds(2));
+        std::ofstream file(taskid_path,std::ios::trunc);
+        file << task_id;
+    }
+}
