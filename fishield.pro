@@ -22,7 +22,7 @@ DISTFILES += \
     file_transfer.proto
 
 
-LIBS += -lboost_system -lboost_thread
+LIBS += -lboost_system -lboost_thread -lboost_filesystem
 LIBS += -lpthread
 LIBS += -lprotobuf
 

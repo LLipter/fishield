@@ -246,33 +246,33 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\023file_transfer.proto\022\010fs.proto\"\211\001\n\004File"
+      "\n\023file_transfer.proto\022\010fs.proto\"\241\001\n\004File"
       "\022\020\n\010filename\030\001 \002(\t\022\014\n\004size\030\002 \002(\004\022\r\n\005mtim"
       "e\030\003 \002(\004\022*\n\tfile_type\030\004 \002(\0162\027.fs.proto.Fi"
-      "le.FileType\"&\n\010FileType\022\013\n\007REGULAR\020\000\022\r\n\t"
-      "DIRECTORY\020\001\"6\n\010FileList\022\014\n\004path\030\001 \002(\t\022\034\n"
-      "\004file\030\002 \003(\0132\016.fs.proto.File\")\n\006Packet\022\021\n"
-      "\tpacket_id\030\001 \002(\004\022\014\n\004data\030\002 \002(\014\"\357\002\n\007Reque"
-      "st\022/\n\010req_type\030\001 \002(\0162\035.fs.proto.Request."
-      "RequestType\022\020\n\010username\030\010 \001(\t\022\020\n\010passwor"
-      "d\030\t \001(\t\022\r\n\005token\030\002 \001(\t\022\023\n\013remote_path\030\003 "
-      "\001(\t\022\021\n\tpacket_no\030\004 \001(\004\022\017\n\007task_id\030\005 \001(\004\022"
-      "\020\n\010new_path\030\006 \001(\t\022 \n\006packet\030\007 \001(\0132\020.fs.p"
-      "roto.Packet\"\222\001\n\013RequestType\022\t\n\005LOGIN\020\n\022\014"
-      "\n\010FILELIST\020\000\022\n\n\006UPLOAD\020\001\022\014\n\010DOWNLOAD\020\002\022\n"
-      "\n\006CANCEL\020\003\022\t\n\005PAUSE\020\004\022\n\n\006RESUME\020\005\022\n\n\006REN"
-      "AME\020\006\022\n\n\006REMOVE\020\007\022\t\n\005MKDIR\020\010\022\n\n\006PACKET\020\t"
-      "\"\245\002\n\010Response\0222\n\tresp_type\030\001 \002(\0162\037.fs.pr"
-      "oto.Response.ResponseType\022\r\n\005token\030\005 \001(\t"
-      "\022%\n\tfile_list\030\002 \001(\0132\022.fs.proto.FileList\022"
-      "\017\n\007task_id\030\003 \001(\004\022\021\n\tpacket_no\030\004 \001(\004\"\212\001\n\014"
-      "ResponseType\022\013\n\007SUCCESS\020\000\022\016\n\nNOSUCHUSER\020"
-      "\001\022\021\n\rILLEGALPASSWD\020\002\022\013\n\007UNKNOWN\020\003\022\016\n\nNOR"
-      "ESPONSE\020\004\022\020\n\014ILLEGALTOKEN\020\005\022\017\n\013ILLEGALPA"
-      "TH\020\006\022\n\n\006FAILED\020\007"
+      "le.FileType\">\n\010FileType\022\013\n\007REGULAR\020\000\022\r\n\t"
+      "DIRECTORY\020\001\022\013\n\007SYMLINK\020\002\022\t\n\005OTHER\020\003\"6\n\010F"
+      "ileList\022\014\n\004path\030\001 \002(\t\022\034\n\004file\030\002 \003(\0132\016.fs"
+      ".proto.File\")\n\006Packet\022\021\n\tpacket_id\030\001 \002(\004"
+      "\022\014\n\004data\030\002 \002(\014\"\357\002\n\007Request\022/\n\010req_type\030\001"
+      " \002(\0162\035.fs.proto.Request.RequestType\022\020\n\010u"
+      "sername\030\010 \001(\t\022\020\n\010password\030\t \001(\t\022\r\n\005token"
+      "\030\002 \001(\t\022\023\n\013remote_path\030\003 \001(\t\022\021\n\tpacket_no"
+      "\030\004 \001(\004\022\017\n\007task_id\030\005 \001(\004\022\020\n\010new_path\030\006 \001("
+      "\t\022 \n\006packet\030\007 \001(\0132\020.fs.proto.Packet\"\222\001\n\013"
+      "RequestType\022\t\n\005LOGIN\020\n\022\014\n\010FILELIST\020\000\022\n\n\006"
+      "UPLOAD\020\001\022\014\n\010DOWNLOAD\020\002\022\n\n\006CANCEL\020\003\022\t\n\005PA"
+      "USE\020\004\022\n\n\006RESUME\020\005\022\n\n\006RENAME\020\006\022\n\n\006REMOVE\020"
+      "\007\022\t\n\005MKDIR\020\010\022\n\n\006PACKET\020\t\"\245\002\n\010Response\0222\n"
+      "\tresp_type\030\001 \002(\0162\037.fs.proto.Response.Res"
+      "ponseType\022\r\n\005token\030\005 \001(\t\022%\n\tfile_list\030\002 "
+      "\001(\0132\022.fs.proto.FileList\022\017\n\007task_id\030\003 \001(\004"
+      "\022\021\n\tpacket_no\030\004 \001(\004\"\212\001\n\014ResponseType\022\013\n\007"
+      "SUCCESS\020\000\022\016\n\nNOSUCHUSER\020\001\022\021\n\rILLEGALPASS"
+      "WD\020\002\022\013\n\007UNKNOWN\020\003\022\016\n\nNORESPONSE\020\004\022\020\n\014ILL"
+      "EGALTOKEN\020\005\022\017\n\013ILLEGALPATH\020\006\022\n\n\006FAILED\020\007"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 936);
+      descriptor, 960);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "file_transfer.proto", &protobuf_RegisterTypes);
 }
@@ -298,6 +298,8 @@ bool File_FileType_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
+    case 2:
+    case 3:
       return true;
     default:
       return false;
@@ -307,6 +309,8 @@ bool File_FileType_IsValid(int value) {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const File_FileType File::REGULAR;
 const File_FileType File::DIRECTORY;
+const File_FileType File::SYMLINK;
+const File_FileType File::OTHER;
 const File_FileType File::FileType_MIN;
 const File_FileType File::FileType_MAX;
 const int File::FileType_ARRAYSIZE;

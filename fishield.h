@@ -12,11 +12,13 @@
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/algorithm/string.hpp>
 
-#define BUFFER_SIZE         4096
-#define DEFAULT_SERV_ADDR   boost::asio::ip::address::from_string("127.0.0.1")
-#define DEFAULT_SERV_PORT   7614
-#define DEFAULT_ROOT_DIR    "./fs_root"
+#define BUFFER_SIZE             4096
+#define DEFAULT_SERV_ADDR       boost::asio::ip::address::from_string("127.0.0.1")
+#define DEFAULT_SERV_PORT       7614
+#define DEFAULT_ROOT_DIR        "./fs_root"
+#define DEFAULT_HIDDEN_PREFIX   ".fs_"
 
 
 #include "fs_client.h"

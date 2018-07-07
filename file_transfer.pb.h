@@ -79,11 +79,13 @@ namespace proto {
 
 enum File_FileType {
   File_FileType_REGULAR = 0,
-  File_FileType_DIRECTORY = 1
+  File_FileType_DIRECTORY = 1,
+  File_FileType_SYMLINK = 2,
+  File_FileType_OTHER = 3
 };
 bool File_FileType_IsValid(int value);
 const File_FileType File_FileType_FileType_MIN = File_FileType_REGULAR;
-const File_FileType File_FileType_FileType_MAX = File_FileType_DIRECTORY;
+const File_FileType File_FileType_FileType_MAX = File_FileType_OTHER;
 const int File_FileType_FileType_ARRAYSIZE = File_FileType_FileType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* File_FileType_descriptor();
@@ -248,6 +250,10 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
     File_FileType_REGULAR;
   static const FileType DIRECTORY =
     File_FileType_DIRECTORY;
+  static const FileType SYMLINK =
+    File_FileType_SYMLINK;
+  static const FileType OTHER =
+    File_FileType_OTHER;
   static inline bool FileType_IsValid(int value) {
     return File_FileType_IsValid(value);
   }

@@ -8,9 +8,11 @@ message File
 	{
 		REGULAR				= 0;
 		DIRECTORY			= 1;
+		SYMLINK				= 2;
+		OTHER				= 3;
 	}
 	required string filename	= 1;
-	required uint64 size		= 2;
+	optional uint64 size		= 2;	// only valid for REGULAR file
 	required uint64 mtime		= 3;	// time of last data modification
 	required FileType file_type	= 4;
 }

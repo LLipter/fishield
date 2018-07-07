@@ -3,6 +3,7 @@
 boost::asio::io_service service;
 short _port = DEFAULT_SERV_PORT;
 std::string rootdir = DEFAULT_ROOT_DIR;
+std::string hidden_prefix = DEFAULT_HIDDEN_PREFIX;
 std::vector<server_ptr> clients;
 
 fs_server::fs_server():_sock(service){
@@ -130,7 +131,54 @@ void remove_clients_thread() {
 
 // TODO : finish it !
 void getFilelist(const std::string& dirpath, fs::proto::Response& response){
+    using namespace fs::proto;
+    std::string realpath_str = rootdir + dirpath;
+    boost::filesystem::path realpath(realpath_str);
+    if(!boost::filesystem::exists(realpath) ||
+            !boost::filesystem::is_directory(realpath)){
+        response.set_resp_type(Response::ILLEGALPATH);
+        return;
+    }
 
+    response.set_resp_type(Response::SUCCESS);
+    FileList* filelist = new FileList;
+    boost::filesystem::directory_iterator end_iter;
+    for(boost::filesystem::directory_iterator iter(realpath);iter!=end_iter;iter++){
+        if(boost::algorithm::starts_with(iter->path().filename().string(), hidden_prefix))
+            // ignore hidden files
+            continue;
+
+
+        File* file = filelist->add_file();
+        // set file name
+        file->set_filename(iter->path().filename().string());
+
+        // set file type
+        if(boost::filesystem::is_directory(iter->path()))
+            file->set_file_type(File::DIRECTORY);
+        else if(boost::filesystem::is_regular_file(iter->path()))
+            file->set_file_type(File::REGULAR);
+        else if(boost::filesystem::is_symlink(iter->path()))
+            file->set_file_type(File::SYMLINK);
+        else
+            file->set_file_type(File::OTHER);
+
+        // set file size
+        if(boost::filesystem::is_regular_file(iter->path()))
+            file->set_size(boost::filesystem::file_size(iter->path()));
+
+        // set last modified time
+        file->set_mtime(boost::filesystem::last_write_time(iter->path()));
+
+    }
+
+    response.set_allocated_file_list(filelist);
+
+}
+
+// TODO verify token
+bool verify_token(const std::string& token){
+    return true;
 }
 
 void communicate_thread(server_ptr serptr){
@@ -156,8 +204,10 @@ void communicate_thread(server_ptr serptr){
             response.set_token("ttttooookkkkeeeennnn");
             break;
         case Request::FILELIST:
-            // TODO verify token
-            getFilelist(request.remote_path(), response);
+            if(verify_token(request.token()))
+                getFilelist(request.remote_path(), response);
+            else
+                response.set_resp_type(Response::ILLEGALTOKEN);
             break;
         default:
             break;
