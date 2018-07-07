@@ -6,8 +6,9 @@ std::string rootdir = DEFAULT_ROOT_DIR;
 std::string hidden_prefix = DEFAULT_HIDDEN_PREFIX;
 std::string taskid_path = std::string(".") + SEPARATOR + DEFAULT_TASKID_FILE;
 std::vector<server_ptr> clients;
-unsigned long long task_id;
+std::map<int,fs_task> tasks;
 
+int task_id;
 fs_server::fs_server():_sock(service){
     memset(data_buffer,0,sizeof(data_buffer));
     _is_stop = false;
@@ -137,6 +138,7 @@ void remove_clients_thread() {
                                      boost::bind(&fs_server::is_stop,_1)),
                       clients.end());
         // TODO : REMOVE ALL TIMEOUT CLIENTS
+        // TODO : REMOVE ALL TIMEOUT TASKS
     }
 }
 
@@ -230,18 +232,26 @@ void confirm_upload(const std::string& basepath,
         return;
     }
 
-    std::string newdir_str = base_str + SEPARATOR + filename;
-    path newfile(newdir_str);
+    std::string newfile_str = base_str + SEPARATOR + filename;
+    path newfile(newfile_str);
     if(exists(newfile)){
         // newfile already exists
         response.set_resp_type(Response::ILLEGALPATH);
         return;
     }
 
-    // TODO : stored task_id and task object in a map
-    // TODO : stored task_id in hidden file
     response.set_resp_type(Response::SUCCESS);
     response.set_task_id(++task_id);
+
+    fs_task task;
+    task.task_id = task_id;
+    task.path = newfile_str;
+    task.total_packet_no = packet_no;
+    task.received_packet_no = 0;
+    task.last_packet_time = std::time(0);
+    task.status = UPLOADING;
+    tasks[task_id] = task;
+
 }
 
 // TODO verify token

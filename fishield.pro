@@ -15,7 +15,8 @@ HEADERS += \
     file_transfer.pb.h \
     fs_client.h \
     fs_error.h \
-    fs_server.h
+    fs_server.h \
+    fs_task.h
 
 DISTFILES += \
     Makefile \

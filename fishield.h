@@ -25,6 +25,7 @@
 
 #include "fs_client.h"
 #include "fs_server.h"
+#include "fs_task.h"
 #include "fs_error.h"
 
 // fs stands for "fishield" or "file security"

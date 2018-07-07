@@ -81,8 +81,8 @@ message Response
 	required ResponseType resp_type	= 1;
 	optional string	token		= 5;	// token generate by server when login successfully
 	optional FileList file_list   	= 2;
-	
 	optional uint64 task_id		= 3;	// task_id of a UPLOAD task
+	
 	optional uint64 packet_no	= 4;	// number of packets that a DOWNLOAD task will receive
 	
 }
