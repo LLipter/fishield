@@ -25,7 +25,8 @@ void cb_login_success(){
     std::cout << username << "-"
               << password << " login success : token="
               << _token
-              << std::endl << std::endl;
+              << std::endl;
+    splitline();
 }
 
 void cb_login_fail(fs::proto::Response::ResponseType error){
@@ -46,7 +47,8 @@ void cb_login_fail(fs::proto::Response::ResponseType error){
         cout << "unknow error";
         break;
     }
-    cout << endl << endl;
+    cout << endl;
+    splitline();
 }
 
 
@@ -64,7 +66,7 @@ int main()
 
     fs_login(username,password,boost::bind(cb_login_success),boost::bind(cb_login_fail,_1));
 
-    splitline();
+
 
 
     while(true){

@@ -199,15 +199,15 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, resp_type_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, token_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, file_list_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, task_id_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, packet_no_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, token_),
   4,
+  0,
   1,
   2,
   3,
-  0,
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 9, sizeof(::fs::proto::File)},
@@ -262,16 +262,17 @@ void AddDescriptorsImpl() {
       "\n\010FILELIST\020\000\022\n\n\006UPLOAD\020\001\022\014\n\010DOWNLOAD\020\002\022\n"
       "\n\006CANCEL\020\003\022\t\n\005PAUSE\020\004\022\n\n\006RESUME\020\005\022\n\n\006REN"
       "AME\020\006\022\n\n\006REMOVE\020\007\022\t\n\005MKDIR\020\010\022\n\n\006PACKET\020\t"
-      "\"\224\002\n\010Response\0222\n\tresp_type\030\001 \002(\0162\037.fs.pr"
-      "oto.Response.ResponseType\022%\n\tfile_list\030\002"
-      " \001(\0132\022.fs.proto.FileList\022\017\n\007task_id\030\003 \001("
-      "\004\022\021\n\tpacket_no\030\004 \001(\004\022\r\n\005token\030\005 \001(\t\"z\n\014R"
-      "esponseType\022\013\n\007SUCCESS\020\000\022\016\n\nNOSUCHUSER\020\003"
-      "\022\021\n\rILLEGALPASSWD\020\004\022\013\n\007UNKNOWN\020\005\022\016\n\nNORE"
-      "SPONSE\020\006\022\n\n\006FAILED\020\001\022\021\n\rILLEGAL_TOKEN\020\002"
+      "\"\245\002\n\010Response\0222\n\tresp_type\030\001 \002(\0162\037.fs.pr"
+      "oto.Response.ResponseType\022\r\n\005token\030\005 \001(\t"
+      "\022%\n\tfile_list\030\002 \001(\0132\022.fs.proto.FileList\022"
+      "\017\n\007task_id\030\003 \001(\004\022\021\n\tpacket_no\030\004 \001(\004\"\212\001\n\014"
+      "ResponseType\022\013\n\007SUCCESS\020\000\022\016\n\nNOSUCHUSER\020"
+      "\001\022\021\n\rILLEGALPASSWD\020\002\022\013\n\007UNKNOWN\020\003\022\016\n\nNOR"
+      "ESPONSE\020\004\022\020\n\014ILLEGALTOKEN\020\005\022\017\n\013ILLEGALPA"
+      "TH\020\006\022\n\n\006FAILED\020\007"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 919);
+      descriptor, 936);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "file_transfer.proto", &protobuf_RegisterTypes);
 }
@@ -362,6 +363,7 @@ bool Response_ResponseType_IsValid(int value) {
     case 4:
     case 5:
     case 6:
+    case 7:
       return true;
     default:
       return false;
@@ -374,8 +376,9 @@ const Response_ResponseType Response::NOSUCHUSER;
 const Response_ResponseType Response::ILLEGALPASSWD;
 const Response_ResponseType Response::UNKNOWN;
 const Response_ResponseType Response::NORESPONSE;
+const Response_ResponseType Response::ILLEGALTOKEN;
+const Response_ResponseType Response::ILLEGALPATH;
 const Response_ResponseType Response::FAILED;
-const Response_ResponseType Response::ILLEGAL_TOKEN;
 const Response_ResponseType Response::ResponseType_MIN;
 const Response_ResponseType Response::ResponseType_MAX;
 const int Response::ResponseType_ARRAYSIZE;
@@ -2075,10 +2078,10 @@ void Response::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int Response::kRespTypeFieldNumber;
+const int Response::kTokenFieldNumber;
 const int Response::kFileListFieldNumber;
 const int Response::kTaskIdFieldNumber;
 const int Response::kPacketNoFieldNumber;
-const int Response::kTokenFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Response::Response()

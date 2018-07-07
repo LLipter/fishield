@@ -126,16 +126,17 @@ inline bool Request_RequestType_Parse(
 }
 enum Response_ResponseType {
   Response_ResponseType_SUCCESS = 0,
-  Response_ResponseType_NOSUCHUSER = 3,
-  Response_ResponseType_ILLEGALPASSWD = 4,
-  Response_ResponseType_UNKNOWN = 5,
-  Response_ResponseType_NORESPONSE = 6,
-  Response_ResponseType_FAILED = 1,
-  Response_ResponseType_ILLEGAL_TOKEN = 2
+  Response_ResponseType_NOSUCHUSER = 1,
+  Response_ResponseType_ILLEGALPASSWD = 2,
+  Response_ResponseType_UNKNOWN = 3,
+  Response_ResponseType_NORESPONSE = 4,
+  Response_ResponseType_ILLEGALTOKEN = 5,
+  Response_ResponseType_ILLEGALPATH = 6,
+  Response_ResponseType_FAILED = 7
 };
 bool Response_ResponseType_IsValid(int value);
 const Response_ResponseType Response_ResponseType_ResponseType_MIN = Response_ResponseType_SUCCESS;
-const Response_ResponseType Response_ResponseType_ResponseType_MAX = Response_ResponseType_NORESPONSE;
+const Response_ResponseType Response_ResponseType_ResponseType_MAX = Response_ResponseType_FAILED;
 const int Response_ResponseType_ResponseType_ARRAYSIZE = Response_ResponseType_ResponseType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* Response_ResponseType_descriptor();
@@ -987,10 +988,12 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
     Response_ResponseType_UNKNOWN;
   static const ResponseType NORESPONSE =
     Response_ResponseType_NORESPONSE;
+  static const ResponseType ILLEGALTOKEN =
+    Response_ResponseType_ILLEGALTOKEN;
+  static const ResponseType ILLEGALPATH =
+    Response_ResponseType_ILLEGALPATH;
   static const ResponseType FAILED =
     Response_ResponseType_FAILED;
-  static const ResponseType ILLEGAL_TOKEN =
-    Response_ResponseType_ILLEGAL_TOKEN;
   static inline bool ResponseType_IsValid(int value) {
     return Response_ResponseType_IsValid(value);
   }
@@ -1066,14 +1069,14 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
  private:
   void set_has_resp_type();
   void clear_has_resp_type();
+  void set_has_token();
+  void clear_has_token();
   void set_has_file_list();
   void clear_has_file_list();
   void set_has_task_id();
   void clear_has_task_id();
   void set_has_packet_no();
   void clear_has_packet_no();
-  void set_has_token();
-  void clear_has_token();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
@@ -1923,6 +1926,72 @@ inline void Response::set_resp_type(::fs::proto::Response_ResponseType value) {
   // @@protoc_insertion_point(field_set:fs.proto.Response.resp_type)
 }
 
+// optional string token = 5;
+inline bool Response::has_token() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Response::set_has_token() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Response::clear_has_token() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Response::clear_token() {
+  token_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  clear_has_token();
+}
+inline const ::std::string& Response::token() const {
+  // @@protoc_insertion_point(field_get:fs.proto.Response.token)
+  return token_.GetNoArena();
+}
+inline void Response::set_token(const ::std::string& value) {
+  set_has_token();
+  token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:fs.proto.Response.token)
+}
+#if LANG_CXX11
+inline void Response::set_token(::std::string&& value) {
+  set_has_token();
+  token_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:fs.proto.Response.token)
+}
+#endif
+inline void Response::set_token(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  set_has_token();
+  token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:fs.proto.Response.token)
+}
+inline void Response::set_token(const char* value, size_t size) {
+  set_has_token();
+  token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:fs.proto.Response.token)
+}
+inline ::std::string* Response::mutable_token() {
+  set_has_token();
+  // @@protoc_insertion_point(field_mutable:fs.proto.Response.token)
+  return token_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Response::release_token() {
+  // @@protoc_insertion_point(field_release:fs.proto.Response.token)
+  if (!has_token()) {
+    return NULL;
+  }
+  clear_has_token();
+  return token_.ReleaseNonDefaultNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Response::set_allocated_token(::std::string* token) {
+  if (token != NULL) {
+    set_has_token();
+  } else {
+    clear_has_token();
+  }
+  token_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), token);
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.Response.token)
+}
+
 // optional .fs.proto.FileList file_list = 2;
 inline bool Response::has_file_list() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
@@ -2027,72 +2096,6 @@ inline void Response::set_packet_no(::google::protobuf::uint64 value) {
   set_has_packet_no();
   packet_no_ = value;
   // @@protoc_insertion_point(field_set:fs.proto.Response.packet_no)
-}
-
-// optional string token = 5;
-inline bool Response::has_token() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void Response::set_has_token() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void Response::clear_has_token() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void Response::clear_token() {
-  token_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_token();
-}
-inline const ::std::string& Response::token() const {
-  // @@protoc_insertion_point(field_get:fs.proto.Response.token)
-  return token_.GetNoArena();
-}
-inline void Response::set_token(const ::std::string& value) {
-  set_has_token();
-  token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:fs.proto.Response.token)
-}
-#if LANG_CXX11
-inline void Response::set_token(::std::string&& value) {
-  set_has_token();
-  token_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:fs.proto.Response.token)
-}
-#endif
-inline void Response::set_token(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  set_has_token();
-  token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:fs.proto.Response.token)
-}
-inline void Response::set_token(const char* value, size_t size) {
-  set_has_token();
-  token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:fs.proto.Response.token)
-}
-inline ::std::string* Response::mutable_token() {
-  set_has_token();
-  // @@protoc_insertion_point(field_mutable:fs.proto.Response.token)
-  return token_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* Response::release_token() {
-  // @@protoc_insertion_point(field_release:fs.proto.Response.token)
-  if (!has_token()) {
-    return NULL;
-  }
-  clear_has_token();
-  return token_.ReleaseNonDefaultNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void Response::set_allocated_token(::std::string* token) {
-  if (token != NULL) {
-    set_has_token();
-  } else {
-    clear_has_token();
-  }
-  token_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), token);
-  // @@protoc_insertion_point(field_set_allocated:fs.proto.Response.token)
 }
 
 #ifdef __GNUC__

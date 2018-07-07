@@ -122,8 +122,10 @@ void remove_clients_thread() {
     }
 }
 
+// TODO : finish it !
+void getFilelist(const std::string& dirpath, fs::proto::Response& response){
 
-
+}
 
 void communicate_thread(server_ptr serptr){
     using namespace fs::proto;
@@ -142,10 +144,14 @@ void communicate_thread(server_ptr serptr){
         Response response;
         switch (request.req_type()) {
         case Request::LOGIN:
-            // TODO connect to database
+            // TODO connect to database to verify password&username
             // TODO generate a random token and stored it
             response.set_resp_type(Response::SUCCESS);
             response.set_token("ttttooookkkkeeeennnn");
+            break;
+        case Request::FILELIST:
+            // TODO verify token
+            getFilelist(request.remote_path(), response);
             break;
         default:
             break;

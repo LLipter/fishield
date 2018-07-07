@@ -34,8 +34,8 @@ message Request
 	enum RequestType
 	{
 		LOGIN				= 10;	// try to login
-
 		FILELIST			= 0;	// request for a filelist
+		
 		UPLOAD				= 1;	// initiate a new UPLOAD task
 		DOWNLOAD			= 2;	// initiate a new DOWNLOAD task
 		CANCEL				= 3;	// cancel a task
@@ -50,9 +50,9 @@ message Request
 	required RequestType req_type	= 1;
 	optional string username	= 8;
 	optional string password	= 9;
-
 	optional string token		= 2;
 	optional string remote_path	= 3;
+	
 	optional uint64 packet_no	= 4;	// number of packets that a UPLOAD task will send
 	optional uint64 task_id		= 5;	// task_id of which CANCEL/PAUSE/RESUME/PACKET
 	optional string new_path	= 6;	// new path of a RENAMEd file
@@ -65,19 +65,23 @@ message Response
 	enum ResponseType
 	{
 		SUCCESS				= 0;
-		NOSUCHUSER			= 3;
-		ILLEGALPASSWD			= 4;
-		UNKNOWN				= 5;	// unkown error
-		NORESPONSE			= 6;	// cannot get response from server
-		
-		FAILED				= 1;
-		ILLEGAL_TOKEN			= 2;
+		NOSUCHUSER			= 1;	// no such user
+		ILLEGALPASSWD			= 2;	// pasword is not correct
+		UNKNOWN				= 3;	// unkown error
+		NORESPONSE			= 4;	// cannot get response from server
+		ILLEGALTOKEN			= 5;	// token is illegal relogin is needed
+		ILLEGALPATH			= 6;	// filepath is illegal
+
+		FAILED				= 7;
+
 	}
 	required ResponseType resp_type	= 1;
+	optional string	token		= 5;	// token generate by server when login successfully
 	optional FileList file_list   	= 2;
+	
 	optional uint64 task_id		= 3;	// task_id of a UPLOAD task
 	optional uint64 packet_no	= 4;	// number of packets that a DOWNLOAD task will receive
-	optional string	token		= 5;	// token generate by server when login successfully
+	
 }
 
 

@@ -24,6 +24,32 @@ int fs_client_startup(const std::string& addr, const short port){
     return 0;
 }
 
+bool send_receive(const fs::proto::Request& request,fs::proto::Response& response){
+    // connect to server
+    fs_client client;
+    if(client.connect() == false){
+        std::cout << "connect() failed"
+                  << std::endl;
+        return false;
+    }
+
+    // send request
+    if(client.send_request(request) == false){
+        std::cout << "send_request() failed"
+                  << std::endl;
+        return false;
+    }
+
+    // receive response
+    if(client.receive_response(response) == false){
+        std::cout << "receive_response() failed"
+                  << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
 void _fs_login(const std::string& username, const std::string& password, fs_fp_void cb_success, fs_fp_error cb_failed){
     using namespace fs::proto;
     Request login_request;
@@ -31,28 +57,9 @@ void _fs_login(const std::string& username, const std::string& password, fs_fp_v
     login_request.set_username(username);
     login_request.set_password(password);
 
-    // connect to server
-    fs_client client;
-    if(client.connect() == false){
-        std::cout << "connect() failed"
-                  << std::endl;
-        cb_failed(Response::NORESPONSE);
-        return;
-    }
-
-    // send request
-    if(client.send_request(login_request) == false){
-        std::cout << "send_request() failed"
-                  << std::endl;
-        cb_failed(Response::NORESPONSE);
-        return;
-    }
-
-    // receive response
+    // send request and receive response
     Response response;
-    if(client.receive_response(response) == false){
-        std::cout << "receive_response() failed"
-                  << std::endl;
+    if(send_receive(login_request,response) == false){
         cb_failed(Response::NORESPONSE);
         return;
     }
@@ -76,6 +83,43 @@ void _fs_login(const std::string& username, const std::string& password, fs_fp_v
 
 void fs_login(const std::string& username, const std::string& password, fs_fp_void cb_success, fs_fp_error cb_failed){
     std::thread thd(_fs_login, username, password, cb_success, cb_failed);
+    thd.detach();
+}
+
+
+void _fs_get_filelist(const std::string& dirpath, fs_fp_filelist cb_success, fs_fp_error cb_failed){
+    using namespace fs::proto;
+    Request filelist_request;
+    filelist_request.set_req_type(Request::FILELIST);
+    filelist_request.set_remote_path(dirpath);
+
+    // send request and receive response
+    Response response;
+    if(send_receive(filelist_request,response) == false){
+        cb_failed(Response::NORESPONSE);
+        return;
+    }
+
+    // check response type
+    switch (response.resp_type()) {
+    case Response::SUCCESS:
+        cb_success(response.file_list());
+        break;
+    case Response::ILLEGALTOKEN:
+    case Response::ILLEGALPATH:
+        cb_failed(response.resp_type());
+        break;
+    default:
+        cb_failed(Response::UNKNOWN);
+        break;
+    }
+
+
+}
+
+
+void fs_get_filelist(const std::string& dirpath, fs_fp_filelist cb_success, fs_fp_error cb_failed){
+    std::thread thd(_fs_get_filelist, dirpath, cb_success, cb_failed);
     thd.detach();
 }
 
