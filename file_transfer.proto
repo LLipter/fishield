@@ -12,9 +12,9 @@ message File
 		OTHER				= 3;
 	}
 	required string filename	= 1;
-	optional uint64 size		= 2;	// only valid for REGULAR file
-	required uint64 mtime		= 3;	// time of last data modification
-	required FileType file_type	= 4;
+	required uint64 mtime		= 2;	// time of last data modification
+	required FileType file_type	= 3;
+	optional uint64 size		= 4;	// only valid for REGULAR file
 }
 
 message FileList
@@ -50,15 +50,16 @@ message Request
 
 	}
 	required RequestType req_type	= 1;
-	optional string username	= 8;
-	optional string password	= 9;
-	optional string token		= 2;
-	optional string remote_path	= 3;
+	optional string username	= 2;
+	optional string password	= 3;
+	optional string token		= 4;
+	optional string remote_path	= 5;
+	optional string filename	= 6;
 	
-	optional uint64 packet_no	= 4;	// number of packets that a UPLOAD task will send
-	optional uint64 task_id		= 5;	// task_id of which CANCEL/PAUSE/RESUME/PACKET
-	optional string new_path	= 6;	// new path of a RENAMEd file
-	optional Packet packet		= 7;
+	optional uint64 packet_no	= 7;	// number of packets that a UPLOAD task will send
+	optional uint64 task_id		= 8;	// task_id of which CANCEL/PAUSE/RESUME/PACKET
+	optional string new_path	= 9;	// new path of a RENAMEd file
+	optional Packet packet		= 10;
 }
 
 
@@ -73,8 +74,7 @@ message Response
 		NORESPONSE			= 4;	// cannot get response from server
 		ILLEGALTOKEN			= 5;	// token is illegal relogin is needed
 		ILLEGALPATH			= 6;	// filepath is illegal
-
-		FAILED				= 7;
+		ILLEGALREQUEST			= 7;	// received request contains unknown req_type
 
 	}
 	required ResponseType resp_type	= 1;

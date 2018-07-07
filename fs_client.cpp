@@ -96,5 +96,32 @@ bool fs_client::receive_response(fs::proto::Response& response){
 }
 
 
+bool send_receive(const fs::proto::Request& request,fs::proto::Response& response){
+    // connect to server
+    fs_client client;
+    if(client.connect() == false){
+        std::cout << "connect() failed"
+                  << std::endl;
+        return false;
+    }
+
+    // send request
+    if(client.send_request(request) == false){
+        std::cout << "send_request() failed"
+                  << std::endl;
+        return false;
+    }
+
+    // receive response
+    if(client.receive_response(response) == false){
+        std::cout << "receive_response() failed"
+                  << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
+
 
 

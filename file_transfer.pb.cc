@@ -145,13 +145,13 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::File, filename_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::File, size_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::File, mtime_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::File, file_type_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::File, size_),
   0,
   1,
-  2,
   3,
+  2,
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::FileList, _has_bits_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::FileList, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -180,19 +180,21 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Request, password_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Request, token_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Request, remote_path_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Request, filename_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Request, packet_no_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Request, task_id_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Request, new_path_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Request, packet_),
-  8,
-  3,
-  4,
+  9,
   0,
   1,
-  6,
-  7,
   2,
+  3,
+  4,
+  7,
+  8,
   5,
+  6,
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, _has_bits_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -213,8 +215,8 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 0, 9, sizeof(::fs::proto::File)},
   { 13, 20, sizeof(::fs::proto::FileList)},
   { 22, 29, sizeof(::fs::proto::Packet)},
-  { 31, 45, sizeof(::fs::proto::Request)},
-  { 54, 64, sizeof(::fs::proto::Response)},
+  { 31, 46, sizeof(::fs::proto::Request)},
+  { 56, 66, sizeof(::fs::proto::Response)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -247,32 +249,33 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\023file_transfer.proto\022\010fs.proto\"\241\001\n\004File"
-      "\022\020\n\010filename\030\001 \002(\t\022\014\n\004size\030\002 \001(\004\022\r\n\005mtim"
-      "e\030\003 \002(\004\022*\n\tfile_type\030\004 \002(\0162\027.fs.proto.Fi"
-      "le.FileType\">\n\010FileType\022\013\n\007REGULAR\020\000\022\r\n\t"
+      "\022\020\n\010filename\030\001 \002(\t\022\r\n\005mtime\030\002 \002(\004\022*\n\tfil"
+      "e_type\030\003 \002(\0162\027.fs.proto.File.FileType\022\014\n"
+      "\004size\030\004 \001(\004\">\n\010FileType\022\013\n\007REGULAR\020\000\022\r\n\t"
       "DIRECTORY\020\001\022\013\n\007SYMLINK\020\002\022\t\n\005OTHER\020\003\"6\n\010F"
       "ileList\022\014\n\004path\030\001 \002(\t\022\034\n\004file\030\002 \003(\0132\016.fs"
       ".proto.File\")\n\006Packet\022\021\n\tpacket_id\030\001 \002(\004"
-      "\022\014\n\004data\030\002 \002(\014\"\357\002\n\007Request\022/\n\010req_type\030\001"
+      "\022\014\n\004data\030\002 \002(\014\"\201\003\n\007Request\022/\n\010req_type\030\001"
       " \002(\0162\035.fs.proto.Request.RequestType\022\020\n\010u"
-      "sername\030\010 \001(\t\022\020\n\010password\030\t \001(\t\022\r\n\005token"
-      "\030\002 \001(\t\022\023\n\013remote_path\030\003 \001(\t\022\021\n\tpacket_no"
-      "\030\004 \001(\004\022\017\n\007task_id\030\005 \001(\004\022\020\n\010new_path\030\006 \001("
-      "\t\022 \n\006packet\030\007 \001(\0132\020.fs.proto.Packet\"\222\001\n\013"
-      "RequestType\022\t\n\005LOGIN\020\n\022\014\n\010FILELIST\020\000\022\t\n\005"
-      "MKDIR\020\010\022\n\n\006UPLOAD\020\001\022\014\n\010DOWNLOAD\020\002\022\n\n\006CAN"
-      "CEL\020\003\022\t\n\005PAUSE\020\004\022\n\n\006RESUME\020\005\022\n\n\006RENAME\020\006"
-      "\022\n\n\006REMOVE\020\007\022\n\n\006PACKET\020\t\"\245\002\n\010Response\0222\n"
-      "\tresp_type\030\001 \002(\0162\037.fs.proto.Response.Res"
-      "ponseType\022\r\n\005token\030\005 \001(\t\022%\n\tfile_list\030\002 "
-      "\001(\0132\022.fs.proto.FileList\022\017\n\007task_id\030\003 \001(\004"
-      "\022\021\n\tpacket_no\030\004 \001(\004\"\212\001\n\014ResponseType\022\013\n\007"
-      "SUCCESS\020\000\022\016\n\nNOSUCHUSER\020\001\022\021\n\rILLEGALPASS"
-      "WD\020\002\022\013\n\007UNKNOWN\020\003\022\016\n\nNORESPONSE\020\004\022\020\n\014ILL"
-      "EGALTOKEN\020\005\022\017\n\013ILLEGALPATH\020\006\022\n\n\006FAILED\020\007"
+      "sername\030\002 \001(\t\022\020\n\010password\030\003 \001(\t\022\r\n\005token"
+      "\030\004 \001(\t\022\023\n\013remote_path\030\005 \001(\t\022\020\n\010filename\030"
+      "\006 \001(\t\022\021\n\tpacket_no\030\007 \001(\004\022\017\n\007task_id\030\010 \001("
+      "\004\022\020\n\010new_path\030\t \001(\t\022 \n\006packet\030\n \001(\0132\020.fs"
+      ".proto.Packet\"\222\001\n\013RequestType\022\t\n\005LOGIN\020\n"
+      "\022\014\n\010FILELIST\020\000\022\t\n\005MKDIR\020\010\022\n\n\006UPLOAD\020\001\022\014\n"
+      "\010DOWNLOAD\020\002\022\n\n\006CANCEL\020\003\022\t\n\005PAUSE\020\004\022\n\n\006RE"
+      "SUME\020\005\022\n\n\006RENAME\020\006\022\n\n\006REMOVE\020\007\022\n\n\006PACKET"
+      "\020\t\"\255\002\n\010Response\0222\n\tresp_type\030\001 \002(\0162\037.fs."
+      "proto.Response.ResponseType\022\r\n\005token\030\005 \001"
+      "(\t\022%\n\tfile_list\030\002 \001(\0132\022.fs.proto.FileLis"
+      "t\022\017\n\007task_id\030\003 \001(\004\022\021\n\tpacket_no\030\004 \001(\004\"\222\001"
+      "\n\014ResponseType\022\013\n\007SUCCESS\020\000\022\016\n\nNOSUCHUSE"
+      "R\020\001\022\021\n\rILLEGALPASSWD\020\002\022\013\n\007UNKNOWN\020\003\022\016\n\nN"
+      "ORESPONSE\020\004\022\020\n\014ILLEGALTOKEN\020\005\022\017\n\013ILLEGAL"
+      "PATH\020\006\022\022\n\016ILLEGALREQUEST\020\007"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 960);
+      descriptor, 986);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "file_transfer.proto", &protobuf_RegisterTypes);
 }
@@ -382,7 +385,7 @@ const Response_ResponseType Response::UNKNOWN;
 const Response_ResponseType Response::NORESPONSE;
 const Response_ResponseType Response::ILLEGALTOKEN;
 const Response_ResponseType Response::ILLEGALPATH;
-const Response_ResponseType Response::FAILED;
+const Response_ResponseType Response::ILLEGALREQUEST;
 const Response_ResponseType Response::ResponseType_MIN;
 const Response_ResponseType Response::ResponseType_MAX;
 const int Response::ResponseType_ARRAYSIZE;
@@ -394,9 +397,9 @@ void File::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int File::kFilenameFieldNumber;
-const int File::kSizeFieldNumber;
 const int File::kMtimeFieldNumber;
 const int File::kFileTypeFieldNumber;
+const int File::kSizeFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 File::File()
@@ -415,17 +418,17 @@ File::File(const File& from)
   if (from.has_filename()) {
     filename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.filename_);
   }
-  ::memcpy(&size_, &from.size_,
+  ::memcpy(&mtime_, &from.mtime_,
     static_cast<size_t>(reinterpret_cast<char*>(&file_type_) -
-    reinterpret_cast<char*>(&size_)) + sizeof(file_type_));
+    reinterpret_cast<char*>(&mtime_)) + sizeof(file_type_));
   // @@protoc_insertion_point(copy_constructor:fs.proto.File)
 }
 
 void File::SharedCtor() {
   filename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&size_, 0, static_cast<size_t>(
+  ::memset(&mtime_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&file_type_) -
-      reinterpret_cast<char*>(&size_)) + sizeof(file_type_));
+      reinterpret_cast<char*>(&mtime_)) + sizeof(file_type_));
 }
 
 File::~File() {
@@ -462,9 +465,9 @@ void File::Clear() {
     filename_.ClearNonDefaultToEmptyNoArena();
   }
   if (cached_has_bits & 14u) {
-    ::memset(&size_, 0, static_cast<size_t>(
+    ::memset(&mtime_, 0, static_cast<size_t>(
         reinterpret_cast<char*>(&file_type_) -
-        reinterpret_cast<char*>(&size_)) + sizeof(file_type_));
+        reinterpret_cast<char*>(&mtime_)) + sizeof(file_type_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear();
@@ -496,24 +499,10 @@ bool File::MergePartialFromCodedStream(
         break;
       }
 
-      // optional uint64 size = 2;
+      // required uint64 mtime = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
-          set_has_size();
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
-                 input, &size_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // required uint64 mtime = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
           set_has_mtime();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
@@ -524,10 +513,10 @@ bool File::MergePartialFromCodedStream(
         break;
       }
 
-      // required .fs.proto.File.FileType file_type = 4;
-      case 4: {
+      // required .fs.proto.File.FileType file_type = 3;
+      case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
           int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
@@ -536,8 +525,22 @@ bool File::MergePartialFromCodedStream(
             set_file_type(static_cast< ::fs::proto::File_FileType >(value));
           } else {
             mutable_unknown_fields()->AddVarint(
-                4, static_cast< ::google::protobuf::uint64>(value));
+                3, static_cast< ::google::protobuf::uint64>(value));
           }
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // optional uint64 size = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
+          set_has_size();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &size_)));
         } else {
           goto handle_unusual;
         }
@@ -581,20 +584,20 @@ void File::SerializeWithCachedSizes(
       1, this->filename(), output);
   }
 
-  // optional uint64 size = 2;
+  // required uint64 mtime = 2;
   if (cached_has_bits & 0x00000002u) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->size(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->mtime(), output);
   }
 
-  // required uint64 mtime = 3;
-  if (cached_has_bits & 0x00000004u) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(3, this->mtime(), output);
-  }
-
-  // required .fs.proto.File.FileType file_type = 4;
+  // required .fs.proto.File.FileType file_type = 3;
   if (cached_has_bits & 0x00000008u) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      4, this->file_type(), output);
+      3, this->file_type(), output);
+  }
+
+  // optional uint64 size = 4;
+  if (cached_has_bits & 0x00000004u) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(4, this->size(), output);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -623,20 +626,20 @@ void File::SerializeWithCachedSizes(
         1, this->filename(), target);
   }
 
-  // optional uint64 size = 2;
+  // required uint64 mtime = 2;
   if (cached_has_bits & 0x00000002u) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->size(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->mtime(), target);
   }
 
-  // required uint64 mtime = 3;
-  if (cached_has_bits & 0x00000004u) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(3, this->mtime(), target);
-  }
-
-  // required .fs.proto.File.FileType file_type = 4;
+  // required .fs.proto.File.FileType file_type = 3;
   if (cached_has_bits & 0x00000008u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      4, this->file_type(), target);
+      3, this->file_type(), target);
+  }
+
+  // optional uint64 size = 4;
+  if (cached_has_bits & 0x00000004u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(4, this->size(), target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -659,14 +662,14 @@ size_t File::RequiredFieldsByteSizeFallback() const {
   }
 
   if (has_mtime()) {
-    // required uint64 mtime = 3;
+    // required uint64 mtime = 2;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::UInt64Size(
         this->mtime());
   }
 
   if (has_file_type()) {
-    // required .fs.proto.File.FileType file_type = 4;
+    // required .fs.proto.File.FileType file_type = 3;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->file_type());
   }
@@ -682,25 +685,25 @@ size_t File::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         _internal_metadata_.unknown_fields());
   }
-  if (((_has_bits_[0] & 0x0000000d) ^ 0x0000000d) == 0) {  // All required fields are present.
+  if (((_has_bits_[0] & 0x0000000b) ^ 0x0000000b) == 0) {  // All required fields are present.
     // required string filename = 1;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->filename());
 
-    // required uint64 mtime = 3;
+    // required uint64 mtime = 2;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::UInt64Size(
         this->mtime());
 
-    // required .fs.proto.File.FileType file_type = 4;
+    // required .fs.proto.File.FileType file_type = 3;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->file_type());
 
   } else {
     total_size += RequiredFieldsByteSizeFallback();
   }
-  // optional uint64 size = 2;
+  // optional uint64 size = 4;
   if (has_size()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::UInt64Size(
@@ -741,10 +744,10 @@ void File::MergeFrom(const File& from) {
       filename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.filename_);
     }
     if (cached_has_bits & 0x00000002u) {
-      size_ = from.size_;
+      mtime_ = from.mtime_;
     }
     if (cached_has_bits & 0x00000004u) {
-      mtime_ = from.mtime_;
+      size_ = from.size_;
     }
     if (cached_has_bits & 0x00000008u) {
       file_type_ = from.file_type_;
@@ -768,7 +771,7 @@ void File::CopyFrom(const File& from) {
 }
 
 bool File::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000000d) != 0x0000000d) return false;
+  if ((_has_bits_[0] & 0x0000000b) != 0x0000000b) return false;
   return true;
 }
 
@@ -780,8 +783,8 @@ void File::InternalSwap(File* other) {
   using std::swap;
   filename_.Swap(&other->filename_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
-  swap(size_, other->size_);
   swap(mtime_, other->mtime_);
+  swap(size_, other->size_);
   swap(file_type_, other->file_type_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -1403,6 +1406,7 @@ const int Request::kUsernameFieldNumber;
 const int Request::kPasswordFieldNumber;
 const int Request::kTokenFieldNumber;
 const int Request::kRemotePathFieldNumber;
+const int Request::kFilenameFieldNumber;
 const int Request::kPacketNoFieldNumber;
 const int Request::kTaskIdFieldNumber;
 const int Request::kNewPathFieldNumber;
@@ -1421,6 +1425,14 @@ Request::Request(const Request& from)
       _internal_metadata_(NULL),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  username_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.has_username()) {
+    username_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.username_);
+  }
+  password_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.has_password()) {
+    password_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.password_);
+  }
   token_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (from.has_token()) {
     token_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.token_);
@@ -1429,17 +1441,13 @@ Request::Request(const Request& from)
   if (from.has_remote_path()) {
     remote_path_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.remote_path_);
   }
+  filename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.has_filename()) {
+    filename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.filename_);
+  }
   new_path_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (from.has_new_path()) {
     new_path_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.new_path_);
-  }
-  username_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.has_username()) {
-    username_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.username_);
-  }
-  password_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.has_password()) {
-    password_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.password_);
   }
   if (from.has_packet()) {
     packet_ = new ::fs::proto::Packet(*from.packet_);
@@ -1453,11 +1461,12 @@ Request::Request(const Request& from)
 }
 
 void Request::SharedCtor() {
-  token_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  remote_path_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  new_path_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   username_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   password_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  token_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  remote_path_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  filename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  new_path_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&packet_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&task_id_) -
       reinterpret_cast<char*>(&packet_)) + sizeof(task_id_));
@@ -1470,11 +1479,12 @@ Request::~Request() {
 }
 
 void Request::SharedDtor() {
-  token_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  remote_path_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  new_path_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   username_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   password_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  token_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  remote_path_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  filename_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  new_path_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete packet_;
 }
 
@@ -1499,33 +1509,35 @@ void Request::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 63u) {
+  if (cached_has_bits & 127u) {
     if (cached_has_bits & 0x00000001u) {
-      token_.ClearNonDefaultToEmptyNoArena();
-    }
-    if (cached_has_bits & 0x00000002u) {
-      remote_path_.ClearNonDefaultToEmptyNoArena();
-    }
-    if (cached_has_bits & 0x00000004u) {
-      new_path_.ClearNonDefaultToEmptyNoArena();
-    }
-    if (cached_has_bits & 0x00000008u) {
       username_.ClearNonDefaultToEmptyNoArena();
     }
-    if (cached_has_bits & 0x00000010u) {
+    if (cached_has_bits & 0x00000002u) {
       password_.ClearNonDefaultToEmptyNoArena();
     }
+    if (cached_has_bits & 0x00000004u) {
+      token_.ClearNonDefaultToEmptyNoArena();
+    }
+    if (cached_has_bits & 0x00000008u) {
+      remote_path_.ClearNonDefaultToEmptyNoArena();
+    }
+    if (cached_has_bits & 0x00000010u) {
+      filename_.ClearNonDefaultToEmptyNoArena();
+    }
     if (cached_has_bits & 0x00000020u) {
+      new_path_.ClearNonDefaultToEmptyNoArena();
+    }
+    if (cached_has_bits & 0x00000040u) {
       GOOGLE_DCHECK(packet_ != NULL);
       packet_->Clear();
     }
   }
-  if (cached_has_bits & 192u) {
-    ::memset(&packet_no_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&task_id_) -
-        reinterpret_cast<char*>(&packet_no_)) + sizeof(task_id_));
+  packet_no_ = GOOGLE_ULONGLONG(0);
+  if (cached_has_bits & 768u) {
+    task_id_ = GOOGLE_ULONGLONG(0);
+    req_type_ = 10;
   }
-  req_type_ = 10;
   _has_bits_.Clear();
   _internal_metadata_.Clear();
 }
@@ -1560,98 +1572,10 @@ bool Request::MergePartialFromCodedStream(
         break;
       }
 
-      // optional string token = 2;
+      // optional string username = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_token()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-            this->token().data(), static_cast<int>(this->token().length()),
-            ::google::protobuf::internal::WireFormat::PARSE,
-            "fs.proto.Request.token");
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // optional string remote_path = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_remote_path()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-            this->remote_path().data(), static_cast<int>(this->remote_path().length()),
-            ::google::protobuf::internal::WireFormat::PARSE,
-            "fs.proto.Request.remote_path");
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // optional uint64 packet_no = 4;
-      case 4: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
-          set_has_packet_no();
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
-                 input, &packet_no_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // optional uint64 task_id = 5;
-      case 5: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
-          set_has_task_id();
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
-                 input, &task_id_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // optional string new_path = 6;
-      case 6: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(50u /* 50 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_new_path()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-            this->new_path().data(), static_cast<int>(this->new_path().length()),
-            ::google::protobuf::internal::WireFormat::PARSE,
-            "fs.proto.Request.new_path");
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // optional .fs.proto.Packet packet = 7;
-      case 7: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(58u /* 58 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_packet()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // optional string username = 8;
-      case 8: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(66u /* 66 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_username()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
@@ -1664,16 +1588,120 @@ bool Request::MergePartialFromCodedStream(
         break;
       }
 
-      // optional string password = 9;
-      case 9: {
+      // optional string password = 3;
+      case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(74u /* 74 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_password()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
             this->password().data(), static_cast<int>(this->password().length()),
             ::google::protobuf::internal::WireFormat::PARSE,
             "fs.proto.Request.password");
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // optional string token = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_token()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+            this->token().data(), static_cast<int>(this->token().length()),
+            ::google::protobuf::internal::WireFormat::PARSE,
+            "fs.proto.Request.token");
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // optional string remote_path = 5;
+      case 5: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_remote_path()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+            this->remote_path().data(), static_cast<int>(this->remote_path().length()),
+            ::google::protobuf::internal::WireFormat::PARSE,
+            "fs.proto.Request.remote_path");
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // optional string filename = 6;
+      case 6: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(50u /* 50 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_filename()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+            this->filename().data(), static_cast<int>(this->filename().length()),
+            ::google::protobuf::internal::WireFormat::PARSE,
+            "fs.proto.Request.filename");
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // optional uint64 packet_no = 7;
+      case 7: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(56u /* 56 & 0xFF */)) {
+          set_has_packet_no();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &packet_no_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // optional uint64 task_id = 8;
+      case 8: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(64u /* 64 & 0xFF */)) {
+          set_has_task_id();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &task_id_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // optional string new_path = 9;
+      case 9: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(74u /* 74 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_new_path()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+            this->new_path().data(), static_cast<int>(this->new_path().length()),
+            ::google::protobuf::internal::WireFormat::PARSE,
+            "fs.proto.Request.new_path");
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // optional .fs.proto.Packet packet = 10;
+      case 10: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(82u /* 82 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_packet()));
         } else {
           goto handle_unusual;
         }
@@ -1708,75 +1736,85 @@ void Request::SerializeWithCachedSizes(
 
   cached_has_bits = _has_bits_[0];
   // required .fs.proto.Request.RequestType req_type = 1;
-  if (cached_has_bits & 0x00000100u) {
+  if (cached_has_bits & 0x00000200u) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       1, this->req_type(), output);
   }
 
-  // optional string token = 2;
+  // optional string username = 2;
   if (cached_has_bits & 0x00000001u) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-      this->token().data(), static_cast<int>(this->token().length()),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
-      "fs.proto.Request.token");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->token(), output);
-  }
-
-  // optional string remote_path = 3;
-  if (cached_has_bits & 0x00000002u) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-      this->remote_path().data(), static_cast<int>(this->remote_path().length()),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
-      "fs.proto.Request.remote_path");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      3, this->remote_path(), output);
-  }
-
-  // optional uint64 packet_no = 4;
-  if (cached_has_bits & 0x00000040u) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(4, this->packet_no(), output);
-  }
-
-  // optional uint64 task_id = 5;
-  if (cached_has_bits & 0x00000080u) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(5, this->task_id(), output);
-  }
-
-  // optional string new_path = 6;
-  if (cached_has_bits & 0x00000004u) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-      this->new_path().data(), static_cast<int>(this->new_path().length()),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
-      "fs.proto.Request.new_path");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      6, this->new_path(), output);
-  }
-
-  // optional .fs.proto.Packet packet = 7;
-  if (cached_has_bits & 0x00000020u) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      7, this->_internal_packet(), output);
-  }
-
-  // optional string username = 8;
-  if (cached_has_bits & 0x00000008u) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->username().data(), static_cast<int>(this->username().length()),
       ::google::protobuf::internal::WireFormat::SERIALIZE,
       "fs.proto.Request.username");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      8, this->username(), output);
+      2, this->username(), output);
   }
 
-  // optional string password = 9;
-  if (cached_has_bits & 0x00000010u) {
+  // optional string password = 3;
+  if (cached_has_bits & 0x00000002u) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->password().data(), static_cast<int>(this->password().length()),
       ::google::protobuf::internal::WireFormat::SERIALIZE,
       "fs.proto.Request.password");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      9, this->password(), output);
+      3, this->password(), output);
+  }
+
+  // optional string token = 4;
+  if (cached_has_bits & 0x00000004u) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->token().data(), static_cast<int>(this->token().length()),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "fs.proto.Request.token");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->token(), output);
+  }
+
+  // optional string remote_path = 5;
+  if (cached_has_bits & 0x00000008u) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->remote_path().data(), static_cast<int>(this->remote_path().length()),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "fs.proto.Request.remote_path");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      5, this->remote_path(), output);
+  }
+
+  // optional string filename = 6;
+  if (cached_has_bits & 0x00000010u) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->filename().data(), static_cast<int>(this->filename().length()),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "fs.proto.Request.filename");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      6, this->filename(), output);
+  }
+
+  // optional uint64 packet_no = 7;
+  if (cached_has_bits & 0x00000080u) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(7, this->packet_no(), output);
+  }
+
+  // optional uint64 task_id = 8;
+  if (cached_has_bits & 0x00000100u) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(8, this->task_id(), output);
+  }
+
+  // optional string new_path = 9;
+  if (cached_has_bits & 0x00000020u) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->new_path().data(), static_cast<int>(this->new_path().length()),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "fs.proto.Request.new_path");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      9, this->new_path(), output);
+  }
+
+  // optional .fs.proto.Packet packet = 10;
+  if (cached_has_bits & 0x00000040u) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      10, this->_internal_packet(), output);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -1795,81 +1833,92 @@ void Request::SerializeWithCachedSizes(
 
   cached_has_bits = _has_bits_[0];
   // required .fs.proto.Request.RequestType req_type = 1;
-  if (cached_has_bits & 0x00000100u) {
+  if (cached_has_bits & 0x00000200u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       1, this->req_type(), target);
   }
 
-  // optional string token = 2;
+  // optional string username = 2;
   if (cached_has_bits & 0x00000001u) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-      this->token().data(), static_cast<int>(this->token().length()),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
-      "fs.proto.Request.token");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->token(), target);
-  }
-
-  // optional string remote_path = 3;
-  if (cached_has_bits & 0x00000002u) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-      this->remote_path().data(), static_cast<int>(this->remote_path().length()),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
-      "fs.proto.Request.remote_path");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->remote_path(), target);
-  }
-
-  // optional uint64 packet_no = 4;
-  if (cached_has_bits & 0x00000040u) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(4, this->packet_no(), target);
-  }
-
-  // optional uint64 task_id = 5;
-  if (cached_has_bits & 0x00000080u) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(5, this->task_id(), target);
-  }
-
-  // optional string new_path = 6;
-  if (cached_has_bits & 0x00000004u) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-      this->new_path().data(), static_cast<int>(this->new_path().length()),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
-      "fs.proto.Request.new_path");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        6, this->new_path(), target);
-  }
-
-  // optional .fs.proto.Packet packet = 7;
-  if (cached_has_bits & 0x00000020u) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        7, this->_internal_packet(), deterministic, target);
-  }
-
-  // optional string username = 8;
-  if (cached_has_bits & 0x00000008u) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->username().data(), static_cast<int>(this->username().length()),
       ::google::protobuf::internal::WireFormat::SERIALIZE,
       "fs.proto.Request.username");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        8, this->username(), target);
+        2, this->username(), target);
   }
 
-  // optional string password = 9;
-  if (cached_has_bits & 0x00000010u) {
+  // optional string password = 3;
+  if (cached_has_bits & 0x00000002u) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->password().data(), static_cast<int>(this->password().length()),
       ::google::protobuf::internal::WireFormat::SERIALIZE,
       "fs.proto.Request.password");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        9, this->password(), target);
+        3, this->password(), target);
+  }
+
+  // optional string token = 4;
+  if (cached_has_bits & 0x00000004u) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->token().data(), static_cast<int>(this->token().length()),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "fs.proto.Request.token");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->token(), target);
+  }
+
+  // optional string remote_path = 5;
+  if (cached_has_bits & 0x00000008u) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->remote_path().data(), static_cast<int>(this->remote_path().length()),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "fs.proto.Request.remote_path");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        5, this->remote_path(), target);
+  }
+
+  // optional string filename = 6;
+  if (cached_has_bits & 0x00000010u) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->filename().data(), static_cast<int>(this->filename().length()),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "fs.proto.Request.filename");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        6, this->filename(), target);
+  }
+
+  // optional uint64 packet_no = 7;
+  if (cached_has_bits & 0x00000080u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(7, this->packet_no(), target);
+  }
+
+  // optional uint64 task_id = 8;
+  if (cached_has_bits & 0x00000100u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(8, this->task_id(), target);
+  }
+
+  // optional string new_path = 9;
+  if (cached_has_bits & 0x00000020u) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->new_path().data(), static_cast<int>(this->new_path().length()),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "fs.proto.Request.new_path");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        9, this->new_path(), target);
+  }
+
+  // optional .fs.proto.Packet packet = 10;
+  if (cached_has_bits & 0x00000040u) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        10, this->_internal_packet(), deterministic, target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -1895,63 +1944,70 @@ size_t Request::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->req_type());
   }
   if (_has_bits_[0 / 32] & 255u) {
-    // optional string token = 2;
-    if (has_token()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->token());
-    }
-
-    // optional string remote_path = 3;
-    if (has_remote_path()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->remote_path());
-    }
-
-    // optional string new_path = 6;
-    if (has_new_path()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->new_path());
-    }
-
-    // optional string username = 8;
+    // optional string username = 2;
     if (has_username()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->username());
     }
 
-    // optional string password = 9;
+    // optional string password = 3;
     if (has_password()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->password());
     }
 
-    // optional .fs.proto.Packet packet = 7;
+    // optional string token = 4;
+    if (has_token()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->token());
+    }
+
+    // optional string remote_path = 5;
+    if (has_remote_path()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->remote_path());
+    }
+
+    // optional string filename = 6;
+    if (has_filename()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->filename());
+    }
+
+    // optional string new_path = 9;
+    if (has_new_path()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->new_path());
+    }
+
+    // optional .fs.proto.Packet packet = 10;
     if (has_packet()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSize(
           *packet_);
     }
 
-    // optional uint64 packet_no = 4;
+    // optional uint64 packet_no = 7;
     if (has_packet_no()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt64Size(
           this->packet_no());
     }
 
-    // optional uint64 task_id = 5;
-    if (has_task_id()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt64Size(
-          this->task_id());
-    }
-
   }
+  // optional uint64 task_id = 8;
+  if (has_task_id()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt64Size(
+        this->task_id());
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
@@ -1982,38 +2038,45 @@ void Request::MergeFrom(const Request& from) {
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 255u) {
     if (cached_has_bits & 0x00000001u) {
-      set_has_token();
-      token_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.token_);
-    }
-    if (cached_has_bits & 0x00000002u) {
-      set_has_remote_path();
-      remote_path_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.remote_path_);
-    }
-    if (cached_has_bits & 0x00000004u) {
-      set_has_new_path();
-      new_path_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.new_path_);
-    }
-    if (cached_has_bits & 0x00000008u) {
       set_has_username();
       username_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.username_);
     }
-    if (cached_has_bits & 0x00000010u) {
+    if (cached_has_bits & 0x00000002u) {
       set_has_password();
       password_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.password_);
     }
+    if (cached_has_bits & 0x00000004u) {
+      set_has_token();
+      token_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.token_);
+    }
+    if (cached_has_bits & 0x00000008u) {
+      set_has_remote_path();
+      remote_path_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.remote_path_);
+    }
+    if (cached_has_bits & 0x00000010u) {
+      set_has_filename();
+      filename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.filename_);
+    }
     if (cached_has_bits & 0x00000020u) {
-      mutable_packet()->::fs::proto::Packet::MergeFrom(from.packet());
+      set_has_new_path();
+      new_path_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.new_path_);
     }
     if (cached_has_bits & 0x00000040u) {
-      packet_no_ = from.packet_no_;
+      mutable_packet()->::fs::proto::Packet::MergeFrom(from.packet());
     }
     if (cached_has_bits & 0x00000080u) {
-      task_id_ = from.task_id_;
+      packet_no_ = from.packet_no_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
-  if (cached_has_bits & 0x00000100u) {
-    set_req_type(from.req_type());
+  if (cached_has_bits & 768u) {
+    if (cached_has_bits & 0x00000100u) {
+      task_id_ = from.task_id_;
+    }
+    if (cached_has_bits & 0x00000200u) {
+      req_type_ = from.req_type_;
+    }
+    _has_bits_[0] |= cached_has_bits;
   }
 }
 
@@ -2032,7 +2095,7 @@ void Request::CopyFrom(const Request& from) {
 }
 
 bool Request::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000100) != 0x00000100) return false;
+  if ((_has_bits_[0] & 0x00000200) != 0x00000200) return false;
   if (has_packet()) {
     if (!this->packet_->IsInitialized()) return false;
   }
@@ -2045,15 +2108,17 @@ void Request::Swap(Request* other) {
 }
 void Request::InternalSwap(Request* other) {
   using std::swap;
+  username_.Swap(&other->username_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  password_.Swap(&other->password_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
   token_.Swap(&other->token_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   remote_path_.Swap(&other->remote_path_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
+  filename_.Swap(&other->filename_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
   new_path_.Swap(&other->new_path_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  username_.Swap(&other->username_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  password_.Swap(&other->password_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   swap(packet_, other->packet_);
   swap(packet_no_, other->packet_no_);

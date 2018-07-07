@@ -24,31 +24,7 @@ int fs_client_startup(const std::string& addr, const short port){
     return 0;
 }
 
-bool send_receive(const fs::proto::Request& request,fs::proto::Response& response){
-    // connect to server
-    fs_client client;
-    if(client.connect() == false){
-        std::cout << "connect() failed"
-                  << std::endl;
-        return false;
-    }
 
-    // send request
-    if(client.send_request(request) == false){
-        std::cout << "send_request() failed"
-                  << std::endl;
-        return false;
-    }
-
-    // receive response
-    if(client.receive_response(response) == false){
-        std::cout << "receive_response() failed"
-                  << std::endl;
-        return false;
-    }
-
-    return true;
-}
 
 void _fs_login(const std::string& username, const std::string& password, fs_fp_void cb_success, fs_fp_error cb_failed){
     using namespace fs::proto;
@@ -121,6 +97,42 @@ void _fs_get_filelist(const std::string& dirpath, fs_fp_filelist cb_success, fs_
 
 void fs_get_filelist(const std::string& dirpath, fs_fp_filelist cb_success, fs_fp_error cb_failed){
     std::thread thd(_fs_get_filelist, dirpath, cb_success, cb_failed);
+    thd.detach();
+}
+
+void _fs_mkdir(const std::string& basepath, const std::string& dirname, fs_fp_void cb_success, fs_fp_error cb_failed){
+    using namespace fs::proto;
+    Request mkdir_request;
+    mkdir_request.set_req_type(Request::MKDIR);
+    mkdir_request.set_remote_path(basepath);
+    mkdir_request.set_filename(dirname);
+    mkdir_request.set_token(_token);
+
+    // send request and receive response
+    Response response;
+    if(send_receive(mkdir_request,response) == false){
+        cb_failed(Response::NORESPONSE);
+        return;
+    }
+
+    // check response type
+    switch (response.resp_type()) {
+    case Response::SUCCESS:
+        cb_success();
+        break;
+    case Response::ILLEGALTOKEN:
+    case Response::ILLEGALPATH:
+        cb_failed(response.resp_type());
+        break;
+    default:
+        cb_failed(Response::UNKNOWN);
+        break;
+    }
+}
+
+
+void fs_mkdir(const std::string& basepath, const std::string& dirname, fs_fp_void cb_success, fs_fp_error cb_failed){
+    std::thread thd(_fs_mkdir, basepath, dirname, cb_success, cb_failed);
     thd.detach();
 }
 

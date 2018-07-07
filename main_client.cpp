@@ -6,18 +6,39 @@ using namespace boost;
 using namespace fs::proto;
 
 extern std::string _token;
-int ret;
 const std::string username = "LLipter";
 const std::string password = "123456";
 
-void quit_if_error(){
-    if(ret != 0)
-        exit(1);
+void splitline(){
+    cout << "------------------------------------" << endl;
 }
 
-void splitline(){
-    quit_if_error();
-    cout << "------------------------------------" << endl;
+
+void print_err(fs::proto::Response::ResponseType error){
+    switch (error) {
+    case Response::ILLEGALPASSWD:
+        cout << "illegal password";
+        break;
+    case Response::NOSUCHUSER:
+        cout << "no such user";
+        break;
+    case Response::NORESPONSE:
+        cout << "cannot get response from server";
+        break;
+    case Response::ILLEGALREQUEST:
+        cout << "illegal request";
+        break;
+    case Response::ILLEGALTOKEN:
+        cout << "illegal token";
+        break;
+    case Response::ILLEGALPATH:
+        cout << "illegal path";
+        break;
+    default:
+        cout << "unknow error";
+        break;
+    }
+    cout << endl;
 }
 
 void cb_login_success(){
@@ -33,21 +54,37 @@ void cb_login_fail(fs::proto::Response::ResponseType error){
     cout << "callback "
          << username << "-"
          << password << " login failed : ";
-    switch (error) {
-    case Response::ILLEGALPASSWD:
-        cout << "illegal password";
-        break;
-    case Response::NOSUCHUSER:
-        cout << "no such user";
-        break;
-    case Response::NORESPONSE:
-        cout << "cannot get response from server";
-        break;
-    default:
-        cout << "unknow error";
-        break;
+    print_err(error);
+    splitline();
+}
+
+void cb_mkdir_success(){
+    cout << "callback : mkdir successfully" << endl;
+    splitline();
+}
+
+
+void cb_mkdir_fail(fs::proto::Response::ResponseType error){
+    cout << "callback : mkdir failed --- " << endl;
+    print_err(error);
+    splitline();
+}
+
+void cb_filelist_success(fs::proto::FileList filelist){
+    cout << "callback : filelist successfully" << endl;
+    for(int i=0;i<filelist.file_size();i++){
+        File file = filelist.file(i);
+        cout << "filename-" << file.filename() << " "
+             << "filetype-" << File::FileType_Name(file.file_type()) << " "
+             << "mtime-" << file.mtime() << " "
+             << "size-" << file.size() << endl;
     }
-    cout << endl;
+    splitline();
+}
+
+void cb_filelist_fail(fs::proto::Response::ResponseType error){
+    cout << "callback : filelist failed --- " << endl;
+    print_err(error);
     splitline();
 }
 
@@ -55,18 +92,20 @@ void cb_login_fail(fs::proto::Response::ResponseType error){
 
 int main()
 {
-    ret = fs_client_startup("localhost", 7614);
+    int ret = fs_client_startup("localhost", 7614);
     if(ret == 0)
         cout << "client startup ok" << endl;
     else if (ret == FS_E_ILLEGAL_VALUE)
         cout << "illegal address" << endl;
     else
         cout << "unknown error in fs_client_startup()" << endl;
+    if(ret != 0)
+        return 1;
     splitline();
 
     fs_login(username,password,boost::bind(cb_login_success),boost::bind(cb_login_fail,_1));
-
-
+    fs_mkdir("/","newdir",boost::bind(cb_mkdir_success),boost::bind(cb_mkdir_fail,_1));
+    fs_get_filelist("/", boost::bind(cb_filelist_success, _1), boost::bind(cb_filelist_fail, _1));
 
 
     while(true){

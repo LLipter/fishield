@@ -132,47 +132,73 @@ void remove_clients_thread() {
 
 void getFilelist(const std::string& dirpath, fs::proto::Response& response){
     using namespace fs::proto;
+    using namespace boost::filesystem;
+
     std::string realpath_str = rootdir + dirpath;
-    boost::filesystem::path realpath(realpath_str);
-    if(!boost::filesystem::exists(realpath) ||
-            !boost::filesystem::is_directory(realpath)){
+    path realpath(realpath_str);
+    if(!exists(realpath) || !is_directory(realpath)){
         response.set_resp_type(Response::ILLEGALPATH);
         return;
     }
 
     response.set_resp_type(Response::SUCCESS);
     FileList* filelist = new FileList;
-    boost::filesystem::directory_iterator end_iter;
-    for(boost::filesystem::directory_iterator iter(realpath);iter!=end_iter;iter++){
+    filelist->set_path(dirpath);
+    directory_iterator end_iter;
+    for(directory_iterator iter(realpath);iter!=end_iter;iter++){
         if(boost::algorithm::starts_with(iter->path().filename().string(), hidden_prefix))
             // ignore hidden files
             continue;
-
 
         File* file = filelist->add_file();
         // set file name
         file->set_filename(iter->path().filename().string());
 
         // set file type
-        if(boost::filesystem::is_directory(iter->path()))
+        if(is_directory(iter->path()))
             file->set_file_type(File::DIRECTORY);
-        else if(boost::filesystem::is_regular_file(iter->path()))
+        else if(is_regular_file(iter->path()))
             file->set_file_type(File::REGULAR);
-        else if(boost::filesystem::is_symlink(iter->path()))
+        else if(is_symlink(iter->path()))
             file->set_file_type(File::SYMLINK);
         else
             file->set_file_type(File::OTHER);
 
         // set file size
-        if(boost::filesystem::is_regular_file(iter->path()))
-            file->set_size(boost::filesystem::file_size(iter->path()));
+        if(is_regular_file(iter->path()))
+            file->set_size(file_size(iter->path()));
 
         // set last modified time
-        file->set_mtime(boost::filesystem::last_write_time(iter->path()));
+        file->set_mtime(last_write_time(iter->path()));
 
     }
 
     response.set_allocated_file_list(filelist);
+
+}
+
+void mkdir(const std::string& basepath, const std::string& dirname, fs::proto::Response& response){
+    using namespace fs::proto;
+    using namespace boost::filesystem;
+
+    std::string base_str = rootdir + basepath;
+    path base(base_str);
+    if(!exists(base)){
+        // basepath doesn't exist
+        response.set_resp_type(Response::ILLEGALPATH);
+        return;
+    }
+
+    std::string newdir_str = base_str + "/" + dirname;
+    path newdir(newdir_str);
+    if(exists(newdir)){
+        // newdir already exists
+        response.set_resp_type(Response::ILLEGALPATH);
+        return;
+    }
+
+    create_directory(newdir);
+    response.set_resp_type(Response::SUCCESS);
 
 }
 
@@ -209,7 +235,14 @@ void communicate_thread(server_ptr serptr){
             else
                 response.set_resp_type(Response::ILLEGALTOKEN);
             break;
+        case Request::MKDIR:
+            if(verify_token(request.token()))
+                mkdir(request.remote_path(), request.filename(), response);
+            else
+                response.set_resp_type(Response::ILLEGALTOKEN);
+            break;
         default:
+            response.set_resp_type(Response::ILLEGALREQUEST);
             break;
         }
         ret_resp = serptr->send_response(response);

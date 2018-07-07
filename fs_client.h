@@ -4,6 +4,8 @@
 #include "fishield.h"
 #include "file_transfer.pb.h"
 
+bool send_receive(const fs::proto::Request& request,fs::proto::Response& response);
+
 
 class fs_client
 {

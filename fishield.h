@@ -35,7 +35,7 @@ typedef boost::function<void(fs::proto::FileList)> fs_fp_filelist;
 int fs_client_startup(const std::string& addr, const short port);
 void fs_login(const std::string& username, const std::string& password, fs_fp_void cb_success, fs_fp_error cb_failed);
 void fs_get_filelist(const std::string& dirpath, fs_fp_filelist cb_success, fs_fp_error cb_failed);
-void fs_mkdir(const std::string& path, )
+void fs_mkdir(const std::string& basepath, const std::string& dirname, fs_fp_void cb_success, fs_fp_error cb_failed);
 
 void fs_server_startup(const short port);
 
