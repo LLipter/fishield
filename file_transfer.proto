@@ -38,8 +38,9 @@ message Request
 		LOGIN				= 10;	// try to login
 		FILELIST			= 0;	// request for a filelist
                 MKDIR				= 8;	// create a new directory
-
 		UPLOAD				= 1;	// initiate a new UPLOAD task
+
+		
 		DOWNLOAD			= 2;	// initiate a new DOWNLOAD task
 		CANCEL				= 3;	// cancel a task
 		PAUSE				= 4;	// pause a task

@@ -189,7 +189,7 @@ void mkdir(const std::string& basepath, const std::string& dirname, fs::proto::R
         return;
     }
 
-    std::string newdir_str = base_str + "/" + dirname;
+    std::string newdir_str = base_str + SEPARATOR + dirname;
     path newdir(newdir_str);
     if(exists(newdir)){
         // newdir already exists
