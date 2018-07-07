@@ -177,7 +177,9 @@ void getFilelist(const std::string& dirpath, fs::proto::Response& response){
 
 }
 
-void mkdir(const std::string& basepath, const std::string& dirname, fs::proto::Response& response){
+void mkdir(const std::string& basepath,
+           const std::string& dirname,
+           fs::proto::Response& response){
     using namespace fs::proto;
     using namespace boost::filesystem;
 
@@ -200,6 +202,34 @@ void mkdir(const std::string& basepath, const std::string& dirname, fs::proto::R
     create_directory(newdir);
     response.set_resp_type(Response::SUCCESS);
 
+}
+
+void confirm_upload(const std::string& basepath,
+                    const std::string& filename,
+                    int packet_no,
+                    fs::proto::Response& response){
+    using namespace fs::proto;
+    using namespace boost::filesystem;
+
+    std::string base_str = rootdir + basepath;
+    path base(base_str);
+    if(!exists(base)){
+        // basepath doesn't exist
+        response.set_resp_type(Response::ILLEGALPATH);
+        return;
+    }
+
+    std::string newdir_str = base_str + SEPARATOR + filename;
+    path newfile(newdir_str);
+    if(exists(newfile)){
+        // newfile already exists
+        response.set_resp_type(Response::ILLEGALPATH);
+        return;
+    }
+
+    // TODO : generate task_id and stored it
+    response.set_resp_type(Response::SUCCESS);
+    response.set_task_id(1);
 }
 
 // TODO verify token
@@ -241,6 +271,14 @@ void communicate_thread(server_ptr serptr){
             else
                 response.set_resp_type(Response::ILLEGALTOKEN);
             break;
+        case Request::UPLOAD:
+            if(verify_token(request.token()))
+                confirm_upload(request.remote_path(),
+                               request.filename(),
+                               request.packet_no(),
+                               response);
+            else
+                response.set_resp_type(Response::ILLEGALTOKEN);
         default:
             response.set_resp_type(Response::ILLEGALREQUEST);
             break;
