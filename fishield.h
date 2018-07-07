@@ -2,6 +2,7 @@
 #define FISHIELD_H
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <map>
 #include <vector>
@@ -10,10 +11,12 @@
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
+#include <boost/filesystem.hpp>
 
 #define BUFFER_SIZE         4096
 #define DEFAULT_SERV_ADDR   boost::asio::ip::address::from_string("127.0.0.1")
 #define DEFAULT_SERV_PORT   7614
+#define DEFAULT_ROOT_DIR    "./fs_root"
 
 
 #include "fs_client.h"

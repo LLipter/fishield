@@ -2,6 +2,7 @@
 
 boost::asio::io_service service;
 short _port = DEFAULT_SERV_PORT;
+std::string rootdir = DEFAULT_ROOT_DIR;
 std::vector<server_ptr> clients;
 
 fs_server::fs_server():_sock(service){
@@ -20,6 +21,11 @@ bool fs_server::is_stop(){
 
 void fs_server::set_stop(bool status){
     _is_stop = status;
+}
+
+void fs_server::init(){
+    if(!boost::filesystem::exists(rootdir))
+        boost::filesystem::create_directories(rootdir);
 }
 
 

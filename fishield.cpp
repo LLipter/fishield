@@ -127,7 +127,7 @@ void fs_get_filelist(const std::string& dirpath, fs_fp_filelist cb_success, fs_f
 extern short _port;
 void fs_server_startup(const short port){
     _port = port;
-
+    fs_server::init();
     boost::thread_group threads;
     threads.create_thread(accept_thread);
     threads.create_thread(remove_clients_thread);

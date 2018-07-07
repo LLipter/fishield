@@ -14,6 +14,7 @@ public:
     bool send_response(const fs::proto::Response& response);
     bool is_stop();
     void set_stop(bool status);
+    static void init();
 
 private:
     //member variables
