@@ -8,7 +8,9 @@ SOURCES += \
     file_transfer.pb.cc \
     fs_client.cpp \
     main_client.cpp \
-    fs_server.cpp
+    fs_server.cpp \
+    fs_scheduler.cpp \
+    fs_task.cpp
 
 HEADERS += \
     fishield.h \
@@ -16,7 +18,9 @@ HEADERS += \
     fs_client.h \
     fs_error.h \
     fs_server.h \
-    fs_task.h
+    fs_task.h \
+    fs_scheduler.h \
+    fs_config.h
 
 DISTFILES += \
     Makefile \

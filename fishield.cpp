@@ -166,13 +166,13 @@ void fs_mkdir(const std::string& basepath,
     thd.detach();
 }
 
-void _fs_upload(const std::string& localbasepath,
-                const std::string& remotebasepath,
-                const std::string& filename,
-                fs_fp_int cb_start_upload,
-                fs_fp_void cb_progress,
-                fs_fp_int cb_success,
-                fs_fp_error cb_failed){
+void fs_upload(const std::string& localbasepath,
+               const std::string& remotebasepath,
+               const std::string& filename,
+               fs_fp_int cb_start_upload,
+               fs_fp_double cb_progress,
+               fs_fp_int cb_success,
+               fs_fp_error cb_failed){
 
     using namespace boost::filesystem;
     using namespace fs::proto;
@@ -189,60 +189,28 @@ void _fs_upload(const std::string& localbasepath,
         return;
     }
 
-    Request upload_request;
-    upload_request.set_req_type(Request::UPLOAD);
-    upload_request.set_remote_path(remotebasepath);
-    upload_request.set_filename(filename);
-    upload_request.set_token(_token);
+
+    // generate a task object
+    fs_task task;
+    task.localbasepath = localbasepath;
+    task.remotebasepath = remotebasepath;
+    task.filename = filename;
     int size = file_size(local_path);
     int packet_no = size / PACKET_SIZE;
     if(size % PACKET_SIZE != 0)
         packet_no++;
-    upload_request.set_packet_no(packet_no);
+    task.total_packet_no = packet_no;
+    task.sent_packet_no = 0;
+    task.status = UPLOAD_INIT;
+    task.cb_start_upload = cb_start_upload;
+    task.cb_progress = cb_progress;
+    task.cb_success = cb_success;
+    task.cb_failed = cb_failed;
 
 
-    // send request and receive response
-    Response response;
-    if(send_receive(upload_request,response) == false){
-        cb_failed(Response::NORESPONSE);
-        return;
-    }
-
-    // check response type
-    switch (response.resp_type()) {
-    case Response::SUCCESS:
-        cb_start_upload(response.task_id());
-        // TODO : start uploading process
-        break;
-    case Response::ILLEGALTOKEN:
-    case Response::ILLEGALPATH:
-    case Response::ILLEGALREQUEST:
-        cb_failed(response.resp_type());
-        break;
-    default:
-        cb_failed(Response::UNKNOWN);
-        break;
-    }
-
-}
+    fs_scheduler::instance()->add_task(task);
 
 
-void fs_upload(const std::string& localbasepath,
-               const std::string& remotebasepath,
-               const std::string& filename,
-               fs_fp_int cb_start_upload,
-               fs_fp_void cb_progress,
-               fs_fp_int cb_success,
-               fs_fp_error cb_failed){
-    std::thread thd(_fs_upload,
-                    localbasepath,
-                    remotebasepath,
-                    filename,
-                    cb_start_upload,
-                    cb_progress,
-                    cb_success,
-                    cb_failed);
-    thd.detach();
 }
 
 

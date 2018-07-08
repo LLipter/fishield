@@ -39,7 +39,7 @@ message Request
 		FILELIST			= 0;	// request for a filelist
                 MKDIR				= 8;	// create a new directory
 		UPLOAD				= 1;	// initiate a new UPLOAD task
-
+		PACKET				= 9;	// send a packet
 		
 		DOWNLOAD			= 2;	// initiate a new DOWNLOAD task
 		CANCEL				= 3;	// cancel a task
@@ -47,7 +47,7 @@ message Request
 		RESUME				= 5;	// resume a task
 		RENAME				= 6;	// rename or move a existing file
 		REMOVE				= 7;	// delete a file
-		PACKET				= 9;	// send a packet
+		
 
 	}
 	required RequestType req_type	= 1;
@@ -57,10 +57,11 @@ message Request
 	optional string remote_path	= 5;
 	optional string filename	= 6;
 	optional uint64 packet_no	= 7;	// number of packets that a UPLOAD task will send
-	
-	optional uint64 task_id		= 8;	// task_id of which CANCEL/PAUSE/RESUME/PACKET
-	optional string new_path	= 9;	// new path of a RENAMEd file
 	optional Packet packet		= 10;
+	optional uint64 task_id		= 8;	// task_id of which CANCEL/PAUSE/RESUME/PACKET
+	
+	optional string new_path	= 9;	// new path of a RENAMEd file
+	
 }
 
 
@@ -76,13 +77,18 @@ message Response
 		ILLEGALTOKEN			= 5;	// token is illegal relogin is needed
 		ILLEGALPATH			= 6;	// filepath is illegal
 		ILLEGALREQUEST			= 7;	// received request contains unknown req_type
-
+		ILLEGALTASKSTATUS		= 8;	// illegal task status
+		ILLEGALTASKID			= 9;	// illegal task id
+		ILLEGALPACKETID			= 10;	// illegal packet id
+		
+	
 	}
 	required ResponseType resp_type	= 1;
 	optional string	token		= 5;	// token generate by server when login successfully
 	optional FileList file_list   	= 2;
 	optional uint64 task_id		= 3;	// task_id of a UPLOAD task
-	
+	optional uint64	packet_id	= 6;	// packet id of packet that client should send
+
 	optional uint64 packet_no	= 4;	// number of packets that a DOWNLOAD task will receive
 	
 }

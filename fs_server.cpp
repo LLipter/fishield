@@ -245,7 +245,8 @@ void confirm_upload(const std::string& basepath,
 
     fs_task task;
     task.task_id = task_id;
-    task.path = newfile_str;
+    task.remotebasepath = base_str;
+    task.filename = filename;
     task.total_packet_no = packet_no;
     task.received_packet_no = 0;
     task.last_packet_time = std::time(0);
@@ -253,6 +254,54 @@ void confirm_upload(const std::string& basepath,
     tasks[task_id] = task;
 
 }
+
+
+bool load_task(int taskid){
+    if(tasks.find(taskid) != tasks.end())
+        return true;
+    // TODO : load task from database
+    // if( find in database ) {
+    //      load it to tasks
+    //      return true;
+    // }
+
+    return false;
+}
+
+
+void receive_packet(int taskid, const fs::proto::Packet& packet, fs::proto::Response& response){
+    using namespace fs::proto;
+    if(load_task(taskid)){
+        response.set_resp_type(Response::ILLEGALTASKID);
+        return;
+    }
+
+    fs_task& task = tasks[taskid];
+    if((int)packet.packet_id() != task.received_packet_no){
+        response.set_resp_type(Response::ILLEGALPACKETID);
+        response.set_packet_id(task.received_packet_no);
+        return;
+    }
+
+    response.set_resp_type(Response::SUCCESS);
+    task.received_packet_no++;
+
+    // write data in file
+    std::string filepath = task.remotebasepath
+                            + SEPARATOR
+                            + DEFAULT_HIDDEN_PREFIX
+                            + task.filename;
+    std::ofstream file(filepath, std::ios_base::app | std::ios_base::binary);
+    if(!file){
+        response.set_resp_type(Response::ILLEGALPATH);
+        return;
+    }
+    file << packet.data();
+    file.close();
+
+
+}
+
 
 // TODO verify token
 bool verify_token(const std::string& token){
@@ -274,37 +323,36 @@ void communicate_thread(server_ptr serptr){
         if(ret_req == false)
             break;
         Response response;
-        switch (request.req_type()) {
-        case Request::LOGIN:
+        if(request.req_type() == Request::LOGIN){
             // TODO connect to database to verify password&username
             // TODO generate a random token and stored it
             response.set_resp_type(Response::SUCCESS);
             response.set_token("ttttooookkkkeeeennnn");
-            break;
-        case Request::FILELIST:
-            if(verify_token(request.token()))
+        }else if(!verify_token(request.token())){
+            response.set_resp_type(Response::ILLEGALTOKEN);
+        }else{
+            switch (request.req_type()) {
+            case Request::FILELIST:
                 getFilelist(request.remote_path(), response);
-            else
-                response.set_resp_type(Response::ILLEGALTOKEN);
-            break;
-        case Request::MKDIR:
-            if(verify_token(request.token()))
+                break;
+            case Request::MKDIR:
                 mkdir(request.remote_path(), request.filename(), response);
-            else
-                response.set_resp_type(Response::ILLEGALTOKEN);
-            break;
-        case Request::UPLOAD:
-            if(verify_token(request.token()))
+                break;
+            case Request::UPLOAD:
                 confirm_upload(request.remote_path(),
                                request.filename(),
                                request.packet_no(),
                                response);
-            else
-                response.set_resp_type(Response::ILLEGALTOKEN);
-        default:
-            response.set_resp_type(Response::ILLEGALREQUEST);
-            break;
+            case Request::PACKET:
+                receive_packet(request.task_id(), request.packet(), response);
+                break;
+            default:
+                response.set_resp_type(Response::ILLEGALREQUEST);
+                break;
+            }
+
         }
+
         ret_resp = serptr->send_response(response);
         if(ret_resp == false)
             break;

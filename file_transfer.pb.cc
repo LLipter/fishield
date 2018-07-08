@@ -182,9 +182,9 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Request, remote_path_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Request, filename_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Request, packet_no_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Request, packet_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Request, task_id_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Request, new_path_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Request, packet_),
   9,
   0,
   1,
@@ -192,9 +192,9 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   3,
   4,
   7,
+  6,
   8,
   5,
-  6,
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, _has_bits_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -204,11 +204,13 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, token_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, file_list_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, task_id_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, packet_id_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, packet_no_),
-  4,
+  5,
   0,
   1,
   2,
+  4,
   3,
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
@@ -216,7 +218,7 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 13, 20, sizeof(::fs::proto::FileList)},
   { 22, 29, sizeof(::fs::proto::Packet)},
   { 31, 46, sizeof(::fs::proto::Request)},
-  { 56, 66, sizeof(::fs::proto::Response)},
+  { 56, 67, sizeof(::fs::proto::Response)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -259,23 +261,25 @@ void AddDescriptorsImpl() {
       " \002(\0162\035.fs.proto.Request.RequestType\022\020\n\010u"
       "sername\030\002 \001(\t\022\020\n\010password\030\003 \001(\t\022\r\n\005token"
       "\030\004 \001(\t\022\023\n\013remote_path\030\005 \001(\t\022\020\n\010filename\030"
-      "\006 \001(\t\022\021\n\tpacket_no\030\007 \001(\004\022\017\n\007task_id\030\010 \001("
-      "\004\022\020\n\010new_path\030\t \001(\t\022 \n\006packet\030\n \001(\0132\020.fs"
-      ".proto.Packet\"\222\001\n\013RequestType\022\t\n\005LOGIN\020\n"
-      "\022\014\n\010FILELIST\020\000\022\t\n\005MKDIR\020\010\022\n\n\006UPLOAD\020\001\022\014\n"
-      "\010DOWNLOAD\020\002\022\n\n\006CANCEL\020\003\022\t\n\005PAUSE\020\004\022\n\n\006RE"
-      "SUME\020\005\022\n\n\006RENAME\020\006\022\n\n\006REMOVE\020\007\022\n\n\006PACKET"
-      "\020\t\"\255\002\n\010Response\0222\n\tresp_type\030\001 \002(\0162\037.fs."
+      "\006 \001(\t\022\021\n\tpacket_no\030\007 \001(\004\022 \n\006packet\030\n \001(\013"
+      "2\020.fs.proto.Packet\022\017\n\007task_id\030\010 \001(\004\022\020\n\010n"
+      "ew_path\030\t \001(\t\"\222\001\n\013RequestType\022\t\n\005LOGIN\020\n"
+      "\022\014\n\010FILELIST\020\000\022\t\n\005MKDIR\020\010\022\n\n\006UPLOAD\020\001\022\n\n"
+      "\006PACKET\020\t\022\014\n\010DOWNLOAD\020\002\022\n\n\006CANCEL\020\003\022\t\n\005P"
+      "AUSE\020\004\022\n\n\006RESUME\020\005\022\n\n\006RENAME\020\006\022\n\n\006REMOVE"
+      "\020\007\"\377\002\n\010Response\0222\n\tresp_type\030\001 \002(\0162\037.fs."
       "proto.Response.ResponseType\022\r\n\005token\030\005 \001"
       "(\t\022%\n\tfile_list\030\002 \001(\0132\022.fs.proto.FileLis"
-      "t\022\017\n\007task_id\030\003 \001(\004\022\021\n\tpacket_no\030\004 \001(\004\"\222\001"
-      "\n\014ResponseType\022\013\n\007SUCCESS\020\000\022\016\n\nNOSUCHUSE"
-      "R\020\001\022\021\n\rILLEGALPASSWD\020\002\022\013\n\007UNKNOWN\020\003\022\016\n\nN"
-      "ORESPONSE\020\004\022\020\n\014ILLEGALTOKEN\020\005\022\017\n\013ILLEGAL"
-      "PATH\020\006\022\022\n\016ILLEGALREQUEST\020\007"
+      "t\022\017\n\007task_id\030\003 \001(\004\022\021\n\tpacket_id\030\006 \001(\004\022\021\n"
+      "\tpacket_no\030\004 \001(\004\"\321\001\n\014ResponseType\022\013\n\007SUC"
+      "CESS\020\000\022\016\n\nNOSUCHUSER\020\001\022\021\n\rILLEGALPASSWD\020"
+      "\002\022\013\n\007UNKNOWN\020\003\022\016\n\nNORESPONSE\020\004\022\020\n\014ILLEGA"
+      "LTOKEN\020\005\022\017\n\013ILLEGALPATH\020\006\022\022\n\016ILLEGALREQU"
+      "EST\020\007\022\025\n\021ILLEGALTASKSTATUS\020\010\022\021\n\rILLEGALT"
+      "ASKID\020\t\022\023\n\017ILLEGALPACKETID\020\n"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 986);
+      descriptor, 1068);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "file_transfer.proto", &protobuf_RegisterTypes);
 }
@@ -346,13 +350,13 @@ const Request_RequestType Request::LOGIN;
 const Request_RequestType Request::FILELIST;
 const Request_RequestType Request::MKDIR;
 const Request_RequestType Request::UPLOAD;
+const Request_RequestType Request::PACKET;
 const Request_RequestType Request::DOWNLOAD;
 const Request_RequestType Request::CANCEL;
 const Request_RequestType Request::PAUSE;
 const Request_RequestType Request::RESUME;
 const Request_RequestType Request::RENAME;
 const Request_RequestType Request::REMOVE;
-const Request_RequestType Request::PACKET;
 const Request_RequestType Request::RequestType_MIN;
 const Request_RequestType Request::RequestType_MAX;
 const int Request::RequestType_ARRAYSIZE;
@@ -371,6 +375,9 @@ bool Response_ResponseType_IsValid(int value) {
     case 5:
     case 6:
     case 7:
+    case 8:
+    case 9:
+    case 10:
       return true;
     default:
       return false;
@@ -386,6 +393,9 @@ const Response_ResponseType Response::NORESPONSE;
 const Response_ResponseType Response::ILLEGALTOKEN;
 const Response_ResponseType Response::ILLEGALPATH;
 const Response_ResponseType Response::ILLEGALREQUEST;
+const Response_ResponseType Response::ILLEGALTASKSTATUS;
+const Response_ResponseType Response::ILLEGALTASKID;
+const Response_ResponseType Response::ILLEGALPACKETID;
 const Response_ResponseType Response::ResponseType_MIN;
 const Response_ResponseType Response::ResponseType_MAX;
 const int Response::ResponseType_ARRAYSIZE;
@@ -1408,9 +1418,9 @@ const int Request::kTokenFieldNumber;
 const int Request::kRemotePathFieldNumber;
 const int Request::kFilenameFieldNumber;
 const int Request::kPacketNoFieldNumber;
+const int Request::kPacketFieldNumber;
 const int Request::kTaskIdFieldNumber;
 const int Request::kNewPathFieldNumber;
-const int Request::kPacketFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Request::Request()
@@ -2145,6 +2155,7 @@ const int Response::kRespTypeFieldNumber;
 const int Response::kTokenFieldNumber;
 const int Response::kFileListFieldNumber;
 const int Response::kTaskIdFieldNumber;
+const int Response::kPacketIdFieldNumber;
 const int Response::kPacketNoFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -2222,7 +2233,7 @@ void Response::Clear() {
       file_list_->Clear();
     }
   }
-  if (cached_has_bits & 28u) {
+  if (cached_has_bits & 60u) {
     ::memset(&task_id_, 0, static_cast<size_t>(
         reinterpret_cast<char*>(&resp_type_) -
         reinterpret_cast<char*>(&task_id_)) + sizeof(resp_type_));
@@ -2317,6 +2328,20 @@ bool Response::MergePartialFromCodedStream(
         break;
       }
 
+      // optional uint64 packet_id = 6;
+      case 6: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(48u /* 48 & 0xFF */)) {
+          set_has_packet_id();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &packet_id_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -2345,7 +2370,7 @@ void Response::SerializeWithCachedSizes(
 
   cached_has_bits = _has_bits_[0];
   // required .fs.proto.Response.ResponseType resp_type = 1;
-  if (cached_has_bits & 0x00000010u) {
+  if (cached_has_bits & 0x00000020u) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       1, this->resp_type(), output);
   }
@@ -2376,6 +2401,11 @@ void Response::SerializeWithCachedSizes(
       5, this->token(), output);
   }
 
+  // optional uint64 packet_id = 6;
+  if (cached_has_bits & 0x00000010u) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(6, this->packet_id(), output);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         _internal_metadata_.unknown_fields(), output);
@@ -2392,7 +2422,7 @@ void Response::SerializeWithCachedSizes(
 
   cached_has_bits = _has_bits_[0];
   // required .fs.proto.Response.ResponseType resp_type = 1;
-  if (cached_has_bits & 0x00000010u) {
+  if (cached_has_bits & 0x00000020u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       1, this->resp_type(), target);
   }
@@ -2425,6 +2455,11 @@ void Response::SerializeWithCachedSizes(
         5, this->token(), target);
   }
 
+  // optional uint64 packet_id = 6;
+  if (cached_has_bits & 0x00000010u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(6, this->packet_id(), target);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields(), target);
@@ -2447,7 +2482,7 @@ size_t Response::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->resp_type());
   }
-  if (_has_bits_[0 / 32] & 15u) {
+  if (_has_bits_[0 / 32] & 31u) {
     // optional string token = 5;
     if (has_token()) {
       total_size += 1 +
@@ -2474,6 +2509,13 @@ size_t Response::ByteSizeLong() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt64Size(
           this->packet_no());
+    }
+
+    // optional uint64 packet_id = 6;
+    if (has_packet_id()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt64Size(
+          this->packet_id());
     }
 
   }
@@ -2505,7 +2547,7 @@ void Response::MergeFrom(const Response& from) {
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 31u) {
+  if (cached_has_bits & 63u) {
     if (cached_has_bits & 0x00000001u) {
       set_has_token();
       token_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.token_);
@@ -2520,6 +2562,9 @@ void Response::MergeFrom(const Response& from) {
       packet_no_ = from.packet_no_;
     }
     if (cached_has_bits & 0x00000010u) {
+      packet_id_ = from.packet_id_;
+    }
+    if (cached_has_bits & 0x00000020u) {
       resp_type_ = from.resp_type_;
     }
     _has_bits_[0] |= cached_has_bits;
@@ -2541,7 +2586,7 @@ void Response::CopyFrom(const Response& from) {
 }
 
 bool Response::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000010) != 0x00000010) return false;
+  if ((_has_bits_[0] & 0x00000020) != 0x00000020) return false;
   if (has_file_list()) {
     if (!this->file_list_->IsInitialized()) return false;
   }
@@ -2559,6 +2604,7 @@ void Response::InternalSwap(Response* other) {
   swap(file_list_, other->file_list_);
   swap(task_id_, other->task_id_);
   swap(packet_no_, other->packet_no_);
+  swap(packet_id_, other->packet_id_);
   swap(resp_type_, other->resp_type_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);

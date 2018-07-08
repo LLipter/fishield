@@ -9,10 +9,7 @@ short _server_port = DEFAULT_SERV_PORT;
 
 fs_client::fs_client():
     _sock(service),
-    _ep(_server_addr, _server_port)
-{
-    memset(data_buffer, 0, sizeof(data_buffer));
-}
+    _ep(_server_addr, _server_port){}
 
 bool fs_client::connect(){
     boost::system::error_code error;

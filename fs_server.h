@@ -1,9 +1,8 @@
 #ifndef FS_SERVER_H
 #define FS_SERVER_H
 
-#include "fishield.h"
-#include "file_transfer.pb.h"
-
+#include "fs_config.h"
+#include "fs_task.h"
 
 class fs_server
 {
@@ -18,7 +17,7 @@ public:
 
 private:
     //member variables
-    char data_buffer[BUFFER_SIZE];
+    char data_buffer[PACKET_SIZE];
     boost::asio::ip::tcp::socket _sock;
     bool _is_stop;
 };

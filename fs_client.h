@@ -1,8 +1,7 @@
 #ifndef FS_CLIENT_H
 #define FS_CLIENT_H
 
-#include "fishield.h"
-#include "file_transfer.pb.h"
+#include "fs_config.h"
 
 bool send_receive(const fs::proto::Request& request,fs::proto::Response& response);
 
@@ -17,7 +16,6 @@ public:
 private:
     boost::asio::ip::tcp::socket _sock;
     boost::asio::ip::tcp::endpoint _ep;
-    char data_buffer[BUFFER_SIZE];
 };
 
 
