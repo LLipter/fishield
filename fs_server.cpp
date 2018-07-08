@@ -315,6 +315,90 @@ void receive_packet(int taskid, const fs::proto::Packet& packet, fs::proto::Resp
 
 }
 
+void confirm_download(const std::string& basepath,
+                    const std::string& filename,
+                    fs::proto::Response& response){
+    using namespace fs::proto;
+    using namespace boost::filesystem;
+
+    std::string base_str;
+    std::string filepath_str;
+    if(basepath != "/")
+        base_str = rootdir + basepath;
+    else
+        base_str = rootdir;
+    filepath_str = base_str + SEPARATOR + filename;
+    path filepath(filepath_str);
+    if(!exists(filepath)){
+        // requested file doesn't exist
+        response.set_resp_type(Response::ILLEGALPATH);
+        return;
+    }
+
+
+    response.set_resp_type(Response::SUCCESS);
+    response.set_task_id(++task_id);
+
+    fs_task task;
+    task.task_id = task_id;
+    task.remotebasepath = base_str;
+    task.filename = filename;
+    int size = file_size(filepath);
+    int packet_no = size / PACKET_SIZE;
+    if(size % PACKET_SIZE != 0)
+        packet_no++;
+    task.total_packet_no = packet_no;
+    task.sent_packet_no = 0;
+    task.last_packet_time = std::time(0);
+    task.status = DOWNLOADING;
+    tasks[task_id] = task;
+
+}
+
+void send_packet(int taskid, int packetid, fs::proto::Response& response){
+    using namespace fs::proto;
+    if(!load_task(taskid)){
+        response.set_resp_type(Response::ILLEGALTASKID);
+        return;
+    }
+
+    // generate packet
+    fs_task& task = tasks[taskid];
+    Packet* packet = response.mutable_packet();
+    packet->set_packet_id(packetid);
+    std::string filepath = task.remotebasepath + SEPARATOR + task.filename;
+    std::ifstream file(filepath, std::ios_base::binary);
+    if(!file){
+        response.set_resp_type(Response::ILLEGALPATH);
+        return;
+    }
+    char* buf = new char[PACKET_SIZE];
+    file.seekg(packetid * PACKET_SIZE);
+    file.read(buf, PACKET_SIZE);
+    packet->set_data(buf, file.gcount());
+    file.close();
+    delete[] buf;
+
+
+    response.set_resp_type(Response::SUCCESS);
+    task.sent_packet_no++;
+    task.last_packet_time = std::time(0);
+
+
+}
+
+
+void end_of_download(int taskid, fs::proto::Response& response){
+    using namespace fs::proto;
+    if(!load_task(taskid)){
+        response.set_resp_type(Response::ILLEGALTASKID);
+        return;
+    }
+
+    response.set_resp_type(Response::SUCCESS);
+    tasks[taskid].status = DOWNLOADED;
+}
+
 
 // TODO verify token
 bool verify_token(const std::string& token){
@@ -359,6 +443,19 @@ void communicate_thread(server_ptr serptr){
                 break;
             case Request::SEND_PACKET:
                 receive_packet(request.task_id(), request.packet(), response);
+                break;
+            case Request::DOWNLOAD:
+                confirm_download(request.remote_path(),
+                                 request.filename(),
+                                 response);
+                break;
+            case Request::RECEIVE_PACKET:
+                send_packet(request.task_id(),
+                            request.packet_id(),
+                            response);
+                break;
+            case Request::DOWNLOAD_CONFIRM:
+                end_of_download(request.task_id(), response);
                 break;
             default:
                 response.set_resp_type(Response::ILLEGALREQUEST);

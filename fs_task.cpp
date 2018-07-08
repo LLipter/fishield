@@ -95,6 +95,11 @@ void fs_task::upload(){
 void fs_task::_download(){
     using namespace fs::proto;
 
+    std::string filepath = this->localbasepath
+                            + SEPARATOR
+                            + DEFAULT_HIDDEN_PREFIX
+                            + this->filename;
+
     while(received_packet_no < total_packet_no){
         if(status == CANCELED_PAUSED ||
                 status == CANCELED_WORKING ||
@@ -121,12 +126,13 @@ void fs_task::_download(){
 
         // check response type
         if(response.resp_type() == Response::SUCCESS){
+
+            if((int)response.packet_id() != received_packet_no)
+                continue;
+
             received_packet_no++;
+
             // write data in file
-            std::string filepath = this->localbasepath
-                                    + SEPARATOR
-                                    + DEFAULT_HIDDEN_PREFIX
-                                    + this->filename;
             std::ofstream file(filepath, std::ios_base::app | std::ios_base::binary);
             if(!file){
                 cb_failed(Response::ILLEGALPATH);
@@ -163,6 +169,9 @@ void fs_task::_download(){
 
     cb_success(task_id);
     status = DOWNLOADED;
+
+    boost::filesystem::rename(filepath,
+                              this->localbasepath + SEPARATOR + this->filename);
 }
 
 
