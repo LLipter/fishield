@@ -28,10 +28,17 @@ void fs_mkdir(const std::string& basepath,
 void fs_upload(const std::string& localbasepath,
                const std::string& remotebasepath,
                const std::string& filename,
-               fs_fp_int cb_start_upload,
-               fs_fp_double cb_progress,
+               fs_fp_intdouble cb_progress,
                fs_fp_int cb_success,
                fs_fp_error cb_failed);
+
+void fs_download(const std::string& localbasepath,
+               const std::string& remotebasepath,
+               const std::string& filename,
+               fs_fp_intdouble cb_progress,
+               fs_fp_int cb_success,
+               fs_fp_error cb_failed);
+
 
 void fs_server_startup(const short port);
 

@@ -44,15 +44,11 @@ void _fs_login(const std::string& username,
     }
 
     // check response type
-    switch (response.resp_type()) {
-    case Response::SUCCESS:
+    if(response.resp_type() == Response::SUCCESS){
         _token = response.token();
         cb_success();
-        break;
-    default:
+    }else
         cb_failed(response.resp_type());
-        break;
-    }
 }
 
 
@@ -86,14 +82,10 @@ void _fs_get_filelist(const std::string& dirpath,
     }
 
     // check response type
-    switch (response.resp_type()) {
-    case Response::SUCCESS:
+    if(response.resp_type() == Response::SUCCESS)
         cb_success(response.file_list());
-        break;
-    default:
+    else
         cb_failed(response.resp_type());
-        break;
-    }
 
 
 }
@@ -128,14 +120,10 @@ void _fs_mkdir(const std::string& basepath,
     }
 
     // check response type
-    switch (response.resp_type()) {
-    case Response::SUCCESS:
+    if(response.resp_type() == Response::SUCCESS)
         cb_success();
-        break;
-    default:
+    else
         cb_failed(response.resp_type());
-        break;
-    }
 }
 
 
@@ -154,21 +142,21 @@ void fs_mkdir(const std::string& basepath,
 void fs_upload(const std::string& localbasepath,
                const std::string& remotebasepath,
                const std::string& filename,
-               fs_fp_int cb_start_upload,
-               fs_fp_double cb_progress,
+               fs_fp_intdouble cb_progress,
                fs_fp_int cb_success,
                fs_fp_error cb_failed){
 
     using namespace boost::filesystem;
     using namespace fs::proto;
 
+    // local file doesn't exist
     path local_path(localbasepath + SEPARATOR + filename);
     if(!exists(local_path)){
         cb_failed(Response::ILLEGALPATH);
         return;
     }
 
-    // TODO : upload a directory
+    // only support upload regular file
     if(is_directory(local_path)){
         cb_failed(Response::ILLEGALPATH);
         return;
@@ -187,7 +175,6 @@ void fs_upload(const std::string& localbasepath,
     task.total_packet_no = packet_no;
     task.sent_packet_no = 0;
     task.status = UPLOAD_INIT;
-    task.cb_start_upload = cb_start_upload;
     task.cb_progress = cb_progress;
     task.cb_success = cb_success;
     task.cb_failed = cb_failed;
@@ -196,6 +183,44 @@ void fs_upload(const std::string& localbasepath,
     fs_scheduler::instance()->add_task(task);
 
 
+}
+
+void fs_download(const std::string& localbasepath,
+               const std::string& remotebasepath,
+               const std::string& filename,
+               fs_fp_intdouble cb_progress,
+               fs_fp_int cb_success,
+                 fs_fp_error cb_failed){
+    using namespace boost::filesystem;
+    using namespace fs::proto;
+
+    // local file already exists
+    path local_path(localbasepath + SEPARATOR + filename);
+    if(exists(local_path)){
+        cb_failed(Response::ILLEGALPATH);
+        return;
+    }
+
+    // only support download regular file
+    if(is_directory(local_path)){
+        cb_failed(Response::ILLEGALPATH);
+        return;
+    }
+
+
+    // generate a task object
+    fs_task task;
+    task.localbasepath = localbasepath;
+    task.remotebasepath = remotebasepath;
+    task.filename = filename;
+    task.received_packet_no = 0;
+    task.status = DOWNLOAD_INIT;
+    task.cb_progress = cb_progress;
+    task.cb_success = cb_success;
+    task.cb_failed = cb_failed;
+
+
+    fs_scheduler::instance()->add_task(task);
 }
 
 

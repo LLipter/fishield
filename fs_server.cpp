@@ -357,7 +357,7 @@ void communicate_thread(server_ptr serptr){
                                request.packet_no(),
                                response);
                 break;
-            case Request::PACKET:
+            case Request::SEND_PACKET:
                 receive_packet(request.task_id(), request.packet(), response);
                 break;
             default:

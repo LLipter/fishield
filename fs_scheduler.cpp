@@ -1,6 +1,8 @@
 #include "fs_scheduler.h"
 #include "fs_client.h"
 
+extern std::string _token;
+
 fs_scheduler fs_scheduler::scheduler_instance;
 
 fs_scheduler* fs_scheduler::instance(){
@@ -27,10 +29,24 @@ void fs_scheduler::scheduler(){
                     task_count++;
                 }
                 break;
+            case UPLOAD_PAUSING:
+                iter->second.status = UPLOAD_PAUSED;
+                task_count--;
+                break;
+
             case DOWNLOAD_INIT:
             case DOWNLOAD_RESUME:
-                // TODO : download
+                if(task_count < max_task_num) {
+                    iter->second.status = DOWNLOADING;
+                    iter->second.download();
+                    task_count++;
+                }
                 break;
+            case DOWNLOAD_PAUSING:
+                iter->second.status = DOWNLOAD_PAUSED;
+                task_count--;
+                break;
+
             case UPLOADED:
             case DOWNLOADED:
             case CANCELED_WORKING:
@@ -38,6 +54,8 @@ void fs_scheduler::scheduler(){
                 removed_task.push_back(iter->first);
                 break;
             case CANCELED_PAUSED:
+            case UPLOAD_PAUSED:
+            case DOWNLOAD_PAUSED:
                 removed_task.push_back(iter->first);
                 break;
             default:
@@ -60,10 +78,8 @@ void fs_scheduler::set_task_max(int num){
     max_task_num = num;
 }
 
-extern std::string _token;
-void fs_scheduler::_add_task(fs_task task){
+void fs_scheduler::add_upload_task(fs_task task){
     using namespace fs::proto;
-
     Request upload_request;
     upload_request.set_req_type(Request::UPLOAD);
     upload_request.set_remote_path(task.remotebasepath);
@@ -79,16 +95,49 @@ void fs_scheduler::_add_task(fs_task task){
     }
 
     // check response type
-    switch (response.resp_type()) {
-    case Response::SUCCESS:
-        task.cb_start_upload(response.task_id());
+    if(response.resp_type() == Response::SUCCESS){
         task.task_id = response.task_id();
         task_map[task.task_id] = task;
-        break;
-    default:
+    }else
         task.cb_failed(response.resp_type());
-        break;
+}
+
+void fs_scheduler::add_download_task(fs_task task){
+    using namespace fs::proto;
+    Request download_request;
+    download_request.set_req_type(Request::DOWNLOAD);
+    download_request.set_remote_path(task.remotebasepath);
+    download_request.set_filename(task.filename);
+    download_request.set_token(_token);
+
+    // send request and receive response
+    Response response;
+    if(send_receive(download_request,response) == false){
+        task.cb_failed(Response::NORESPONSE);
+        return;
     }
+
+    // check response type
+    if(response.resp_type() == Response::SUCCESS){
+        task.task_id = response.task_id();
+        task.total_packet_no = response.packet_no();
+        task_map[task.task_id] = task;
+    }else
+        task.cb_failed(response.resp_type());
+}
+
+
+void fs_scheduler::_add_task(fs_task task){
+
+
+    if(task.status == UPLOAD_INIT)
+        add_upload_task(task);
+    else if(task.status == DOWNLOAD_INIT)
+        add_download_task(task);
+    else
+        std::cout << "_add_task() : ILLEGAL TASK STATUS" << std::endl;
+
+
 
 }
 

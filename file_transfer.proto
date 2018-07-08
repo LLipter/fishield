@@ -35,18 +35,18 @@ message Request
 {
 	enum RequestType
 	{
-		LOGIN				= 10;	// try to login
-		FILELIST			= 0;	// request for a filelist
-                MKDIR				= 8;	// create a new directory
-		UPLOAD				= 1;	// initiate a new UPLOAD task
-		PACKET				= 9;	// send a packet
-		
-		DOWNLOAD			= 2;	// initiate a new DOWNLOAD task
-		CANCEL				= 3;	// cancel a task
-		PAUSE				= 4;	// pause a task
-		RESUME				= 5;	// resume a task
-		RENAME				= 6;	// rename or move a existing file
-		REMOVE				= 7;	// delete a file
+		LOGIN				= 0;	// try to login
+		FILELIST			= 1;	// request for a filelist
+                MKDIR				= 2;	// create a new directory
+		UPLOAD				= 3;	// initiate a new UPLOAD task
+		SEND_PACKET			= 4;	// send a packet
+		DOWNLOAD			= 5;	// initiate a new DOWNLOAD task
+		RECEIVE_PACKET			= 6;
+		DOWNLOAD_CONFIRM		= 10;	// confirm that a download task completes		
+
+		CANCEL				= 7;	// cancel a task
+		RENAME				= 8;	// rename or move a existing file
+		REMOVE				= 9;	// delete a file
 		
 
 	}
@@ -57,10 +57,11 @@ message Request
 	optional string remote_path	= 5;
 	optional string filename	= 6;
 	optional uint64 packet_no	= 7;	// number of packets that a UPLOAD task will send
-	optional Packet packet		= 10;
-	optional uint64 task_id		= 8;	// task_id of which CANCEL/PAUSE/RESUME/PACKET
-	
-	optional string new_path	= 9;	// new path of a RENAMEd file
+	optional Packet packet		= 8;
+	optional uint64 task_id		= 9;	// task_id of which CANCEL/PAUSE/RESUME/PACKET
+	optional uint64	packet_id	= 10;
+
+	optional string new_path	= 11;	// new path of a RENAMEd file
 	
 }
 
@@ -84,12 +85,12 @@ message Response
 	
 	}
 	required ResponseType resp_type	= 1;
-	optional string	token		= 5;	// token generate by server when login successfully
-	optional FileList file_list   	= 2;
-	optional uint64 task_id		= 3;	// task_id of a UPLOAD task
-	optional uint64	packet_id	= 6;	// packet id of packet that client should send
-
-	optional uint64 packet_no	= 4;	// number of packets that a DOWNLOAD task will receive
+	optional string	token		= 2;	// token generate by server when login successfully
+	optional FileList file_list   	= 3;
+	optional uint64 task_id		= 4;	// task_id of a UPLOAD task
+	optional uint64	packet_id	= 5;	// packet id of packet that client should send
+	optional uint64 packet_no	= 6;	// number of packets that a DOWNLOAD task will receive
+	optional Packet	packet		= 7;
 	
 }
 

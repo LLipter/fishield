@@ -99,21 +99,21 @@ inline bool File_FileType_Parse(
     File_FileType_descriptor(), name, value);
 }
 enum Request_RequestType {
-  Request_RequestType_LOGIN = 10,
-  Request_RequestType_FILELIST = 0,
-  Request_RequestType_MKDIR = 8,
-  Request_RequestType_UPLOAD = 1,
-  Request_RequestType_PACKET = 9,
-  Request_RequestType_DOWNLOAD = 2,
-  Request_RequestType_CANCEL = 3,
-  Request_RequestType_PAUSE = 4,
-  Request_RequestType_RESUME = 5,
-  Request_RequestType_RENAME = 6,
-  Request_RequestType_REMOVE = 7
+  Request_RequestType_LOGIN = 0,
+  Request_RequestType_FILELIST = 1,
+  Request_RequestType_MKDIR = 2,
+  Request_RequestType_UPLOAD = 3,
+  Request_RequestType_SEND_PACKET = 4,
+  Request_RequestType_DOWNLOAD = 5,
+  Request_RequestType_RECEIVE_PACKET = 6,
+  Request_RequestType_DOWNLOAD_CONFIRM = 10,
+  Request_RequestType_CANCEL = 7,
+  Request_RequestType_RENAME = 8,
+  Request_RequestType_REMOVE = 9
 };
 bool Request_RequestType_IsValid(int value);
-const Request_RequestType Request_RequestType_RequestType_MIN = Request_RequestType_FILELIST;
-const Request_RequestType Request_RequestType_RequestType_MAX = Request_RequestType_LOGIN;
+const Request_RequestType Request_RequestType_RequestType_MIN = Request_RequestType_LOGIN;
+const Request_RequestType Request_RequestType_RequestType_MAX = Request_RequestType_DOWNLOAD_CONFIRM;
 const int Request_RequestType_RequestType_ARRAYSIZE = Request_RequestType_RequestType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* Request_RequestType_descriptor();
@@ -712,16 +712,16 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
     Request_RequestType_MKDIR;
   static const RequestType UPLOAD =
     Request_RequestType_UPLOAD;
-  static const RequestType PACKET =
-    Request_RequestType_PACKET;
+  static const RequestType SEND_PACKET =
+    Request_RequestType_SEND_PACKET;
   static const RequestType DOWNLOAD =
     Request_RequestType_DOWNLOAD;
+  static const RequestType RECEIVE_PACKET =
+    Request_RequestType_RECEIVE_PACKET;
+  static const RequestType DOWNLOAD_CONFIRM =
+    Request_RequestType_DOWNLOAD_CONFIRM;
   static const RequestType CANCEL =
     Request_RequestType_CANCEL;
-  static const RequestType PAUSE =
-    Request_RequestType_PAUSE;
-  static const RequestType RESUME =
-    Request_RequestType_RESUME;
   static const RequestType RENAME =
     Request_RequestType_RENAME;
   static const RequestType REMOVE =
@@ -824,10 +824,10 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::std::string* release_filename();
   void set_allocated_filename(::std::string* filename);
 
-  // optional string new_path = 9;
+  // optional string new_path = 11;
   bool has_new_path() const;
   void clear_new_path();
-  static const int kNewPathFieldNumber = 9;
+  static const int kNewPathFieldNumber = 11;
   const ::std::string& new_path() const;
   void set_new_path(const ::std::string& value);
   #if LANG_CXX11
@@ -839,10 +839,10 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::std::string* release_new_path();
   void set_allocated_new_path(::std::string* new_path);
 
-  // optional .fs.proto.Packet packet = 10;
+  // optional .fs.proto.Packet packet = 8;
   bool has_packet() const;
   void clear_packet();
-  static const int kPacketFieldNumber = 10;
+  static const int kPacketFieldNumber = 8;
   private:
   const ::fs::proto::Packet& _internal_packet() const;
   public:
@@ -858,12 +858,19 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::google::protobuf::uint64 packet_no() const;
   void set_packet_no(::google::protobuf::uint64 value);
 
-  // optional uint64 task_id = 8;
+  // optional uint64 task_id = 9;
   bool has_task_id() const;
   void clear_task_id();
-  static const int kTaskIdFieldNumber = 8;
+  static const int kTaskIdFieldNumber = 9;
   ::google::protobuf::uint64 task_id() const;
   void set_task_id(::google::protobuf::uint64 value);
+
+  // optional uint64 packet_id = 10;
+  bool has_packet_id() const;
+  void clear_packet_id();
+  static const int kPacketIdFieldNumber = 10;
+  ::google::protobuf::uint64 packet_id() const;
+  void set_packet_id(::google::protobuf::uint64 value);
 
   // required .fs.proto.Request.RequestType req_type = 1;
   bool has_req_type() const;
@@ -892,6 +899,8 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   void clear_has_packet();
   void set_has_task_id();
   void clear_has_task_id();
+  void set_has_packet_id();
+  void clear_has_packet_id();
   void set_has_new_path();
   void clear_has_new_path();
 
@@ -907,6 +916,7 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::fs::proto::Packet* packet_;
   ::google::protobuf::uint64 packet_no_;
   ::google::protobuf::uint64 task_id_;
+  ::google::protobuf::uint64 packet_id_;
   int req_type_;
   friend struct ::protobuf_file_5ftransfer_2eproto::TableStruct;
 };
@@ -1050,10 +1060,10 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
 
   // accessors -------------------------------------------------------
 
-  // optional string token = 5;
+  // optional string token = 2;
   bool has_token() const;
   void clear_token();
-  static const int kTokenFieldNumber = 5;
+  static const int kTokenFieldNumber = 2;
   const ::std::string& token() const;
   void set_token(const ::std::string& value);
   #if LANG_CXX11
@@ -1065,10 +1075,10 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::std::string* release_token();
   void set_allocated_token(::std::string* token);
 
-  // optional .fs.proto.FileList file_list = 2;
+  // optional .fs.proto.FileList file_list = 3;
   bool has_file_list() const;
   void clear_file_list();
-  static const int kFileListFieldNumber = 2;
+  static const int kFileListFieldNumber = 3;
   private:
   const ::fs::proto::FileList& _internal_file_list() const;
   public:
@@ -1077,26 +1087,38 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::fs::proto::FileList* mutable_file_list();
   void set_allocated_file_list(::fs::proto::FileList* file_list);
 
-  // optional uint64 task_id = 3;
+  // optional .fs.proto.Packet packet = 7;
+  bool has_packet() const;
+  void clear_packet();
+  static const int kPacketFieldNumber = 7;
+  private:
+  const ::fs::proto::Packet& _internal_packet() const;
+  public:
+  const ::fs::proto::Packet& packet() const;
+  ::fs::proto::Packet* release_packet();
+  ::fs::proto::Packet* mutable_packet();
+  void set_allocated_packet(::fs::proto::Packet* packet);
+
+  // optional uint64 task_id = 4;
   bool has_task_id() const;
   void clear_task_id();
-  static const int kTaskIdFieldNumber = 3;
+  static const int kTaskIdFieldNumber = 4;
   ::google::protobuf::uint64 task_id() const;
   void set_task_id(::google::protobuf::uint64 value);
 
-  // optional uint64 packet_no = 4;
-  bool has_packet_no() const;
-  void clear_packet_no();
-  static const int kPacketNoFieldNumber = 4;
-  ::google::protobuf::uint64 packet_no() const;
-  void set_packet_no(::google::protobuf::uint64 value);
-
-  // optional uint64 packet_id = 6;
+  // optional uint64 packet_id = 5;
   bool has_packet_id() const;
   void clear_packet_id();
-  static const int kPacketIdFieldNumber = 6;
+  static const int kPacketIdFieldNumber = 5;
   ::google::protobuf::uint64 packet_id() const;
   void set_packet_id(::google::protobuf::uint64 value);
+
+  // optional uint64 packet_no = 6;
+  bool has_packet_no() const;
+  void clear_packet_no();
+  static const int kPacketNoFieldNumber = 6;
+  ::google::protobuf::uint64 packet_no() const;
+  void set_packet_no(::google::protobuf::uint64 value);
 
   // required .fs.proto.Response.ResponseType resp_type = 1;
   bool has_resp_type() const;
@@ -1119,15 +1141,18 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   void clear_has_packet_id();
   void set_has_packet_no();
   void clear_has_packet_no();
+  void set_has_packet();
+  void clear_has_packet();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   ::google::protobuf::internal::ArenaStringPtr token_;
   ::fs::proto::FileList* file_list_;
+  ::fs::proto::Packet* packet_;
   ::google::protobuf::uint64 task_id_;
-  ::google::protobuf::uint64 packet_no_;
   ::google::protobuf::uint64 packet_id_;
+  ::google::protobuf::uint64 packet_no_;
   int resp_type_;
   friend struct ::protobuf_file_5ftransfer_2eproto::TableStruct;
 };
@@ -1481,16 +1506,16 @@ inline void Packet::set_allocated_data(::std::string* data) {
 
 // required .fs.proto.Request.RequestType req_type = 1;
 inline bool Request::has_req_type() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
+  return (_has_bits_[0] & 0x00000400u) != 0;
 }
 inline void Request::set_has_req_type() {
-  _has_bits_[0] |= 0x00000200u;
+  _has_bits_[0] |= 0x00000400u;
 }
 inline void Request::clear_has_req_type() {
-  _has_bits_[0] &= ~0x00000200u;
+  _has_bits_[0] &= ~0x00000400u;
 }
 inline void Request::clear_req_type() {
-  req_type_ = 10;
+  req_type_ = 0;
   clear_has_req_type();
 }
 inline ::fs::proto::Request_RequestType Request::req_type() const {
@@ -1858,7 +1883,7 @@ inline void Request::set_packet_no(::google::protobuf::uint64 value) {
   // @@protoc_insertion_point(field_set:fs.proto.Request.packet_no)
 }
 
-// optional .fs.proto.Packet packet = 10;
+// optional .fs.proto.Packet packet = 8;
 inline bool Request::has_packet() const {
   return (_has_bits_[0] & 0x00000040u) != 0;
 }
@@ -1916,7 +1941,7 @@ inline void Request::set_allocated_packet(::fs::proto::Packet* packet) {
   // @@protoc_insertion_point(field_set_allocated:fs.proto.Request.packet)
 }
 
-// optional uint64 task_id = 8;
+// optional uint64 task_id = 9;
 inline bool Request::has_task_id() const {
   return (_has_bits_[0] & 0x00000100u) != 0;
 }
@@ -1940,7 +1965,31 @@ inline void Request::set_task_id(::google::protobuf::uint64 value) {
   // @@protoc_insertion_point(field_set:fs.proto.Request.task_id)
 }
 
-// optional string new_path = 9;
+// optional uint64 packet_id = 10;
+inline bool Request::has_packet_id() const {
+  return (_has_bits_[0] & 0x00000200u) != 0;
+}
+inline void Request::set_has_packet_id() {
+  _has_bits_[0] |= 0x00000200u;
+}
+inline void Request::clear_has_packet_id() {
+  _has_bits_[0] &= ~0x00000200u;
+}
+inline void Request::clear_packet_id() {
+  packet_id_ = GOOGLE_ULONGLONG(0);
+  clear_has_packet_id();
+}
+inline ::google::protobuf::uint64 Request::packet_id() const {
+  // @@protoc_insertion_point(field_get:fs.proto.Request.packet_id)
+  return packet_id_;
+}
+inline void Request::set_packet_id(::google::protobuf::uint64 value) {
+  set_has_packet_id();
+  packet_id_ = value;
+  // @@protoc_insertion_point(field_set:fs.proto.Request.packet_id)
+}
+
+// optional string new_path = 11;
 inline bool Request::has_new_path() const {
   return (_has_bits_[0] & 0x00000020u) != 0;
 }
@@ -2012,13 +2061,13 @@ inline void Request::set_allocated_new_path(::std::string* new_path) {
 
 // required .fs.proto.Response.ResponseType resp_type = 1;
 inline bool Response::has_resp_type() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
+  return (_has_bits_[0] & 0x00000040u) != 0;
 }
 inline void Response::set_has_resp_type() {
-  _has_bits_[0] |= 0x00000020u;
+  _has_bits_[0] |= 0x00000040u;
 }
 inline void Response::clear_has_resp_type() {
-  _has_bits_[0] &= ~0x00000020u;
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline void Response::clear_resp_type() {
   resp_type_ = 0;
@@ -2035,7 +2084,7 @@ inline void Response::set_resp_type(::fs::proto::Response_ResponseType value) {
   // @@protoc_insertion_point(field_set:fs.proto.Response.resp_type)
 }
 
-// optional string token = 5;
+// optional string token = 2;
 inline bool Response::has_token() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -2101,7 +2150,7 @@ inline void Response::set_allocated_token(::std::string* token) {
   // @@protoc_insertion_point(field_set_allocated:fs.proto.Response.token)
 }
 
-// optional .fs.proto.FileList file_list = 2;
+// optional .fs.proto.FileList file_list = 3;
 inline bool Response::has_file_list() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -2159,15 +2208,15 @@ inline void Response::set_allocated_file_list(::fs::proto::FileList* file_list) 
   // @@protoc_insertion_point(field_set_allocated:fs.proto.Response.file_list)
 }
 
-// optional uint64 task_id = 3;
+// optional uint64 task_id = 4;
 inline bool Response::has_task_id() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
+  return (_has_bits_[0] & 0x00000008u) != 0;
 }
 inline void Response::set_has_task_id() {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000008u;
 }
 inline void Response::clear_has_task_id() {
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline void Response::clear_task_id() {
   task_id_ = GOOGLE_ULONGLONG(0);
@@ -2183,7 +2232,7 @@ inline void Response::set_task_id(::google::protobuf::uint64 value) {
   // @@protoc_insertion_point(field_set:fs.proto.Response.task_id)
 }
 
-// optional uint64 packet_id = 6;
+// optional uint64 packet_id = 5;
 inline bool Response::has_packet_id() const {
   return (_has_bits_[0] & 0x00000010u) != 0;
 }
@@ -2207,15 +2256,15 @@ inline void Response::set_packet_id(::google::protobuf::uint64 value) {
   // @@protoc_insertion_point(field_set:fs.proto.Response.packet_id)
 }
 
-// optional uint64 packet_no = 4;
+// optional uint64 packet_no = 6;
 inline bool Response::has_packet_no() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+  return (_has_bits_[0] & 0x00000020u) != 0;
 }
 inline void Response::set_has_packet_no() {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000020u;
 }
 inline void Response::clear_has_packet_no() {
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline void Response::clear_packet_no() {
   packet_no_ = GOOGLE_ULONGLONG(0);
@@ -2229,6 +2278,64 @@ inline void Response::set_packet_no(::google::protobuf::uint64 value) {
   set_has_packet_no();
   packet_no_ = value;
   // @@protoc_insertion_point(field_set:fs.proto.Response.packet_no)
+}
+
+// optional .fs.proto.Packet packet = 7;
+inline bool Response::has_packet() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Response::set_has_packet() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Response::clear_has_packet() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Response::clear_packet() {
+  if (packet_ != NULL) packet_->Clear();
+  clear_has_packet();
+}
+inline const ::fs::proto::Packet& Response::_internal_packet() const {
+  return *packet_;
+}
+inline const ::fs::proto::Packet& Response::packet() const {
+  const ::fs::proto::Packet* p = packet_;
+  // @@protoc_insertion_point(field_get:fs.proto.Response.packet)
+  return p != NULL ? *p : *reinterpret_cast<const ::fs::proto::Packet*>(
+      &::fs::proto::_Packet_default_instance_);
+}
+inline ::fs::proto::Packet* Response::release_packet() {
+  // @@protoc_insertion_point(field_release:fs.proto.Response.packet)
+  clear_has_packet();
+  ::fs::proto::Packet* temp = packet_;
+  packet_ = NULL;
+  return temp;
+}
+inline ::fs::proto::Packet* Response::mutable_packet() {
+  set_has_packet();
+  if (packet_ == NULL) {
+    auto* p = CreateMaybeMessage<::fs::proto::Packet>(GetArenaNoVirtual());
+    packet_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:fs.proto.Response.packet)
+  return packet_;
+}
+inline void Response::set_allocated_packet(::fs::proto::Packet* packet) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete packet_;
+  }
+  if (packet) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      packet = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, packet, submessage_arena);
+    }
+    set_has_packet();
+  } else {
+    clear_has_packet();
+  }
+  packet_ = packet;
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.Response.packet)
 }
 
 #ifdef __GNUC__

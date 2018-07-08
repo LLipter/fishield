@@ -46,15 +46,10 @@ void cb_filelist_success(fs::proto::FileList filelist){
     splitline();
 }
 
-
-void cb_upload_start(int taskid){
-    cout << "callback : start uploading, task_id is "
-         << taskid << endl;
-    splitline();
-}
-
-void cb_upload_progress(double progress){
-    cout << "callback : upload progress " << progress << endl;
+void cb_upload_progress(int taskid, double progress){
+    cout << "callback : upload progress "
+         << "(taskid=" << taskid << ")"
+         << progress << endl;
     splitline();
 }
 
@@ -110,8 +105,7 @@ int main()
     fs_upload("/home/irran/Desktop",
               "/",
               "music.mp3",
-              boost::bind(cb_upload_start,_1),
-              boost::bind(cb_upload_progress, _1),
+              boost::bind(cb_upload_progress, _1, _2),
               boost::bind(cb_upload_success, _1),
               boost::bind(cb_fail,_1,"upload"));
 

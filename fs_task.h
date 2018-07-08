@@ -8,12 +8,16 @@ typedef enum TaskStatus{
     UPLOADING,
     UPLOADED,
     UPLOAD_PAUSED,
+    UPLOAD_PAUSING,
     UPLOAD_RESUME,
+
     DOWNLOAD_INIT,
     DOWNLOADING,
     DOWNLOADED,
     DOWNLOAD_PAUSED,
+    DOWNLOAD_PAUSING,
     DOWNLOAD_RESUME,
+
     CANCELED_PAUSED,    // when a task is canceled from uploading/downloading
     CANCELED_WORKING,   // when a task is canceled from uploading/downloading
 }TaskStatus;
@@ -36,17 +40,18 @@ public:
     long long last_packet_time;
     TaskStatus status;
     // callback functions
-    fs_fp_int cb_start_upload;
-    fs_fp_double cb_progress;
+    fs_fp_intdouble cb_progress;
     fs_fp_int cb_success;
     fs_fp_error cb_failed;
 
 
     // member functions
     void upload();
+    void download();
 
 private:
     void _upload();
+    void _download();
 };
 
 #endif // FS_TASK_H

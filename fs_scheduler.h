@@ -24,6 +24,8 @@ public:
     static fs_scheduler* instance();
     void set_task_max(int num);
     void add_task(fs_task task);
+    void add_upload_task(fs_task task);
+    void add_download_task(fs_task task);
 };
 
 #endif // FS_SCHEDULER_H
