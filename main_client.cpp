@@ -88,6 +88,29 @@ void cb_filelist_fail(fs::proto::Response::ResponseType error){
     splitline();
 }
 
+void cb_upload_start(int taskid){
+    cout << "callback : start uploading, task_id is "
+         << taskid << endl;
+    splitline();
+}
+
+void cb_upload_progress(double progress){
+    cout << "callback : upload progress " << progress << endl;
+    splitline();
+}
+
+void cb_upload_success(int taskid){
+    cout << "callback : upload successfully (taskid="
+         << taskid << ")" << endl;
+    splitline();
+}
+
+void cb_upload_fail(fs::proto::Response::ResponseType error){
+    cout << "callback : upload failed --- " << endl;
+    print_err(error);
+    splitline();
+}
+
 
 
 int main()
@@ -103,9 +126,26 @@ int main()
         return 1;
     splitline();
 
-    fs_login(username,password,boost::bind(cb_login_success),boost::bind(cb_login_fail,_1));
-    fs_mkdir("/","newdir",boost::bind(cb_mkdir_success),boost::bind(cb_mkdir_fail,_1));
-    fs_get_filelist("/", boost::bind(cb_filelist_success, _1), boost::bind(cb_filelist_fail, _1));
+    fs_login(username,
+             password,
+             boost::bind(cb_login_success),
+             boost::bind(cb_login_fail,_1));
+
+    fs_mkdir("/","newdir",
+             boost::bind(cb_mkdir_success),
+             boost::bind(cb_mkdir_fail,_1));
+
+    fs_get_filelist("/",
+                    boost::bind(cb_filelist_success, _1),
+                    boost::bind(cb_filelist_fail, _1));
+
+    fs_upload("/home/irran/Desktop/project/fishield",
+              "/",
+              "file_transfer.proto",
+              boost::bind(cb_upload_start,_1),
+              boost::bind(cb_upload_progress, _1),
+              boost::bind(cb_upload_success, _1),
+              boost::bind(cb_upload_fail,_1));
 
 
     while(true){
