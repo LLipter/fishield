@@ -1,10 +1,11 @@
 #include "fs_task.h"
 #include "fs_client.h"
 
+extern std::string _token;
 void fs_task::_upload(){
     using namespace fs::proto;
 
-    for(int i=0;i<total_packet_no;i++){
+    while(sent_packet_no < total_packet_no){
         if(status == CANCELED)
             return;
         if(status == UPLOAD_PAUSED){
@@ -18,11 +19,12 @@ void fs_task::_upload(){
 
         Request packet_request;
         packet_request.set_req_type(Request::PACKET);
-        packet_request.set_task_id(task_id);
+        packet_request.set_task_id(this->task_id);
+
 
         // generate packet
         Packet* packet = packet_request.mutable_packet();
-        packet->set_packet_id(i);
+        packet->set_packet_id(sent_packet_no);
         std::string filepath = localbasepath + SEPARATOR + filename;
         std::ifstream file(filepath, std::ios_base::binary);
         if(!file){
@@ -30,9 +32,9 @@ void fs_task::_upload(){
             return;
         }
         char* buf = new char[PACKET_SIZE];
-        file.seekg(i * PACKET_SIZE);
+        file.seekg(sent_packet_no * PACKET_SIZE);
         file.read(buf, PACKET_SIZE);
-        packet->set_data(buf, PACKET_SIZE);
+        packet->set_data(buf, file.gcount());
 
 
         // send request and receive response
@@ -54,21 +56,16 @@ void fs_task::_upload(){
             cb_progress((double)sent_packet_no / total_packet_no);
             break;
         case Response::ILLEGALPACKETID:
-            i = response.packet_id() - 1;
+            sent_packet_no = response.packet_id();
             break;
-        case Response::ILLEGALTOKEN:
-        case Response::ILLEGALPATH:
-        case Response::ILLEGALTASKID:
-        case Response::ILLEGALREQUEST:
+        default:
             cb_failed(response.resp_type());
             return;
-        default:
-            cb_failed(Response::UNKNOWN);
-            break;
         }
     }
 
     cb_success(task_id);
+    status = UPLOADED;
 }
 
 void fs_task::upload(){

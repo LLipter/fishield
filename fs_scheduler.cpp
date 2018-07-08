@@ -16,18 +16,21 @@ fs_scheduler::fs_scheduler(){
 
 void fs_scheduler::scheduler(){
     while(true){
-        if(task_count < max_task_num) {
-            for(auto iter = task_map.begin(); iter != task_map.end(); ++iter) {
-                switch (iter->second.status) {
-                case UPLOAD_INIT:
+        for(auto iter=task_map.begin();iter!=task_map.end();iter++) {
+            switch (iter->second.status) {
+            case UPLOAD_INIT:
+                if(task_count < max_task_num) {
                     iter->second.status = UPLOADING;
                     iter->second.upload();
                     increase_count();
-                    break;
-                default:
-                    // TODO : SET UNKNOWN STATUS RESPONSE
-                    break;
                 }
+                break;
+            case UPLOADED:
+                decrease_count();
+                // TODO : erase this task
+            default:
+                // TODO : SET UNKNOWN STATUS RESPONSE
+                break;
             }
         }
     }
@@ -62,13 +65,8 @@ void fs_scheduler::_add_task(fs_task task){
         task.task_id = response.task_id();
         task_map[task.task_id] = task;
         break;
-    case Response::ILLEGALTOKEN:
-    case Response::ILLEGALPATH:
-    case Response::ILLEGALREQUEST:
-        task.cb_failed(response.resp_type());
-        break;
     default:
-        task.cb_failed(Response::UNKNOWN);
+        task.cb_failed(response.resp_type());
         break;
     }
 

@@ -15,30 +15,8 @@ void splitline(){
 
 
 void print_err(fs::proto::Response::ResponseType error){
-    switch (error) {
-    case Response::ILLEGALPASSWD:
-        cout << "illegal password";
-        break;
-    case Response::NOSUCHUSER:
-        cout << "no such user";
-        break;
-    case Response::NORESPONSE:
-        cout << "cannot get response from server";
-        break;
-    case Response::ILLEGALREQUEST:
-        cout << "illegal request";
-        break;
-    case Response::ILLEGALTOKEN:
-        cout << "illegal token";
-        break;
-    case Response::ILLEGALPATH:
-        cout << "illegal path";
-        break;
-    default:
-        cout << "unknow error";
-        break;
-    }
-    cout << endl;
+    using namespace fs::proto;
+    cout << Response::ResponseType_Name(error) << endl;
 }
 
 void cb_login_success(){
@@ -65,7 +43,7 @@ void cb_mkdir_success(){
 
 
 void cb_mkdir_fail(fs::proto::Response::ResponseType error){
-    cout << "callback : mkdir failed --- " << endl;
+    cout << "callback : mkdir failed --- ";
     print_err(error);
     splitline();
 }
@@ -83,7 +61,7 @@ void cb_filelist_success(fs::proto::FileList filelist){
 }
 
 void cb_filelist_fail(fs::proto::Response::ResponseType error){
-    cout << "callback : filelist failed --- " << endl;
+    cout << "callback : filelist failed --- ";
     print_err(error);
     splitline();
 }
@@ -106,7 +84,7 @@ void cb_upload_success(int taskid){
 }
 
 void cb_upload_fail(fs::proto::Response::ResponseType error){
-    cout << "callback : upload failed --- " << endl;
+    cout << "callback : upload failed --- ";
     print_err(error);
     splitline();
 }
@@ -126,18 +104,18 @@ int main()
         return 1;
     splitline();
 
-    fs_login(username,
-             password,
-             boost::bind(cb_login_success),
-             boost::bind(cb_login_fail,_1));
+//    fs_login(username,
+//             password,
+//             boost::bind(cb_login_success),
+//             boost::bind(cb_login_fail,_1));
 
-    fs_mkdir("/","newdir",
-             boost::bind(cb_mkdir_success),
-             boost::bind(cb_mkdir_fail,_1));
+//    fs_mkdir("/","newdir",
+//             boost::bind(cb_mkdir_success),
+//             boost::bind(cb_mkdir_fail,_1));
 
-    fs_get_filelist("/",
-                    boost::bind(cb_filelist_success, _1),
-                    boost::bind(cb_filelist_fail, _1));
+//    fs_get_filelist("/",
+//                    boost::bind(cb_filelist_success, _1),
+//                    boost::bind(cb_filelist_fail, _1));
 
     fs_upload("/home/irran/Desktop/project/fishield",
               "/",

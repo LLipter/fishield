@@ -60,11 +60,6 @@ bool fs_server::receive_request(fs::proto::Request& request){
         return false;
     }
 
-
-    std::cout << "start receive request : "
-              << Request::RequestType_Name(request.req_type())
-              << std::endl;
-
     // read request
     char* buf = new char[len];
     boost::asio::read(_sock,boost::asio::buffer(buf,len),err);
@@ -84,7 +79,9 @@ bool fs_server::receive_request(fs::proto::Request& request){
         return false;
     }
     delete[] buf;
+
     std::cout << "receive_request() success : "
+              << Request::RequestType_Name(request.req_type())
               << std::endl;
     return true;
 }
@@ -224,7 +221,11 @@ void confirm_upload(const std::string& basepath,
     using namespace fs::proto;
     using namespace boost::filesystem;
 
-    std::string base_str = rootdir + basepath;
+    std::string base_str;
+    if(basepath != "/")
+        base_str = rootdir + basepath;
+    else
+        base_str = rootdir;
     path base(base_str);
     if(!exists(base)){
         // basepath doesn't exist
@@ -271,7 +272,7 @@ bool load_task(int taskid){
 
 void receive_packet(int taskid, const fs::proto::Packet& packet, fs::proto::Response& response){
     using namespace fs::proto;
-    if(load_task(taskid)){
+    if(!load_task(taskid)){
         response.set_resp_type(Response::ILLEGALTASKID);
         return;
     }
@@ -298,6 +299,12 @@ void receive_packet(int taskid, const fs::proto::Packet& packet, fs::proto::Resp
     }
     file << packet.data();
     file.close();
+
+    // the last packet has been received
+    if(task.total_packet_no == task.received_packet_no){
+        boost::filesystem::rename(filepath,
+                                  task.remotebasepath + SEPARATOR + task.filename);
+    }
 
 
 }
@@ -343,6 +350,7 @@ void communicate_thread(server_ptr serptr){
                                request.filename(),
                                request.packet_no(),
                                response);
+                break;
             case Request::PACKET:
                 receive_packet(request.task_id(), request.packet(), response);
                 break;

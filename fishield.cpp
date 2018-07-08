@@ -49,13 +49,8 @@ void _fs_login(const std::string& username,
         _token = response.token();
         cb_success();
         break;
-    case Response::ILLEGALPASSWD:
-    case Response::NOSUCHUSER:
-    case Response::ILLEGALREQUEST:
-        cb_failed(response.resp_type());
-        break;
     default:
-        cb_failed(Response::UNKNOWN);
+        cb_failed(response.resp_type());
         break;
     }
 }
@@ -95,13 +90,8 @@ void _fs_get_filelist(const std::string& dirpath,
     case Response::SUCCESS:
         cb_success(response.file_list());
         break;
-    case Response::ILLEGALTOKEN:
-    case Response::ILLEGALPATH:
-    case Response::ILLEGALREQUEST:
-        cb_failed(response.resp_type());
-        break;
     default:
-        cb_failed(Response::UNKNOWN);
+        cb_failed(response.resp_type());
         break;
     }
 
@@ -142,13 +132,8 @@ void _fs_mkdir(const std::string& basepath,
     case Response::SUCCESS:
         cb_success();
         break;
-    case Response::ILLEGALTOKEN:
-    case Response::ILLEGALPATH:
-    case Response::ILLEGALREQUEST:
-        cb_failed(response.resp_type());
-        break;
     default:
-        cb_failed(Response::UNKNOWN);
+        cb_failed(response.resp_type());
         break;
     }
 }
