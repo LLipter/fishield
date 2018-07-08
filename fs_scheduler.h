@@ -19,14 +19,11 @@ private:
     int max_task_num;
     int task_count;
     std::map<int, fs_task> task_map;
-    std::mutex task_count_mutex;
 
 public:
     static fs_scheduler* instance();
     void set_task_max(int num);
     void add_task(fs_task task);
-    void increase_count();
-    void decrease_count();
 };
 
 #endif // FS_SCHEDULER_H

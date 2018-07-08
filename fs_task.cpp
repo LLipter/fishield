@@ -26,7 +26,7 @@ void fs_task::_upload(){
     using namespace fs::proto;
 
     while(sent_packet_no < total_packet_no){
-        if(status == CANCELED)
+        if(status == CANCELED_PAUSED || status == CANCELED_WORKING)
             return;
         if(status == UPLOAD_PAUSED){
             // TODO : save data in disks

@@ -8,11 +8,14 @@ typedef enum TaskStatus{
     UPLOADING,
     UPLOADED,
     UPLOAD_PAUSED,
+    UPLOAD_RESUME,
     DOWNLOAD_INIT,
     DOWNLOADING,
     DOWNLOADED,
     DOWNLOAD_PAUSED,
-    CANCELED
+    DOWNLOAD_RESUME,
+    CANCELED_PAUSED,    // when a task is canceled from uploading/downloading
+    CANCELED_WORKING,   // when a task is canceled from uploading/downloading
 }TaskStatus;
 
 class fs_task

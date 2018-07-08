@@ -135,7 +135,7 @@ void remove_clients_thread() {
                                      boost::bind(&fs_server::is_stop,_1)),
                       clients.end());
         // TODO : REMOVE ALL TIMEOUT CLIENTS
-        // TODO : REMOVE ALL TIMEOUT TASKS
+        // TODO : REMOVE ALL TIMEOUT TASKS or finished tasks
     }
 }
 
@@ -290,6 +290,7 @@ void receive_packet(int taskid, const fs::proto::Packet& packet, fs::proto::Resp
 
     response.set_resp_type(Response::SUCCESS);
     task.received_packet_no++;
+    task.last_packet_time = std::time(0);
 
     // write data in file
     std::string filepath = task.remotebasepath
@@ -308,6 +309,7 @@ void receive_packet(int taskid, const fs::proto::Packet& packet, fs::proto::Resp
     if(task.total_packet_no == task.received_packet_no){
         boost::filesystem::rename(filepath,
                                   task.remotebasepath + SEPARATOR + task.filename);
+        task.status = UPLOADED;
     }
 
 

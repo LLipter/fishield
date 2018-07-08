@@ -16,23 +16,42 @@ fs_scheduler::fs_scheduler(){
 
 void fs_scheduler::scheduler(){
     while(true){
+        std::vector<int> removed_task;
         for(auto iter=task_map.begin();iter!=task_map.end();iter++) {
             switch (iter->second.status) {
             case UPLOAD_INIT:
+            case UPLOAD_RESUME:
                 if(task_count < max_task_num) {
                     iter->second.status = UPLOADING;
                     iter->second.upload();
-                    increase_count();
+                    task_count++;
                 }
                 break;
+            case DOWNLOAD_INIT:
+            case DOWNLOAD_RESUME:
+                // TODO : download
+                break;
             case UPLOADED:
-                decrease_count();
-                // TODO : erase this task
+            case DOWNLOADED:
+            case CANCELED_WORKING:
+                task_count--;
+                removed_task.push_back(iter->first);
+                break;
+            case CANCELED_PAUSED:
+                removed_task.push_back(iter->first);
+                break;
             default:
                 // TODO : SET UNKNOWN STATUS RESPONSE
                 break;
             }
         }
+
+        // TODO : save some information in disk
+        // remove all completed task
+        for(int id : removed_task)
+            task_map.erase(id);
+
+        // have a sleep
         boost::thread::sleep(boost::get_system_time() + boost::posix_time::millisec(100));
     }
 }
@@ -79,16 +98,5 @@ void fs_scheduler::add_task(fs_task task){
 }
 
 
-void fs_scheduler::increase_count(){
-    task_count_mutex.lock();
-    task_count++;
-    task_count_mutex.unlock();
-}
-
-void fs_scheduler::decrease_count(){
-    task_count_mutex.lock();
-    task_count--;
-    task_count_mutex.unlock();
-}
 
 
