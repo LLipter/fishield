@@ -18,6 +18,10 @@ typedef enum TaskStatus{
 class fs_task
 {
 public:
+
+    fs_task();                  // default constructor
+    fs_task(const fs_task& rhs);// copy constructor
+
     // member variables
     int task_id;
     std::string localbasepath;

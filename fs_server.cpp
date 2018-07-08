@@ -281,6 +281,8 @@ void receive_packet(int taskid, const fs::proto::Packet& packet, fs::proto::Resp
     if((int)packet.packet_id() != task.received_packet_no){
         response.set_resp_type(Response::ILLEGALPACKETID);
         response.set_packet_id(task.received_packet_no);
+        std::cout << "packet.packet_id():" << packet.packet_id()
+                  << "task.received_packet_no" << task.received_packet_no << std::endl;
         return;
     }
 

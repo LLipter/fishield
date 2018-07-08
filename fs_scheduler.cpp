@@ -20,7 +20,9 @@ void fs_scheduler::scheduler(){
             switch (iter->second.status) {
             case UPLOAD_INIT:
                 if(task_count < max_task_num) {
-                    iter->second.status = UPLOADING;
+                    fs_task task(iter->second);
+                    task.status = UPLOADING;
+                    iter->second = task;
                     iter->second.upload();
                     increase_count();
                 }

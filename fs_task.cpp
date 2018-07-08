@@ -1,6 +1,26 @@
 #include "fs_task.h"
 #include "fs_client.h"
 
+fs_task::fs_task(){}
+
+fs_task::fs_task(const fs_task& rhs){
+    this->task_id = rhs.task_id;
+    this->localbasepath = rhs.localbasepath;
+    this->remotebasepath = rhs.remotebasepath;
+    this->filename = rhs.filename;
+    this->total_packet_no = rhs.total_packet_no;
+    this->received_packet_no = rhs.received_packet_no;
+    this->sent_packet_no = rhs.sent_packet_no;
+    this->last_packet_time = rhs.last_packet_time;
+    this->status = rhs.status;
+    this->cb_start_upload = rhs.cb_start_upload;
+    this->cb_progress = rhs.cb_progress;
+    this->cb_success = rhs.cb_success;
+    this->cb_failed = rhs.cb_failed;
+}
+
+
+
 extern std::string _token;
 void fs_task::_upload(){
     using namespace fs::proto;
