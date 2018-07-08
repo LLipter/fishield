@@ -117,9 +117,9 @@ int main()
 //                    boost::bind(cb_filelist_success, _1),
 //                    boost::bind(cb_filelist_fail, _1));
 
-    fs_upload("/home/irran/Desktop/project/fishield",
+    fs_upload("/home/irran/Desktop",
               "/",
-              "file_transfer.proto",
+              "music.mp3",
               boost::bind(cb_upload_start,_1),
               boost::bind(cb_upload_progress, _1),
               boost::bind(cb_upload_success, _1),
