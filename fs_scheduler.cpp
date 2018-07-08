@@ -20,9 +20,7 @@ void fs_scheduler::scheduler(){
             switch (iter->second.status) {
             case UPLOAD_INIT:
                 if(task_count < max_task_num) {
-                    fs_task task(iter->second);
-                    task.status = UPLOADING;
-                    iter->second = task;
+                    iter->second.status = UPLOADING;
                     iter->second.upload();
                     increase_count();
                 }
@@ -35,6 +33,7 @@ void fs_scheduler::scheduler(){
                 break;
             }
         }
+        boost::thread::sleep(boost::get_system_time() + boost::posix_time::millisec(100));
     }
 }
 

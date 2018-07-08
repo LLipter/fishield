@@ -117,6 +117,10 @@ int main()
 //                    boost::bind(cb_filelist_success, _1),
 //                    boost::bind(cb_filelist_fail, _1));
 
+
+    if(boost::filesystem::exists("/home/irran/Desktop/fs_root/music.mp3"))
+        boost::filesystem::remove("/home/irran/Desktop/fs_root/music.mp3");
+
     fs_upload("/home/irran/Desktop",
               "/",
               "music.mp3",
