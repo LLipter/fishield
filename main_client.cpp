@@ -28,25 +28,11 @@ void cb_login_success(){
     splitline();
 }
 
-void cb_login_fail(fs::proto::Response::ResponseType error){
-    cout << "callback "
-         << username << "-"
-         << password << " login failed : ";
-    print_err(error);
-    splitline();
-}
-
 void cb_mkdir_success(){
     cout << "callback : mkdir successfully" << endl;
     splitline();
 }
 
-
-void cb_mkdir_fail(fs::proto::Response::ResponseType error){
-    cout << "callback : mkdir failed --- ";
-    print_err(error);
-    splitline();
-}
 
 void cb_filelist_success(fs::proto::FileList filelist){
     cout << "callback : filelist successfully" << endl;
@@ -60,11 +46,6 @@ void cb_filelist_success(fs::proto::FileList filelist){
     splitline();
 }
 
-void cb_filelist_fail(fs::proto::Response::ResponseType error){
-    cout << "callback : filelist failed --- ";
-    print_err(error);
-    splitline();
-}
 
 void cb_upload_start(int taskid){
     cout << "callback : start uploading, task_id is "
@@ -83,11 +64,16 @@ void cb_upload_success(int taskid){
     splitline();
 }
 
-void cb_upload_fail(fs::proto::Response::ResponseType error){
-    cout << "callback : upload failed --- ";
+
+
+
+void cb_fail(fs::proto::Response::ResponseType error, string type){
+    cout << "callback : " << type << " failed --- ";
     print_err(error);
     splitline();
 }
+
+
 
 
 
@@ -104,22 +90,22 @@ int main()
         return 1;
     splitline();
 
-//    fs_login(username,
-//             password,
-//             boost::bind(cb_login_success),
-//             boost::bind(cb_login_fail,_1));
+    fs_login(username,
+             password,
+             boost::bind(cb_login_success),
+             boost::bind(cb_fail,_1,"login"));
 
-//    fs_mkdir("/","newdir",
-//             boost::bind(cb_mkdir_success),
-//             boost::bind(cb_mkdir_fail,_1));
+    fs_mkdir("/","newdir",
+             boost::bind(cb_mkdir_success),
+             boost::bind(cb_fail,_1,"mkdir"));
 
-//    fs_get_filelist("/",
-//                    boost::bind(cb_filelist_success, _1),
-//                    boost::bind(cb_filelist_fail, _1));
+    fs_get_filelist("/",
+                    boost::bind(cb_filelist_success, _1),
+                    boost::bind(cb_fail,_1,"filelist"));
 
 
-    if(boost::filesystem::exists("/home/irran/Desktop/fs_root/music.mp3"))
-        boost::filesystem::remove("/home/irran/Desktop/fs_root/music.mp3");
+//    if(boost::filesystem::exists("/home/irran/Desktop/fs_root/music.mp3"))
+//        boost::filesystem::remove("/home/irran/Desktop/fs_root/music.mp3");
 
     fs_upload("/home/irran/Desktop",
               "/",
@@ -127,7 +113,7 @@ int main()
               boost::bind(cb_upload_start,_1),
               boost::bind(cb_upload_progress, _1),
               boost::bind(cb_upload_success, _1),
-              boost::bind(cb_upload_fail,_1));
+              boost::bind(cb_fail,_1,"upload"));
 
 
     while(true){
