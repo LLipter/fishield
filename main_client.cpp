@@ -59,7 +59,18 @@ void cb_upload_success(int taskid){
     splitline();
 }
 
+void cb_download_progress(int taskid, double progress){
+    cout << "callback : download progress "
+         << "(taskid=" << taskid << ")"
+         << progress << endl;
+    splitline();
+}
 
+void cb_download_success(int taskid){
+    cout << "callback : download successfully (taskid="
+         << taskid << ")" << endl;
+    splitline();
+}
 
 
 void cb_fail(fs::proto::Response::ResponseType error, string type){
@@ -85,29 +96,36 @@ int main()
         return 1;
     splitline();
 
-    fs_login(username,
-             password,
-             boost::bind(cb_login_success),
-             boost::bind(cb_fail,_1,"login"));
+//    fs_login(username,
+//             password,
+//             boost::bind(cb_login_success),
+//             boost::bind(cb_fail,_1,"login"));
 
-    fs_mkdir("/","newdir",
-             boost::bind(cb_mkdir_success),
-             boost::bind(cb_fail,_1,"mkdir"));
+//    fs_mkdir("/","newdir",
+//             boost::bind(cb_mkdir_success),
+//             boost::bind(cb_fail,_1,"mkdir"));
 
-    fs_get_filelist("/",
-                    boost::bind(cb_filelist_success, _1),
-                    boost::bind(cb_fail,_1,"filelist"));
+//    fs_get_filelist("/",
+//                    boost::bind(cb_filelist_success, _1),
+//                    boost::bind(cb_fail,_1,"filelist"));
 
 
 //    if(boost::filesystem::exists("/home/irran/Desktop/fs_root/music.mp3"))
 //        boost::filesystem::remove("/home/irran/Desktop/fs_root/music.mp3");
 
-    fs_upload("/home/irran/Desktop",
-              "/",
-              "music.mp3",
-              boost::bind(cb_upload_progress, _1, _2),
-              boost::bind(cb_upload_success, _1),
-              boost::bind(cb_fail,_1,"upload"));
+//    fs_upload("/home/irran/Desktop",
+//              "",                   // upload to root directory
+//              "music.mp3",
+//              boost::bind(cb_upload_progress, _1, _2),
+//              boost::bind(cb_upload_success, _1),
+//              boost::bind(cb_fail,_1,"upload"));
+
+    fs_download("/home/irran/Desktop",
+                "",                 // download to root directory
+                "1.jpg",
+                boost::bind(cb_download_progress, _1, _2),
+                boost::bind(cb_download_success, _1),
+                boost::bind(cb_fail,_1,"download"));
 
 
     while(true){

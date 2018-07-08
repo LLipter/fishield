@@ -7,7 +7,7 @@ SOURCES += \
     fishield.cpp \
     file_transfer.pb.cc \
     fs_client.cpp \
-    main_client.cpp \
+    main_server.cpp \
     fs_server.cpp \
     fs_scheduler.cpp \
     fs_task.cpp

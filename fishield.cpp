@@ -186,10 +186,10 @@ void fs_upload(const std::string& localbasepath,
 }
 
 void fs_download(const std::string& localbasepath,
-               const std::string& remotebasepath,
-               const std::string& filename,
-               fs_fp_intdouble cb_progress,
-               fs_fp_int cb_success,
+                 const std::string& remotebasepath,
+                 const std::string& filename,
+                 fs_fp_intdouble cb_progress,
+                 fs_fp_int cb_success,
                  fs_fp_error cb_failed){
     using namespace boost::filesystem;
     using namespace fs::proto;

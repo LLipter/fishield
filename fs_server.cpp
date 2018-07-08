@@ -221,11 +221,7 @@ void confirm_upload(const std::string& basepath,
     using namespace fs::proto;
     using namespace boost::filesystem;
 
-    std::string base_str;
-    if(basepath != "/")
-        base_str = rootdir + basepath;
-    else
-        base_str = rootdir;
+    std::string base_str = rootdir + basepath;
     path base(base_str);
     if(!exists(base)){
         // basepath doesn't exist
@@ -321,13 +317,8 @@ void confirm_download(const std::string& basepath,
     using namespace fs::proto;
     using namespace boost::filesystem;
 
-    std::string base_str;
-    std::string filepath_str;
-    if(basepath != "/")
-        base_str = rootdir + basepath;
-    else
-        base_str = rootdir;
-    filepath_str = base_str + SEPARATOR + filename;
+    std::string base_str = rootdir + basepath;
+    std::string filepath_str = base_str + SEPARATOR + filename;
     path filepath(filepath_str);
     if(!exists(filepath)){
         // requested file doesn't exist
@@ -343,11 +334,14 @@ void confirm_download(const std::string& basepath,
     task.task_id = task_id;
     task.remotebasepath = base_str;
     task.filename = filename;
+
     int size = file_size(filepath);
     int packet_no = size / PACKET_SIZE;
     if(size % PACKET_SIZE != 0)
         packet_no++;
     task.total_packet_no = packet_no;
+    response.set_packet_no(packet_no);
+
     task.sent_packet_no = 0;
     task.last_packet_time = std::time(0);
     task.status = DOWNLOADING;

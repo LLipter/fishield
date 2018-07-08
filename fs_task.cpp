@@ -152,6 +152,7 @@ void fs_task::_download(){
 
     Request confirm_request;
     confirm_request.set_req_type(Request::DOWNLOAD_CONFIRM);
+    confirm_request.set_task_id(this->task_id);
     confirm_request.set_token(_token);
 
     // send request and receive response
