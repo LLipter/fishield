@@ -375,6 +375,79 @@ void fs_cancel(int client_id,
     thd.detach();
 }
 
+void _fs_pause(int client_id,
+               fs_fp_int cb_success,
+               fs_fp_interror cb_failed){
+    using namespace fs::proto;
+
+    int taskid = get_taskid_by_clientid(client_id);
+    if(taskid == FS_E_NOSUCHID)
+        cb_failed(client_id, Response::ILLEGALCLIENTID);
+
+    client_task_mutex.lock();
+    Task& task = fs_scheduler::instance()->task_map_current[taskid];
+    switch (task.task_status()) {
+    case Task::UPLOADING:
+        task.set_task_status(Task::UPLOAD_PAUSING);
+        break;
+    case Task::DOWNLOADING:
+        task.set_task_status(Task::DOWNLOAD_PAUSING);
+        break;
+    default:
+        // do nothing
+        break;
+    }
+    client_task_mutex.unlock();
+    cb_success(client_id);
+}
+
+
+void fs_pause(int client_id,
+              fs_fp_int cb_success,
+              fs_fp_interror cb_failed){
+    std::thread thd(_fs_pause,
+                    client_id,
+                    cb_success,
+                    cb_failed);
+    thd.detach();
+}
+
+void _fs_resume(int client_id,
+                fs_fp_int cb_success,
+                fs_fp_interror cb_failed){
+    using namespace fs::proto;
+
+    int taskid = get_taskid_by_clientid(client_id);
+    if(taskid == FS_E_NOSUCHID)
+        cb_failed(client_id, Response::ILLEGALCLIENTID);
+
+    client_task_mutex.lock();
+    Task& task = fs_scheduler::instance()->task_map_current[taskid];
+    switch (task.task_status()) {
+    case Task::UPLOAD_PAUSED:
+        task.set_task_status(Task::UPLOAD_RESUME);
+        break;
+    case Task::DOWNLOAD_PAUSED:
+        task.set_task_status(Task::DOWNLOAD_RESUME);
+        break;
+    default:
+        client_task_mutex.unlock();
+        cb_failed(client_id, Response::ILLEGALCLIENTID);
+        break;
+    }
+    client_task_mutex.unlock();
+    cb_success(client_id);
+}
+
+void fs_resume(int client_id,
+               fs_fp_int cb_success,
+               fs_fp_interror cb_failed){
+    std::thread thd(_fs_resume,
+                    client_id,
+                    cb_success,
+                    cb_failed);
+    thd.detach();
+}
 
 extern short _port;
 void fs_server_startup(const short port){

@@ -121,11 +121,28 @@ void fs_download(int client_id,
                  const std::string& remotebasepath,
                  const std::string& filename);
 
+/***
+ * DESC:    Cancel a UPLOADING/DOWNLOADING task identified by `client_id`
+ * RETURN:  return nothing
+ */
 void fs_cancel(int client_id,
                fs_fp_int cb_success,
                fs_fp_interror cb_failed);
 
-
+/***
+ * DESC:    Pause a UPLOADING/DOWNLOADING task identified by `client_id`
+ * RETURN:  return nothing
+ */
+void fs_pause(int client_id,
+              fs_fp_int cb_success,
+              fs_fp_interror cb_failed);
+/***
+ * DESC:    Resume a PAUSED task identified by `client_id`
+ * RETURN:  return nothing
+ */
+void fs_resume(int client_id,
+               fs_fp_int cb_success,
+               fs_fp_interror cb_failed);
 
 /***
  * DESC:    Try to start a server program.
