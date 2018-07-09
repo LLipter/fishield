@@ -256,8 +256,6 @@ void fs_download(int client_id,
     fs_scheduler::instance()->add_task(task);
 }
 
-
-
 void fs_register_task_callback(fs_fp_intdouble cb_prog,
                                fs_fp_int cb_succes,
                                fs_fp_interror cb_fal){
@@ -305,7 +303,7 @@ void fs_rename(const std::string& oldpath,
     thd.detach();
 }
 
-
+extern std::mutex client_task_mutex;
 void _fs_cancel(int client_id,
                 fs_fp_int cb_success,
                 fs_fp_interror cb_failed){
@@ -329,6 +327,7 @@ void _fs_cancel(int client_id,
 
     // check response type
     if(response.resp_type() == Response::SUCCESS){
+        client_task_mutex.lock();
         Task& task = fs_scheduler::instance()->task_map_current[taskid];
 
         switch (task.task_status()) {
@@ -336,6 +335,7 @@ void _fs_cancel(int client_id,
         case Task::UPLOAD_PAUSING:
         case Task::DOWNLOADING:
         case Task::DOWNLOAD_PAUSING:
+
             task.set_task_status(Task::CANCELED_WORKING);
             break;
         case Task::UPLOAD_PAUSED:
@@ -350,13 +350,15 @@ void _fs_cancel(int client_id,
         case Task::DOWNLOADED:
         case Task::CANCELED_PAUSED:
         case Task::CANCELED_WORKING:
+        case Task::FAILING:
+        case Task::FAILED:
             // do nothing
             break;
         default:
             break;
         }
 
-
+        client_task_mutex.unlock();
         cb_success(client_id);
     }
     else

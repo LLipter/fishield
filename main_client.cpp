@@ -47,6 +47,19 @@ void cb_fail(fs::proto::Response::ResponseType error, string type){
     splitline();
 }
 
+void cb_cancel_success(int client){
+    cout << "callback : cancel successfully (clientid="
+         << client << ")" << endl;
+    splitline();
+}
+
+void cb_cancel_failed(int client, fs::proto::Response::ResponseType error){
+    cout << "callback : cancel failed (clientid="
+         << client << ")";
+    cout << Response::ResponseType_Name(error) << endl;
+    splitline();
+}
+
 
 int main()
 {
@@ -91,15 +104,20 @@ int main()
 //    if(boost::filesystem::exists("/home/irran/Desktop/fs_root/music.mp3"))
 //        boost::filesystem::remove("/home/irran/Desktop/fs_root/music.mp3");
 
-//    fs_upload(1,
-//              "/home/irran/Desktop",
-//              "",                   // upload to root directory
-//              "music.mp3");
+    fs_upload(1,
+              "/home/irran/Desktop",
+              "",                   // upload to root directory
+              "music.mp3");
 
 //    fs_download(2
 //                ,"/home/irran/Desktop",
 //                "",                   // download from root directory
 //                "2.jpg");
+
+    boost::thread::sleep(boost::get_system_time() + boost::posix_time::millisec(500));
+    fs_cancel(1,
+              boost::bind(cb_cancel_success, _1),
+              boost::bind(cb_cancel_failed, _1, _2));
 
 
 

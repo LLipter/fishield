@@ -95,7 +95,7 @@ void fs_scheduler::scheduler(){
         client_task_mutex.unlock();
 
         // have a sleep
-        boost::thread::sleep(boost::get_system_time() + boost::posix_time::millisec(100));
+        boost::thread::sleep(boost::get_system_time() + boost::posix_time::millisec(500));
     }
 }
 

@@ -460,8 +460,7 @@ void rename_file(const std::string& oldpath,
     response.set_resp_type(Response::SUCCESS);
 }
 
-void cancel_task(int taskid,
-                 fs::proto::Response& response){
+void cancel_task(int taskid, fs::proto::Response& response){
     using namespace fs::proto;
     if(!load_task(taskid)){
         response.set_resp_type(Response::ILLEGALTASKID);
@@ -469,13 +468,14 @@ void cancel_task(int taskid,
     }
 
     Task::TaskStatus status = tasks[taskid].task_status();
+    server_task_mutex.lock();
     if(status == Task::UPLOADING || status == Task::DOWNLOADING)
         tasks[taskid].set_task_status(Task::CANCELED_WORKING);
     else if(status == Task::UPLOADED || status == Task::DOWNLOADED){
         response.set_resp_type(Response::ILLEGALTASKID);
         return;
     }
-
+    server_task_mutex.unlock();
     response.set_resp_type(Response::SUCCESS);
 }
 
@@ -546,8 +546,7 @@ void communicate_thread(server_ptr serptr){
                 confirm_download(request.task_id(), response);
                 break;
             case Request::CANCEL:
-                cancel_task(request.task_id(),
-                            response);
+                cancel_task(request.task_id(), response);
                 break;
             default:
                 response.set_resp_type(Response::ILLEGALREQUEST);
