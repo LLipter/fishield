@@ -10,6 +10,7 @@ SOURCES += \
     fs_server.cpp \
     fs_scheduler.cpp \
     fs_task.cpp \
+    fs_task.pb.cc \
     main_client.cpp
 
 HEADERS += \
@@ -19,7 +20,8 @@ HEADERS += \
     fs_server.h \
     fs_task.h \
     fs_scheduler.h \
-    fs_config.h
+    fs_config.h \
+    fs_task.pb.h
 
 DISTFILES += \
     Makefile \

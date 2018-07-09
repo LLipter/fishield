@@ -1,0 +1,40 @@
+syntax = "proto2";
+
+package fs.proto;
+
+
+
+message Task{
+	enum TaskStatus{
+		UPLOAD_INIT				= 0;
+    		UPLOADING				= 1;
+    		UPLOADED				= 2;
+    		UPLOAD_PAUSED				= 3;
+    		UPLOAD_PAUSING				= 4;
+    		UPLOAD_RESUME				= 5;
+
+    		DOWNLOAD_INIT				= 6;
+    		DOWNLOADING				= 7;
+    		DOWNLOADED				= 8;
+    		DOWNLOAD_PAUSED				= 9;
+    		DOWNLOAD_PAUSING			= 10;
+    		DOWNLOAD_RESUME				= 11;
+
+    		CANCELED_PAUSED				= 12;	// when a task is canceled from UPLOAD_PAUSED/DOWNLOAD_PAUSED
+    		CANCELED_WORKING			= 13;	// when a task is canceled from UPLOADING/DOWNLOADING
+	}
+	required uint64 	task_id			= 1;
+	required string 	localbasepath		= 2;
+	required string 	remotebasepath		= 3;
+	required string 	filename		= 4;
+	required uint64		total_packet_no		= 5;
+	optional uint64 	received_packet_no	= 6;
+	optional uint64 	sent_packet_no		= 7;
+	required TaskStatus	task_status		= 8;
+}
+
+message Tasks{
+	repeated Task task			= 1;
+}
+
+

@@ -18,8 +18,8 @@ typedef enum TaskStatus{
     DOWNLOAD_PAUSING,
     DOWNLOAD_RESUME,
 
-    CANCELED_PAUSED,    // when a task is canceled from uploading/downloading
-    CANCELED_WORKING,   // when a task is canceled from uploading/downloading
+    CANCELED_PAUSED,    // when a task is canceled from UPLOAD_PAUSED/DOWNLOAD_PAUSED
+    CANCELED_WORKING,   // when a task is canceled from UPLOADING/DOWNLOADING
 }TaskStatus;
 
 class fs_task

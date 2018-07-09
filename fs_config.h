@@ -15,6 +15,7 @@
 #include <boost/algorithm/string.hpp>
 
 #include "file_transfer.pb.h"
+#include "fs_task.pb.h"
 
 
 #define PACKET_SIZE             4096

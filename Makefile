@@ -1,6 +1,8 @@
 libfishield.so: *.cpp *.h *.proto
 	protoc --cpp_out=. file_transfer.proto
+	protoc --cpp_out=. fs_task.proto
 	g++ file_transfer.pb.cc -c -fPIC
+	g++ fs_task.pb.cc	-c -fPIC
 	g++ fishield.cpp	-c -fPIC
 	g++ fs_client.cpp	-c -fPIC
 	g++ fs_server.cpp	-c -fPIC
