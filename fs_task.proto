@@ -22,6 +22,10 @@ message Task{
 
     		CANCELED_PAUSED				= 12;	// when a task is canceled from UPLOAD_PAUSED/DOWNLOAD_PAUSED
     		CANCELED_WORKING			= 13;	// when a task is canceled from UPLOADING/DOWNLOADING
+		
+		FAILED					= 14;
+		FAILING					= 15;	
+
 	}
 	required uint64 	task_id			= 1;
 	optional uint64		client_id		= 2;

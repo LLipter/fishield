@@ -2,10 +2,14 @@
 #include "fs_client.h"
 #include "fs_scheduler.h"
 
-fs_fp_intdouble cb_progress;
-fs_fp_int cb_success;
-fs_fp_interror cb_failed;
+
 extern std::string _token;
+extern std::mutex client_task_mutex;
+
+fs_fp_intdouble cb_progress = boost::bind(default_cb_progress, _1, _2);
+fs_fp_int       cb_success  = boost::bind(default_cb_success, _1);
+fs_fp_interror  cb_failed   = boost::bind(default_cb_failed, _1, _2);
+
 
 void _upload(fs::proto::Task& task){
     using namespace fs::proto;
@@ -13,10 +17,17 @@ void _upload(fs::proto::Task& task){
     while(task.sent_packet_no() < task.total_packet_no()){
         if(task.task_status() == Task::CANCELED_PAUSED ||
                 task.task_status() == Task::CANCELED_WORKING ||
-                task.task_status() == Task::UPLOAD_PAUSED)
+                task.task_status() == Task::UPLOAD_PAUSED ||
+                task.task_status() == Task::UPLOAD_PAUSING ||
+                task.task_status() == Task::FAILED ||
+                task.task_status() == Task::FAILING)
             return;
 
         if(task.task_status() != Task::UPLOADING){
+            // fetal error
+            client_task_mutex.lock();
+            task.set_task_status(Task::FAILING);
+            client_task_mutex.unlock();
             cb_failed(task.client_id(), Response::ILLEGALTASKSTATUS);
             return;
         }
@@ -31,8 +42,12 @@ void _upload(fs::proto::Task& task){
         Packet* packet = packet_request.mutable_packet();
         packet->set_packet_id(task.sent_packet_no());
         std::string filepath = task.localbasepath() + SEPARATOR + task.filename();
-        std::ifstream file(filepath, std::ios_base::binary);
+        std::ifstream file(filepath, std::ios::binary);
         if(!file){
+            // fetal error
+            client_task_mutex.lock();
+            task.set_task_status(Task::FAILING);
+            client_task_mutex.unlock();
             cb_failed(task.client_id(), Response::ILLEGALPATH);
             return;
         }
@@ -45,6 +60,10 @@ void _upload(fs::proto::Task& task){
         // send request and receive response
         Response response;
         if(send_receive(packet_request,response) == false){
+            // non-fetal error
+            client_task_mutex.lock();
+            task.set_task_status(Task::UPLOAD_PAUSING);
+            client_task_mutex.unlock();
             cb_failed(task.client_id(), Response::NORESPONSE);
             file.close();
             delete[] buf;
@@ -64,13 +83,19 @@ void _upload(fs::proto::Task& task){
             task.set_sent_packet_no(response.packet_id());
             break;
         default:
+            // fetal error
+            client_task_mutex.lock();
+            task.set_task_status(Task::FAILING);
+            client_task_mutex.unlock();
             cb_failed(task.client_id(), response.resp_type());
             return;
         }
     }
 
-    cb_success(task.client_id());
+    client_task_mutex.lock();
     task.set_task_status(Task::UPLOADED);
+    client_task_mutex.unlock();
+    cb_success(task.client_id());
 }
 
 void upload(fs::proto::Task& task){
@@ -86,13 +111,23 @@ void _download(fs::proto::Task& task){
                             + DEFAULT_HIDDEN_PREFIX
                             + task.filename();
 
+    if(boost::filesystem::exists(filepath))
+        boost::filesystem::remove(filepath);
+
     while(task.received_packet_no() < task.total_packet_no()){
         if(task.task_status() == Task::CANCELED_PAUSED ||
                 task.task_status() == Task::CANCELED_WORKING ||
-                task.task_status() == Task::DOWNLOAD_PAUSED)
+                task.task_status() == Task::DOWNLOAD_PAUSED ||
+                task.task_status() == Task::DOWNLOAD_PAUSING ||
+                task.task_status() == Task::FAILED ||
+                task.task_status() == Task::FAILING)
             return;
 
         if(task.task_status() != Task::DOWNLOADING){
+            // fetal error
+            client_task_mutex.lock();
+            task.set_task_status(Task::FAILING);
+            client_task_mutex.unlock();
             cb_failed(task.client_id(), Response::ILLEGALTASKSTATUS);
             return;
         }
@@ -106,6 +141,10 @@ void _download(fs::proto::Task& task){
         // send request and receive response
         Response response;
         if(send_receive(packet_request,response) == false){
+            // non-fetal error
+            client_task_mutex.lock();
+            task.set_task_status(Task::UPLOAD_PAUSING);
+            client_task_mutex.unlock();
             cb_failed(task.client_id(), Response::NORESPONSE);
             return;
         }
@@ -121,6 +160,10 @@ void _download(fs::proto::Task& task){
             // write data in file
             std::ofstream file(filepath, std::ios_base::app | std::ios_base::binary);
             if(!file){
+                // fetal error
+                client_task_mutex.lock();
+                task.set_task_status(Task::FAILING);
+                client_task_mutex.unlock();
                 cb_failed(task.client_id(), Response::ILLEGALPATH);
                 return;
             }
@@ -130,6 +173,10 @@ void _download(fs::proto::Task& task){
             double progress = (double)task.received_packet_no() / task.total_packet_no();
             cb_progress(task.client_id(), progress);
         }else{
+            // fetal error
+            client_task_mutex.lock();
+            task.set_task_status(Task::FAILING);
+            client_task_mutex.unlock();
             cb_failed(task.client_id(), response.resp_type());
             return;
         }
@@ -144,12 +191,20 @@ void _download(fs::proto::Task& task){
     // send request and receive response
     Response response;
     if(send_receive(confirm_request,response) == false){
+        // non-fetal error
+        client_task_mutex.lock();
+        task.set_task_status(Task::UPLOAD_PAUSING);
+        client_task_mutex.unlock();
         cb_failed(task.client_id(), Response::NORESPONSE);
         return;
     }
 
     // check response type
     if(response.resp_type() != Response::SUCCESS){
+        // fetal error
+        client_task_mutex.lock();
+        task.set_task_status(Task::FAILING);
+        client_task_mutex.unlock();
         cb_failed(task.client_id(), response.resp_type());
         return;
     }
@@ -161,12 +216,10 @@ void _download(fs::proto::Task& task){
                               task.localbasepath() + SEPARATOR + task.filename());
 }
 
-
 void download(fs::proto::Task& task){
     std::thread thd(_download, std::ref(task));
     thd.detach();
 }
-
 
 int get_taskid_by_clientid(int clientid){
     fs_scheduler* scheduler = fs_scheduler::instance();
@@ -201,7 +254,6 @@ void get_task_from_file(std::string filepath, std::map<int, fs::proto::Task>& ta
     delete[] buf;
 }
 
-
 void save_task_to_file(std::string filepath, std::map<int, fs::proto::Task>& task_map){
     using namespace fs::proto;
 
@@ -228,4 +280,25 @@ void save_task_to_file(std::string filepath, std::map<int, fs::proto::Task>& tas
 
 bool is_timeout(const fs::proto::Task& task){
     return std::time(0) - task.last_packet_time() > DEFAULT_TASK_TIMEOUT;
+}
+
+void default_cb_progress(int clientid, double progress){
+    std::cout << "callback : upload/download progress "
+              << "(clientid=" << clientid << ")"
+              << "(progress=" << progress << ")" << std::endl;
+    std::cout << "------------------------------------" << std::endl;
+}
+
+void default_cb_success(int clientid){
+    std::cout << "callback : upload/download successfully (clientid="
+              << clientid << ")" << std::endl;
+    std::cout << "------------------------------------" << std::endl;
+}
+
+void default_cb_failed(int clientid, fs::proto::Response::ResponseType error){
+    std::cout << "callback : upload/download failed (clientid="
+              << clientid << ") "
+              << fs::proto::Response::ResponseType_Name(error)
+              << std::endl;
+    std::cout << "------------------------------------" << std::endl;
 }

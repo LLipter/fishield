@@ -75,11 +75,13 @@ enum Task_TaskStatus {
   Task_TaskStatus_DOWNLOAD_PAUSING = 10,
   Task_TaskStatus_DOWNLOAD_RESUME = 11,
   Task_TaskStatus_CANCELED_PAUSED = 12,
-  Task_TaskStatus_CANCELED_WORKING = 13
+  Task_TaskStatus_CANCELED_WORKING = 13,
+  Task_TaskStatus_FAILED = 14,
+  Task_TaskStatus_FAILING = 15
 };
 bool Task_TaskStatus_IsValid(int value);
 const Task_TaskStatus Task_TaskStatus_TaskStatus_MIN = Task_TaskStatus_UPLOAD_INIT;
-const Task_TaskStatus Task_TaskStatus_TaskStatus_MAX = Task_TaskStatus_CANCELED_WORKING;
+const Task_TaskStatus Task_TaskStatus_TaskStatus_MAX = Task_TaskStatus_FAILING;
 const int Task_TaskStatus_TaskStatus_ARRAYSIZE = Task_TaskStatus_TaskStatus_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* Task_TaskStatus_descriptor();
@@ -215,6 +217,10 @@ class Task : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
     Task_TaskStatus_CANCELED_PAUSED;
   static const TaskStatus CANCELED_WORKING =
     Task_TaskStatus_CANCELED_WORKING;
+  static const TaskStatus FAILED =
+    Task_TaskStatus_FAILED;
+  static const TaskStatus FAILING =
+    Task_TaskStatus_FAILING;
   static inline bool TaskStatus_IsValid(int value) {
     return Task_TaskStatus_IsValid(value);
   }

@@ -8,6 +8,7 @@ extern fs_fp_int cb_success;
 extern fs_fp_interror cb_failed;
 std::string tasks_finished_path = std::string(".") + SEPARATOR + DEFAULT_TASKS_FINISHED_FILE;
 std::string tasks_current_path = std::string(".") + SEPARATOR + DEFAULT_TASKS_CURRENT_FILE;
+std::mutex client_task_mutex;
 
 fs_scheduler fs_scheduler::scheduler_instance;
 
@@ -26,6 +27,7 @@ void fs_scheduler::scheduler(){
     using namespace fs::proto;
     while(true){
         std::vector<int> removed_task;
+        client_task_mutex.lock();
         for(auto iter=task_map_current.begin();iter!=task_map_current.end();iter++) {
             switch (iter->second.task_status()) {
             case Task::UPLOAD_INIT:
@@ -53,7 +55,6 @@ void fs_scheduler::scheduler(){
                 iter->second.set_task_status(Task::DOWNLOAD_PAUSED);
                 task_count--;
                 break;
-
             case Task::UPLOADED:
             case Task::DOWNLOADED:
             case Task::CANCELED_WORKING:
@@ -69,6 +70,13 @@ void fs_scheduler::scheduler(){
             case Task::DOWNLOAD_PAUSED:
                 // do nothing
                 break;
+            case Task::FAILING:
+                iter->second.set_task_status(Task::FAILED);
+                task_count--;
+                break;
+            case Task::FAILED:
+                removed_task.push_back(iter->first);
+                break;
             default:
                 std::cout << "fs_scheduler::scheduler() : UNKNOWN TASK STATUS" << std::endl;
                 break;
@@ -83,6 +91,8 @@ void fs_scheduler::scheduler(){
         // save removed tasks in disk
         save_task_to_file(tasks_finished_path, task_map_finished);
         save_task_to_file(tasks_current_path, task_map_current);
+
+        client_task_mutex.unlock();
 
         // have a sleep
         boost::thread::sleep(boost::get_system_time() + boost::posix_time::millisec(100));
@@ -112,7 +122,9 @@ void fs_scheduler::add_upload_task(fs::proto::Task task){
     // check response type
     if(response.resp_type() == Response::SUCCESS){
         task.set_task_id(response.task_id());
+        client_task_mutex.lock();
         task_map_current[task.task_id()] = task;
+        client_task_mutex.unlock();
     }else
         cb_failed(task.client_id(), response.resp_type());
 }
@@ -136,7 +148,9 @@ void fs_scheduler::add_download_task(fs::proto::Task task){
     if(response.resp_type() == Response::SUCCESS){
         task.set_task_id(response.task_id());
         task.set_total_packet_no(response.packet_no());
+        client_task_mutex.lock();
         task_map_current[task.task_id()] = task;
+        client_task_mutex.unlock();
     }else
         cb_failed(task.client_id(), response.resp_type());
 }

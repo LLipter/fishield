@@ -147,6 +147,39 @@ void fs_mkdir(const std::string& path,
     thd.detach();
 }
 
+void _fs_remove(const std::string& path,
+                fs_fp_void cb_success,
+                fs_fp_error cb_failed){
+    using namespace fs::proto;
+    Request remove_request;
+    remove_request.set_req_type(Request::REMOVE);
+    remove_request.set_remote_path(path);
+    remove_request.set_token(_token);
+
+    // send request and receive response
+    Response response;
+    if(send_receive(remove_request,response) == false){
+        cb_failed(Response::NORESPONSE);
+        return;
+    }
+
+    // check response type
+    if(response.resp_type() == Response::SUCCESS)
+        cb_success();
+    else
+        cb_failed(response.resp_type());
+}
+
+void fs_remove(const std::string& path,
+               fs_fp_void cb_success,
+               fs_fp_error cb_failed){
+    std::thread thd(_fs_remove,
+                    path,
+                    cb_success,
+                    cb_failed);
+    thd.detach();
+}
+
 void fs_upload(int client_id,
                const std::string& localbasepath,
                const std::string& remotebasepath,
@@ -223,39 +256,6 @@ void fs_download(int client_id,
     fs_scheduler::instance()->add_task(task);
 }
 
-void _fs_remove(const std::string& path,
-                fs_fp_void cb_success,
-                fs_fp_error cb_failed){
-    using namespace fs::proto;
-    Request remove_request;
-    remove_request.set_req_type(Request::REMOVE);
-    remove_request.set_remote_path(path);
-    remove_request.set_token(_token);
-
-    // send request and receive response
-    Response response;
-    if(send_receive(remove_request,response) == false){
-        cb_failed(Response::NORESPONSE);
-        return;
-    }
-
-    // check response type
-    if(response.resp_type() == Response::SUCCESS)
-        cb_success();
-    else
-        cb_failed(response.resp_type());
-}
-
-
-void fs_remove(const std::string& path,
-               fs_fp_void cb_success,
-               fs_fp_error cb_failed){
-    std::thread thd(_fs_remove,
-                    path,
-                    cb_success,
-                    cb_failed);
-    thd.detach();
-}
 
 
 void fs_register_task_callback(fs_fp_intdouble cb_prog,

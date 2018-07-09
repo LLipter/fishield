@@ -7,7 +7,9 @@ std::string hidden_prefix = DEFAULT_HIDDEN_PREFIX;
 std::string taskid_path = std::string(".") + SEPARATOR + DEFAULT_TASKID_FILE;
 std::vector<server_ptr> clients;
 std::map<int,fs::proto::Task> tasks;
-std::mutex server_mutex;
+std::mutex server_task_mutex;
+std::mutex server_taskid_mutex;
+
 
 int task_id;
 fs_server::fs_server():_sock(service){
@@ -15,7 +17,6 @@ fs_server::fs_server():_sock(service){
     _is_stop = false;
     last_request = std::time(0);
 }
-
 
 boost::asio::ip::tcp::socket& fs_server::sock(){
     return _sock;
@@ -47,7 +48,6 @@ void fs_server::init(){
     file.close();
 
 }
-
 
 bool fs_server::receive_request(fs::proto::Request& request){
     using namespace fs::proto;
@@ -114,9 +114,6 @@ bool fs_server::send_response(const fs::proto::Response& response){
     return true;
 }
 
-
-
-
 void accept_thread() {
     typedef boost::asio::ip::tcp::acceptor acceptor;
     typedef boost::asio::ip::tcp::endpoint endpoint;
@@ -147,7 +144,7 @@ void remove_clients_thread() {
                                      boost::bind(&fs_server::time_out,_1)),
                       clients.end());
         // erase tasks that are finished or timeout
-        server_mutex.lock();
+        server_task_mutex.lock();
         std::vector<int> should_removed;
         for(auto it=tasks.begin();it!=tasks.end();it++){
             using namespace fs::proto;
@@ -155,14 +152,15 @@ void remove_clients_thread() {
             if(is_timeout(task)
                     || task.task_status() == Task::UPLOADED
                     || task.task_status() == Task::DOWNLOADED
-                    || task.task_status() == Task::CANCELED_WORKING){
+                    || task.task_status() == Task::CANCELED_WORKING
+                    || task.task_status() == Task::FAILED){
                 // TODO : save task information it in database
                 should_removed.push_back(it->first);
             }
         }
         for(int id : should_removed)
             tasks.erase(id);
-        server_mutex.unlock();
+        server_task_mutex.unlock();
 
     }
 }
@@ -216,8 +214,7 @@ void getFilelist(const std::string& dirpath, fs::proto::Response& response){
 
 }
 
-void mkdir(const std::string& ph,
-           fs::proto::Response& response){
+void makedir(const std::string& ph, fs::proto::Response& response){
     using namespace fs::proto;
     using namespace boost::filesystem;
 
@@ -234,43 +231,49 @@ void mkdir(const std::string& ph,
 }
 
 void init_upload(const std::string& basepath,
-                    const std::string& filename,
-                    int packet_no,
-                    fs::proto::Response& response){
+                 const std::string& filename,
+                 int packet_no,
+                 fs::proto::Response& response){
     using namespace fs::proto;
     using namespace boost::filesystem;
 
-    std::string base_str = rootdir + basepath;
-    path base(base_str);
+    std::string base = rootdir + basepath;
     if(!exists(base)){
         // basepath doesn't exist
         response.set_resp_type(Response::ILLEGALPATH);
         return;
     }
 
-    std::string newfile_str = base_str + SEPARATOR + filename;
-    path newfile(newfile_str);
+    std::string newfile = base + SEPARATOR + filename;
     if(exists(newfile)){
         // newfile already exists
         response.set_resp_type(Response::ILLEGALPATH);
         return;
     }
 
+    // remove hidden file
+    std::string hiddedfile = base + SEPARATOR + hidden_prefix + filename;
+    if(exists(hiddedfile))
+        remove(hiddedfile);
+
     response.set_resp_type(Response::SUCCESS);
+    server_taskid_mutex.lock();
     response.set_task_id(++task_id);
+    server_taskid_mutex.unlock();
 
     Task task;
     task.set_task_id(task_id);
-    task.set_remotebasepath(base_str);
+    task.set_remotebasepath(base);
     task.set_filename(filename);
     task.set_total_packet_no(packet_no);
     task.set_received_packet_no(0);
     task.set_last_packet_time(std::time(0));
     task.set_task_status(Task::UPLOADING);
+    server_task_mutex.lock();
     tasks[task_id] = task;
+    server_task_mutex.unlock();
 
 }
-
 
 bool load_task(int taskid){
     if(tasks.find(taskid) != tasks.end())
@@ -283,7 +286,6 @@ bool load_task(int taskid){
 
     return false;
 }
-
 
 void receive_packet(int taskid, const fs::proto::Packet& packet, fs::proto::Response& response){
     using namespace fs::proto;
@@ -314,6 +316,10 @@ void receive_packet(int taskid, const fs::proto::Packet& packet, fs::proto::Resp
                             + task.filename();
     std::ofstream file(filepath, std::ios_base::app | std::ios_base::binary);
     if(!file){
+        // fetal error
+        server_task_mutex.lock();
+        task.set_task_status(Task::FAILED);
+        server_task_mutex.unlock();
         response.set_resp_type(Response::ILLEGALPATH);
         return;
     }
@@ -324,15 +330,17 @@ void receive_packet(int taskid, const fs::proto::Packet& packet, fs::proto::Resp
     if(task.total_packet_no() == task.received_packet_no()){
         boost::filesystem::rename(filepath,
                                   task.remotebasepath() + SEPARATOR + task.filename());
+        server_task_mutex.lock();
         task.set_task_status(Task::UPLOADED);
+        server_task_mutex.unlock();
     }
 
 
 }
 
 void init_download(const std::string& basepath,
-                    const std::string& filename,
-                    fs::proto::Response& response){
+                   const std::string& filename,
+                   fs::proto::Response& response){
     using namespace fs::proto;
     using namespace boost::filesystem;
 
@@ -347,7 +355,9 @@ void init_download(const std::string& basepath,
 
 
     response.set_resp_type(Response::SUCCESS);
+    server_taskid_mutex.lock();
     response.set_task_id(++task_id);
+    server_taskid_mutex.unlock();
 
     Task task;
     task.set_task_id(task_id);
@@ -364,7 +374,9 @@ void init_download(const std::string& basepath,
     task.set_sent_packet_no(0);
     task.set_last_packet_time(std::time(0));
     task.set_task_status(Task::DOWNLOADING);
+    server_task_mutex.lock();
     tasks[task_id] = task;
+    server_task_mutex.unlock();
 
 }
 
@@ -396,10 +408,7 @@ void send_packet(int taskid, int packetid, fs::proto::Response& response){
     response.set_resp_type(Response::SUCCESS);
     task.set_sent_packet_no(task.sent_packet_no()+1);
     task.set_last_packet_time(std::time(0));
-
-
 }
-
 
 void confirm_download(int taskid, fs::proto::Response& response){
     using namespace fs::proto;
@@ -409,11 +418,12 @@ void confirm_download(int taskid, fs::proto::Response& response){
     }
 
     response.set_resp_type(Response::SUCCESS);
+    server_task_mutex.lock();
     tasks[taskid].set_task_status(Task::DOWNLOADED);
+    server_task_mutex.unlock();
 }
 
-void remove_file(const std::string& ph,
-                 fs::proto::Response& response){
+void remove_file(const std::string& ph, fs::proto::Response& response){
     using namespace fs::proto;
     using namespace boost::filesystem;
 
@@ -480,9 +490,9 @@ void communicate_thread(server_ptr serptr){
     int ret_req;
     int ret_resp;
 
-    std::cout << "connection built with "
-              << serptr->sock().remote_endpoint().address().to_string()
-              << std::endl;
+//    std::cout << "connection built with "
+//              << serptr->sock().remote_endpoint().address().to_string()
+//              << std::endl;
 
     while(true){
         Request request;
@@ -503,22 +513,29 @@ void communicate_thread(server_ptr serptr){
                 getFilelist(request.remote_path(), response);
                 break;
             case Request::MKDIR:
-                mkdir(request.remote_path(),
-                      response);
+                makedir(request.remote_path(), response);
+                break;
+            case Request::REMOVE:
+                remove_file(request.remote_path(), response);
+                break;
+            case Request::RENAME:
+                rename_file(request.remote_path(),
+                            request.new_path(),
+                            response);
                 break;
             case Request::UPLOAD:
                 init_upload(request.remote_path(),
-                               request.filename(),
-                               request.packet_no(),
-                               response);
+                            request.filename(),
+                            request.packet_no(),
+                            response);
                 break;
             case Request::SEND_PACKET:
                 receive_packet(request.task_id(), request.packet(), response);
                 break;
             case Request::DOWNLOAD:
                 init_download(request.remote_path(),
-                                 request.filename(),
-                                 response);
+                              request.filename(),
+                              response);
                 break;
             case Request::RECEIVE_PACKET:
                 send_packet(request.task_id(),
@@ -527,15 +544,6 @@ void communicate_thread(server_ptr serptr){
                 break;
             case Request::DOWNLOAD_CONFIRM:
                 confirm_download(request.task_id(), response);
-                break;
-            case Request::REMOVE:
-                remove_file(request.remote_path(),
-                            response);
-                break;
-            case Request::RENAME:
-                rename_file(request.remote_path(),
-                            request.new_path(),
-                            response);
                 break;
             case Request::CANCEL:
                 cancel_task(request.task_id(),
@@ -554,9 +562,9 @@ void communicate_thread(server_ptr serptr){
     }
 
     serptr->set_stop(true);
-    std::cout << "connection lost with "
-              << serptr->sock().remote_endpoint().address().to_string()
-              << std::endl;
+//    std::cout << "connection lost with "
+//              << serptr->sock().remote_endpoint().address().to_string()
+//              << std::endl;
 }
 
 

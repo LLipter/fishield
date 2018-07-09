@@ -106,24 +106,24 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\rfs_task.proto\022\010fs.proto\"\230\004\n\004Task\022\017\n\007ta"
+      "\n\rfs_task.proto\022\010fs.proto\"\261\004\n\004Task\022\017\n\007ta"
       "sk_id\030\001 \002(\004\022\021\n\tclient_id\030\002 \001(\004\022\025\n\rlocalb"
       "asepath\030\003 \001(\t\022\026\n\016remotebasepath\030\004 \002(\t\022\020\n"
       "\010filename\030\005 \002(\t\022\027\n\017total_packet_no\030\006 \002(\004"
       "\022.\n\013task_status\030\007 \002(\0162\031.fs.proto.Task.Ta"
       "skStatus\022\032\n\022received_packet_no\030\010 \001(\004\022\026\n\016"
       "sent_packet_no\030\t \001(\004\022\030\n\020last_packet_time"
-      "\030\n \001(\004\"\223\002\n\nTaskStatus\022\017\n\013UPLOAD_INIT\020\000\022\r"
+      "\030\n \001(\004\"\254\002\n\nTaskStatus\022\017\n\013UPLOAD_INIT\020\000\022\r"
       "\n\tUPLOADING\020\001\022\014\n\010UPLOADED\020\002\022\021\n\rUPLOAD_PA"
       "USED\020\003\022\022\n\016UPLOAD_PAUSING\020\004\022\021\n\rUPLOAD_RES"
       "UME\020\005\022\021\n\rDOWNLOAD_INIT\020\006\022\017\n\013DOWNLOADING\020"
       "\007\022\016\n\nDOWNLOADED\020\010\022\023\n\017DOWNLOAD_PAUSED\020\t\022\024"
       "\n\020DOWNLOAD_PAUSING\020\n\022\023\n\017DOWNLOAD_RESUME\020"
       "\013\022\023\n\017CANCELED_PAUSED\020\014\022\024\n\020CANCELED_WORKI"
-      "NG\020\r"
+      "NG\020\r\022\n\n\006FAILED\020\016\022\013\n\007FAILING\020\017"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 564);
+      descriptor, 589);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "fs_task.proto", &protobuf_RegisterTypes);
 }
@@ -161,6 +161,8 @@ bool Task_TaskStatus_IsValid(int value) {
     case 11:
     case 12:
     case 13:
+    case 14:
+    case 15:
       return true;
     default:
       return false;
@@ -182,6 +184,8 @@ const Task_TaskStatus Task::DOWNLOAD_PAUSING;
 const Task_TaskStatus Task::DOWNLOAD_RESUME;
 const Task_TaskStatus Task::CANCELED_PAUSED;
 const Task_TaskStatus Task::CANCELED_WORKING;
+const Task_TaskStatus Task::FAILED;
+const Task_TaskStatus Task::FAILING;
 const Task_TaskStatus Task::TaskStatus_MIN;
 const Task_TaskStatus Task::TaskStatus_MAX;
 const int Task::TaskStatus_ARRAYSIZE;

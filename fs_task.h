@@ -15,4 +15,7 @@ void get_task_from_file(std::string filepath, std::map<int, fs::proto::Task>& ta
 void save_task_to_file(std::string filepath, std::map<int, fs::proto::Task>& task_map);
 bool is_timeout(const fs::proto::Task& task);
 
+void default_cb_progress(int clientid, double progress);
+void default_cb_success(int clientid);
+void default_cb_failed(int clientid, fs::proto::Response::ResponseType error);
 #endif // FS_TASK_H
