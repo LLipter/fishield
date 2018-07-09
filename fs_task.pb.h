@@ -242,7 +242,7 @@ class Task : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
 
   // accessors -------------------------------------------------------
 
-  // required string localbasepath = 2;
+  // optional string localbasepath = 2;
   bool has_localbasepath() const;
   void clear_localbasepath();
   static const int kLocalbasepathFieldNumber = 2;
@@ -519,7 +519,7 @@ inline void Task::set_task_id(::google::protobuf::uint64 value) {
   // @@protoc_insertion_point(field_set:fs.proto.Task.task_id)
 }
 
-// required string localbasepath = 2;
+// optional string localbasepath = 2;
 inline bool Task::has_localbasepath() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }

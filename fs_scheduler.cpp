@@ -26,30 +26,30 @@ void fs_scheduler::scheduler(){
     while(true){
         std::vector<int> removed_task;
         for(auto iter=task_map.begin();iter!=task_map.end();iter++) {
-            switch (iter->second.status) {
+            switch (iter->second.task_status()) {
             case Task::UPLOAD_INIT:
             case Task::UPLOAD_RESUME:
                 if(task_count < max_task_num) {
-                    iter->second.status = Task::UPLOADING;
+                    iter->second.set_task_status(Task::UPLOADING);
                     upload(iter->second);
                     task_count++;
                 }
                 break;
             case Task::UPLOAD_PAUSING:
-                iter->second.status = Task::UPLOAD_PAUSED;
+                iter->second.set_task_status(Task::UPLOAD_PAUSED);
                 task_count--;
                 break;
 
             case Task::DOWNLOAD_INIT:
             case Task::DOWNLOAD_RESUME:
                 if(task_count < max_task_num) {
-                    iter->second.status = Task::DOWNLOADING;
+                    iter->second.set_task_status(Task::DOWNLOADING);
                     download(iter->second);
                     task_count++;
                 }
                 break;
             case Task::DOWNLOAD_PAUSING:
-                iter->second.status = Task::DOWNLOAD_PAUSED;
+                iter->second.set_task_status(Task::DOWNLOAD_PAUSED);
                 task_count--;
                 break;
 
@@ -75,28 +75,32 @@ void fs_scheduler::scheduler(){
         }
 
 
-        Tasks tasks;
-        for(int id : removed_task){
-            fs_task& task = task_map[id];
-            Task* task_saved = tasks.add_task();
+//        Tasks tasks;
+//        // read from
+//        std::ifstream infile(tasks_path, std::ios::binary);
+//        tasks.ParseFromIstream(&infile);
 
-            task_saved->set_task_id(task.task_id);
-            task_saved->set_localbasepath(task.localbasepath);
-            task_saved->set_remotebasepath(task.remotebasepath);
-            task_saved->set_filename(task.filename);
-            task_saved->set_total_packet_no(task.total_packet_no);
-            task_saved->set_received_packet_no(task.received_packet_no);
-            task_saved->set_sent_packet_no(task.sent_packet_no);
-            task_saved->set_last_packet_time(task.last_packet_time);
-            task_saved->set_task_status(task.status);
+//        for(int id : removed_task){
+//            fs_task& task = task_map[id];
+//            Task* task_saved = tasks.add_task();
 
-            task_map.erase(id);
-        }
+//            task_saved->set_task_id(task.task_id);
+//            task_saved->set_localbasepath(task.localbasepath);
+//            task_saved->set_remotebasepath(task.remotebasepath);
+//            task_saved->set_filename(task.filename);
+//            task_saved->set_total_packet_no(task.total_packet_no);
+//            task_saved->set_received_packet_no(task.received_packet_no);
+//            task_saved->set_sent_packet_no(task.sent_packet_no);
+//            task_saved->set_last_packet_time(task.last_packet_time);
+//            task_saved->set_task_status(task.status);
 
-        // save some information in disk
-        std::ofstream file(tasks_path, std::ios::trunc);
-        tasks.SerializeToOstream(&file);
-        file.close();
+//            task_map.erase(id);
+//        }
+
+//        // save some information in disk
+//        std::ofstream file(tasks_path, std::ios::trunc | std::ios::binary);
+//        tasks.SerializeToOstream(&file);
+//        file.close();
 
 
         // have a sleep
@@ -112,10 +116,10 @@ void fs_scheduler::add_upload_task(fs::proto::Task task){
     using namespace fs::proto;
     Request upload_request;
     upload_request.set_req_type(Request::UPLOAD);
-    upload_request.set_remote_path(task.remotebasepath);
-    upload_request.set_filename(task.filename);
+    upload_request.set_remote_path(task.remotebasepath());
+    upload_request.set_filename(task.filename());
     upload_request.set_token(_token);
-    upload_request.set_packet_no(task.total_packet_no);
+    upload_request.set_packet_no(task.total_packet_no());
 
     // send request and receive response
     Response response;
@@ -136,8 +140,8 @@ void fs_scheduler::add_download_task(fs::proto::Task task){
     using namespace fs::proto;
     Request download_request;
     download_request.set_req_type(Request::DOWNLOAD);
-    download_request.set_remote_path(task.remotebasepath);
-    download_request.set_filename(task.filename);
+    download_request.set_remote_path(task.remotebasepath());
+    download_request.set_filename(task.filename());
     download_request.set_token(_token);
 
     // send request and receive response
@@ -159,10 +163,10 @@ void fs_scheduler::add_download_task(fs::proto::Task task){
 void fs_scheduler::add_task(fs::proto::Task task){
     using namespace fs::proto;
 
-    if(task.status == Task::UPLOAD_INIT){
+    if(task.task_status() == Task::UPLOAD_INIT){
         std::thread thd(&fs_scheduler::add_upload_task, this, task);
         thd.detach();
-    }else if(task.status == Task::DOWNLOAD_INIT){
+    }else if(task.task_status() == Task::DOWNLOAD_INIT){
         std::thread thd(&fs_scheduler::add_download_task, this, task);
         thd.detach();
     }else

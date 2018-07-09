@@ -138,7 +138,7 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\rfs_task.proto\022\010fs.proto\"\205\004\n\004Task\022\017\n\007ta"
-      "sk_id\030\001 \002(\004\022\025\n\rlocalbasepath\030\002 \002(\t\022\026\n\016re"
+      "sk_id\030\001 \002(\004\022\025\n\rlocalbasepath\030\002 \001(\t\022\026\n\016re"
       "motebasepath\030\003 \002(\t\022\020\n\010filename\030\004 \002(\t\022\027\n\017"
       "total_packet_no\030\005 \002(\004\022.\n\013task_status\030\006 \002"
       "(\0162\031.fs.proto.Task.TaskStatus\022\032\n\022receive"
@@ -350,7 +350,7 @@ bool Task::MergePartialFromCodedStream(
         break;
       }
 
-      // required string localbasepath = 2;
+      // optional string localbasepath = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
@@ -506,7 +506,7 @@ void Task::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->task_id(), output);
   }
 
-  // required string localbasepath = 2;
+  // optional string localbasepath = 2;
   if (cached_has_bits & 0x00000001u) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->localbasepath().data(), static_cast<int>(this->localbasepath().length()),
@@ -582,7 +582,7 @@ void Task::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->task_id(), target);
   }
 
-  // required string localbasepath = 2;
+  // optional string localbasepath = 2;
   if (cached_has_bits & 0x00000001u) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->localbasepath().data(), static_cast<int>(this->localbasepath().length()),
@@ -653,13 +653,6 @@ size_t Task::RequiredFieldsByteSizeFallback() const {
 // @@protoc_insertion_point(required_fields_byte_size_fallback_start:fs.proto.Task)
   size_t total_size = 0;
 
-  if (has_localbasepath()) {
-    // required string localbasepath = 2;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->localbasepath());
-  }
-
   if (has_remotebasepath()) {
     // required string remotebasepath = 3;
     total_size += 1 +
@@ -705,12 +698,7 @@ size_t Task::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         _internal_metadata_.unknown_fields());
   }
-  if (((_has_bits_[0] & 0x0000011f) ^ 0x0000011f) == 0) {  // All required fields are present.
-    // required string localbasepath = 2;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->localbasepath());
-
+  if (((_has_bits_[0] & 0x0000011e) ^ 0x0000011e) == 0) {  // All required fields are present.
     // required string remotebasepath = 3;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -738,6 +726,13 @@ size_t Task::ByteSizeLong() const {
   } else {
     total_size += RequiredFieldsByteSizeFallback();
   }
+  // optional string localbasepath = 2;
+  if (has_localbasepath()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->localbasepath());
+  }
+
   if (_has_bits_[0 / 32] & 224u) {
     // optional uint64 received_packet_no = 7;
     if (has_received_packet_no()) {
@@ -839,7 +834,7 @@ void Task::CopyFrom(const Task& from) {
 }
 
 bool Task::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000011f) != 0x0000011f) return false;
+  if ((_has_bits_[0] & 0x0000011e) != 0x0000011e) return false;
   return true;
 }
 

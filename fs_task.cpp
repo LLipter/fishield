@@ -4,39 +4,39 @@
 fs_fp_intdouble cb_progress;
 fs_fp_int cb_success;
 fs_fp_error cb_failed;
-
 extern std::string _token;
+
 void _upload(fs::proto::Task& task){
     using namespace fs::proto;
 
-    while(sent_packet_no < total_packet_no){
-        if(status == Task::CANCELED_PAUSED ||
-                status == Task::CANCELED_WORKING ||
-                status == Task::UPLOAD_PAUSED)
+    while(task.sent_packet_no() < task.total_packet_no()){
+        if(task.task_status() == Task::CANCELED_PAUSED ||
+                task.task_status() == Task::CANCELED_WORKING ||
+                task.task_status() == Task::UPLOAD_PAUSED)
             return;
 
-        if(status != Task::UPLOADING){
+        if(task.task_status() != Task::UPLOADING){
             cb_failed(Response::ILLEGALTASKSTATUS);
             return;
         }
 
         Request packet_request;
         packet_request.set_req_type(Request::SEND_PACKET);
-        packet_request.set_task_id(this->task_id);
+        packet_request.set_task_id(task.task_id());
         packet_request.set_token(_token);
 
 
         // generate packet
         Packet* packet = packet_request.mutable_packet();
-        packet->set_packet_id(sent_packet_no);
-        std::string filepath = localbasepath + SEPARATOR + filename;
+        packet->set_packet_id(task.sent_packet_no());
+        std::string filepath = task.localbasepath() + SEPARATOR + task.filename();
         std::ifstream file(filepath, std::ios_base::binary);
         if(!file){
             cb_failed(Response::ILLEGALPATH);
             return;
         }
         char* buf = new char[PACKET_SIZE];
-        file.seekg(sent_packet_no * PACKET_SIZE);
+        file.seekg(task.sent_packet_no() * PACKET_SIZE);
         file.read(buf, PACKET_SIZE);
         packet->set_data(buf, file.gcount());
 
@@ -56,11 +56,11 @@ void _upload(fs::proto::Task& task){
         // check response type
         switch (response.resp_type()) {
         case Response::SUCCESS:
-            sent_packet_no++;
-            cb_progress(this->task_id, (double)sent_packet_no / total_packet_no);
+            task.set_sent_packet_no(task.sent_packet_no()+1);
+            cb_progress(task.task_id(), (double)task.sent_packet_no() / task.total_packet_no());
             break;
         case Response::ILLEGALPACKETID:
-            sent_packet_no = response.packet_id();
+            task.set_sent_packet_no(response.packet_id());
             break;
         default:
             cb_failed(response.resp_type());
@@ -68,38 +68,38 @@ void _upload(fs::proto::Task& task){
         }
     }
 
-    cb_success(task_id);
-    status = Task::UPLOADED;
+    cb_success(task.task_id());
+    task.set_task_status(Task::UPLOADED);
 }
 
 void upload(fs::proto::Task& task){
-    std::thread thd(&fs_task::_upload, task);
+    std::thread thd(_upload, std::ref(task));
     thd.detach();
 }
 
 void _download(fs::proto::Task& task){
     using namespace fs::proto;
 
-    std::string filepath = this->localbasepath
+    std::string filepath = task.localbasepath()
                             + SEPARATOR
                             + DEFAULT_HIDDEN_PREFIX
-                            + this->filename;
+                            + task.filename();
 
-    while(received_packet_no < total_packet_no){
-        if(status == Task::CANCELED_PAUSED ||
-                status == Task::CANCELED_WORKING ||
-                status == Task::DOWNLOAD_PAUSED)
+    while(task.received_packet_no() < task.total_packet_no()){
+        if(task.task_status() == Task::CANCELED_PAUSED ||
+                task.task_status() == Task::CANCELED_WORKING ||
+                task.task_status() == Task::DOWNLOAD_PAUSED)
             return;
 
-        if(status != Task::DOWNLOADING){
+        if(task.task_status() != Task::DOWNLOADING){
             cb_failed(Response::ILLEGALTASKSTATUS);
             return;
         }
 
         Request packet_request;
         packet_request.set_req_type(Request::RECEIVE_PACKET);
-        packet_request.set_task_id(this->task_id);
-        packet_request.set_packet_id(received_packet_no);
+        packet_request.set_task_id(task.task_id());
+        packet_request.set_packet_id(task.received_packet_no());
         packet_request.set_token(_token);
 
         // send request and receive response
@@ -112,10 +112,10 @@ void _download(fs::proto::Task& task){
         // check response type
         if(response.resp_type() == Response::SUCCESS){
 
-            if((int)response.packet().packet_id() != received_packet_no)
+            if(response.packet().packet_id() != task.received_packet_no())
                 continue;
 
-            received_packet_no++;
+            task.set_received_packet_no(task.received_packet_no()+1);
 
             // write data in file
             std::ofstream file(filepath, std::ios_base::app | std::ios_base::binary);
@@ -126,8 +126,8 @@ void _download(fs::proto::Task& task){
             file << response.packet().data();
             file.close();
 
-            double progress = (double)received_packet_no / total_packet_no;
-            cb_progress(this->task_id, progress);
+            double progress = (double)task.received_packet_no() / task.total_packet_no();
+            cb_progress(task.task_id(), progress);
         }else{
             cb_failed(response.resp_type());
             return;
@@ -137,7 +137,7 @@ void _download(fs::proto::Task& task){
 
     Request confirm_request;
     confirm_request.set_req_type(Request::DOWNLOAD_CONFIRM);
-    confirm_request.set_task_id(this->task_id);
+    confirm_request.set_task_id(task.task_id());
     confirm_request.set_token(_token);
 
     // send request and receive response
@@ -153,16 +153,16 @@ void _download(fs::proto::Task& task){
         return;
     }
 
-    cb_success(task_id);
-    status = Task::DOWNLOADED;
+    cb_success(task.task_id());
+    task.set_task_status(Task::DOWNLOADED);
 
     boost::filesystem::rename(filepath,
-                              this->localbasepath + SEPARATOR + this->filename);
+                              task.localbasepath() + SEPARATOR + task.filename());
 }
 
 
 void download(fs::proto::Task& task){
-    std::thread thd(&fs_task::_download, task);
+    std::thread thd(_download, std::ref(task));
     thd.detach();
 }
 

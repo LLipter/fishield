@@ -24,7 +24,7 @@ message Task{
     		CANCELED_WORKING			= 13;	// when a task is canceled from UPLOADING/DOWNLOADING
 	}
 	required uint64 	task_id			= 1;
-	required string 	localbasepath		= 2;
+	optional string 	localbasepath		= 2;
 	required string 	remotebasepath		= 3;
 	required string 	filename		= 4;
 	required uint64		total_packet_no		= 5;

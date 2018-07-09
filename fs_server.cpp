@@ -6,7 +6,7 @@ std::string rootdir = DEFAULT_ROOT_DIR;
 std::string hidden_prefix = DEFAULT_HIDDEN_PREFIX;
 std::string taskid_path = std::string(".") + SEPARATOR + DEFAULT_TASKID_FILE;
 std::vector<server_ptr> clients;
-std::map<int,fs_task> tasks;
+std::map<int,fs::proto::Task> tasks;
 
 int task_id;
 fs_server::fs_server():_sock(service){
@@ -240,14 +240,14 @@ void init_upload(const std::string& basepath,
     response.set_resp_type(Response::SUCCESS);
     response.set_task_id(++task_id);
 
-    fs_task task;
-    task.task_id = task_id;
-    task.remotebasepath = base_str;
-    task.filename = filename;
-    task.total_packet_no = packet_no;
-    task.received_packet_no = 0;
-    task.last_packet_time = std::time(0);
-    task.status = Task::UPLOADING;
+    Task task;
+    task.set_task_id(task_id);
+    task.set_remotebasepath(base_str);
+    task.set_filename(filename);
+    task.set_total_packet_no(packet_no);
+    task.set_received_packet_no(0);
+    task.set_last_packet_time(std::time(0));
+    task.set_task_status(Task::UPLOADING);
     tasks[task_id] = task;
 
 }
@@ -273,26 +273,26 @@ void receive_packet(int taskid, const fs::proto::Packet& packet, fs::proto::Resp
         return;
     }
 
-    fs_task& task = tasks[taskid];
-    if((int)packet.packet_id() != task.received_packet_no){
+    Task& task = tasks[taskid];
+    if(packet.packet_id() != task.received_packet_no()){
         response.set_resp_type(Response::ILLEGALPACKETID);
-        response.set_packet_id(task.received_packet_no);
+        response.set_packet_id(task.received_packet_no());
         std::cout << "(packet.packet_id = " << packet.packet_id()
                   << ") (task.received_packet_no = "
-                  << task.received_packet_no << ")"
+                  << task.received_packet_no() << ")"
                   << std::endl;
         return;
     }
 
     response.set_resp_type(Response::SUCCESS);
-    task.received_packet_no++;
-    task.last_packet_time = std::time(0);
+    task.set_received_packet_no(task.received_packet_no()+1);
+    task.set_last_packet_time(std::time(0));
 
     // write data in file
-    std::string filepath = task.remotebasepath
+    std::string filepath = task.remotebasepath()
                             + SEPARATOR
                             + DEFAULT_HIDDEN_PREFIX
-                            + task.filename;
+                            + task.filename();
     std::ofstream file(filepath, std::ios_base::app | std::ios_base::binary);
     if(!file){
         response.set_resp_type(Response::ILLEGALPATH);
@@ -302,10 +302,10 @@ void receive_packet(int taskid, const fs::proto::Packet& packet, fs::proto::Resp
     file.close();
 
     // the last packet has been received
-    if(task.total_packet_no == task.received_packet_no){
+    if(task.total_packet_no() == task.received_packet_no()){
         boost::filesystem::rename(filepath,
-                                  task.remotebasepath + SEPARATOR + task.filename);
-        task.status = Task::UPLOADED;
+                                  task.remotebasepath() + SEPARATOR + task.filename());
+        task.set_task_status(Task::UPLOADED);
     }
 
 
@@ -330,21 +330,21 @@ void init_download(const std::string& basepath,
     response.set_resp_type(Response::SUCCESS);
     response.set_task_id(++task_id);
 
-    fs_task task;
-    task.task_id = task_id;
-    task.remotebasepath = base_str;
-    task.filename = filename;
+    Task task;
+    task.set_task_id(task_id);
+    task.set_remotebasepath(base_str);
+    task.set_filename(filename);
 
     int size = file_size(filepath);
     int packet_no = size / PACKET_SIZE;
     if(size % PACKET_SIZE != 0)
         packet_no++;
-    task.total_packet_no = packet_no;
+    task.set_total_packet_no(packet_no);
     response.set_packet_no(packet_no);
 
-    task.sent_packet_no = 0;
-    task.last_packet_time = std::time(0);
-    task.status = Task::DOWNLOADING;
+    task.set_sent_packet_no(0);
+    task.set_last_packet_time(std::time(0));
+    task.set_task_status(Task::DOWNLOADING);
     tasks[task_id] = task;
 
 }
@@ -357,10 +357,10 @@ void send_packet(int taskid, int packetid, fs::proto::Response& response){
     }
 
     // generate packet
-    fs_task& task = tasks[taskid];
+    Task& task = tasks[taskid];
     Packet* packet = response.mutable_packet();
     packet->set_packet_id(packetid);
-    std::string filepath = task.remotebasepath + SEPARATOR + task.filename;
+    std::string filepath = task.remotebasepath() + SEPARATOR + task.filename();
     std::ifstream file(filepath, std::ios_base::binary);
     if(!file){
         response.set_resp_type(Response::ILLEGALPATH);
@@ -375,8 +375,8 @@ void send_packet(int taskid, int packetid, fs::proto::Response& response){
 
 
     response.set_resp_type(Response::SUCCESS);
-    task.sent_packet_no++;
-    task.last_packet_time = std::time(0);
+    task.set_sent_packet_no(task.sent_packet_no()+1);
+    task.set_last_packet_time(std::time(0));
 
 
 }
@@ -390,7 +390,7 @@ void confirm_download(int taskid, fs::proto::Response& response){
     }
 
     response.set_resp_type(Response::SUCCESS);
-    tasks[taskid].status = Task::DOWNLOADED;
+    tasks[taskid].set_task_status(Task::DOWNLOADED);
 }
 
 void remove_file(const std::string& basepath,
