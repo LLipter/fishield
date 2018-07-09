@@ -126,24 +126,18 @@ void fs_scheduler::add_download_task(fs_task task){
         task.cb_failed(response.resp_type());
 }
 
+void fs_scheduler::add_task(fs_task task){
 
-void fs_scheduler::_add_task(fs_task task){
 
-
-    if(task.status == UPLOAD_INIT)
-        add_upload_task(task);
-    else if(task.status == DOWNLOAD_INIT)
-        add_download_task(task);
-    else
+    if(task.status == UPLOAD_INIT){
+        std::thread thd(&fs_scheduler::add_upload_task, this, task);
+        thd.detach();
+    }else if(task.status == DOWNLOAD_INIT){
+        std::thread thd(&fs_scheduler::add_download_task, this, task);
+        thd.detach();
+    }else
         std::cout << "_add_task() : ILLEGAL TASK STATUS" << std::endl;
 
-
-
-}
-
-void fs_scheduler::add_task(fs_task task){
-    std::thread thd(&fs_scheduler::_add_task, this, task);
-    thd.detach();
 }
 
 

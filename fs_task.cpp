@@ -103,7 +103,7 @@ void fs_task::_download(){
     while(received_packet_no < total_packet_no){
         if(status == CANCELED_PAUSED ||
                 status == CANCELED_WORKING ||
-                status == UPLOAD_PAUSED)
+                status == DOWNLOAD_PAUSED)
             return;
 
         if(status != DOWNLOADING){
@@ -127,7 +127,7 @@ void fs_task::_download(){
         // check response type
         if(response.resp_type() == Response::SUCCESS){
 
-            if((int)response.packet_id() != received_packet_no)
+            if((int)response.packet().packet_id() != received_packet_no)
                 continue;
 
             received_packet_no++;
