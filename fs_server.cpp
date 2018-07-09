@@ -187,29 +187,19 @@ void getFilelist(const std::string& dirpath, fs::proto::Response& response){
 
 }
 
-void mkdir(const std::string& basepath,
-           const std::string& dirname,
+void mkdir(const std::string& ph,
            fs::proto::Response& response){
     using namespace fs::proto;
     using namespace boost::filesystem;
 
-    std::string base_str = rootdir + basepath;
-    path base(base_str);
-    if(!exists(base)){
-        // basepath doesn't exist
+    std::string path_str = rootdir + ph;
+    boost::system::error_code err;
+    create_directory(path_str, err);
+    if(err){
+        // something wrong here
         response.set_resp_type(Response::ILLEGALPATH);
         return;
     }
-
-    std::string newdir_str = base_str + SEPARATOR + dirname;
-    path newdir(newdir_str);
-    if(exists(newdir)){
-        // newdir already exists
-        response.set_resp_type(Response::ILLEGALPATH);
-        return;
-    }
-
-    create_directory(newdir);
     response.set_resp_type(Response::SUCCESS);
 
 }
@@ -393,28 +383,41 @@ void confirm_download(int taskid, fs::proto::Response& response){
     tasks[taskid].set_task_status(Task::DOWNLOADED);
 }
 
-void remove_file(const std::string& basepath,
-                 const std::string& filename,
+void remove_file(const std::string& ph,
                  fs::proto::Response& response){
     using namespace fs::proto;
     using namespace boost::filesystem;
 
-    std::string base_str = rootdir + basepath;
-    std::string filepath_str = base_str + SEPARATOR + filename;
-    path filepath(filepath_str);
-    if(!exists(filepath)){
-        // file doesn't exist
+    std::string path_str = rootdir + ph;
+    boost::system::error_code err;
+    remove(path_str,err);
+    if(err){
+        // something wrong here
+        response.set_resp_type(Response::ILLEGALPATH);
+        return;
+    }
+    response.set_resp_type(Response::SUCCESS);
+}
+
+void rename_file(const std::string& oldpath,
+                 const std::string& newpath,
+                 fs::proto::Response& response){
+    using namespace fs::proto;
+    using namespace boost::filesystem;
+
+
+    std::string oldpath_str = rootdir + oldpath;
+    std::string newpath_str = rootdir + newpath;
+
+    boost::system::error_code err;
+    rename(oldpath_str, newpath_str, err);
+
+    if(err){
+        // something wrong here
         response.set_resp_type(Response::ILLEGALPATH);
         return;
     }
 
-    if(is_directory(filepath) && !is_empty(filepath)){
-        // refuse to remove a non-empty directory
-        response.set_resp_type(Response::ILLEGALPATH);
-        return;
-    }
-
-    remove(filepath);
     response.set_resp_type(Response::SUCCESS);
 }
 
@@ -452,7 +455,8 @@ void communicate_thread(server_ptr serptr){
                 getFilelist(request.remote_path(), response);
                 break;
             case Request::MKDIR:
-                mkdir(request.remote_path(), request.filename(), response);
+                mkdir(request.remote_path(),
+                      response);
                 break;
             case Request::UPLOAD:
                 init_upload(request.remote_path(),
@@ -478,7 +482,11 @@ void communicate_thread(server_ptr serptr){
                 break;
             case Request::REMOVE:
                 remove_file(request.remote_path(),
-                            request.filename(),
+                            response);
+                break;
+            case Request::RENAME:
+                rename_file(request.remote_path(),
+                            request.new_path(),
                             response);
                 break;
             default:

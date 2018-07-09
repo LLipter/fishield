@@ -44,9 +44,11 @@ message Request
 		RECEIVE_PACKET			= 6;
 		DOWNLOAD_CONFIRM		= 7;	// confirm that a download task completes
 		REMOVE				= 8;	// delete a file		
+		RENAME				= 9;	// rename or move a existing file
+		
+		CANCEL				= 10;	// cancel a task
 
-		CANCEL				= 9;	// cancel a task
-		RENAME				= 10;	// rename or move a existing file
+
 		
 		
 
@@ -61,7 +63,6 @@ message Request
 	optional Packet packet		= 8;
 	optional uint64 task_id		= 9;	// task_id of which CANCEL/PAUSE/RESUME/PACKET
 	optional uint64	packet_id	= 10;
-
 	optional string new_path	= 11;	// new path of a RENAMEd file
 	
 }

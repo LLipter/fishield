@@ -20,13 +20,16 @@ void fs_filelist(const std::string& dirpath,
                  fs_fp_filelist cb_success,
                  fs_fp_error cb_failed);
 
-void fs_mkdir(const std::string& basepath,
-              const std::string& dirname,
+void fs_mkdir(const std::string& path,
               fs_fp_void cb_success,
               fs_fp_error cb_failed);
 
-void fs_remove(const std::string& basepath,
-               const std::string& filename,
+void fs_remove(const std::string& path,
+               fs_fp_void cb_success,
+               fs_fp_error cb_failed);
+
+void fs_rename(const std::string& oldpath,
+               const std::string& newpath,
                fs_fp_void cb_success,
                fs_fp_error cb_failed);
 
@@ -43,6 +46,7 @@ void fs_download(int client_id,
                  const std::string& localbasepath,
                  const std::string& remotebasepath,
                  const std::string& filename);
+
 
 
 

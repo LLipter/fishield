@@ -107,15 +107,13 @@ void fs_filelist(const std::string& dirpath,
     thd.detach();
 }
 
-void _fs_mkdir(const std::string& basepath,
-               const std::string& dirname,
+void _fs_mkdir(const std::string& path,
                fs_fp_void cb_success,
                fs_fp_error cb_failed){
     using namespace fs::proto;
     Request mkdir_request;
     mkdir_request.set_req_type(Request::MKDIR);
-    mkdir_request.set_remote_path(basepath);
-    mkdir_request.set_filename(dirname);
+    mkdir_request.set_remote_path(path);
     mkdir_request.set_token(_token);
 
     // send request and receive response
@@ -133,13 +131,11 @@ void _fs_mkdir(const std::string& basepath,
 }
 
 
-void fs_mkdir(const std::string& basepath,
-              const std::string& dirname,
+void fs_mkdir(const std::string& path,
               fs_fp_void cb_success,
               fs_fp_error cb_failed){
     std::thread thd(_fs_mkdir,
-                    basepath,
-                    dirname,
+                    path,
                     cb_success,
                     cb_failed);
     thd.detach();
@@ -221,20 +217,18 @@ void fs_download(int client_id,
     fs_scheduler::instance()->add_task(task);
 }
 
-void _fs_remove(const std::string& basepath,
-               const std::string& filename,
+void _fs_remove(const std::string& path,
                fs_fp_void cb_success,
                fs_fp_error cb_failed){
     using namespace fs::proto;
-    Request mkdir_request;
-    mkdir_request.set_req_type(Request::REMOVE);
-    mkdir_request.set_remote_path(basepath);
-    mkdir_request.set_filename(filename);
-    mkdir_request.set_token(_token);
+    Request remove_request;
+    remove_request.set_req_type(Request::REMOVE);
+    remove_request.set_remote_path(path);
+    remove_request.set_token(_token);
 
     // send request and receive response
     Response response;
-    if(send_receive(mkdir_request,response) == false){
+    if(send_receive(remove_request,response) == false){
         cb_failed(Response::NORESPONSE);
         return;
     }
@@ -247,13 +241,11 @@ void _fs_remove(const std::string& basepath,
 }
 
 
-void fs_remove(const std::string& basepath,
-               const std::string& filename,
+void fs_remove(const std::string& path,
                fs_fp_void cb_success,
                fs_fp_error cb_failed){
     std::thread thd(_fs_remove,
-                    basepath,
-                    filename,
+                    path,
                     cb_success,
                     cb_failed);
     thd.detach();
@@ -266,6 +258,45 @@ void fs_register_task_callback(fs_fp_intdouble cb_prog,
     cb_progress = cb_prog;
     cb_success = cb_succes;
     cb_failed = cb_fal;
+}
+
+void _fs_rename(const std::string& oldpath,
+                const std::string& newpath,
+                fs_fp_void cb_success,
+                fs_fp_error cb_failed){
+    using namespace fs::proto;
+
+    Request rename_request;
+    rename_request.set_req_type(Request::RENAME);
+    rename_request.set_remote_path(oldpath);
+    rename_request.set_new_path(newpath);
+    rename_request.set_token(_token);
+
+    // send request and receive response
+    Response response;
+    if(send_receive(rename_request,response) == false){
+        cb_failed(Response::NORESPONSE);
+        return;
+    }
+
+    // check response type
+    if(response.resp_type() == Response::SUCCESS)
+        cb_success();
+    else
+        cb_failed(response.resp_type());
+}
+
+
+void fs_rename(const std::string& oldpath,
+               const std::string& newpath,
+               fs_fp_void cb_success,
+               fs_fp_error cb_failed){
+    std::thread thd(_fs_rename,
+                    oldpath,
+                    newpath,
+                    cb_success,
+                    cb_failed);
+    thd.detach();
 }
 
 
