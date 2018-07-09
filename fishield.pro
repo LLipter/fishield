@@ -11,7 +11,7 @@ SOURCES += \
     fs_scheduler.cpp \
     fs_task.cpp \
     fs_task.pb.cc \
-    main_client.cpp
+    main_server.cpp
 
 HEADERS += \
     fishield.h \

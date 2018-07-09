@@ -28,9 +28,7 @@ bool fs_client::connect(){
 
 bool fs_client::send_request(const fs::proto::Request& request){
     using namespace fs::proto;
-    std::cout << "start send request : "
-              << Request::RequestType_Name(request.req_type())
-              << std::endl;
+
     int len = request.ByteSize();
     char* buf = new char[len+4];
     *(int*)buf = len;
@@ -45,6 +43,7 @@ bool fs_client::send_request(const fs::proto::Request& request){
         return false;
     }
     std::cout << "send_request() success : "
+              << Request::RequestType_Name(request.req_type())
               << std::endl;
     return true;
 
@@ -52,11 +51,6 @@ bool fs_client::send_request(const fs::proto::Request& request){
 
 bool fs_client::receive_response(fs::proto::Response& response){
     using namespace fs::proto;
-    std::cout << "start receive response : "
-              << Response::ResponseType_Name(response.resp_type())
-              << std::endl;
-
-
 
     // read length of response
     int len;
@@ -90,6 +84,7 @@ bool fs_client::receive_response(fs::proto::Response& response){
     }
     delete[] buf;
     std::cout << "receive_response() success : "
+              << Response::ResponseType_Name(response.resp_type())
               << std::endl;
     return true;
 }

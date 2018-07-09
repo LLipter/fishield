@@ -7,10 +7,27 @@
 #include "fs_task.h"
 #include "fs_scheduler.h"
 
-
+/***
+ * DESC:    Try to start client program.
+ *          This function should be called before any other function.
+ *          Otherwise the result is undefined.
+ * PARAM:   `addr` is the address of server.
+ *          Both domain like "localhost" and digit representation like "127.0.0.1" would be ok.
+ *          `port` is the port of server.
+ * RETURN:  0 upon successful completion.
+ *          FS_E_ILLEGAL_VALUE if `addr` is illegal or unreachable
+ */
 int fs_client_startup(const std::string& addr,
                       const short port);
 
+/***
+ * DESC:    Login to the system.
+ *          This function should be called when client received a ILLEGALTOKEN response from server.
+ * PARAM:   `cb_success` will be called when login successfully.
+ *          Otherwise `cb_failed` will be called with a ResponseType as parameter.
+ *          boost::bind() can be helpful when constructing proper function object.
+ * RETURN:  return nothing
+ */
 void fs_login(const std::string& username,
               const std::string& password,
               fs_fp_void cb_success,

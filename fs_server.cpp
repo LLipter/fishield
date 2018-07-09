@@ -88,9 +88,6 @@ bool fs_server::receive_request(fs::proto::Request& request){
 
 bool fs_server::send_response(const fs::proto::Response& response){
     using namespace fs::proto;
-    std::cout << "start send response : "
-              << Response::ResponseType_Name(response.resp_type())
-              << std::endl;
     int len = response.ByteSize();
     char* buf = new char[len+4];
     *(int*)buf = len;
@@ -105,6 +102,7 @@ bool fs_server::send_response(const fs::proto::Response& response){
         return false;
     }
     std::cout << "send_response() success : "
+              << Response::ResponseType_Name(response.resp_type())
               << std::endl;
     return true;
 }

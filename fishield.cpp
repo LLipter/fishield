@@ -383,5 +383,6 @@ void fs_server_startup(const short port){
     threads.create_thread(remove_clients_thread);
     threads.create_thread(save_thread);
     std::cout << "server startup ok" << std::endl;
+    std::cout << "------------------------------------" << std::endl;
     threads.join_all();
 }
