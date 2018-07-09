@@ -272,8 +272,8 @@ void AddDescriptorsImpl() {
       "uestType\022\t\n\005LOGIN\020\000\022\014\n\010FILELIST\020\001\022\t\n\005MKD"
       "IR\020\002\022\n\n\006UPLOAD\020\003\022\017\n\013SEND_PACKET\020\004\022\014\n\010DOW"
       "NLOAD\020\005\022\022\n\016RECEIVE_PACKET\020\006\022\024\n\020DOWNLOAD_"
-      "CONFIRM\020\n\022\n\n\006CANCEL\020\007\022\n\n\006RENAME\020\010\022\n\n\006REM"
-      "OVE\020\t\"\241\003\n\010Response\0222\n\tresp_type\030\001 \002(\0162\037."
+      "CONFIRM\020\007\022\n\n\006REMOVE\020\010\022\n\n\006CANCEL\020\t\022\n\n\006REN"
+      "AME\020\n\"\241\003\n\010Response\0222\n\tresp_type\030\001 \002(\0162\037."
       "fs.proto.Response.ResponseType\022\r\n\005token\030"
       "\002 \001(\t\022%\n\tfile_list\030\003 \001(\0132\022.fs.proto.File"
       "List\022\017\n\007task_id\030\004 \001(\004\022\021\n\tpacket_id\030\005 \001(\004"
@@ -361,9 +361,9 @@ const Request_RequestType Request::SEND_PACKET;
 const Request_RequestType Request::DOWNLOAD;
 const Request_RequestType Request::RECEIVE_PACKET;
 const Request_RequestType Request::DOWNLOAD_CONFIRM;
+const Request_RequestType Request::REMOVE;
 const Request_RequestType Request::CANCEL;
 const Request_RequestType Request::RENAME;
-const Request_RequestType Request::REMOVE;
 const Request_RequestType Request::RequestType_MIN;
 const Request_RequestType Request::RequestType_MAX;
 const int Request::RequestType_ARRAYSIZE;

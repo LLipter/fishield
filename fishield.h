@@ -5,7 +5,6 @@
 #include "fs_client.h"
 #include "fs_server.h"
 #include "fs_scheduler.h"
-#include "fs_error.h"
 
 
 int fs_client_startup(const std::string& addr,
@@ -37,6 +36,11 @@ void fs_download(const std::string& localbasepath,
                const std::string& filename,
                fs_fp_intdouble cb_progress,
                fs_fp_int cb_success,
+               fs_fp_error cb_failed);
+
+void fs_remove(const std::string& basepath,
+               const std::string& filename,
+               fs_fp_void cb_success,
                fs_fp_error cb_failed);
 
 

@@ -106,14 +106,14 @@ enum Request_RequestType {
   Request_RequestType_SEND_PACKET = 4,
   Request_RequestType_DOWNLOAD = 5,
   Request_RequestType_RECEIVE_PACKET = 6,
-  Request_RequestType_DOWNLOAD_CONFIRM = 10,
-  Request_RequestType_CANCEL = 7,
-  Request_RequestType_RENAME = 8,
-  Request_RequestType_REMOVE = 9
+  Request_RequestType_DOWNLOAD_CONFIRM = 7,
+  Request_RequestType_REMOVE = 8,
+  Request_RequestType_CANCEL = 9,
+  Request_RequestType_RENAME = 10
 };
 bool Request_RequestType_IsValid(int value);
 const Request_RequestType Request_RequestType_RequestType_MIN = Request_RequestType_LOGIN;
-const Request_RequestType Request_RequestType_RequestType_MAX = Request_RequestType_DOWNLOAD_CONFIRM;
+const Request_RequestType Request_RequestType_RequestType_MAX = Request_RequestType_RENAME;
 const int Request_RequestType_RequestType_ARRAYSIZE = Request_RequestType_RequestType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* Request_RequestType_descriptor();
@@ -720,12 +720,12 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
     Request_RequestType_RECEIVE_PACKET;
   static const RequestType DOWNLOAD_CONFIRM =
     Request_RequestType_DOWNLOAD_CONFIRM;
+  static const RequestType REMOVE =
+    Request_RequestType_REMOVE;
   static const RequestType CANCEL =
     Request_RequestType_CANCEL;
   static const RequestType RENAME =
     Request_RequestType_RENAME;
-  static const RequestType REMOVE =
-    Request_RequestType_REMOVE;
   static inline bool RequestType_IsValid(int value) {
     return Request_RequestType_IsValid(value);
   }

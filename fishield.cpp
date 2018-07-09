@@ -223,6 +223,44 @@ void fs_download(const std::string& localbasepath,
     fs_scheduler::instance()->add_task(task);
 }
 
+void _fs_remove(const std::string& basepath,
+               const std::string& filename,
+               fs_fp_void cb_success,
+               fs_fp_error cb_failed){
+    using namespace fs::proto;
+    Request mkdir_request;
+    mkdir_request.set_req_type(Request::REMOVE);
+    mkdir_request.set_remote_path(basepath);
+    mkdir_request.set_filename(filename);
+    mkdir_request.set_token(_token);
+
+    // send request and receive response
+    Response response;
+    if(send_receive(mkdir_request,response) == false){
+        cb_failed(Response::NORESPONSE);
+        return;
+    }
+
+    // check response type
+    if(response.resp_type() == Response::SUCCESS)
+        cb_success();
+    else
+        cb_failed(response.resp_type());
+}
+
+
+void fs_remove(const std::string& basepath,
+               const std::string& filename,
+               fs_fp_void cb_success,
+               fs_fp_error cb_failed){
+    std::thread thd(_fs_remove,
+                    basepath,
+                    filename,
+                    cb_success,
+                    cb_failed);
+    thd.detach();
+}
+
 
 extern short _port;
 void fs_server_startup(const short port){

@@ -214,7 +214,7 @@ void mkdir(const std::string& basepath,
 
 }
 
-void confirm_upload(const std::string& basepath,
+void init_upload(const std::string& basepath,
                     const std::string& filename,
                     int packet_no,
                     fs::proto::Response& response){
@@ -311,7 +311,7 @@ void receive_packet(int taskid, const fs::proto::Packet& packet, fs::proto::Resp
 
 }
 
-void confirm_download(const std::string& basepath,
+void init_download(const std::string& basepath,
                     const std::string& filename,
                     fs::proto::Response& response){
     using namespace fs::proto;
@@ -382,7 +382,7 @@ void send_packet(int taskid, int packetid, fs::proto::Response& response){
 }
 
 
-void end_of_download(int taskid, fs::proto::Response& response){
+void confirm_download(int taskid, fs::proto::Response& response){
     using namespace fs::proto;
     if(!load_task(taskid)){
         response.set_resp_type(Response::ILLEGALTASKID);
@@ -391,6 +391,31 @@ void end_of_download(int taskid, fs::proto::Response& response){
 
     response.set_resp_type(Response::SUCCESS);
     tasks[taskid].status = DOWNLOADED;
+}
+
+void remove_file(const std::string& basepath,
+                 const std::string& filename,
+                 fs::proto::Response& response){
+    using namespace fs::proto;
+    using namespace boost::filesystem;
+
+    std::string base_str = rootdir + basepath;
+    std::string filepath_str = base_str + SEPARATOR + filename;
+    path filepath(filepath_str);
+    if(!exists(filepath)){
+        // file doesn't exist
+        response.set_resp_type(Response::ILLEGALPATH);
+        return;
+    }
+
+    if(is_directory(filepath) && !is_empty(filepath)){
+        // refuse to remove a non-empty directory
+        response.set_resp_type(Response::ILLEGALPATH);
+        return;
+    }
+
+    remove(filepath);
+    response.set_resp_type(Response::SUCCESS);
 }
 
 
@@ -430,7 +455,7 @@ void communicate_thread(server_ptr serptr){
                 mkdir(request.remote_path(), request.filename(), response);
                 break;
             case Request::UPLOAD:
-                confirm_upload(request.remote_path(),
+                init_upload(request.remote_path(),
                                request.filename(),
                                request.packet_no(),
                                response);
@@ -439,7 +464,7 @@ void communicate_thread(server_ptr serptr){
                 receive_packet(request.task_id(), request.packet(), response);
                 break;
             case Request::DOWNLOAD:
-                confirm_download(request.remote_path(),
+                init_download(request.remote_path(),
                                  request.filename(),
                                  response);
                 break;
@@ -449,7 +474,12 @@ void communicate_thread(server_ptr serptr){
                             response);
                 break;
             case Request::DOWNLOAD_CONFIRM:
-                end_of_download(request.task_id(), response);
+                confirm_download(request.task_id(), response);
+                break;
+            case Request::REMOVE:
+                remove_file(request.remote_path(),
+                            request.filename(),
+                            response);
                 break;
             default:
                 response.set_resp_type(Response::ILLEGALREQUEST);

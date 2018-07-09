@@ -28,11 +28,6 @@ void cb_login_success(){
     splitline();
 }
 
-void cb_mkdir_success(){
-    cout << "callback : mkdir successfully" << endl;
-    splitline();
-}
-
 
 void cb_filelist_success(fs::proto::FileList filelist){
     cout << "callback : filelist successfully" << endl;
@@ -72,6 +67,11 @@ void cb_download_success(int taskid){
     splitline();
 }
 
+void cb_success(string msg){
+    cout << "callback : " << msg << " successfully" << endl;
+    splitline();
+}
+
 
 void cb_fail(fs::proto::Response::ResponseType error, string type){
     cout << "callback : " << type << " failed --- ";
@@ -101,11 +101,11 @@ int main()
 //             boost::bind(cb_login_success),
 //             boost::bind(cb_fail,_1,"login"));
 
-//    fs_mkdir("/","newdir",
-//             boost::bind(cb_mkdir_success),
-//             boost::bind(cb_fail,_1,"mkdir"));
+    fs_mkdir("/newdir","newsubdir",
+             boost::bind(cb_success, "mkdir"),
+             boost::bind(cb_fail,_1,"mkdir"));
 
-//    fs_get_filelist("/",
+//    fs_get_filelist("",
 //                    boost::bind(cb_filelist_success, _1),
 //                    boost::bind(cb_fail,_1,"filelist"));
 
@@ -120,12 +120,17 @@ int main()
 //              boost::bind(cb_upload_success, _1),
 //              boost::bind(cb_fail,_1,"upload"));
 
-    fs_download("/home/irran/Desktop",
-                "",                 // download to root directory
-                "1.jpg",
-                boost::bind(cb_download_progress, _1, _2),
-                boost::bind(cb_download_success, _1),
-                boost::bind(cb_fail,_1,"download"));
+//    fs_download("/home/irran/Desktop",
+//                "",                 // download to root directory
+//                "1.jpg",
+//                boost::bind(cb_download_progress, _1, _2),
+//                boost::bind(cb_download_success, _1),
+//                boost::bind(cb_fail,_1,"download"));
+
+    fs_remove("",
+              "file_transfer.proto",
+              boost::bind(cb_success, "remove"),
+              boost::bind(cb_fail,_1, "remove"));
 
 
     while(true){

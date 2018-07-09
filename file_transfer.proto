@@ -42,11 +42,12 @@ message Request
 		SEND_PACKET			= 4;	// send a packet
 		DOWNLOAD			= 5;	// initiate a new DOWNLOAD task
 		RECEIVE_PACKET			= 6;
-		DOWNLOAD_CONFIRM		= 10;	// confirm that a download task completes		
+		DOWNLOAD_CONFIRM		= 7;	// confirm that a download task completes
+		REMOVE				= 8;	// delete a file		
 
-		CANCEL				= 7;	// cancel a task
-		RENAME				= 8;	// rename or move a existing file
-		REMOVE				= 9;	// delete a file
+		CANCEL				= 9;	// cancel a task
+		RENAME				= 10;	// rename or move a existing file
+		
 		
 
 	}

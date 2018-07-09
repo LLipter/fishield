@@ -27,6 +27,11 @@
 #define DEFAULE_MAX_TASKNO      5
 
 
+#define FS_E_UNKNOWN        -1      // unknown error
+#define FS_E_TODO           -2      // something hasn't been implemented
+#define FS_E_ILLEGAL_VALUE  -3      // illegal value
+
+
 
 // fs stands for "fishield" or "file security"
 // fp stands for "function pointer"
