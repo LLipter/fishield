@@ -5,8 +5,9 @@
 extern std::string _token;
 extern fs_fp_intdouble cb_progress;
 extern fs_fp_int cb_success;
-extern fs_fp_error cb_failed;
-std::string tasks_path = std::string(".") + SEPARATOR + DEFAULT_TASKS_FILE;
+extern fs_fp_interror cb_failed;
+std::string tasks_finished_path = std::string(".") + SEPARATOR + DEFAULT_TASKS_FINISHED_FILE;
+std::string tasks_current_path = std::string(".") + SEPARATOR + DEFAULT_TASKS_CURRENT_FILE;
 
 fs_scheduler fs_scheduler::scheduler_instance;
 
@@ -25,7 +26,7 @@ void fs_scheduler::scheduler(){
     using namespace fs::proto;
     while(true){
         std::vector<int> removed_task;
-        for(auto iter=task_map.begin();iter!=task_map.end();iter++) {
+        for(auto iter=task_map_current.begin();iter!=task_map_current.end();iter++) {
             switch (iter->second.task_status()) {
             case Task::UPLOAD_INIT:
             case Task::UPLOAD_RESUME:
@@ -60,12 +61,12 @@ void fs_scheduler::scheduler(){
                 removed_task.push_back(iter->first);
                 break;
             case Task::CANCELED_PAUSED:
-            case Task::UPLOAD_PAUSED:
-            case Task::DOWNLOAD_PAUSED:
                 removed_task.push_back(iter->first);
                 break;
             case Task::UPLOADING:
             case Task::DOWNLOADING:
+            case Task::UPLOAD_PAUSED:
+            case Task::DOWNLOAD_PAUSED:
                 // do nothing
                 break;
             default:
@@ -74,34 +75,45 @@ void fs_scheduler::scheduler(){
             }
         }
 
+        for(int id : removed_task){
+            task_map_finished[id] = task_map_current[id];
+            task_map_current.erase(id);
+        }
 
-//        Tasks tasks;
-//        // read from
-//        std::ifstream infile(tasks_path, std::ios::binary);
-//        tasks.ParseFromIstream(&infile);
+        // save removed tasks in disk
+        int size = BUFFER_SIZE;         // buffer size
+        char* buf = new char[size];
 
-//        for(int id : removed_task){
-//            fs_task& task = task_map[id];
-//            Task* task_saved = tasks.add_task();
+        std::ofstream finished_file(tasks_finished_path, std::ios::binary | std::ios::trunc);
+        for(auto it=task_map_finished.begin();it!=task_map_finished.end();it++){
+            Task& task = it->second;
+            int len = task.ByteSize();
+            if(len > size){             // buffer is not big enough
+                delete[] buf;
+                buf = new char[len];
+                size = len;
+            }
+            task.SerializeToArray(buf, len);
+            finished_file.write((char*)&len, 4);
+            finished_file.write(buf, len);
+        }
+        finished_file.close();
 
-//            task_saved->set_task_id(task.task_id);
-//            task_saved->set_localbasepath(task.localbasepath);
-//            task_saved->set_remotebasepath(task.remotebasepath);
-//            task_saved->set_filename(task.filename);
-//            task_saved->set_total_packet_no(task.total_packet_no);
-//            task_saved->set_received_packet_no(task.received_packet_no);
-//            task_saved->set_sent_packet_no(task.sent_packet_no);
-//            task_saved->set_last_packet_time(task.last_packet_time);
-//            task_saved->set_task_status(task.status);
-
-//            task_map.erase(id);
-//        }
-
-//        // save some information in disk
-//        std::ofstream file(tasks_path, std::ios::trunc | std::ios::binary);
-//        tasks.SerializeToOstream(&file);
-//        file.close();
-
+        std::ofstream current_file(tasks_current_path, std::ios::binary | std::ios::trunc);
+        for(auto it=task_map_current.begin();it!=task_map_current.end();it++){
+            Task& task = it->second;
+            int len = task.ByteSize();
+            if(len > size){             // buffer is not big enough
+                delete[] buf;
+                buf = new char[len];
+                size = len;
+            }
+            task.SerializeToArray(buf, len);
+            current_file.write((char*)&len, 4);
+            current_file.write(buf, len);
+        }
+        current_file.close();
+        delete[] buf;
 
         // have a sleep
         boost::thread::sleep(boost::get_system_time() + boost::posix_time::millisec(100));
@@ -131,7 +143,7 @@ void fs_scheduler::add_upload_task(fs::proto::Task task){
     // check response type
     if(response.resp_type() == Response::SUCCESS){
         task.set_task_id(response.task_id());
-        task_map[task.task_id()] = task;
+        task_map_current[task.task_id()] = task;
     }else
         cb_failed(task.client_id(), response.resp_type());
 }
@@ -155,7 +167,7 @@ void fs_scheduler::add_download_task(fs::proto::Task task){
     if(response.resp_type() == Response::SUCCESS){
         task.set_task_id(response.task_id());
         task.set_total_packet_no(response.packet_no());
-        task_map[task.task_id()] = task;
+        task_map_current[task.task_id()] = task;
     }else
         cb_failed(task.client_id(), response.resp_type());
 }

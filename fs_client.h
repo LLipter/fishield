@@ -10,7 +10,6 @@ class fs_client
 {
 public:
     fs_client();
-    // TODO : load task data from disk
     static void init();
     bool connect();
     bool send_request(const fs::proto::Request& request);

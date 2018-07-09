@@ -36,8 +36,5 @@ message Task{
 
 }
 
-message Tasks{
-	repeated Task task			= 1;
-}
 
 

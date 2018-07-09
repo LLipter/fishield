@@ -39,7 +39,7 @@ namespace protobuf_fs_5ftask_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[2];
+  static const ::google::protobuf::internal::ParseTable schema[1];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -51,15 +51,11 @@ namespace proto {
 class Task;
 class TaskDefaultTypeInternal;
 extern TaskDefaultTypeInternal _Task_default_instance_;
-class Tasks;
-class TasksDefaultTypeInternal;
-extern TasksDefaultTypeInternal _Tasks_default_instance_;
 }  // namespace proto
 }  // namespace fs
 namespace google {
 namespace protobuf {
 template<> ::fs::proto::Task* Arena::CreateMaybeMessage<::fs::proto::Task>(Arena*);
-template<> ::fs::proto::Tasks* Arena::CreateMaybeMessage<::fs::proto::Tasks>(Arena*);
 }  // namespace protobuf
 }  // namespace google
 namespace fs {
@@ -375,123 +371,6 @@ class Task : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::uint64 sent_packet_no_;
   ::google::protobuf::uint64 last_packet_time_;
   int task_status_;
-  friend struct ::protobuf_fs_5ftask_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
-
-class Tasks : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:fs.proto.Tasks) */ {
- public:
-  Tasks();
-  virtual ~Tasks();
-
-  Tasks(const Tasks& from);
-
-  inline Tasks& operator=(const Tasks& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  Tasks(Tasks&& from) noexcept
-    : Tasks() {
-    *this = ::std::move(from);
-  }
-
-  inline Tasks& operator=(Tasks&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const Tasks& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const Tasks* internal_default_instance() {
-    return reinterpret_cast<const Tasks*>(
-               &_Tasks_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    1;
-
-  void Swap(Tasks* other);
-  friend void swap(Tasks& a, Tasks& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline Tasks* New() const final {
-    return CreateMaybeMessage<Tasks>(NULL);
-  }
-
-  Tasks* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<Tasks>(arena);
-  }
-  void CopyFrom(const ::google::protobuf::Message& from) final;
-  void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const Tasks& from);
-  void MergeFrom(const Tasks& from);
-  void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) final;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const final;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(Tasks* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // repeated .fs.proto.Task task = 1;
-  int task_size() const;
-  void clear_task();
-  static const int kTaskFieldNumber = 1;
-  ::fs::proto::Task* mutable_task(int index);
-  ::google::protobuf::RepeatedPtrField< ::fs::proto::Task >*
-      mutable_task();
-  const ::fs::proto::Task& task(int index) const;
-  ::fs::proto::Task* add_task();
-  const ::google::protobuf::RepeatedPtrField< ::fs::proto::Task >&
-      task() const;
-
-  // @@protoc_insertion_point(class_scope:fs.proto.Tasks)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::HasBits<1> _has_bits_;
-  mutable ::google::protobuf::internal::CachedSize _cached_size_;
-  ::google::protobuf::RepeatedPtrField< ::fs::proto::Task > task_;
   friend struct ::protobuf_fs_5ftask_2eproto::TableStruct;
 };
 // ===================================================================
@@ -872,45 +751,9 @@ inline void Task::set_last_packet_time(::google::protobuf::uint64 value) {
   // @@protoc_insertion_point(field_set:fs.proto.Task.last_packet_time)
 }
 
-// -------------------------------------------------------------------
-
-// Tasks
-
-// repeated .fs.proto.Task task = 1;
-inline int Tasks::task_size() const {
-  return task_.size();
-}
-inline void Tasks::clear_task() {
-  task_.Clear();
-}
-inline ::fs::proto::Task* Tasks::mutable_task(int index) {
-  // @@protoc_insertion_point(field_mutable:fs.proto.Tasks.task)
-  return task_.Mutable(index);
-}
-inline ::google::protobuf::RepeatedPtrField< ::fs::proto::Task >*
-Tasks::mutable_task() {
-  // @@protoc_insertion_point(field_mutable_list:fs.proto.Tasks.task)
-  return &task_;
-}
-inline const ::fs::proto::Task& Tasks::task(int index) const {
-  // @@protoc_insertion_point(field_get:fs.proto.Tasks.task)
-  return task_.Get(index);
-}
-inline ::fs::proto::Task* Tasks::add_task() {
-  // @@protoc_insertion_point(field_add:fs.proto.Tasks.task)
-  return task_.Add();
-}
-inline const ::google::protobuf::RepeatedPtrField< ::fs::proto::Task >&
-Tasks::task() const {
-  // @@protoc_insertion_point(field_list:fs.proto.Tasks.task)
-  return task_;
-}
-
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
 
 // @@protoc_insertion_point(namespace_scope)
 

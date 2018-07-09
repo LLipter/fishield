@@ -1,4 +1,5 @@
 #include "fs_client.h"
+#include "fs_scheduler.h"
 
 extern boost::asio::io_service service;
 std::string _token = "NO_SUCH_TOKEN";
@@ -118,6 +119,46 @@ bool send_receive(const fs::proto::Request& request,fs::proto::Response& respons
     }
 
     return true;
+}
+
+
+extern std::string tasks_finished_path;
+extern std::string tasks_current_path;
+void fs_client::init(){
+    using namespace fs::proto;
+
+    Task task;
+    int size = BUFFER_SIZE;
+    char* buf = new char[size];
+    int len;
+
+    std::ifstream finished_file(tasks_finished_path, std::ios::binary);
+    while(finished_file.read((char*)&len, 4)){
+        if(len > size){             // buffer is not big enough
+            delete[] buf;
+            buf = new char[len];
+            size = len;
+        }
+        finished_file.read(buf, len);
+        task.ParseFromArray(buf, len);
+        fs_scheduler::instance()->task_map_finished[task.task_id()] = task;
+    }
+    finished_file.close();
+
+    std::ifstream current_file(tasks_current_path, std::ios::binary);
+    while(current_file.read((char*)&len, 4)){
+        if(len > size){             // buffer is not big enough
+            delete[] buf;
+            buf = new char[len];
+            size = len;
+        }
+        current_file.read(buf, len);
+        task.ParseFromArray(buf, len);
+        fs_scheduler::instance()->task_map_current[task.task_id()] = task;
+    }
+    current_file.close();
+
+    delete[] buf;
 }
 
 

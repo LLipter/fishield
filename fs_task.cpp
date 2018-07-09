@@ -3,7 +3,7 @@
 
 fs_fp_intdouble cb_progress;
 fs_fp_int cb_success;
-fs_fp_error cb_failed;
+fs_fp_interror cb_failed;
 extern std::string _token;
 
 void _upload(fs::proto::Task& task){

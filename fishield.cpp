@@ -24,6 +24,9 @@ int fs_client_startup(const std::string& addr, const short port){
         std::cout << e.what() << std::endl;
         return FS_E_ILLEGAL_VALUE;
     }
+
+    fs_client::init();
+
     return 0;
 }
 

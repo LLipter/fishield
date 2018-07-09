@@ -18,15 +18,17 @@
 #include "fs_task.pb.h"
 
 
-#define PACKET_SIZE             4096
-#define SEPARATOR               boost::filesystem::path::preferred_separator
-#define DEFAULT_SERV_ADDR       boost::asio::ip::address::from_string("127.0.0.1")
-#define DEFAULT_SERV_PORT       7614
-#define DEFAULT_ROOT_DIR        std::string(".")+SEPARATOR+"fs_root"
-#define DEFAULT_HIDDEN_PREFIX   ".fs_"
-#define DEFAULT_TASKID_FILE     ".fs_taskid"
-#define DEFAULT_TASKS_FILE      ".fs_tasks"
-#define DEFAULE_MAX_TASKNO      5
+#define PACKET_SIZE                     4096
+#define BUFFER_SIZE                     PACKET_SIZE
+#define SEPARATOR                       boost::filesystem::path::preferred_separator
+#define DEFAULT_SERV_ADDR               boost::asio::ip::address::from_string("127.0.0.1")
+#define DEFAULT_SERV_PORT               7614
+#define DEFAULT_ROOT_DIR                std::string(".")+SEPARATOR+"fs_root"
+#define DEFAULT_HIDDEN_PREFIX           ".fs_"
+#define DEFAULT_TASKID_FILE             ".fs_taskid"
+#define DEFAULT_TASKS_FINISHED_FILE     ".fs_tasks_finished"
+#define DEFAULT_TASKS_CURRENT_FILE      ".fs_tasks_current"
+#define DEFAULE_MAX_TASKNO              5
 
 
 #define FS_E_UNKNOWN        -1      // unknown error

@@ -16,7 +16,7 @@ private:
     // member variables
     int max_task_num;
     int task_count;
-    std::map<int, fs::proto::Task> task_map;
+
 
 public:
     static fs_scheduler* instance();
@@ -24,6 +24,9 @@ public:
     void add_task(fs::proto::Task task);
     void add_upload_task(fs::proto::Task task);
     void add_download_task(fs::proto::Task task);
+
+    std::map<int, fs::proto::Task> task_map_current;
+    std::map<int, fs::proto::Task> task_map_finished;
 };
 
 #endif // FS_SCHEDULER_H

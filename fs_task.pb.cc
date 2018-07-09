@@ -19,9 +19,6 @@
 #endif
 // @@protoc_insertion_point(includes)
 
-namespace protobuf_fs_5ftask_2eproto {
-extern PROTOBUF_INTERNAL_EXPORT_protobuf_fs_5ftask_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_Task;
-}  // namespace protobuf_fs_5ftask_2eproto
 namespace fs {
 namespace proto {
 class TaskDefaultTypeInternal {
@@ -29,11 +26,6 @@ class TaskDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<Task>
       _instance;
 } _Task_default_instance_;
-class TasksDefaultTypeInternal {
- public:
-  ::google::protobuf::internal::ExplicitlyConstructed<Tasks>
-      _instance;
-} _Tasks_default_instance_;
 }  // namespace proto
 }  // namespace fs
 namespace protobuf_fs_5ftask_2eproto {
@@ -51,27 +43,11 @@ static void InitDefaultsTask() {
 ::google::protobuf::internal::SCCInfo<0> scc_info_Task =
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsTask}, {}};
 
-static void InitDefaultsTasks() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::fs::proto::_Tasks_default_instance_;
-    new (ptr) ::fs::proto::Tasks();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::fs::proto::Tasks::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_Tasks =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsTasks}, {
-      &protobuf_fs_5ftask_2eproto::scc_info_Task.base,}};
-
 void InitDefaults() {
   ::google::protobuf::internal::InitSCC(&scc_info_Task.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_Tasks.base);
 }
 
-::google::protobuf::Metadata file_level_metadata[2];
+::google::protobuf::Metadata file_level_metadata[1];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
@@ -100,22 +76,13 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   6,
   7,
   8,
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Tasks, _has_bits_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Tasks, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Tasks, task_),
-  ~0u,
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 15, sizeof(::fs::proto::Task)},
-  { 25, 31, sizeof(::fs::proto::Tasks)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::fs::proto::_Task_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::fs::proto::_Tasks_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -133,7 +100,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 2);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 1);
 }
 
 void AddDescriptorsImpl() {
@@ -153,11 +120,10 @@ void AddDescriptorsImpl() {
       "\007\022\016\n\nDOWNLOADED\020\010\022\023\n\017DOWNLOAD_PAUSED\020\t\022\024"
       "\n\020DOWNLOAD_PAUSING\020\n\022\023\n\017DOWNLOAD_RESUME\020"
       "\013\022\023\n\017CANCELED_PAUSED\020\014\022\024\n\020CANCELED_WORKI"
-      "NG\020\r\"%\n\005Tasks\022\034\n\004task\030\001 \003(\0132\016.fs.proto.T"
-      "ask"
+      "NG\020\r"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 603);
+      descriptor, 564);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "fs_task.proto", &protobuf_RegisterTypes);
 }
@@ -912,239 +878,6 @@ void Task::InternalSwap(Task* other) {
 }
 
 
-// ===================================================================
-
-void Tasks::InitAsDefaultInstance() {
-}
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int Tasks::kTaskFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
-Tasks::Tasks()
-  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
-  ::google::protobuf::internal::InitSCC(
-      &protobuf_fs_5ftask_2eproto::scc_info_Tasks.base);
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:fs.proto.Tasks)
-}
-Tasks::Tasks(const Tasks& from)
-  : ::google::protobuf::Message(),
-      _internal_metadata_(NULL),
-      _has_bits_(from._has_bits_),
-      task_(from.task_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:fs.proto.Tasks)
-}
-
-void Tasks::SharedCtor() {
-}
-
-Tasks::~Tasks() {
-  // @@protoc_insertion_point(destructor:fs.proto.Tasks)
-  SharedDtor();
-}
-
-void Tasks::SharedDtor() {
-}
-
-void Tasks::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-const ::google::protobuf::Descriptor* Tasks::descriptor() {
-  ::protobuf_fs_5ftask_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_fs_5ftask_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
-}
-
-const Tasks& Tasks::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_fs_5ftask_2eproto::scc_info_Tasks.base);
-  return *internal_default_instance();
-}
-
-
-void Tasks::Clear() {
-// @@protoc_insertion_point(message_clear_start:fs.proto.Tasks)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  task_.Clear();
-  _has_bits_.Clear();
-  _internal_metadata_.Clear();
-}
-
-bool Tasks::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:fs.proto.Tasks)
-  for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated .fs.proto.Task task = 1;
-      case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-                input, add_task()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:fs.proto.Tasks)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:fs.proto.Tasks)
-  return false;
-#undef DO_
-}
-
-void Tasks::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:fs.proto.Tasks)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // repeated .fs.proto.Task task = 1;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->task_size()); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1,
-      this->task(static_cast<int>(i)),
-      output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:fs.proto.Tasks)
-}
-
-::google::protobuf::uint8* Tasks::InternalSerializeWithCachedSizesToArray(
-    bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:fs.proto.Tasks)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // repeated .fs.proto.Task task = 1;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->task_size()); i < n; i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        1, this->task(static_cast<int>(i)), deterministic, target);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:fs.proto.Tasks)
-  return target;
-}
-
-size_t Tasks::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:fs.proto.Tasks)
-  size_t total_size = 0;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  // repeated .fs.proto.Task task = 1;
-  {
-    unsigned int count = static_cast<unsigned int>(this->task_size());
-    total_size += 1UL * count;
-    for (unsigned int i = 0; i < count; i++) {
-      total_size +=
-        ::google::protobuf::internal::WireFormatLite::MessageSize(
-          this->task(static_cast<int>(i)));
-    }
-  }
-
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
-
-void Tasks::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:fs.proto.Tasks)
-  GOOGLE_DCHECK_NE(&from, this);
-  const Tasks* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const Tasks>(
-          &from);
-  if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:fs.proto.Tasks)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:fs.proto.Tasks)
-    MergeFrom(*source);
-  }
-}
-
-void Tasks::MergeFrom(const Tasks& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:fs.proto.Tasks)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  task_.MergeFrom(from.task_);
-}
-
-void Tasks::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:fs.proto.Tasks)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void Tasks::CopyFrom(const Tasks& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:fs.proto.Tasks)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool Tasks::IsInitialized() const {
-  if (!::google::protobuf::internal::AllAreInitialized(this->task())) return false;
-  return true;
-}
-
-void Tasks::Swap(Tasks* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
-void Tasks::InternalSwap(Tasks* other) {
-  using std::swap;
-  CastToBase(&task_)->InternalSwap(CastToBase(&other->task_));
-  swap(_has_bits_[0], other->_has_bits_[0]);
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-}
-
-::google::protobuf::Metadata Tasks::GetMetadata() const {
-  protobuf_fs_5ftask_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_fs_5ftask_2eproto::file_level_metadata[kIndexInFileMessages];
-}
-
-
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace proto
 }  // namespace fs
@@ -1152,9 +885,6 @@ namespace google {
 namespace protobuf {
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::fs::proto::Task* Arena::CreateMaybeMessage< ::fs::proto::Task >(Arena* arena) {
   return Arena::CreateInternal< ::fs::proto::Task >(arena);
-}
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::fs::proto::Tasks* Arena::CreateMaybeMessage< ::fs::proto::Tasks >(Arena* arena) {
-  return Arena::CreateInternal< ::fs::proto::Tasks >(arena);
 }
 }  // namespace protobuf
 }  // namespace google
