@@ -1,5 +1,6 @@
 #include "fs_task.h"
 #include "fs_client.h"
+#include "fs_scheduler.h"
 
 fs_fp_intdouble cb_progress;
 fs_fp_int cb_success;
@@ -166,4 +167,13 @@ void download(fs::proto::Task& task){
     thd.detach();
 }
 
+
+int get_taskid_by_clientid(int clientid){
+    fs_scheduler* scheduler = fs_scheduler::instance();
+    auto& task_map = scheduler->task_map_current;
+    for(auto it=task_map.begin();it!=task_map.end();it++)
+        if((int)it->second.client_id() == clientid)
+            return it->first;
+    return FS_E_NOSUCHID;
+}
 

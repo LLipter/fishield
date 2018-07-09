@@ -137,11 +137,12 @@ enum Response_ResponseType {
   Response_ResponseType_ILLEGALREQUEST = 7,
   Response_ResponseType_ILLEGALTASKSTATUS = 8,
   Response_ResponseType_ILLEGALTASKID = 9,
-  Response_ResponseType_ILLEGALPACKETID = 10
+  Response_ResponseType_ILLEGALPACKETID = 10,
+  Response_ResponseType_ILLEGALCLIENTID = 11
 };
 bool Response_ResponseType_IsValid(int value);
 const Response_ResponseType Response_ResponseType_ResponseType_MIN = Response_ResponseType_SUCCESS;
-const Response_ResponseType Response_ResponseType_ResponseType_MAX = Response_ResponseType_ILLEGALPACKETID;
+const Response_ResponseType Response_ResponseType_ResponseType_MAX = Response_ResponseType_ILLEGALCLIENTID;
 const int Response_ResponseType_ResponseType_ARRAYSIZE = Response_ResponseType_ResponseType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* Response_ResponseType_descriptor();
@@ -839,21 +840,6 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::std::string* release_new_path();
   void set_allocated_new_path(::std::string* new_path);
 
-  // optional string new_filename = 12;
-  bool has_new_filename() const;
-  void clear_new_filename();
-  static const int kNewFilenameFieldNumber = 12;
-  const ::std::string& new_filename() const;
-  void set_new_filename(const ::std::string& value);
-  #if LANG_CXX11
-  void set_new_filename(::std::string&& value);
-  #endif
-  void set_new_filename(const char* value);
-  void set_new_filename(const char* value, size_t size);
-  ::std::string* mutable_new_filename();
-  ::std::string* release_new_filename();
-  void set_allocated_new_filename(::std::string* new_filename);
-
   // optional .fs.proto.Packet packet = 8;
   bool has_packet() const;
   void clear_packet();
@@ -918,8 +904,6 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   void clear_has_packet_id();
   void set_has_new_path();
   void clear_has_new_path();
-  void set_has_new_filename();
-  void clear_has_new_filename();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
@@ -930,7 +914,6 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::google::protobuf::internal::ArenaStringPtr remote_path_;
   ::google::protobuf::internal::ArenaStringPtr filename_;
   ::google::protobuf::internal::ArenaStringPtr new_path_;
-  ::google::protobuf::internal::ArenaStringPtr new_filename_;
   ::fs::proto::Packet* packet_;
   ::google::protobuf::uint64 packet_no_;
   ::google::protobuf::uint64 task_id_;
@@ -1055,6 +1038,8 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
     Response_ResponseType_ILLEGALTASKID;
   static const ResponseType ILLEGALPACKETID =
     Response_ResponseType_ILLEGALPACKETID;
+  static const ResponseType ILLEGALCLIENTID =
+    Response_ResponseType_ILLEGALCLIENTID;
   static inline bool ResponseType_IsValid(int value) {
     return Response_ResponseType_IsValid(value);
   }
@@ -1524,13 +1509,13 @@ inline void Packet::set_allocated_data(::std::string* data) {
 
 // required .fs.proto.Request.RequestType req_type = 1;
 inline bool Request::has_req_type() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
+  return (_has_bits_[0] & 0x00000400u) != 0;
 }
 inline void Request::set_has_req_type() {
-  _has_bits_[0] |= 0x00000800u;
+  _has_bits_[0] |= 0x00000400u;
 }
 inline void Request::clear_has_req_type() {
-  _has_bits_[0] &= ~0x00000800u;
+  _has_bits_[0] &= ~0x00000400u;
 }
 inline void Request::clear_req_type() {
   req_type_ = 0;
@@ -1879,13 +1864,13 @@ inline void Request::set_allocated_filename(::std::string* filename) {
 
 // optional uint64 packet_no = 7;
 inline bool Request::has_packet_no() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
+  return (_has_bits_[0] & 0x00000080u) != 0;
 }
 inline void Request::set_has_packet_no() {
-  _has_bits_[0] |= 0x00000100u;
+  _has_bits_[0] |= 0x00000080u;
 }
 inline void Request::clear_has_packet_no() {
-  _has_bits_[0] &= ~0x00000100u;
+  _has_bits_[0] &= ~0x00000080u;
 }
 inline void Request::clear_packet_no() {
   packet_no_ = GOOGLE_ULONGLONG(0);
@@ -1903,13 +1888,13 @@ inline void Request::set_packet_no(::google::protobuf::uint64 value) {
 
 // optional .fs.proto.Packet packet = 8;
 inline bool Request::has_packet() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
+  return (_has_bits_[0] & 0x00000040u) != 0;
 }
 inline void Request::set_has_packet() {
-  _has_bits_[0] |= 0x00000080u;
+  _has_bits_[0] |= 0x00000040u;
 }
 inline void Request::clear_has_packet() {
-  _has_bits_[0] &= ~0x00000080u;
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline void Request::clear_packet() {
   if (packet_ != NULL) packet_->Clear();
@@ -1961,13 +1946,13 @@ inline void Request::set_allocated_packet(::fs::proto::Packet* packet) {
 
 // optional uint64 task_id = 9;
 inline bool Request::has_task_id() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
+  return (_has_bits_[0] & 0x00000100u) != 0;
 }
 inline void Request::set_has_task_id() {
-  _has_bits_[0] |= 0x00000200u;
+  _has_bits_[0] |= 0x00000100u;
 }
 inline void Request::clear_has_task_id() {
-  _has_bits_[0] &= ~0x00000200u;
+  _has_bits_[0] &= ~0x00000100u;
 }
 inline void Request::clear_task_id() {
   task_id_ = GOOGLE_ULONGLONG(0);
@@ -1985,13 +1970,13 @@ inline void Request::set_task_id(::google::protobuf::uint64 value) {
 
 // optional uint64 packet_id = 10;
 inline bool Request::has_packet_id() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
+  return (_has_bits_[0] & 0x00000200u) != 0;
 }
 inline void Request::set_has_packet_id() {
-  _has_bits_[0] |= 0x00000400u;
+  _has_bits_[0] |= 0x00000200u;
 }
 inline void Request::clear_has_packet_id() {
-  _has_bits_[0] &= ~0x00000400u;
+  _has_bits_[0] &= ~0x00000200u;
 }
 inline void Request::clear_packet_id() {
   packet_id_ = GOOGLE_ULONGLONG(0);
@@ -2071,72 +2056,6 @@ inline void Request::set_allocated_new_path(::std::string* new_path) {
   }
   new_path_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), new_path);
   // @@protoc_insertion_point(field_set_allocated:fs.proto.Request.new_path)
-}
-
-// optional string new_filename = 12;
-inline bool Request::has_new_filename() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void Request::set_has_new_filename() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void Request::clear_has_new_filename() {
-  _has_bits_[0] &= ~0x00000040u;
-}
-inline void Request::clear_new_filename() {
-  new_filename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_new_filename();
-}
-inline const ::std::string& Request::new_filename() const {
-  // @@protoc_insertion_point(field_get:fs.proto.Request.new_filename)
-  return new_filename_.GetNoArena();
-}
-inline void Request::set_new_filename(const ::std::string& value) {
-  set_has_new_filename();
-  new_filename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:fs.proto.Request.new_filename)
-}
-#if LANG_CXX11
-inline void Request::set_new_filename(::std::string&& value) {
-  set_has_new_filename();
-  new_filename_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:fs.proto.Request.new_filename)
-}
-#endif
-inline void Request::set_new_filename(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  set_has_new_filename();
-  new_filename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:fs.proto.Request.new_filename)
-}
-inline void Request::set_new_filename(const char* value, size_t size) {
-  set_has_new_filename();
-  new_filename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:fs.proto.Request.new_filename)
-}
-inline ::std::string* Request::mutable_new_filename() {
-  set_has_new_filename();
-  // @@protoc_insertion_point(field_mutable:fs.proto.Request.new_filename)
-  return new_filename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* Request::release_new_filename() {
-  // @@protoc_insertion_point(field_release:fs.proto.Request.new_filename)
-  if (!has_new_filename()) {
-    return NULL;
-  }
-  clear_has_new_filename();
-  return new_filename_.ReleaseNonDefaultNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void Request::set_allocated_new_filename(::std::string* new_filename) {
-  if (new_filename != NULL) {
-    set_has_new_filename();
-  } else {
-    clear_has_new_filename();
-  }
-  new_filename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), new_filename);
-  // @@protoc_insertion_point(field_set_allocated:fs.proto.Request.new_filename)
 }
 
 // -------------------------------------------------------------------

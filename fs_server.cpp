@@ -135,7 +135,7 @@ void remove_clients_thread() {
                                      boost::bind(&fs_server::is_stop,_1)),
                       clients.end());
         // TODO : REMOVE ALL TIMEOUT CLIENTS
-        // TODO : REMOVE ALL TIMEOUT TASKS or finished tasks
+        // TODO : REMOVE ALL TIMEOUT TASKS or finished tasks or canceled tasks
     }
 }
 
@@ -421,6 +421,25 @@ void rename_file(const std::string& oldpath,
     response.set_resp_type(Response::SUCCESS);
 }
 
+void cancel_task(int taskid,
+                 fs::proto::Response& response){
+    using namespace fs::proto;
+    if(!load_task(taskid)){
+        response.set_resp_type(Response::ILLEGALTASKID);
+        return;
+    }
+
+    Task::TaskStatus status = tasks[taskid].task_status();
+    if(status == Task::UPLOADING || status == Task::DOWNLOADING)
+        tasks[taskid].set_task_status(Task::CANCELED_WORKING);
+    else if(status == Task::UPLOADED || status == Task::DOWNLOADED){
+        response.set_resp_type(Response::ILLEGALTASKID);
+        return;
+    }
+
+    response.set_resp_type(Response::SUCCESS);
+}
+
 
 // TODO verify token
 bool verify_token(const std::string& token){
@@ -487,6 +506,10 @@ void communicate_thread(server_ptr serptr){
             case Request::RENAME:
                 rename_file(request.remote_path(),
                             request.new_path(),
+                            response);
+                break;
+            case Request::CANCEL:
+                cancel_task(request.task_id(),
                             response);
                 break;
             default:

@@ -83,7 +83,7 @@ message Response
 		ILLEGALTASKSTATUS		= 8;	// illegal task status
 		ILLEGALTASKID			= 9;	// illegal task id
 		ILLEGALPACKETID			= 10;	// illegal packet id
-		
+		ILLEGALCLIENTID			= 11;	// illegal client id
 	
 	}
 	required ResponseType resp_type	= 1;

@@ -47,6 +47,9 @@ void fs_download(int client_id,
                  const std::string& remotebasepath,
                  const std::string& filename);
 
+void fs_cancel(int client_id,
+               fs_fp_int cb_success,
+               fs_fp_interror cb_failed);
 
 
 

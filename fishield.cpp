@@ -300,6 +300,74 @@ void fs_rename(const std::string& oldpath,
 }
 
 
+void _fs_cancel(int client_id,
+               fs_fp_int cb_success,
+               fs_fp_interror cb_failed){
+    using namespace fs::proto;
+
+    int taskid = get_taskid_by_clientid(client_id);
+    if(taskid == FS_E_NOSUCHID)
+        cb_failed(client_id, Response::ILLEGALCLIENTID);
+
+    Request cancel_request;
+    cancel_request.set_req_type(Request::CANCEL);
+    cancel_request.set_task_id(taskid);
+    cancel_request.set_token(_token);
+
+    // send request and receive response
+    Response response;
+    if(send_receive(cancel_request,response) == false){
+        cb_failed(client_id, Response::NORESPONSE);
+        return;
+    }
+
+    // check response type
+    if(response.resp_type() == Response::SUCCESS){
+        Task& task = fs_scheduler::instance()->task_map_current[taskid];
+
+        switch (task.task_status()) {
+        case Task::UPLOADING:
+        case Task::UPLOAD_PAUSING:
+        case Task::DOWNLOADING:
+        case Task::DOWNLOAD_PAUSING:
+            task.set_task_status(Task::CANCELED_WORKING);
+            break;
+        case Task::UPLOAD_PAUSED:
+        case Task::UPLOAD_INIT:
+        case Task::UPLOAD_RESUME:
+        case Task::DOWNLOAD_PAUSED:
+        case Task::DOWNLOAD_INIT:
+        case Task::DOWNLOAD_RESUME:
+            task.set_task_status(Task::CANCELED_PAUSED);
+            break;
+        case Task::UPLOADED:
+        case Task::DOWNLOADED:
+        case Task::CANCELED_PAUSED:
+        case Task::CANCELED_WORKING:
+            // do nothing
+            break;
+        default:
+            break;
+        }
+
+
+        cb_success(client_id);
+    }
+    else
+        cb_failed(client_id, response.resp_type());
+}
+
+void fs_cancel(int client_id,
+               fs_fp_int cb_success,
+               fs_fp_interror cb_failed){
+    std::thread thd(_fs_cancel,
+                    client_id,
+                    cb_success,
+                    cb_failed);
+    thd.detach();
+}
+
+
 extern short _port;
 void fs_server_startup(const short port){
     _port = port;
