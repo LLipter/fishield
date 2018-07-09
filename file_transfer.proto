@@ -15,6 +15,7 @@ message File
 	required uint64 mtime		= 2;	// time of last data modification
 	required FileType file_type	= 3;
 	optional uint64 size		= 4;	// only valid for REGULAR file
+	optional FileList filelist	= 5;	// only valid for DIRECTORY file
 }
 
 message FileList

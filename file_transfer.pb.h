@@ -296,6 +296,18 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_filename();
   void set_allocated_filename(::std::string* filename);
 
+  // optional .fs.proto.FileList filelist = 5;
+  bool has_filelist() const;
+  void clear_filelist();
+  static const int kFilelistFieldNumber = 5;
+  private:
+  const ::fs::proto::FileList& _internal_filelist() const;
+  public:
+  const ::fs::proto::FileList& filelist() const;
+  ::fs::proto::FileList* release_filelist();
+  ::fs::proto::FileList* mutable_filelist();
+  void set_allocated_filelist(::fs::proto::FileList* filelist);
+
   // required uint64 mtime = 2;
   bool has_mtime() const;
   void clear_mtime();
@@ -327,6 +339,8 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   void clear_has_file_type();
   void set_has_size();
   void clear_has_size();
+  void set_has_filelist();
+  void clear_has_filelist();
 
   // helper for ByteSizeLong()
   size_t RequiredFieldsByteSizeFallback() const;
@@ -335,6 +349,7 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   ::google::protobuf::internal::ArenaStringPtr filename_;
+  ::fs::proto::FileList* filelist_;
   ::google::protobuf::uint64 mtime_;
   ::google::protobuf::uint64 size_;
   int file_type_;
@@ -1238,13 +1253,13 @@ inline void File::set_allocated_filename(::std::string* filename) {
 
 // required uint64 mtime = 2;
 inline bool File::has_mtime() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
 inline void File::set_has_mtime() {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000004u;
 }
 inline void File::clear_has_mtime() {
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void File::clear_mtime() {
   mtime_ = GOOGLE_ULONGLONG(0);
@@ -1262,13 +1277,13 @@ inline void File::set_mtime(::google::protobuf::uint64 value) {
 
 // required .fs.proto.File.FileType file_type = 3;
 inline bool File::has_file_type() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+  return (_has_bits_[0] & 0x00000010u) != 0;
 }
 inline void File::set_has_file_type() {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000010u;
 }
 inline void File::clear_has_file_type() {
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void File::clear_file_type() {
   file_type_ = 0;
@@ -1287,13 +1302,13 @@ inline void File::set_file_type(::fs::proto::File_FileType value) {
 
 // optional uint64 size = 4;
 inline bool File::has_size() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
+  return (_has_bits_[0] & 0x00000008u) != 0;
 }
 inline void File::set_has_size() {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000008u;
 }
 inline void File::clear_has_size() {
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline void File::clear_size() {
   size_ = GOOGLE_ULONGLONG(0);
@@ -1307,6 +1322,64 @@ inline void File::set_size(::google::protobuf::uint64 value) {
   set_has_size();
   size_ = value;
   // @@protoc_insertion_point(field_set:fs.proto.File.size)
+}
+
+// optional .fs.proto.FileList filelist = 5;
+inline bool File::has_filelist() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void File::set_has_filelist() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void File::clear_has_filelist() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void File::clear_filelist() {
+  if (filelist_ != NULL) filelist_->Clear();
+  clear_has_filelist();
+}
+inline const ::fs::proto::FileList& File::_internal_filelist() const {
+  return *filelist_;
+}
+inline const ::fs::proto::FileList& File::filelist() const {
+  const ::fs::proto::FileList* p = filelist_;
+  // @@protoc_insertion_point(field_get:fs.proto.File.filelist)
+  return p != NULL ? *p : *reinterpret_cast<const ::fs::proto::FileList*>(
+      &::fs::proto::_FileList_default_instance_);
+}
+inline ::fs::proto::FileList* File::release_filelist() {
+  // @@protoc_insertion_point(field_release:fs.proto.File.filelist)
+  clear_has_filelist();
+  ::fs::proto::FileList* temp = filelist_;
+  filelist_ = NULL;
+  return temp;
+}
+inline ::fs::proto::FileList* File::mutable_filelist() {
+  set_has_filelist();
+  if (filelist_ == NULL) {
+    auto* p = CreateMaybeMessage<::fs::proto::FileList>(GetArenaNoVirtual());
+    filelist_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:fs.proto.File.filelist)
+  return filelist_;
+}
+inline void File::set_allocated_filelist(::fs::proto::FileList* filelist) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete filelist_;
+  }
+  if (filelist) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      filelist = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, filelist, submessage_arena);
+    }
+    set_has_filelist();
+  } else {
+    clear_has_filelist();
+  }
+  filelist_ = filelist;
+  // @@protoc_insertion_point(field_set_allocated:fs.proto.File.filelist)
 }
 
 // -------------------------------------------------------------------

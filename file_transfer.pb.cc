@@ -22,7 +22,6 @@
 namespace protobuf_file_5ftransfer_2eproto {
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_file_5ftransfer_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_File;
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_file_5ftransfer_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_Packet;
-extern PROTOBUF_INTERNAL_EXPORT_protobuf_file_5ftransfer_2eproto ::google::protobuf::internal::SCCInfo<1> scc_info_FileList;
 }  // namespace protobuf_file_5ftransfer_2eproto
 namespace fs {
 namespace proto {
@@ -62,26 +61,17 @@ static void InitDefaultsFile() {
     new (ptr) ::fs::proto::File();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::fs::proto::File::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_File =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsFile}, {}};
-
-static void InitDefaultsFileList() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
   {
     void* ptr = &::fs::proto::_FileList_default_instance_;
     new (ptr) ::fs::proto::FileList();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
+  ::fs::proto::File::InitAsDefaultInstance();
   ::fs::proto::FileList::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<1> scc_info_FileList =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsFileList}, {
-      &protobuf_file_5ftransfer_2eproto::scc_info_File.base,}};
+::google::protobuf::internal::SCCInfo<0> scc_info_File =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsFile}, {}};
 
 static void InitDefaultsPacket() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -125,12 +115,11 @@ static void InitDefaultsResponse() {
 
 ::google::protobuf::internal::SCCInfo<2> scc_info_Response =
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 2, InitDefaultsResponse}, {
-      &protobuf_file_5ftransfer_2eproto::scc_info_FileList.base,
+      &protobuf_file_5ftransfer_2eproto::scc_info_File.base,
       &protobuf_file_5ftransfer_2eproto::scc_info_Packet.base,}};
 
 void InitDefaults() {
   ::google::protobuf::internal::InitSCC(&scc_info_File.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_FileList.base);
   ::google::protobuf::internal::InitSCC(&scc_info_Packet.base);
   ::google::protobuf::internal::InitSCC(&scc_info_Request.base);
   ::google::protobuf::internal::InitSCC(&scc_info_Response.base);
@@ -149,10 +138,12 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::File, mtime_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::File, file_type_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::File, size_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::File, filelist_),
   0,
-  1,
-  3,
   2,
+  4,
+  3,
+  1,
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::FileList, _has_bits_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::FileList, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -219,11 +210,11 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   2,
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 9, sizeof(::fs::proto::File)},
-  { 13, 20, sizeof(::fs::proto::FileList)},
-  { 22, 29, sizeof(::fs::proto::Packet)},
-  { 31, 47, sizeof(::fs::proto::Request)},
-  { 58, 70, sizeof(::fs::proto::Response)},
+  { 0, 10, sizeof(::fs::proto::File)},
+  { 15, 22, sizeof(::fs::proto::FileList)},
+  { 24, 31, sizeof(::fs::proto::Packet)},
+  { 33, 49, sizeof(::fs::proto::Request)},
+  { 60, 72, sizeof(::fs::proto::Response)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -255,39 +246,40 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\023file_transfer.proto\022\010fs.proto\"\241\001\n\004File"
+      "\n\023file_transfer.proto\022\010fs.proto\"\307\001\n\004File"
       "\022\020\n\010filename\030\001 \002(\t\022\r\n\005mtime\030\002 \002(\004\022*\n\tfil"
       "e_type\030\003 \002(\0162\027.fs.proto.File.FileType\022\014\n"
-      "\004size\030\004 \001(\004\">\n\010FileType\022\013\n\007REGULAR\020\000\022\r\n\t"
-      "DIRECTORY\020\001\022\013\n\007SYMLINK\020\002\022\t\n\005OTHER\020\003\"6\n\010F"
-      "ileList\022\014\n\004path\030\001 \002(\t\022\034\n\004file\030\002 \003(\0132\016.fs"
-      ".proto.File\")\n\006Packet\022\021\n\tpacket_id\030\001 \002(\004"
-      "\022\014\n\004data\030\002 \002(\014\"\254\003\n\007Request\022/\n\010req_type\030\001"
-      " \002(\0162\035.fs.proto.Request.RequestType\022\020\n\010u"
-      "sername\030\002 \001(\t\022\020\n\010password\030\003 \001(\t\022\r\n\005token"
-      "\030\004 \001(\t\022\023\n\013remote_path\030\005 \001(\t\022\020\n\010filename\030"
-      "\006 \001(\t\022\021\n\tpacket_no\030\007 \001(\004\022 \n\006packet\030\010 \001(\013"
-      "2\020.fs.proto.Packet\022\017\n\007task_id\030\t \001(\004\022\021\n\tp"
-      "acket_id\030\n \001(\004\022\020\n\010new_path\030\013 \001(\t\"\252\001\n\013Req"
-      "uestType\022\t\n\005LOGIN\020\000\022\014\n\010FILELIST\020\001\022\t\n\005MKD"
-      "IR\020\002\022\n\n\006UPLOAD\020\003\022\017\n\013SEND_PACKET\020\004\022\014\n\010DOW"
-      "NLOAD\020\005\022\022\n\016RECEIVE_PACKET\020\006\022\024\n\020DOWNLOAD_"
-      "CONFIRM\020\007\022\n\n\006REMOVE\020\010\022\n\n\006RENAME\020\t\022\n\n\006CAN"
-      "CEL\020\n\"\266\003\n\010Response\0222\n\tresp_type\030\001 \002(\0162\037."
-      "fs.proto.Response.ResponseType\022\r\n\005token\030"
-      "\002 \001(\t\022%\n\tfile_list\030\003 \001(\0132\022.fs.proto.File"
-      "List\022\017\n\007task_id\030\004 \001(\004\022\021\n\tpacket_id\030\005 \001(\004"
-      "\022\021\n\tpacket_no\030\006 \001(\004\022 \n\006packet\030\007 \001(\0132\020.fs"
-      ".proto.Packet\"\346\001\n\014ResponseType\022\013\n\007SUCCES"
-      "S\020\000\022\016\n\nNOSUCHUSER\020\001\022\021\n\rILLEGALPASSWD\020\002\022\013"
-      "\n\007UNKNOWN\020\003\022\016\n\nNORESPONSE\020\004\022\020\n\014ILLEGALTO"
-      "KEN\020\005\022\017\n\013ILLEGALPATH\020\006\022\022\n\016ILLEGALREQUEST"
-      "\020\007\022\025\n\021ILLEGALTASKSTATUS\020\010\022\021\n\rILLEGALTASK"
-      "ID\020\t\022\023\n\017ILLEGALPACKETID\020\n\022\023\n\017ILLEGALCLIE"
-      "NTID\020\013"
+      "\004size\030\004 \001(\004\022$\n\010filelist\030\005 \001(\0132\022.fs.proto"
+      ".FileList\">\n\010FileType\022\013\n\007REGULAR\020\000\022\r\n\tDI"
+      "RECTORY\020\001\022\013\n\007SYMLINK\020\002\022\t\n\005OTHER\020\003\"6\n\010Fil"
+      "eList\022\014\n\004path\030\001 \002(\t\022\034\n\004file\030\002 \003(\0132\016.fs.p"
+      "roto.File\")\n\006Packet\022\021\n\tpacket_id\030\001 \002(\004\022\014"
+      "\n\004data\030\002 \002(\014\"\254\003\n\007Request\022/\n\010req_type\030\001 \002"
+      "(\0162\035.fs.proto.Request.RequestType\022\020\n\010use"
+      "rname\030\002 \001(\t\022\020\n\010password\030\003 \001(\t\022\r\n\005token\030\004"
+      " \001(\t\022\023\n\013remote_path\030\005 \001(\t\022\020\n\010filename\030\006 "
+      "\001(\t\022\021\n\tpacket_no\030\007 \001(\004\022 \n\006packet\030\010 \001(\0132\020"
+      ".fs.proto.Packet\022\017\n\007task_id\030\t \001(\004\022\021\n\tpac"
+      "ket_id\030\n \001(\004\022\020\n\010new_path\030\013 \001(\t\"\252\001\n\013Reque"
+      "stType\022\t\n\005LOGIN\020\000\022\014\n\010FILELIST\020\001\022\t\n\005MKDIR"
+      "\020\002\022\n\n\006UPLOAD\020\003\022\017\n\013SEND_PACKET\020\004\022\014\n\010DOWNL"
+      "OAD\020\005\022\022\n\016RECEIVE_PACKET\020\006\022\024\n\020DOWNLOAD_CO"
+      "NFIRM\020\007\022\n\n\006REMOVE\020\010\022\n\n\006RENAME\020\t\022\n\n\006CANCE"
+      "L\020\n\"\266\003\n\010Response\0222\n\tresp_type\030\001 \002(\0162\037.fs"
+      ".proto.Response.ResponseType\022\r\n\005token\030\002 "
+      "\001(\t\022%\n\tfile_list\030\003 \001(\0132\022.fs.proto.FileLi"
+      "st\022\017\n\007task_id\030\004 \001(\004\022\021\n\tpacket_id\030\005 \001(\004\022\021"
+      "\n\tpacket_no\030\006 \001(\004\022 \n\006packet\030\007 \001(\0132\020.fs.p"
+      "roto.Packet\"\346\001\n\014ResponseType\022\013\n\007SUCCESS\020"
+      "\000\022\016\n\nNOSUCHUSER\020\001\022\021\n\rILLEGALPASSWD\020\002\022\013\n\007"
+      "UNKNOWN\020\003\022\016\n\nNORESPONSE\020\004\022\020\n\014ILLEGALTOKE"
+      "N\020\005\022\017\n\013ILLEGALPATH\020\006\022\022\n\016ILLEGALREQUEST\020\007"
+      "\022\025\n\021ILLEGALTASKSTATUS\020\010\022\021\n\rILLEGALTASKID"
+      "\020\t\022\023\n\017ILLEGALPACKETID\020\n\022\023\n\017ILLEGALCLIENT"
+      "ID\020\013"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1166);
+      descriptor, 1204);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "file_transfer.proto", &protobuf_RegisterTypes);
 }
@@ -414,12 +406,15 @@ const int Response::ResponseType_ARRAYSIZE;
 // ===================================================================
 
 void File::InitAsDefaultInstance() {
+  ::fs::proto::_File_default_instance_._instance.get_mutable()->filelist_ = const_cast< ::fs::proto::FileList*>(
+      ::fs::proto::FileList::internal_default_instance());
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int File::kFilenameFieldNumber;
 const int File::kMtimeFieldNumber;
 const int File::kFileTypeFieldNumber;
 const int File::kSizeFieldNumber;
+const int File::kFilelistFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 File::File()
@@ -438,6 +433,11 @@ File::File(const File& from)
   if (from.has_filename()) {
     filename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.filename_);
   }
+  if (from.has_filelist()) {
+    filelist_ = new ::fs::proto::FileList(*from.filelist_);
+  } else {
+    filelist_ = NULL;
+  }
   ::memcpy(&mtime_, &from.mtime_,
     static_cast<size_t>(reinterpret_cast<char*>(&file_type_) -
     reinterpret_cast<char*>(&mtime_)) + sizeof(file_type_));
@@ -446,9 +446,9 @@ File::File(const File& from)
 
 void File::SharedCtor() {
   filename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&mtime_, 0, static_cast<size_t>(
+  ::memset(&filelist_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&file_type_) -
-      reinterpret_cast<char*>(&mtime_)) + sizeof(file_type_));
+      reinterpret_cast<char*>(&filelist_)) + sizeof(file_type_));
 }
 
 File::~File() {
@@ -458,6 +458,7 @@ File::~File() {
 
 void File::SharedDtor() {
   filename_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) delete filelist_;
 }
 
 void File::SetCachedSize(int size) const {
@@ -481,10 +482,16 @@ void File::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    filename_.ClearNonDefaultToEmptyNoArena();
+  if (cached_has_bits & 3u) {
+    if (cached_has_bits & 0x00000001u) {
+      filename_.ClearNonDefaultToEmptyNoArena();
+    }
+    if (cached_has_bits & 0x00000002u) {
+      GOOGLE_DCHECK(filelist_ != NULL);
+      filelist_->Clear();
+    }
   }
-  if (cached_has_bits & 14u) {
+  if (cached_has_bits & 28u) {
     ::memset(&mtime_, 0, static_cast<size_t>(
         reinterpret_cast<char*>(&file_type_) -
         reinterpret_cast<char*>(&mtime_)) + sizeof(file_type_));
@@ -567,6 +574,18 @@ bool File::MergePartialFromCodedStream(
         break;
       }
 
+      // optional .fs.proto.FileList filelist = 5;
+      case 5: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_filelist()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -605,19 +624,25 @@ void File::SerializeWithCachedSizes(
   }
 
   // required uint64 mtime = 2;
-  if (cached_has_bits & 0x00000002u) {
+  if (cached_has_bits & 0x00000004u) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->mtime(), output);
   }
 
   // required .fs.proto.File.FileType file_type = 3;
-  if (cached_has_bits & 0x00000008u) {
+  if (cached_has_bits & 0x00000010u) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       3, this->file_type(), output);
   }
 
   // optional uint64 size = 4;
-  if (cached_has_bits & 0x00000004u) {
+  if (cached_has_bits & 0x00000008u) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(4, this->size(), output);
+  }
+
+  // optional .fs.proto.FileList filelist = 5;
+  if (cached_has_bits & 0x00000002u) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      5, this->_internal_filelist(), output);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -647,19 +672,26 @@ void File::SerializeWithCachedSizes(
   }
 
   // required uint64 mtime = 2;
-  if (cached_has_bits & 0x00000002u) {
+  if (cached_has_bits & 0x00000004u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->mtime(), target);
   }
 
   // required .fs.proto.File.FileType file_type = 3;
-  if (cached_has_bits & 0x00000008u) {
+  if (cached_has_bits & 0x00000010u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       3, this->file_type(), target);
   }
 
   // optional uint64 size = 4;
-  if (cached_has_bits & 0x00000004u) {
+  if (cached_has_bits & 0x00000008u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(4, this->size(), target);
+  }
+
+  // optional .fs.proto.FileList filelist = 5;
+  if (cached_has_bits & 0x00000002u) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        5, this->_internal_filelist(), deterministic, target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -705,7 +737,7 @@ size_t File::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         _internal_metadata_.unknown_fields());
   }
-  if (((_has_bits_[0] & 0x0000000b) ^ 0x0000000b) == 0) {  // All required fields are present.
+  if (((_has_bits_[0] & 0x00000015) ^ 0x00000015) == 0) {  // All required fields are present.
     // required string filename = 1;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -723,6 +755,13 @@ size_t File::ByteSizeLong() const {
   } else {
     total_size += RequiredFieldsByteSizeFallback();
   }
+  // optional .fs.proto.FileList filelist = 5;
+  if (has_filelist()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *filelist_);
+  }
+
   // optional uint64 size = 4;
   if (has_size()) {
     total_size += 1 +
@@ -758,18 +797,21 @@ void File::MergeFrom(const File& from) {
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 15u) {
+  if (cached_has_bits & 31u) {
     if (cached_has_bits & 0x00000001u) {
       set_has_filename();
       filename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.filename_);
     }
     if (cached_has_bits & 0x00000002u) {
-      mtime_ = from.mtime_;
+      mutable_filelist()->::fs::proto::FileList::MergeFrom(from.filelist());
     }
     if (cached_has_bits & 0x00000004u) {
-      size_ = from.size_;
+      mtime_ = from.mtime_;
     }
     if (cached_has_bits & 0x00000008u) {
+      size_ = from.size_;
+    }
+    if (cached_has_bits & 0x00000010u) {
       file_type_ = from.file_type_;
     }
     _has_bits_[0] |= cached_has_bits;
@@ -791,7 +833,10 @@ void File::CopyFrom(const File& from) {
 }
 
 bool File::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000000b) != 0x0000000b) return false;
+  if ((_has_bits_[0] & 0x00000015) != 0x00000015) return false;
+  if (has_filelist()) {
+    if (!this->filelist_->IsInitialized()) return false;
+  }
   return true;
 }
 
@@ -803,6 +848,7 @@ void File::InternalSwap(File* other) {
   using std::swap;
   filename_.Swap(&other->filename_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
+  swap(filelist_, other->filelist_);
   swap(mtime_, other->mtime_);
   swap(size_, other->size_);
   swap(file_type_, other->file_type_);
@@ -828,7 +874,7 @@ const int FileList::kFileFieldNumber;
 FileList::FileList()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   ::google::protobuf::internal::InitSCC(
-      &protobuf_file_5ftransfer_2eproto::scc_info_FileList.base);
+      &protobuf_file_5ftransfer_2eproto::scc_info_File.base);
   SharedCtor();
   // @@protoc_insertion_point(constructor:fs.proto.FileList)
 }
@@ -867,7 +913,7 @@ const ::google::protobuf::Descriptor* FileList::descriptor() {
 }
 
 const FileList& FileList::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_file_5ftransfer_2eproto::scc_info_FileList.base);
+  ::google::protobuf::internal::InitSCC(&protobuf_file_5ftransfer_2eproto::scc_info_File.base);
   return *internal_default_instance();
 }
 

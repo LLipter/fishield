@@ -272,6 +272,7 @@ void init_upload(const std::string& basepath,
     server_task_mutex.lock();
     tasks[task_id] = task;
     server_task_mutex.unlock();
+    // TODO : INSERT A TASK RECORD TO DATABASE
 
 }
 
@@ -377,6 +378,7 @@ void init_download(const std::string& basepath,
     server_task_mutex.lock();
     tasks[task_id] = task;
     server_task_mutex.unlock();
+    // TODO : INSERT A TASK RECORD TO DATABASE
 
 }
 
