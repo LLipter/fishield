@@ -6,7 +6,7 @@ extern boost::asio::io_service service;
 extern std::string _token;
 extern fs_fp_intdouble cb_progress;
 extern fs_fp_int cb_success;
-extern fs_fp_error cb_failed;
+extern fs_fp_interror cb_failed;
 
 int fs_client_startup(const std::string& addr, const short port){
     try{
@@ -142,7 +142,8 @@ void fs_mkdir(const std::string& basepath,
     thd.detach();
 }
 
-void fs_upload(const std::string& localbasepath,
+void fs_upload(int client_id,
+               const std::string& localbasepath,
                const std::string& remotebasepath,
                const std::string& filename){
 
@@ -152,19 +153,20 @@ void fs_upload(const std::string& localbasepath,
     // local file doesn't exist
     path local_path(localbasepath + SEPARATOR + filename);
     if(!exists(local_path)){
-        cb_failed(Response::ILLEGALPATH);
+        cb_failed(client_id, Response::ILLEGALPATH);
         return;
     }
 
     // only support upload regular file
     if(is_directory(local_path)){
-        cb_failed(Response::ILLEGALPATH);
+        cb_failed(client_id, Response::ILLEGALPATH);
         return;
     }
 
 
     // generate a task object
     fs::proto::Task task;
+    task.set_client_id(client_id);
     task.set_localbasepath(localbasepath);
     task.set_remotebasepath(remotebasepath);
     task.set_filename(filename);
@@ -182,7 +184,8 @@ void fs_upload(const std::string& localbasepath,
 
 }
 
-void fs_download(const std::string& localbasepath,
+void fs_download(int client_id,
+                 const std::string& localbasepath,
                  const std::string& remotebasepath,
                  const std::string& filename){
     using namespace boost::filesystem;
@@ -191,19 +194,20 @@ void fs_download(const std::string& localbasepath,
     // local file already exists
     path local_path(localbasepath + SEPARATOR + filename);
     if(exists(local_path)){
-        cb_failed(Response::ILLEGALPATH);
+        cb_failed(client_id, Response::ILLEGALPATH);
         return;
     }
 
     // only support download regular file
     if(is_directory(local_path)){
-        cb_failed(Response::ILLEGALPATH);
+        cb_failed(client_id, Response::ILLEGALPATH);
         return;
     }
 
 
     // generate a task object
     fs::proto::Task task;
+    task.set_client_id(client_id);
     task.set_localbasepath(localbasepath);
     task.set_remotebasepath(remotebasepath);
     task.set_filename(filename);
@@ -255,7 +259,7 @@ void fs_remove(const std::string& basepath,
 
 void fs_register_task_callback(fs_fp_intdouble cb_prog,
                                fs_fp_int cb_succes,
-                               fs_fp_error cb_fal){
+                               fs_fp_interror cb_fal){
     cb_progress = cb_prog;
     cb_success = cb_succes;
     cb_failed = cb_fal;

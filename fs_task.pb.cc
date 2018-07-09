@@ -81,6 +81,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Task, task_id_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Task, client_id_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Task, localbasepath_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Task, remotebasepath_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Task, filename_),
@@ -90,14 +91,15 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Task, sent_packet_no_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Task, last_packet_time_),
   3,
+  4,
   0,
   1,
   2,
-  4,
-  8,
   5,
+  9,
   6,
   7,
+  8,
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Tasks, _has_bits_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Tasks, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -107,8 +109,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 14, sizeof(::fs::proto::Task)},
-  { 23, 29, sizeof(::fs::proto::Tasks)},
+  { 0, 15, sizeof(::fs::proto::Task)},
+  { 25, 31, sizeof(::fs::proto::Tasks)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -137,24 +139,25 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\rfs_task.proto\022\010fs.proto\"\205\004\n\004Task\022\017\n\007ta"
-      "sk_id\030\001 \002(\004\022\025\n\rlocalbasepath\030\002 \001(\t\022\026\n\016re"
-      "motebasepath\030\003 \002(\t\022\020\n\010filename\030\004 \002(\t\022\027\n\017"
-      "total_packet_no\030\005 \002(\004\022.\n\013task_status\030\006 \002"
-      "(\0162\031.fs.proto.Task.TaskStatus\022\032\n\022receive"
-      "d_packet_no\030\007 \001(\004\022\026\n\016sent_packet_no\030\010 \001("
-      "\004\022\030\n\020last_packet_time\030\t \001(\004\"\223\002\n\nTaskStat"
-      "us\022\017\n\013UPLOAD_INIT\020\000\022\r\n\tUPLOADING\020\001\022\014\n\010UP"
-      "LOADED\020\002\022\021\n\rUPLOAD_PAUSED\020\003\022\022\n\016UPLOAD_PA"
-      "USING\020\004\022\021\n\rUPLOAD_RESUME\020\005\022\021\n\rDOWNLOAD_I"
-      "NIT\020\006\022\017\n\013DOWNLOADING\020\007\022\016\n\nDOWNLOADED\020\010\022\023"
-      "\n\017DOWNLOAD_PAUSED\020\t\022\024\n\020DOWNLOAD_PAUSING\020"
-      "\n\022\023\n\017DOWNLOAD_RESUME\020\013\022\023\n\017CANCELED_PAUSE"
-      "D\020\014\022\024\n\020CANCELED_WORKING\020\r\"%\n\005Tasks\022\034\n\004ta"
-      "sk\030\001 \003(\0132\016.fs.proto.Task"
+      "\n\rfs_task.proto\022\010fs.proto\"\230\004\n\004Task\022\017\n\007ta"
+      "sk_id\030\001 \002(\004\022\021\n\tclient_id\030\002 \001(\004\022\025\n\rlocalb"
+      "asepath\030\003 \001(\t\022\026\n\016remotebasepath\030\004 \002(\t\022\020\n"
+      "\010filename\030\005 \002(\t\022\027\n\017total_packet_no\030\006 \002(\004"
+      "\022.\n\013task_status\030\007 \002(\0162\031.fs.proto.Task.Ta"
+      "skStatus\022\032\n\022received_packet_no\030\010 \001(\004\022\026\n\016"
+      "sent_packet_no\030\t \001(\004\022\030\n\020last_packet_time"
+      "\030\n \001(\004\"\223\002\n\nTaskStatus\022\017\n\013UPLOAD_INIT\020\000\022\r"
+      "\n\tUPLOADING\020\001\022\014\n\010UPLOADED\020\002\022\021\n\rUPLOAD_PA"
+      "USED\020\003\022\022\n\016UPLOAD_PAUSING\020\004\022\021\n\rUPLOAD_RES"
+      "UME\020\005\022\021\n\rDOWNLOAD_INIT\020\006\022\017\n\013DOWNLOADING\020"
+      "\007\022\016\n\nDOWNLOADED\020\010\022\023\n\017DOWNLOAD_PAUSED\020\t\022\024"
+      "\n\020DOWNLOAD_PAUSING\020\n\022\023\n\017DOWNLOAD_RESUME\020"
+      "\013\022\023\n\017CANCELED_PAUSED\020\014\022\024\n\020CANCELED_WORKI"
+      "NG\020\r\"%\n\005Tasks\022\034\n\004task\030\001 \003(\0132\016.fs.proto.T"
+      "ask"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 584);
+      descriptor, 603);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "fs_task.proto", &protobuf_RegisterTypes);
 }
@@ -224,6 +227,7 @@ void Task::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int Task::kTaskIdFieldNumber;
+const int Task::kClientIdFieldNumber;
 const int Task::kLocalbasepathFieldNumber;
 const int Task::kRemotebasepathFieldNumber;
 const int Task::kFilenameFieldNumber;
@@ -318,10 +322,14 @@ void Task::Clear() {
   }
   if (cached_has_bits & 248u) {
     ::memset(&task_id_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&last_packet_time_) -
-        reinterpret_cast<char*>(&task_id_)) + sizeof(last_packet_time_));
+        reinterpret_cast<char*>(&sent_packet_no_) -
+        reinterpret_cast<char*>(&task_id_)) + sizeof(sent_packet_no_));
   }
-  task_status_ = 0;
+  if (cached_has_bits & 768u) {
+    ::memset(&last_packet_time_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&task_status_) -
+        reinterpret_cast<char*>(&last_packet_time_)) + sizeof(task_status_));
+  }
   _has_bits_.Clear();
   _internal_metadata_.Clear();
 }
@@ -350,10 +358,24 @@ bool Task::MergePartialFromCodedStream(
         break;
       }
 
-      // optional string localbasepath = 2;
+      // optional uint64 client_id = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+          set_has_client_id();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &client_id_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // optional string localbasepath = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_localbasepath()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
@@ -366,10 +388,10 @@ bool Task::MergePartialFromCodedStream(
         break;
       }
 
-      // required string remotebasepath = 3;
-      case 3: {
+      // required string remotebasepath = 4;
+      case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_remotebasepath()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
@@ -382,10 +404,10 @@ bool Task::MergePartialFromCodedStream(
         break;
       }
 
-      // required string filename = 4;
-      case 4: {
+      // required string filename = 5;
+      case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_filename()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
@@ -398,10 +420,10 @@ bool Task::MergePartialFromCodedStream(
         break;
       }
 
-      // required uint64 total_packet_no = 5;
-      case 5: {
+      // required uint64 total_packet_no = 6;
+      case 6: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(48u /* 48 & 0xFF */)) {
           set_has_total_packet_no();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
@@ -412,10 +434,10 @@ bool Task::MergePartialFromCodedStream(
         break;
       }
 
-      // required .fs.proto.Task.TaskStatus task_status = 6;
-      case 6: {
+      // required .fs.proto.Task.TaskStatus task_status = 7;
+      case 7: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(48u /* 48 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(56u /* 56 & 0xFF */)) {
           int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
@@ -424,7 +446,7 @@ bool Task::MergePartialFromCodedStream(
             set_task_status(static_cast< ::fs::proto::Task_TaskStatus >(value));
           } else {
             mutable_unknown_fields()->AddVarint(
-                6, static_cast< ::google::protobuf::uint64>(value));
+                7, static_cast< ::google::protobuf::uint64>(value));
           }
         } else {
           goto handle_unusual;
@@ -432,10 +454,10 @@ bool Task::MergePartialFromCodedStream(
         break;
       }
 
-      // optional uint64 received_packet_no = 7;
-      case 7: {
+      // optional uint64 received_packet_no = 8;
+      case 8: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(56u /* 56 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(64u /* 64 & 0xFF */)) {
           set_has_received_packet_no();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
@@ -446,10 +468,10 @@ bool Task::MergePartialFromCodedStream(
         break;
       }
 
-      // optional uint64 sent_packet_no = 8;
-      case 8: {
+      // optional uint64 sent_packet_no = 9;
+      case 9: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(64u /* 64 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(72u /* 72 & 0xFF */)) {
           set_has_sent_packet_no();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
@@ -460,10 +482,10 @@ bool Task::MergePartialFromCodedStream(
         break;
       }
 
-      // optional uint64 last_packet_time = 9;
-      case 9: {
+      // optional uint64 last_packet_time = 10;
+      case 10: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(72u /* 72 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(80u /* 80 & 0xFF */)) {
           set_has_last_packet_time();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
@@ -506,60 +528,65 @@ void Task::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->task_id(), output);
   }
 
-  // optional string localbasepath = 2;
+  // optional uint64 client_id = 2;
+  if (cached_has_bits & 0x00000010u) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->client_id(), output);
+  }
+
+  // optional string localbasepath = 3;
   if (cached_has_bits & 0x00000001u) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->localbasepath().data(), static_cast<int>(this->localbasepath().length()),
       ::google::protobuf::internal::WireFormat::SERIALIZE,
       "fs.proto.Task.localbasepath");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->localbasepath(), output);
+      3, this->localbasepath(), output);
   }
 
-  // required string remotebasepath = 3;
+  // required string remotebasepath = 4;
   if (cached_has_bits & 0x00000002u) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->remotebasepath().data(), static_cast<int>(this->remotebasepath().length()),
       ::google::protobuf::internal::WireFormat::SERIALIZE,
       "fs.proto.Task.remotebasepath");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      3, this->remotebasepath(), output);
+      4, this->remotebasepath(), output);
   }
 
-  // required string filename = 4;
+  // required string filename = 5;
   if (cached_has_bits & 0x00000004u) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->filename().data(), static_cast<int>(this->filename().length()),
       ::google::protobuf::internal::WireFormat::SERIALIZE,
       "fs.proto.Task.filename");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      4, this->filename(), output);
+      5, this->filename(), output);
   }
 
-  // required uint64 total_packet_no = 5;
-  if (cached_has_bits & 0x00000010u) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(5, this->total_packet_no(), output);
-  }
-
-  // required .fs.proto.Task.TaskStatus task_status = 6;
-  if (cached_has_bits & 0x00000100u) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      6, this->task_status(), output);
-  }
-
-  // optional uint64 received_packet_no = 7;
+  // required uint64 total_packet_no = 6;
   if (cached_has_bits & 0x00000020u) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(7, this->received_packet_no(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(6, this->total_packet_no(), output);
   }
 
-  // optional uint64 sent_packet_no = 8;
+  // required .fs.proto.Task.TaskStatus task_status = 7;
+  if (cached_has_bits & 0x00000200u) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      7, this->task_status(), output);
+  }
+
+  // optional uint64 received_packet_no = 8;
   if (cached_has_bits & 0x00000040u) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(8, this->sent_packet_no(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(8, this->received_packet_no(), output);
   }
 
-  // optional uint64 last_packet_time = 9;
+  // optional uint64 sent_packet_no = 9;
   if (cached_has_bits & 0x00000080u) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(9, this->last_packet_time(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(9, this->sent_packet_no(), output);
+  }
+
+  // optional uint64 last_packet_time = 10;
+  if (cached_has_bits & 0x00000100u) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(10, this->last_packet_time(), output);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -582,7 +609,12 @@ void Task::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->task_id(), target);
   }
 
-  // optional string localbasepath = 2;
+  // optional uint64 client_id = 2;
+  if (cached_has_bits & 0x00000010u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->client_id(), target);
+  }
+
+  // optional string localbasepath = 3;
   if (cached_has_bits & 0x00000001u) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->localbasepath().data(), static_cast<int>(this->localbasepath().length()),
@@ -590,10 +622,10 @@ void Task::SerializeWithCachedSizes(
       "fs.proto.Task.localbasepath");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->localbasepath(), target);
+        3, this->localbasepath(), target);
   }
 
-  // required string remotebasepath = 3;
+  // required string remotebasepath = 4;
   if (cached_has_bits & 0x00000002u) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->remotebasepath().data(), static_cast<int>(this->remotebasepath().length()),
@@ -601,10 +633,10 @@ void Task::SerializeWithCachedSizes(
       "fs.proto.Task.remotebasepath");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->remotebasepath(), target);
+        4, this->remotebasepath(), target);
   }
 
-  // required string filename = 4;
+  // required string filename = 5;
   if (cached_has_bits & 0x00000004u) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->filename().data(), static_cast<int>(this->filename().length()),
@@ -612,33 +644,33 @@ void Task::SerializeWithCachedSizes(
       "fs.proto.Task.filename");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->filename(), target);
+        5, this->filename(), target);
   }
 
-  // required uint64 total_packet_no = 5;
-  if (cached_has_bits & 0x00000010u) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(5, this->total_packet_no(), target);
-  }
-
-  // required .fs.proto.Task.TaskStatus task_status = 6;
-  if (cached_has_bits & 0x00000100u) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      6, this->task_status(), target);
-  }
-
-  // optional uint64 received_packet_no = 7;
+  // required uint64 total_packet_no = 6;
   if (cached_has_bits & 0x00000020u) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(7, this->received_packet_no(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(6, this->total_packet_no(), target);
   }
 
-  // optional uint64 sent_packet_no = 8;
+  // required .fs.proto.Task.TaskStatus task_status = 7;
+  if (cached_has_bits & 0x00000200u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      7, this->task_status(), target);
+  }
+
+  // optional uint64 received_packet_no = 8;
   if (cached_has_bits & 0x00000040u) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(8, this->sent_packet_no(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(8, this->received_packet_no(), target);
   }
 
-  // optional uint64 last_packet_time = 9;
+  // optional uint64 sent_packet_no = 9;
   if (cached_has_bits & 0x00000080u) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(9, this->last_packet_time(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(9, this->sent_packet_no(), target);
+  }
+
+  // optional uint64 last_packet_time = 10;
+  if (cached_has_bits & 0x00000100u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(10, this->last_packet_time(), target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -654,14 +686,14 @@ size_t Task::RequiredFieldsByteSizeFallback() const {
   size_t total_size = 0;
 
   if (has_remotebasepath()) {
-    // required string remotebasepath = 3;
+    // required string remotebasepath = 4;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->remotebasepath());
   }
 
   if (has_filename()) {
-    // required string filename = 4;
+    // required string filename = 5;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->filename());
@@ -675,14 +707,14 @@ size_t Task::RequiredFieldsByteSizeFallback() const {
   }
 
   if (has_total_packet_no()) {
-    // required uint64 total_packet_no = 5;
+    // required uint64 total_packet_no = 6;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::UInt64Size(
         this->total_packet_no());
   }
 
   if (has_task_status()) {
-    // required .fs.proto.Task.TaskStatus task_status = 6;
+    // required .fs.proto.Task.TaskStatus task_status = 7;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->task_status());
   }
@@ -698,13 +730,13 @@ size_t Task::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         _internal_metadata_.unknown_fields());
   }
-  if (((_has_bits_[0] & 0x0000011e) ^ 0x0000011e) == 0) {  // All required fields are present.
-    // required string remotebasepath = 3;
+  if (((_has_bits_[0] & 0x0000022e) ^ 0x0000022e) == 0) {  // All required fields are present.
+    // required string remotebasepath = 4;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->remotebasepath());
 
-    // required string filename = 4;
+    // required string filename = 5;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->filename());
@@ -714,48 +746,55 @@ size_t Task::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormatLite::UInt64Size(
         this->task_id());
 
-    // required uint64 total_packet_no = 5;
+    // required uint64 total_packet_no = 6;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::UInt64Size(
         this->total_packet_no());
 
-    // required .fs.proto.Task.TaskStatus task_status = 6;
+    // required .fs.proto.Task.TaskStatus task_status = 7;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->task_status());
 
   } else {
     total_size += RequiredFieldsByteSizeFallback();
   }
-  // optional string localbasepath = 2;
+  // optional string localbasepath = 3;
   if (has_localbasepath()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->localbasepath());
   }
 
-  if (_has_bits_[0 / 32] & 224u) {
-    // optional uint64 received_packet_no = 7;
+  // optional uint64 client_id = 2;
+  if (has_client_id()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt64Size(
+        this->client_id());
+  }
+
+  if (_has_bits_[0 / 32] & 192u) {
+    // optional uint64 received_packet_no = 8;
     if (has_received_packet_no()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt64Size(
           this->received_packet_no());
     }
 
-    // optional uint64 sent_packet_no = 8;
+    // optional uint64 sent_packet_no = 9;
     if (has_sent_packet_no()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt64Size(
           this->sent_packet_no());
     }
 
-    // optional uint64 last_packet_time = 9;
-    if (has_last_packet_time()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt64Size(
-          this->last_packet_time());
-    }
-
   }
+  // optional uint64 last_packet_time = 10;
+  if (has_last_packet_time()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt64Size(
+        this->last_packet_time());
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
@@ -801,21 +840,27 @@ void Task::MergeFrom(const Task& from) {
       task_id_ = from.task_id_;
     }
     if (cached_has_bits & 0x00000010u) {
-      total_packet_no_ = from.total_packet_no_;
+      client_id_ = from.client_id_;
     }
     if (cached_has_bits & 0x00000020u) {
-      received_packet_no_ = from.received_packet_no_;
+      total_packet_no_ = from.total_packet_no_;
     }
     if (cached_has_bits & 0x00000040u) {
-      sent_packet_no_ = from.sent_packet_no_;
+      received_packet_no_ = from.received_packet_no_;
     }
     if (cached_has_bits & 0x00000080u) {
-      last_packet_time_ = from.last_packet_time_;
+      sent_packet_no_ = from.sent_packet_no_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
-  if (cached_has_bits & 0x00000100u) {
-    set_task_status(from.task_status());
+  if (cached_has_bits & 768u) {
+    if (cached_has_bits & 0x00000100u) {
+      last_packet_time_ = from.last_packet_time_;
+    }
+    if (cached_has_bits & 0x00000200u) {
+      task_status_ = from.task_status_;
+    }
+    _has_bits_[0] |= cached_has_bits;
   }
 }
 
@@ -834,7 +879,7 @@ void Task::CopyFrom(const Task& from) {
 }
 
 bool Task::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000011e) != 0x0000011e) return false;
+  if ((_has_bits_[0] & 0x0000022e) != 0x0000022e) return false;
   return true;
 }
 
@@ -851,6 +896,7 @@ void Task::InternalSwap(Task* other) {
   filename_.Swap(&other->filename_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   swap(task_id_, other->task_id_);
+  swap(client_id_, other->client_id_);
   swap(total_packet_no_, other->total_packet_no_);
   swap(received_packet_no_, other->received_packet_no_);
   swap(sent_packet_no_, other->sent_packet_no_);

@@ -16,7 +16,7 @@ void _upload(fs::proto::Task& task){
             return;
 
         if(task.task_status() != Task::UPLOADING){
-            cb_failed(Response::ILLEGALTASKSTATUS);
+            cb_failed(task.client_id(), Response::ILLEGALTASKSTATUS);
             return;
         }
 
@@ -32,7 +32,7 @@ void _upload(fs::proto::Task& task){
         std::string filepath = task.localbasepath() + SEPARATOR + task.filename();
         std::ifstream file(filepath, std::ios_base::binary);
         if(!file){
-            cb_failed(Response::ILLEGALPATH);
+            cb_failed(task.client_id(), Response::ILLEGALPATH);
             return;
         }
         char* buf = new char[PACKET_SIZE];
@@ -44,7 +44,7 @@ void _upload(fs::proto::Task& task){
         // send request and receive response
         Response response;
         if(send_receive(packet_request,response) == false){
-            cb_failed(Response::NORESPONSE);
+            cb_failed(task.client_id(), Response::NORESPONSE);
             file.close();
             delete[] buf;
             return;
@@ -57,18 +57,18 @@ void _upload(fs::proto::Task& task){
         switch (response.resp_type()) {
         case Response::SUCCESS:
             task.set_sent_packet_no(task.sent_packet_no()+1);
-            cb_progress(task.task_id(), (double)task.sent_packet_no() / task.total_packet_no());
+            cb_progress(task.client_id(), (double)task.sent_packet_no() / task.total_packet_no());
             break;
         case Response::ILLEGALPACKETID:
             task.set_sent_packet_no(response.packet_id());
             break;
         default:
-            cb_failed(response.resp_type());
+            cb_failed(task.client_id(), response.resp_type());
             return;
         }
     }
 
-    cb_success(task.task_id());
+    cb_success(task.client_id());
     task.set_task_status(Task::UPLOADED);
 }
 
@@ -92,7 +92,7 @@ void _download(fs::proto::Task& task){
             return;
 
         if(task.task_status() != Task::DOWNLOADING){
-            cb_failed(Response::ILLEGALTASKSTATUS);
+            cb_failed(task.client_id(), Response::ILLEGALTASKSTATUS);
             return;
         }
 
@@ -105,7 +105,7 @@ void _download(fs::proto::Task& task){
         // send request and receive response
         Response response;
         if(send_receive(packet_request,response) == false){
-            cb_failed(Response::NORESPONSE);
+            cb_failed(task.client_id(), Response::NORESPONSE);
             return;
         }
 
@@ -120,16 +120,16 @@ void _download(fs::proto::Task& task){
             // write data in file
             std::ofstream file(filepath, std::ios_base::app | std::ios_base::binary);
             if(!file){
-                cb_failed(Response::ILLEGALPATH);
+                cb_failed(task.client_id(), Response::ILLEGALPATH);
                 return;
             }
             file << response.packet().data();
             file.close();
 
             double progress = (double)task.received_packet_no() / task.total_packet_no();
-            cb_progress(task.task_id(), progress);
+            cb_progress(task.client_id(), progress);
         }else{
-            cb_failed(response.resp_type());
+            cb_failed(task.client_id(), response.resp_type());
             return;
         }
     }
@@ -143,17 +143,17 @@ void _download(fs::proto::Task& task){
     // send request and receive response
     Response response;
     if(send_receive(confirm_request,response) == false){
-        cb_failed(Response::NORESPONSE);
+        cb_failed(task.client_id(), Response::NORESPONSE);
         return;
     }
 
     // check response type
     if(response.resp_type() != Response::SUCCESS){
-        cb_failed(response.resp_type());
+        cb_failed(task.client_id(), response.resp_type());
         return;
     }
 
-    cb_success(task.task_id());
+    cb_success(task.client_id());
     task.set_task_status(Task::DOWNLOADED);
 
     boost::filesystem::rename(filepath,

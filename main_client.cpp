@@ -113,21 +113,21 @@ int main()
 //    if(boost::filesystem::exists("/home/irran/Desktop/fs_root/music.mp3"))
 //        boost::filesystem::remove("/home/irran/Desktop/fs_root/music.mp3");
 
-    fs_register_task_callback(boost::bind(cb_upload_progress, _1, _2),
-                              boost::bind(cb_upload_success, _1),
-                              boost::bind(cb_fail,_1,"upload"));
+//    fs_register_task_callback(boost::bind(cb_upload_progress, _1, _2),
+//                              boost::bind(cb_upload_success, _1),
+//                              boost::bind(cb_fail,_1,"upload"));
 
 //    fs_upload("/home/irran/Desktop",
 //              "",                   // upload to root directory
 //              "music.mp3");
 
-    fs_register_task_callback(boost::bind(cb_upload_progress, _1, _2),
-                              boost::bind(cb_upload_success, _1),
-                              boost::bind(cb_fail,_1,"download"));
+//    fs_register_task_callback(boost::bind(cb_upload_progress, _1, _2),
+//                              boost::bind(cb_upload_success, _1),
+//                              boost::bind(cb_fail,_1,"download"));
 
-    fs_download("/home/irran/Desktop",
-                "",                   // download from root directory
-                "1.jpg");
+//    fs_download("/home/irran/Desktop",
+//                "",                   // download from root directory
+//                "1.jpg");
 
 //    fs_remove("",
 //              "file_transfer.proto",
