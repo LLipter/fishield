@@ -38,8 +38,8 @@ message Request
 		FILELIST			= 1;	// request for a filelist
                 MKDIR				= 2;	// create a new directory
 		UPLOAD				= 3;	// initiate a new UPLOAD task
-		SEND_PACKET			= 4;	// send a packet
-		DOWNLOAD			= 5;	// initiate a new DOWNLOAD task
+		DOWNLOAD			= 4;	// initiate a new DOWNLOAD task
+		SEND_PACKET			= 5;	// send a packet
 		RECEIVE_PACKET			= 6;
 		DOWNLOAD_CONFIRM		= 7;	// confirm that a download task completes
 		REMOVE				= 8;	// delete a file		

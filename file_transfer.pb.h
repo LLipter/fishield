@@ -103,8 +103,8 @@ enum Request_RequestType {
   Request_RequestType_FILELIST = 1,
   Request_RequestType_MKDIR = 2,
   Request_RequestType_UPLOAD = 3,
-  Request_RequestType_SEND_PACKET = 4,
-  Request_RequestType_DOWNLOAD = 5,
+  Request_RequestType_DOWNLOAD = 4,
+  Request_RequestType_SEND_PACKET = 5,
   Request_RequestType_RECEIVE_PACKET = 6,
   Request_RequestType_DOWNLOAD_CONFIRM = 7,
   Request_RequestType_REMOVE = 8,
@@ -728,10 +728,10 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
     Request_RequestType_MKDIR;
   static const RequestType UPLOAD =
     Request_RequestType_UPLOAD;
-  static const RequestType SEND_PACKET =
-    Request_RequestType_SEND_PACKET;
   static const RequestType DOWNLOAD =
     Request_RequestType_DOWNLOAD;
+  static const RequestType SEND_PACKET =
+    Request_RequestType_SEND_PACKET;
   static const RequestType RECEIVE_PACKET =
     Request_RequestType_RECEIVE_PACKET;
   static const RequestType DOWNLOAD_CONFIRM =

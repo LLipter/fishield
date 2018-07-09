@@ -262,8 +262,8 @@ void AddDescriptorsImpl() {
       ".fs.proto.Packet\022\017\n\007task_id\030\t \001(\004\022\021\n\tpac"
       "ket_id\030\n \001(\004\022\020\n\010new_path\030\013 \001(\t\"\252\001\n\013Reque"
       "stType\022\t\n\005LOGIN\020\000\022\014\n\010FILELIST\020\001\022\t\n\005MKDIR"
-      "\020\002\022\n\n\006UPLOAD\020\003\022\017\n\013SEND_PACKET\020\004\022\014\n\010DOWNL"
-      "OAD\020\005\022\022\n\016RECEIVE_PACKET\020\006\022\024\n\020DOWNLOAD_CO"
+      "\020\002\022\n\n\006UPLOAD\020\003\022\014\n\010DOWNLOAD\020\004\022\017\n\013SEND_PAC"
+      "KET\020\005\022\022\n\016RECEIVE_PACKET\020\006\022\024\n\020DOWNLOAD_CO"
       "NFIRM\020\007\022\n\n\006REMOVE\020\010\022\n\n\006RENAME\020\t\022\n\n\006CANCE"
       "L\020\n\"\266\003\n\010Response\0222\n\tresp_type\030\001 \002(\0162\037.fs"
       ".proto.Response.ResponseType\022\r\n\005token\030\002 "
@@ -350,8 +350,8 @@ const Request_RequestType Request::LOGIN;
 const Request_RequestType Request::FILELIST;
 const Request_RequestType Request::MKDIR;
 const Request_RequestType Request::UPLOAD;
-const Request_RequestType Request::SEND_PACKET;
 const Request_RequestType Request::DOWNLOAD;
+const Request_RequestType Request::SEND_PACKET;
 const Request_RequestType Request::RECEIVE_PACKET;
 const Request_RequestType Request::DOWNLOAD_CONFIRM;
 const Request_RequestType Request::REMOVE;
