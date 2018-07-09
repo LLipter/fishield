@@ -9,21 +9,27 @@ extern fs_fp_int cb_success;
 extern fs_fp_interror cb_failed;
 
 int fs_client_startup(const std::string& addr, const short port){
-    try{
-        boost::asio::ip::tcp::resolver resolver(service);
-        boost::asio::ip::tcp::resolver::query qry(addr, std::to_string(port));
-        boost::asio::ip::tcp::resolver::iterator it = resolver.resolve(qry);
-        boost::asio::ip::tcp::resolver::iterator end;
-        if(it != end){
-            std::cout << addr << " : " << (*it).endpoint().address().to_string() << std::endl;
-            _server_addr = (*it).endpoint().address();
-            _server_port = port;
-        }else
-            return FS_E_UNKNOWN;
-    }catch(std::exception& e){
-        std::cout << e.what() << std::endl;
+    using namespace boost::asio::ip;
+
+    boost::system::error_code err;
+    tcp::resolver resolver(service);
+    tcp::resolver::query qry(addr, std::to_string(port));
+    tcp::resolver::iterator it = resolver.resolve(qry, err);
+
+    if(err){
+        std::cout << err.message() << std::endl;
         return FS_E_ILLEGAL_VALUE;
     }
+
+    tcp::resolver::iterator end;
+    if(it != end){
+        std::cout << addr << " : "
+                  << (*it).endpoint().address().to_string()
+                  << std::endl;
+        _server_addr = (*it).endpoint().address();
+        _server_port = port;
+    }else
+        return FS_E_UNKNOWN;
 
     fs_client::init();
 
@@ -218,8 +224,8 @@ void fs_download(int client_id,
 }
 
 void _fs_remove(const std::string& path,
-               fs_fp_void cb_success,
-               fs_fp_error cb_failed){
+                fs_fp_void cb_success,
+                fs_fp_error cb_failed){
     using namespace fs::proto;
     Request remove_request;
     remove_request.set_req_type(Request::REMOVE);
@@ -301,8 +307,8 @@ void fs_rename(const std::string& oldpath,
 
 
 void _fs_cancel(int client_id,
-               fs_fp_int cb_success,
-               fs_fp_interror cb_failed){
+                fs_fp_int cb_success,
+                fs_fp_interror cb_failed){
     using namespace fs::proto;
 
     int taskid = get_taskid_by_clientid(client_id);

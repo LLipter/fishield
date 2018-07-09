@@ -96,10 +96,10 @@ int main()
         return 1;
     splitline();
 
-//    fs_login(username,
-//             password,
-//             boost::bind(cb_login_success),
-//             boost::bind(cb_fail,_1,"login"));
+    fs_login(username,
+             password,
+             boost::bind(cb_login_success),
+             boost::bind(cb_fail,_1,"login"));
 
 //    fs_mkdir("/newdir","newsubdir",
 //             boost::bind(cb_success, "mkdir"),

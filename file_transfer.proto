@@ -23,8 +23,6 @@ message FileList
     	repeated File file		= 2;
 }
 
-
-
 message Packet
 {
 	required uint64 packet_id 	= 1;
@@ -45,13 +43,7 @@ message Request
 		DOWNLOAD_CONFIRM		= 7;	// confirm that a download task completes
 		REMOVE				= 8;	// delete a file		
 		RENAME				= 9;	// rename or move a existing file
-		
 		CANCEL				= 10;	// cancel a task
-
-
-		
-		
-
 	}
 	required RequestType req_type	= 1;
 	optional string username	= 2;
@@ -93,10 +85,4 @@ message Response
 	optional uint64	packet_id	= 5;	// packet id of packet that client should send
 	optional uint64 packet_no	= 6;	// number of packets that a DOWNLOAD task will receive
 	optional Packet	packet		= 7;
-	
 }
-
-
-
-
-

@@ -177,3 +177,51 @@ int get_taskid_by_clientid(int clientid){
     return FS_E_NOSUCHID;
 }
 
+void get_task_from_file(std::string filepath, std::map<int, fs::proto::Task>& task_map){
+    using namespace fs::proto;
+
+    Task task;
+    int size = BUFFER_SIZE;
+    char* buf = new char[size];
+    int len;
+
+    std::ifstream file(filepath, std::ios::binary);
+    while(file.read((char*)&len, 4)){
+        if(len > size){             // buffer is not big enough
+            delete[] buf;
+            buf = new char[len];
+            size = len;
+        }
+        file.read(buf, len);
+        task.ParseFromArray(buf, len);
+        task_map[task.task_id()] = task;
+    }
+
+    file.close();
+    delete[] buf;
+}
+
+
+void save_task_to_file(std::string filepath, std::map<int, fs::proto::Task>& task_map){
+    using namespace fs::proto;
+
+    int size = BUFFER_SIZE;         // buffer size
+    char* buf = new char[size];
+
+    std::ofstream file(filepath, std::ios::binary | std::ios::trunc);
+    for(auto it=task_map.begin();it!=task_map.end();it++){
+        Task& task = it->second;
+        int len = task.ByteSize();
+        if(len > size){             // buffer is not big enough
+            delete[] buf;
+            buf = new char[len];
+            size = len;
+        }
+
+        task.SerializeToArray(buf, len);
+        file.write((char*)&len, 4);
+        file.write(buf, len);
+    }
+    file.close();
+    delete[] buf;
+}

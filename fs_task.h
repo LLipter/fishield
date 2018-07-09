@@ -11,5 +11,8 @@ void _upload(fs::proto::Task& task);
 void _download(fs::proto::Task& task);
 
 int get_taskid_by_clientid(int clientid);
+void get_task_from_file(std::string filepath, std::map<int, fs::proto::Task>& task_map);
+void save_task_to_file(std::string filepath, std::map<int, fs::proto::Task>& task_map);
+
 
 #endif // FS_TASK_H

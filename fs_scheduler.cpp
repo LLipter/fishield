@@ -81,39 +81,8 @@ void fs_scheduler::scheduler(){
         }
 
         // save removed tasks in disk
-        int size = BUFFER_SIZE;         // buffer size
-        char* buf = new char[size];
-
-        std::ofstream finished_file(tasks_finished_path, std::ios::binary | std::ios::trunc);
-        for(auto it=task_map_finished.begin();it!=task_map_finished.end();it++){
-            Task& task = it->second;
-            int len = task.ByteSize();
-            if(len > size){             // buffer is not big enough
-                delete[] buf;
-                buf = new char[len];
-                size = len;
-            }
-            task.SerializeToArray(buf, len);
-            finished_file.write((char*)&len, 4);
-            finished_file.write(buf, len);
-        }
-        finished_file.close();
-
-        std::ofstream current_file(tasks_current_path, std::ios::binary | std::ios::trunc);
-        for(auto it=task_map_current.begin();it!=task_map_current.end();it++){
-            Task& task = it->second;
-            int len = task.ByteSize();
-            if(len > size){             // buffer is not big enough
-                delete[] buf;
-                buf = new char[len];
-                size = len;
-            }
-            task.SerializeToArray(buf, len);
-            current_file.write((char*)&len, 4);
-            current_file.write(buf, len);
-        }
-        current_file.close();
-        delete[] buf;
+        save_task_to_file(tasks_finished_path, task_map_finished);
+        save_task_to_file(tasks_current_path, task_map_current);
 
         // have a sleep
         boost::thread::sleep(boost::get_system_time() + boost::posix_time::millisec(100));
