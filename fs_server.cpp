@@ -1,5 +1,4 @@
 #include "fs_server.h"
-#include <fs_task.h>
 
 boost::asio::io_service service;
 short _port = DEFAULT_SERV_PORT;
@@ -153,7 +152,7 @@ void remove_clients_thread() {
         for(auto it=tasks.begin();it!=tasks.end();it++){
             using namespace fs::proto;
             Task& task = it->second;
-            if(is_timeout(*it)
+            if(is_timeout(task)
                     || task.task_status() == Task::UPLOADED
                     || task.task_status() == Task::DOWNLOADED
                     || task.task_status() == Task::CANCELED_WORKING){
@@ -163,6 +162,7 @@ void remove_clients_thread() {
         }
         for(int id : should_removed)
             tasks.erase(id);
+        server_mutex.unlock();
 
     }
 }
@@ -203,6 +203,7 @@ void getFilelist(const std::string& dirpath, fs::proto::Response& response){
             file->set_file_type(File::OTHER);
 
         // set file size
+        // if it's not a regular file, `static_cast<uintmax_t>(-1)` will returned by `file_size()`
         if(is_regular_file(iter->path()))
             file->set_size(file_size(iter->path()));
 

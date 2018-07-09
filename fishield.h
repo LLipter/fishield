@@ -8,6 +8,13 @@
 #include "fs_scheduler.h"
 
 /***
+ * NOTE:    Most of function provided by this project is asynchronous.
+ *          A number of function object has been defined as callback.
+ *          boost::bind() can be helpful when constructing proper function object.
+ */
+
+
+/***
  * DESC:    Try to start a client program.
  *          This function should be called before any other client function.
  *          Otherwise the result is undefined.
@@ -25,7 +32,6 @@ int fs_client_startup(const std::string& addr,
  *          This function should be called when client received a ILLEGALTOKEN response from server.
  * PARAM:   `cb_success` will be called when login successfully.
  *          Otherwise `cb_failed` will be called with a ResponseType as parameter.
- *          boost::bind() can be helpful when constructing proper function object.
  * RETURN:  return nothing
  */
 void fs_login(const std::string& username,
@@ -33,6 +39,14 @@ void fs_login(const std::string& username,
               fs_fp_void cb_success,
               fs_fp_error cb_failed);
 
+/***
+ * DESC:    Retrieve a `FileList` Object from server
+ *
+ * PARAM:   `dirpath` should be a full-virtual path represent a directory in server.
+ *          `cb_success` will be called upon successful completion with a parameter of `FileList`.
+ *          Otherwise `cb_failed` will be called with a ResponseType as parameter.
+ * RETURN:  return nothing
+ */
 void fs_filelist(const std::string& dirpath,
                  fs_fp_filelist cb_success,
                  fs_fp_error cb_failed);
