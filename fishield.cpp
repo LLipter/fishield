@@ -68,9 +68,9 @@ void fs_login(const std::string& username,
 }
 
 
-void _fs_get_filelist(const std::string& dirpath,
-                      fs_fp_filelist cb_success,
-                      fs_fp_error cb_failed){
+void _fs_filelist(const std::string& dirpath,
+                  fs_fp_filelist cb_success,
+                  fs_fp_error cb_failed){
     using namespace fs::proto;
     Request filelist_request;
     filelist_request.set_req_type(Request::FILELIST);
@@ -94,10 +94,10 @@ void _fs_get_filelist(const std::string& dirpath,
 }
 
 
-void fs_get_filelist(const std::string& dirpath,
-                     fs_fp_filelist cb_success,
-                     fs_fp_error cb_failed){
-    std::thread thd(_fs_get_filelist,
+void fs_filelist(const std::string& dirpath,
+                 fs_fp_filelist cb_success,
+                 fs_fp_error cb_failed){
+    std::thread thd(_fs_filelist,
                     dirpath,
                     cb_success,
                     cb_failed);
@@ -164,17 +164,17 @@ void fs_upload(const std::string& localbasepath,
 
 
     // generate a task object
-    fs_task task;
-    task.localbasepath = localbasepath;
-    task.remotebasepath = remotebasepath;
-    task.filename = filename;
+    fs::proto::Task task;
+    task.set_localbasepath(localbasepath);
+    task.set_remotebasepath(remotebasepath);
+    task.set_filename(filename);
     int size = file_size(local_path);
     int packet_no = size / PACKET_SIZE;
     if(size % PACKET_SIZE != 0)
         packet_no++;
-    task.total_packet_no = packet_no;
-    task.sent_packet_no = 0;
-    task.status = Task::UPLOAD_INIT;
+    task.set_total_packet_no(packet_no);
+    task.set_sent_packet_no(0);
+    task.set_task_status(Task::UPLOAD_INIT);
 
 
     fs_scheduler::instance()->add_task(task);
@@ -203,12 +203,12 @@ void fs_download(const std::string& localbasepath,
 
 
     // generate a task object
-    fs_task task;
-    task.localbasepath = localbasepath;
-    task.remotebasepath = remotebasepath;
-    task.filename = filename;
-    task.received_packet_no = 0;
-    task.status = Task::DOWNLOAD_INIT;
+    fs::proto::Task task;
+    task.set_localbasepath(localbasepath);
+    task.set_remotebasepath(remotebasepath);
+    task.set_filename(filename);
+    task.set_received_packet_no(0);
+    task.set_task_status(Task::DOWNLOAD_INIT);
 
 
     fs_scheduler::instance()->add_task(task);

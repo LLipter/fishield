@@ -16,9 +16,9 @@ void fs_login(const std::string& username,
               fs_fp_void cb_success,
               fs_fp_error cb_failed);
 
-void fs_get_filelist(const std::string& dirpath,
-                     fs_fp_filelist cb_success,
-                     fs_fp_error cb_failed);
+void fs_filelist(const std::string& dirpath,
+                 fs_fp_filelist cb_success,
+                 fs_fp_error cb_failed);
 
 void fs_mkdir(const std::string& basepath,
               const std::string& dirname,
@@ -34,8 +34,8 @@ void fs_upload(const std::string& localbasepath,
                const std::string& filename);
 
 void fs_download(const std::string& localbasepath,
-               const std::string& remotebasepath,
-               const std::string& filename);
+                 const std::string& remotebasepath,
+                 const std::string& filename);
 
 void fs_remove(const std::string& basepath,
                const std::string& filename,

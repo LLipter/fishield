@@ -505,5 +505,6 @@ void save_thread(){
         boost::this_thread::sleep(boost::posix_time::seconds(2));
         std::ofstream file(taskid_path,std::ios::trunc);
         file << task_id;
+        file.close();
     }
 }

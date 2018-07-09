@@ -6,6 +6,7 @@ extern std::string _token;
 extern fs_fp_intdouble cb_progress;
 extern fs_fp_int cb_success;
 extern fs_fp_error cb_failed;
+std::string tasks_path = std::string(".") + SEPARATOR + DEFAULT_TASKS_FILE;
 
 fs_scheduler fs_scheduler::scheduler_instance;
 
@@ -30,7 +31,7 @@ void fs_scheduler::scheduler(){
             case Task::UPLOAD_RESUME:
                 if(task_count < max_task_num) {
                     iter->second.status = Task::UPLOADING;
-                    iter->second.upload();
+                    upload(iter->second);
                     task_count++;
                 }
                 break;
@@ -43,7 +44,7 @@ void fs_scheduler::scheduler(){
             case Task::DOWNLOAD_RESUME:
                 if(task_count < max_task_num) {
                     iter->second.status = Task::DOWNLOADING;
-                    iter->second.download();
+                    download(iter->second);
                     task_count++;
                 }
                 break;
@@ -63,16 +64,40 @@ void fs_scheduler::scheduler(){
             case Task::DOWNLOAD_PAUSED:
                 removed_task.push_back(iter->first);
                 break;
+            case Task::UPLOADING:
+            case Task::DOWNLOADING:
+                // do nothing
+                break;
             default:
-                // TODO : SET UNKNOWN STATUS RESPONSE
+                std::cout << "fs_scheduler::scheduler() : UNKNOWN TASK STATUS" << std::endl;
                 break;
             }
         }
 
-        // TODO : save some information in disk
-        // remove all completed task
-        for(int id : removed_task)
+
+        Tasks tasks;
+        for(int id : removed_task){
+            fs_task& task = task_map[id];
+            Task* task_saved = tasks.add_task();
+
+            task_saved->set_task_id(task.task_id);
+            task_saved->set_localbasepath(task.localbasepath);
+            task_saved->set_remotebasepath(task.remotebasepath);
+            task_saved->set_filename(task.filename);
+            task_saved->set_total_packet_no(task.total_packet_no);
+            task_saved->set_received_packet_no(task.received_packet_no);
+            task_saved->set_sent_packet_no(task.sent_packet_no);
+            task_saved->set_last_packet_time(task.last_packet_time);
+            task_saved->set_task_status(task.status);
+
             task_map.erase(id);
+        }
+
+        // save some information in disk
+        std::ofstream file(tasks_path, std::ios::trunc);
+        tasks.SerializeToOstream(&file);
+        file.close();
+
 
         // have a sleep
         boost::thread::sleep(boost::get_system_time() + boost::posix_time::millisec(100));
@@ -83,7 +108,7 @@ void fs_scheduler::set_task_max(int num){
     max_task_num = num;
 }
 
-void fs_scheduler::add_upload_task(fs_task task){
+void fs_scheduler::add_upload_task(fs::proto::Task task){
     using namespace fs::proto;
     Request upload_request;
     upload_request.set_req_type(Request::UPLOAD);
@@ -101,13 +126,13 @@ void fs_scheduler::add_upload_task(fs_task task){
 
     // check response type
     if(response.resp_type() == Response::SUCCESS){
-        task.task_id = response.task_id();
-        task_map[task.task_id] = task;
+        task.set_task_id(response.task_id());
+        task_map[task.task_id()] = task;
     }else
         cb_failed(response.resp_type());
 }
 
-void fs_scheduler::add_download_task(fs_task task){
+void fs_scheduler::add_download_task(fs::proto::Task task){
     using namespace fs::proto;
     Request download_request;
     download_request.set_req_type(Request::DOWNLOAD);
@@ -124,14 +149,14 @@ void fs_scheduler::add_download_task(fs_task task){
 
     // check response type
     if(response.resp_type() == Response::SUCCESS){
-        task.task_id = response.task_id();
-        task.total_packet_no = response.packet_no();
-        task_map[task.task_id] = task;
+        task.set_task_id(response.task_id());
+        task.set_total_packet_no(response.packet_no());
+        task_map[task.task_id()] = task;
     }else
         cb_failed(response.resp_type());
 }
 
-void fs_scheduler::add_task(fs_task task){
+void fs_scheduler::add_task(fs::proto::Task task){
     using namespace fs::proto;
 
     if(task.status == Task::UPLOAD_INIT){

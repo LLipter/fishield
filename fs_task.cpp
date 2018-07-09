@@ -5,24 +5,8 @@ fs_fp_intdouble cb_progress;
 fs_fp_int cb_success;
 fs_fp_error cb_failed;
 
-fs_task::fs_task(){}
-
-fs_task::fs_task(const fs_task& rhs){
-    this->task_id = rhs.task_id;
-    this->localbasepath = rhs.localbasepath;
-    this->remotebasepath = rhs.remotebasepath;
-    this->filename = rhs.filename;
-    this->total_packet_no = rhs.total_packet_no;
-    this->received_packet_no = rhs.received_packet_no;
-    this->sent_packet_no = rhs.sent_packet_no;
-    this->last_packet_time = rhs.last_packet_time;
-    this->status = rhs.status;
-}
-
-
-
 extern std::string _token;
-void fs_task::_upload(){
+void _upload(fs::proto::Task& task){
     using namespace fs::proto;
 
     while(sent_packet_no < total_packet_no){
@@ -88,12 +72,12 @@ void fs_task::_upload(){
     status = Task::UPLOADED;
 }
 
-void fs_task::upload(){
-    std::thread thd(&fs_task::_upload, this);
+void upload(fs::proto::Task& task){
+    std::thread thd(&fs_task::_upload, task);
     thd.detach();
 }
 
-void fs_task::_download(){
+void _download(fs::proto::Task& task){
     using namespace fs::proto;
 
     std::string filepath = this->localbasepath
@@ -177,8 +161,8 @@ void fs_task::_download(){
 }
 
 
-void fs_task::download(){
-    std::thread thd(&fs_task::_download, this);
+void download(fs::proto::Task& task){
+    std::thread thd(&fs_task::_download, task);
     thd.detach();
 }
 

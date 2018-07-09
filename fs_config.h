@@ -25,6 +25,7 @@
 #define DEFAULT_ROOT_DIR        std::string(".")+SEPARATOR+"fs_root"
 #define DEFAULT_HIDDEN_PREFIX   ".fs_"
 #define DEFAULT_TASKID_FILE     ".fs_taskid"
+#define DEFAULT_TASKS_FILE      ".fs_tasks"
 #define DEFAULE_MAX_TASKNO      5
 
 

@@ -301,24 +301,31 @@ class Task : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::uint64 total_packet_no() const;
   void set_total_packet_no(::google::protobuf::uint64 value);
 
-  // optional uint64 received_packet_no = 6;
+  // optional uint64 received_packet_no = 7;
   bool has_received_packet_no() const;
   void clear_received_packet_no();
-  static const int kReceivedPacketNoFieldNumber = 6;
+  static const int kReceivedPacketNoFieldNumber = 7;
   ::google::protobuf::uint64 received_packet_no() const;
   void set_received_packet_no(::google::protobuf::uint64 value);
 
-  // optional uint64 sent_packet_no = 7;
+  // optional uint64 sent_packet_no = 8;
   bool has_sent_packet_no() const;
   void clear_sent_packet_no();
-  static const int kSentPacketNoFieldNumber = 7;
+  static const int kSentPacketNoFieldNumber = 8;
   ::google::protobuf::uint64 sent_packet_no() const;
   void set_sent_packet_no(::google::protobuf::uint64 value);
 
-  // required .fs.proto.Task.TaskStatus task_status = 8;
+  // optional uint64 last_packet_time = 9;
+  bool has_last_packet_time() const;
+  void clear_last_packet_time();
+  static const int kLastPacketTimeFieldNumber = 9;
+  ::google::protobuf::uint64 last_packet_time() const;
+  void set_last_packet_time(::google::protobuf::uint64 value);
+
+  // required .fs.proto.Task.TaskStatus task_status = 6;
   bool has_task_status() const;
   void clear_task_status();
-  static const int kTaskStatusFieldNumber = 8;
+  static const int kTaskStatusFieldNumber = 6;
   ::fs::proto::Task_TaskStatus task_status() const;
   void set_task_status(::fs::proto::Task_TaskStatus value);
 
@@ -334,12 +341,14 @@ class Task : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   void clear_has_filename();
   void set_has_total_packet_no();
   void clear_has_total_packet_no();
+  void set_has_task_status();
+  void clear_has_task_status();
   void set_has_received_packet_no();
   void clear_has_received_packet_no();
   void set_has_sent_packet_no();
   void clear_has_sent_packet_no();
-  void set_has_task_status();
-  void clear_has_task_status();
+  void set_has_last_packet_time();
+  void clear_has_last_packet_time();
 
   // helper for ByteSizeLong()
   size_t RequiredFieldsByteSizeFallback() const;
@@ -354,6 +363,7 @@ class Task : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::uint64 total_packet_no_;
   ::google::protobuf::uint64 received_packet_no_;
   ::google::protobuf::uint64 sent_packet_no_;
+  ::google::protobuf::uint64 last_packet_time_;
   int task_status_;
   friend struct ::protobuf_fs_5ftask_2eproto::TableStruct;
 };
@@ -731,7 +741,32 @@ inline void Task::set_total_packet_no(::google::protobuf::uint64 value) {
   // @@protoc_insertion_point(field_set:fs.proto.Task.total_packet_no)
 }
 
-// optional uint64 received_packet_no = 6;
+// required .fs.proto.Task.TaskStatus task_status = 6;
+inline bool Task::has_task_status() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void Task::set_has_task_status() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void Task::clear_has_task_status() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void Task::clear_task_status() {
+  task_status_ = 0;
+  clear_has_task_status();
+}
+inline ::fs::proto::Task_TaskStatus Task::task_status() const {
+  // @@protoc_insertion_point(field_get:fs.proto.Task.task_status)
+  return static_cast< ::fs::proto::Task_TaskStatus >(task_status_);
+}
+inline void Task::set_task_status(::fs::proto::Task_TaskStatus value) {
+  assert(::fs::proto::Task_TaskStatus_IsValid(value));
+  set_has_task_status();
+  task_status_ = value;
+  // @@protoc_insertion_point(field_set:fs.proto.Task.task_status)
+}
+
+// optional uint64 received_packet_no = 7;
 inline bool Task::has_received_packet_no() const {
   return (_has_bits_[0] & 0x00000020u) != 0;
 }
@@ -755,7 +790,7 @@ inline void Task::set_received_packet_no(::google::protobuf::uint64 value) {
   // @@protoc_insertion_point(field_set:fs.proto.Task.received_packet_no)
 }
 
-// optional uint64 sent_packet_no = 7;
+// optional uint64 sent_packet_no = 8;
 inline bool Task::has_sent_packet_no() const {
   return (_has_bits_[0] & 0x00000040u) != 0;
 }
@@ -779,29 +814,28 @@ inline void Task::set_sent_packet_no(::google::protobuf::uint64 value) {
   // @@protoc_insertion_point(field_set:fs.proto.Task.sent_packet_no)
 }
 
-// required .fs.proto.Task.TaskStatus task_status = 8;
-inline bool Task::has_task_status() const {
+// optional uint64 last_packet_time = 9;
+inline bool Task::has_last_packet_time() const {
   return (_has_bits_[0] & 0x00000080u) != 0;
 }
-inline void Task::set_has_task_status() {
+inline void Task::set_has_last_packet_time() {
   _has_bits_[0] |= 0x00000080u;
 }
-inline void Task::clear_has_task_status() {
+inline void Task::clear_has_last_packet_time() {
   _has_bits_[0] &= ~0x00000080u;
 }
-inline void Task::clear_task_status() {
-  task_status_ = 0;
-  clear_has_task_status();
+inline void Task::clear_last_packet_time() {
+  last_packet_time_ = GOOGLE_ULONGLONG(0);
+  clear_has_last_packet_time();
 }
-inline ::fs::proto::Task_TaskStatus Task::task_status() const {
-  // @@protoc_insertion_point(field_get:fs.proto.Task.task_status)
-  return static_cast< ::fs::proto::Task_TaskStatus >(task_status_);
+inline ::google::protobuf::uint64 Task::last_packet_time() const {
+  // @@protoc_insertion_point(field_get:fs.proto.Task.last_packet_time)
+  return last_packet_time_;
 }
-inline void Task::set_task_status(::fs::proto::Task_TaskStatus value) {
-  assert(::fs::proto::Task_TaskStatus_IsValid(value));
-  set_has_task_status();
-  task_status_ = value;
-  // @@protoc_insertion_point(field_set:fs.proto.Task.task_status)
+inline void Task::set_last_packet_time(::google::protobuf::uint64 value) {
+  set_has_last_packet_time();
+  last_packet_time_ = value;
+  // @@protoc_insertion_point(field_set:fs.proto.Task.last_packet_time)
 }
 
 // -------------------------------------------------------------------

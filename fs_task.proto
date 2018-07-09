@@ -28,9 +28,11 @@ message Task{
 	required string 	remotebasepath		= 3;
 	required string 	filename		= 4;
 	required uint64		total_packet_no		= 5;
-	optional uint64 	received_packet_no	= 6;
-	optional uint64 	sent_packet_no		= 7;
-	required TaskStatus	task_status		= 8;
+	required TaskStatus	task_status		= 6;
+	optional uint64 	received_packet_no	= 7;
+	optional uint64 	sent_packet_no		= 8;
+	optional uint64		last_packet_time	= 9;
+
 }
 
 message Tasks{
