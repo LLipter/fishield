@@ -247,7 +247,7 @@ void init_upload(const std::string& basepath,
     task.total_packet_no = packet_no;
     task.received_packet_no = 0;
     task.last_packet_time = std::time(0);
-    task.status = UPLOADING;
+    task.status = Task::UPLOADING;
     tasks[task_id] = task;
 
 }
@@ -305,7 +305,7 @@ void receive_packet(int taskid, const fs::proto::Packet& packet, fs::proto::Resp
     if(task.total_packet_no == task.received_packet_no){
         boost::filesystem::rename(filepath,
                                   task.remotebasepath + SEPARATOR + task.filename);
-        task.status = UPLOADED;
+        task.status = Task::UPLOADED;
     }
 
 
@@ -344,7 +344,7 @@ void init_download(const std::string& basepath,
 
     task.sent_packet_no = 0;
     task.last_packet_time = std::time(0);
-    task.status = DOWNLOADING;
+    task.status = Task::DOWNLOADING;
     tasks[task_id] = task;
 
 }
@@ -390,7 +390,7 @@ void confirm_download(int taskid, fs::proto::Response& response){
     }
 
     response.set_resp_type(Response::SUCCESS);
-    tasks[taskid].status = DOWNLOADED;
+    tasks[taskid].status = Task::DOWNLOADED;
 }
 
 void remove_file(const std::string& basepath,

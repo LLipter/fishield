@@ -1,6 +1,10 @@
 #include "fs_task.h"
 #include "fs_client.h"
 
+fs_fp_intdouble cb_progress;
+fs_fp_int cb_success;
+fs_fp_error cb_failed;
+
 fs_task::fs_task(){}
 
 fs_task::fs_task(const fs_task& rhs){
@@ -13,9 +17,6 @@ fs_task::fs_task(const fs_task& rhs){
     this->sent_packet_no = rhs.sent_packet_no;
     this->last_packet_time = rhs.last_packet_time;
     this->status = rhs.status;
-    this->cb_progress = rhs.cb_progress;
-    this->cb_success = rhs.cb_success;
-    this->cb_failed = rhs.cb_failed;
 }
 
 
@@ -25,12 +26,12 @@ void fs_task::_upload(){
     using namespace fs::proto;
 
     while(sent_packet_no < total_packet_no){
-        if(status == CANCELED_PAUSED ||
-                status == CANCELED_WORKING ||
-                status == UPLOAD_PAUSED)
+        if(status == Task::CANCELED_PAUSED ||
+                status == Task::CANCELED_WORKING ||
+                status == Task::UPLOAD_PAUSED)
             return;
 
-        if(status != UPLOADING){
+        if(status != Task::UPLOADING){
             cb_failed(Response::ILLEGALTASKSTATUS);
             return;
         }
@@ -84,7 +85,7 @@ void fs_task::_upload(){
     }
 
     cb_success(task_id);
-    status = UPLOADED;
+    status = Task::UPLOADED;
 }
 
 void fs_task::upload(){
@@ -101,12 +102,12 @@ void fs_task::_download(){
                             + this->filename;
 
     while(received_packet_no < total_packet_no){
-        if(status == CANCELED_PAUSED ||
-                status == CANCELED_WORKING ||
-                status == DOWNLOAD_PAUSED)
+        if(status == Task::CANCELED_PAUSED ||
+                status == Task::CANCELED_WORKING ||
+                status == Task::DOWNLOAD_PAUSED)
             return;
 
-        if(status != DOWNLOADING){
+        if(status != Task::DOWNLOADING){
             cb_failed(Response::ILLEGALTASKSTATUS);
             return;
         }
@@ -169,7 +170,7 @@ void fs_task::_download(){
     }
 
     cb_success(task_id);
-    status = DOWNLOADED;
+    status = Task::DOWNLOADED;
 
     boost::filesystem::rename(filepath,
                               this->localbasepath + SEPARATOR + this->filename);

@@ -4,6 +4,9 @@ extern boost::asio::ip::address _server_addr;
 extern int _server_port;
 extern boost::asio::io_service service;
 extern std::string _token;
+extern fs_fp_intdouble cb_progress;
+extern fs_fp_int cb_success;
+extern fs_fp_error cb_failed;
 
 int fs_client_startup(const std::string& addr, const short port){
     try{
@@ -141,10 +144,7 @@ void fs_mkdir(const std::string& basepath,
 
 void fs_upload(const std::string& localbasepath,
                const std::string& remotebasepath,
-               const std::string& filename,
-               fs_fp_intdouble cb_progress,
-               fs_fp_int cb_success,
-               fs_fp_error cb_failed){
+               const std::string& filename){
 
     using namespace boost::filesystem;
     using namespace fs::proto;
@@ -174,10 +174,7 @@ void fs_upload(const std::string& localbasepath,
         packet_no++;
     task.total_packet_no = packet_no;
     task.sent_packet_no = 0;
-    task.status = UPLOAD_INIT;
-    task.cb_progress = cb_progress;
-    task.cb_success = cb_success;
-    task.cb_failed = cb_failed;
+    task.status = Task::UPLOAD_INIT;
 
 
     fs_scheduler::instance()->add_task(task);
@@ -187,10 +184,7 @@ void fs_upload(const std::string& localbasepath,
 
 void fs_download(const std::string& localbasepath,
                  const std::string& remotebasepath,
-                 const std::string& filename,
-                 fs_fp_intdouble cb_progress,
-                 fs_fp_int cb_success,
-                 fs_fp_error cb_failed){
+                 const std::string& filename){
     using namespace boost::filesystem;
     using namespace fs::proto;
 
@@ -214,10 +208,7 @@ void fs_download(const std::string& localbasepath,
     task.remotebasepath = remotebasepath;
     task.filename = filename;
     task.received_packet_no = 0;
-    task.status = DOWNLOAD_INIT;
-    task.cb_progress = cb_progress;
-    task.cb_success = cb_success;
-    task.cb_failed = cb_failed;
+    task.status = Task::DOWNLOAD_INIT;
 
 
     fs_scheduler::instance()->add_task(task);
@@ -259,6 +250,15 @@ void fs_remove(const std::string& basepath,
                     cb_success,
                     cb_failed);
     thd.detach();
+}
+
+
+void fs_register_task_callback(fs_fp_intdouble cb_prog,
+                               fs_fp_int cb_succes,
+                               fs_fp_error cb_fal){
+    cb_progress = cb_prog;
+    cb_success = cb_succes;
+    cb_failed = cb_fal;
 }
 
 

@@ -3,25 +3,6 @@
 
 #include "fs_config.h"
 
-typedef enum TaskStatus{
-    UPLOAD_INIT,
-    UPLOADING,
-    UPLOADED,
-    UPLOAD_PAUSED,
-    UPLOAD_PAUSING,
-    UPLOAD_RESUME,
-
-    DOWNLOAD_INIT,
-    DOWNLOADING,
-    DOWNLOADED,
-    DOWNLOAD_PAUSED,
-    DOWNLOAD_PAUSING,
-    DOWNLOAD_RESUME,
-
-    CANCELED_PAUSED,    // when a task is canceled from UPLOAD_PAUSED/DOWNLOAD_PAUSED
-    CANCELED_WORKING,   // when a task is canceled from UPLOADING/DOWNLOADING
-}TaskStatus;
-
 class fs_task
 {
 public:
@@ -38,12 +19,7 @@ public:
     int received_packet_no;
     int sent_packet_no;
     long long last_packet_time;
-    TaskStatus status;
-    // callback functions
-    fs_fp_intdouble cb_progress;
-    fs_fp_int cb_success;
-    fs_fp_error cb_failed;
-
+    fs::proto::Task::TaskStatus status;
 
     // member functions
     void upload();
