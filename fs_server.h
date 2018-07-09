@@ -13,6 +13,7 @@ public:
     bool send_response(const fs::proto::Response& response);
     bool is_stop();
     void set_stop(bool status);
+    bool time_out();
     static void init();
 
 private:
@@ -20,6 +21,7 @@ private:
     char data_buffer[PACKET_SIZE];
     boost::asio::ip::tcp::socket _sock;
     bool _is_stop;
+    std::time_t last_request;
 };
 
 typedef boost::shared_ptr<fs_server> server_ptr;

@@ -7,6 +7,7 @@
 #include <map>
 #include <vector>
 #include <thread>
+#include <mutex>
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
@@ -29,6 +30,10 @@
 #define DEFAULT_TASKS_FINISHED_FILE     ".fs_tasks_finished"
 #define DEFAULT_TASKS_CURRENT_FILE      ".fs_tasks_current"
 #define DEFAULE_MAX_TASKNO              5
+#define DEFAULT_REMOVE_SLEEP_TIME       3
+#define DEFAULT_SAVE_SLEEP_TIME         2
+#define DEFAULT_TASK_TIMEOUT            60*60
+#define DEFAULT_CLIENT_TIMEOUT          60*60
 
 
 #define FS_E_UNKNOWN        -1      // unknown error

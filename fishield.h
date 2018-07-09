@@ -8,8 +8,8 @@
 #include "fs_scheduler.h"
 
 /***
- * DESC:    Try to start client program.
- *          This function should be called before any other function.
+ * DESC:    Try to start a client program.
+ *          This function should be called before any other client function.
  *          Otherwise the result is undefined.
  * PARAM:   `addr` is the address of server.
  *          Both domain like "localhost" and digit representation like "127.0.0.1" would be ok.
@@ -70,7 +70,11 @@ void fs_cancel(int client_id,
 
 
 
-
+/***
+ * DESC:    Try to start a server program.
+ * PARAM:   `port` is the port of server.
+ * RETURN:  This function will never return.
+ */
 void fs_server_startup(const short port);
 
 

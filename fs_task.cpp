@@ -225,3 +225,7 @@ void save_task_to_file(std::string filepath, std::map<int, fs::proto::Task>& tas
     file.close();
     delete[] buf;
 }
+
+bool is_timeout(const fs::proto::Task& task){
+    return std::time(0) - task.last_packet_time() > DEFAULT_TASK_TIMEOUT;
+}

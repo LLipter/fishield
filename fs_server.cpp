@@ -1,4 +1,5 @@
 #include "fs_server.h"
+#include <fs_task.h>
 
 boost::asio::io_service service;
 short _port = DEFAULT_SERV_PORT;
@@ -7,11 +8,13 @@ std::string hidden_prefix = DEFAULT_HIDDEN_PREFIX;
 std::string taskid_path = std::string(".") + SEPARATOR + DEFAULT_TASKID_FILE;
 std::vector<server_ptr> clients;
 std::map<int,fs::proto::Task> tasks;
+std::mutex server_mutex;
 
 int task_id;
 fs_server::fs_server():_sock(service){
     memset(data_buffer,0,sizeof(data_buffer));
     _is_stop = false;
+    last_request = std::time(0);
 }
 
 
@@ -27,6 +30,10 @@ void fs_server::set_stop(bool status){
     _is_stop = status;
 }
 
+bool fs_server::time_out(){
+    return std::time(0) - last_request > DEFAULT_CLIENT_TIMEOUT;
+}
+
 void fs_server::init(){
     using namespace boost::filesystem;
     if(!exists(rootdir))
@@ -38,6 +45,7 @@ void fs_server::init(){
     }
     std::ifstream file(taskid_path);
     file >> task_id;
+    file.close();
 
 }
 
@@ -47,9 +55,8 @@ bool fs_server::receive_request(fs::proto::Request& request){
 
     // read length of request
     int len;
-    int* lenptr = &len;
     boost::system::error_code err;
-    boost::asio::read(_sock,boost::asio::buffer((char*)lenptr,4),err);
+    boost::asio::read(_sock,boost::asio::buffer((char*)&len, 4), err);
 
     if(err == boost::asio::error::eof)  // connection closed by other side
         return false;
@@ -62,7 +69,7 @@ bool fs_server::receive_request(fs::proto::Request& request){
 
     // read request
     char* buf = new char[len];
-    boost::asio::read(_sock,boost::asio::buffer(buf,len),err);
+    boost::asio::read(_sock, boost::asio::buffer(buf, len), err);
     if(err){
         delete[] buf;
         std::cout << "receive_request() read request failed : "
@@ -72,7 +79,7 @@ bool fs_server::receive_request(fs::proto::Request& request){
     }
 
     // deserialize request
-    if(request.ParseFromArray(buf,len) == false){
+    if(request.ParseFromArray(buf, len) == false){
         delete[] buf;
         std::cout << "receive_request() deserialize request failed : "
                   << std::endl;
@@ -83,6 +90,7 @@ bool fs_server::receive_request(fs::proto::Request& request){
     std::cout << "receive_request() success : "
               << Request::RequestType_Name(request.req_type())
               << std::endl;
+    last_request = std::time(0);
     return true;
 }
 
@@ -91,9 +99,9 @@ bool fs_server::send_response(const fs::proto::Response& response){
     int len = response.ByteSize();
     char* buf = new char[len+4];
     *(int*)buf = len;
-    response.SerializeToArray(buf+4,len);
+    response.SerializeToArray(buf+4, len);
     boost::system::error_code err;
-    boost::asio::write(_sock,boost::asio::buffer(buf,len+4), err);
+    boost::asio::write(_sock, boost::asio::buffer(buf,len+4), err);
     delete[] buf;
     if(err){
         std::cout << "send_response() failed : "
@@ -118,7 +126,7 @@ void accept_thread() {
         server_ptr serptr(new fs_server);
         acptor.accept(serptr->sock());
         clients.push_back(serptr);
-        std::thread thd(communicate_thread,serptr);
+        std::thread thd(communicate_thread, serptr);
         thd.detach();
     }
 }
@@ -126,14 +134,36 @@ void accept_thread() {
 
 void remove_clients_thread() {
     while (true) {
-        boost::this_thread::sleep(boost::posix_time::seconds(1));
+        // have a sleep
+        boost::this_thread::sleep(boost::posix_time::seconds(DEFAULT_REMOVE_SLEEP_TIME));
+
         // erase clients that are stoped
         clients.erase(std::remove_if(clients.begin(),
                                      clients.end(),
                                      boost::bind(&fs_server::is_stop,_1)),
                       clients.end());
-        // TODO : REMOVE ALL TIMEOUT CLIENTS
-        // TODO : REMOVE ALL TIMEOUT TASKS or finished tasks or canceled tasks
+        // erase clients that are timeout
+        clients.erase(std::remove_if(clients.begin(),
+                                     clients.end(),
+                                     boost::bind(&fs_server::time_out,_1)),
+                      clients.end());
+        // erase tasks that are finished or timeout
+        server_mutex.lock();
+        std::vector<int> should_removed;
+        for(auto it=tasks.begin();it!=tasks.end();it++){
+            using namespace fs::proto;
+            Task& task = it->second;
+            if(is_timeout(*it)
+                    || task.task_status() == Task::UPLOADED
+                    || task.task_status() == Task::DOWNLOADED
+                    || task.task_status() == Task::CANCELED_WORKING){
+                // TODO : save task information it in database
+                should_removed.push_back(it->first);
+            }
+        }
+        for(int id : should_removed)
+            tasks.erase(id);
+
     }
 }
 
@@ -531,8 +561,8 @@ void communicate_thread(server_ptr serptr){
 
 void save_thread(){
     while(true){
-        boost::this_thread::sleep(boost::posix_time::seconds(2));
-        std::ofstream file(taskid_path,std::ios::trunc);
+        boost::this_thread::sleep(boost::posix_time::seconds(DEFAULT_SAVE_SLEEP_TIME));
+        std::ofstream file(taskid_path, std::ios::trunc);
         file << task_id;
         file.close();
     }
