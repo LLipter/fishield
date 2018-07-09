@@ -74,3 +74,4 @@ Thumbs.db
 # ignore all files under build/
 build/*
 *.out
+.fs_*
