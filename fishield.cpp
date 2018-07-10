@@ -335,7 +335,6 @@ void _fs_cancel(int client_id,
         case Task::UPLOAD_PAUSING:
         case Task::DOWNLOADING:
         case Task::DOWNLOAD_PAUSING:
-
             task.set_task_status(Task::CANCELING);
             break;
         case Task::UPLOAD_PAUSED:
