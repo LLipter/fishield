@@ -336,7 +336,7 @@ void _fs_cancel(int client_id,
         case Task::DOWNLOADING:
         case Task::DOWNLOAD_PAUSING:
 
-            task.set_task_status(Task::CANCELED_WORKING);
+            task.set_task_status(Task::CANCELING);
             break;
         case Task::UPLOAD_PAUSED:
         case Task::UPLOAD_INIT:
@@ -344,12 +344,12 @@ void _fs_cancel(int client_id,
         case Task::DOWNLOAD_PAUSED:
         case Task::DOWNLOAD_INIT:
         case Task::DOWNLOAD_RESUME:
-            task.set_task_status(Task::CANCELED_PAUSED);
+            task.set_task_status(Task::CANCELED);
             break;
         case Task::UPLOADED:
         case Task::DOWNLOADED:
-        case Task::CANCELED_PAUSED:
-        case Task::CANCELED_WORKING:
+        case Task::CANCELING:
+        case Task::CANCELED:
         case Task::FAILING:
         case Task::FAILED:
             // do nothing

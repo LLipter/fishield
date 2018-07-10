@@ -131,7 +131,7 @@ void accept_thread() {
 void remove_clients_thread() {
     while (true) {
         // have a sleep
-        boost::this_thread::sleep(boost::posix_time::seconds(DEFAULT_REMOVE_SLEEP_TIME));
+        boost::this_thread::sleep(DEFAULT_REMOVE_SLEEP_TIME);
 
         // erase clients that are stoped
         clients.erase(std::remove_if(clients.begin(),
@@ -152,7 +152,7 @@ void remove_clients_thread() {
             if(is_timeout(task)
                     || task.task_status() == Task::UPLOADED
                     || task.task_status() == Task::DOWNLOADED
-                    || task.task_status() == Task::CANCELED_WORKING
+                    || task.task_status() == Task::CANCELED
                     || task.task_status() == Task::FAILED){
                 // TODO : save task information it in database
                 should_removed.push_back(it->first);
@@ -472,7 +472,7 @@ void cancel_task(int taskid, fs::proto::Response& response){
     Task::TaskStatus status = tasks[taskid].task_status();
     server_task_mutex.lock();
     if(status == Task::UPLOADING || status == Task::DOWNLOADING)
-        tasks[taskid].set_task_status(Task::CANCELED_WORKING);
+        tasks[taskid].set_task_status(Task::CANCELED);
     else if(status == Task::UPLOADED || status == Task::DOWNLOADED){
         response.set_resp_type(Response::ILLEGALTASKID);
         return;
@@ -571,7 +571,7 @@ void communicate_thread(server_ptr serptr){
 
 void save_thread(){
     while(true){
-        boost::this_thread::sleep(boost::posix_time::seconds(DEFAULT_SAVE_SLEEP_TIME));
+        boost::this_thread::sleep(DEFAULT_SAVE_SLEEP_TIME);
         std::ofstream file(taskid_path, std::ios::trunc);
         file << task_id;
         file.close();

@@ -20,8 +20,8 @@ message Task{
     		DOWNLOAD_PAUSING			= 10;
     		DOWNLOAD_RESUME				= 11;
 
-    		CANCELED_PAUSED				= 12;	// when a task is canceled from UPLOAD_PAUSED/DOWNLOAD_PAUSED
-    		CANCELED_WORKING			= 13;	// when a task is canceled from UPLOADING/DOWNLOADING
+    		CANCELING				= 12;
+    		CANCELED				= 13;
 		
 		FAILED					= 14;
 		FAILING					= 15;	

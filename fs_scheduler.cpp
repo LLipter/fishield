@@ -19,11 +19,13 @@ fs_scheduler* fs_scheduler::instance(){
 fs_scheduler::fs_scheduler(){
     max_task_num = DEFAULE_MAX_TASKNO;
     task_count = 0;
-    std::thread scheduler_thread(&fs_scheduler::scheduler, this);
+    std::thread scheduler_thread(&fs_scheduler::save_thread, this);
     scheduler_thread.detach();
+    std::thread save_thread(&fs_scheduler::save_thread, this);
+    save_thread.detach();
 }
 
-void fs_scheduler::scheduler(){
+void fs_scheduler::scheduler_thread(){
     using namespace fs::proto;
     while(true){
         std::vector<int> removed_task;
@@ -57,11 +59,11 @@ void fs_scheduler::scheduler(){
                 break;
             case Task::UPLOADED:
             case Task::DOWNLOADED:
-            case Task::CANCELED_WORKING:
+            case Task::CANCELING:
                 task_count--;
-                removed_task.push_back(iter->first);
+                iter->second.set_task_status(Task::CANCELED);
                 break;
-            case Task::CANCELED_PAUSED:
+            case Task::CANCELED:
                 removed_task.push_back(iter->first);
                 break;
             case Task::UPLOADING:
@@ -87,16 +89,22 @@ void fs_scheduler::scheduler(){
             task_map_finished[id] = task_map_current[id];
             task_map_current.erase(id);
         }
-
-        // save removed tasks in disk
-        save_task_to_file(tasks_finished_path, task_map_finished);
-        save_task_to_file(tasks_current_path, task_map_current);
-
         client_task_mutex.unlock();
 
         // have a sleep
-        boost::thread::sleep(boost::get_system_time() + boost::posix_time::millisec(500));
+        boost::this_thread::sleep(DEFAULT_CLIENT_SCHEDULER_SLEEP);
     }
+}
+
+void fs_scheduler::save_thread(){
+    client_task_mutex.lock();
+
+    // save removed tasks in disk
+    save_task_to_file(tasks_finished_path, task_map_finished);
+    save_task_to_file(tasks_current_path, task_map_current);
+
+    client_task_mutex.unlock();
+    boost::this_thread::sleep(DEFAULT_CLIENT_SAVE_SLEEP);
 }
 
 void fs_scheduler::set_task_max(int num){

@@ -74,8 +74,8 @@ enum Task_TaskStatus {
   Task_TaskStatus_DOWNLOAD_PAUSED = 9,
   Task_TaskStatus_DOWNLOAD_PAUSING = 10,
   Task_TaskStatus_DOWNLOAD_RESUME = 11,
-  Task_TaskStatus_CANCELED_PAUSED = 12,
-  Task_TaskStatus_CANCELED_WORKING = 13,
+  Task_TaskStatus_CANCELING = 12,
+  Task_TaskStatus_CANCELED = 13,
   Task_TaskStatus_FAILED = 14,
   Task_TaskStatus_FAILING = 15
 };
@@ -213,10 +213,10 @@ class Task : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
     Task_TaskStatus_DOWNLOAD_PAUSING;
   static const TaskStatus DOWNLOAD_RESUME =
     Task_TaskStatus_DOWNLOAD_RESUME;
-  static const TaskStatus CANCELED_PAUSED =
-    Task_TaskStatus_CANCELED_PAUSED;
-  static const TaskStatus CANCELED_WORKING =
-    Task_TaskStatus_CANCELED_WORKING;
+  static const TaskStatus CANCELING =
+    Task_TaskStatus_CANCELING;
+  static const TaskStatus CANCELED =
+    Task_TaskStatus_CANCELED;
   static const TaskStatus FAILED =
     Task_TaskStatus_FAILED;
   static const TaskStatus FAILING =

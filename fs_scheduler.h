@@ -11,7 +11,8 @@ private:
 
     fs_scheduler();                     // private constructor, Singleton Pattern
     static fs_scheduler scheduler_instance;
-    void scheduler();                   // main sechedule method
+    void scheduler_thread();            // main sechedule method
+    void save_thread();
 
     // member variables
     int max_task_num;

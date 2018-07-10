@@ -15,8 +15,8 @@ void _upload(fs::proto::Task& task){
     using namespace fs::proto;
 
     while(task.sent_packet_no() < task.total_packet_no()){
-        if(task.task_status() == Task::CANCELED_PAUSED ||
-                task.task_status() == Task::CANCELED_WORKING ||
+        if(task.task_status() == Task::CANCELED ||
+                task.task_status() == Task::CANCELING ||
                 task.task_status() == Task::UPLOAD_PAUSED ||
                 task.task_status() == Task::UPLOAD_PAUSING ||
                 task.task_status() == Task::FAILED ||
@@ -115,8 +115,8 @@ void _download(fs::proto::Task& task){
         boost::filesystem::remove(filepath);
 
     while(task.received_packet_no() < task.total_packet_no()){
-        if(task.task_status() == Task::CANCELED_PAUSED ||
-                task.task_status() == Task::CANCELED_WORKING ||
+        if(task.task_status() == Task::CANCELED ||
+                task.task_status() == Task::CANCELING ||
                 task.task_status() == Task::DOWNLOAD_PAUSED ||
                 task.task_status() == Task::DOWNLOAD_PAUSING ||
                 task.task_status() == Task::FAILED ||
