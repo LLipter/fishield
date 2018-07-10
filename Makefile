@@ -1,5 +1,7 @@
 obj = 	file_transfer.pb.o fs_task.pb.o fishield.o \
 	fs_client.o fs_server.o fs_task.o fs_scheduler.o
+protohead = 	file_transfer.pb.cc file_transfer.pb.h \
+		fs_task.pb.cc fs_task.pb.h
 
 all: libfishield.so server.out client.out
 
@@ -52,3 +54,4 @@ fs_scheduler.o: fs_scheduler.cpp fs_scheduler.h fs_config.h \
 
 clean:
 	-rm ${obj}
+	-rm ${protohead}
