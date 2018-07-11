@@ -1,0 +1,10 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+
+<qresource prefix="/icons">
+	<file alias="add.svg">ic_add_48px.svg</file>
+</qresource>
+
+
+
+</RCC>

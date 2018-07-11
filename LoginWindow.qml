@@ -10,6 +10,8 @@ Item {
     property bool loading : false
 
 
+
+
     Rectangle{
         id: container
         width: parent.width
@@ -82,13 +84,32 @@ Item {
                 }
             }
         }
+
+        ProgressCircle {
+            anchors.centerIn: parent
+            visible: loading
+            color: "blue"
+        }
+
+        ActionButton {
+            anchors {
+                top: parent.top
+                topMargin: 20
+                horizontalCenter: parent.right
+            }
+
+            action: Action {
+                id: addUser
+                shortcut: "Ctrl+C"
+                onTriggered: {
+                    console.debug("addUser triggered")
+                }
+            }
+            iconName: "add"
+        }
     }
 
 
-    ProgressCircle {
-        anchors.centerIn: parent
-        visible: loading
-        color: "blue"
-    }
+
 
 }
