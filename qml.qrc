@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>fs_TextBox.qml</file>
+        <file>LoginWindow.qml</file>
     </qresource>
 </RCC>
