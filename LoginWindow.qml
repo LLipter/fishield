@@ -82,6 +82,7 @@ Item {
                     password.helperText = "please enter password"
                 }else{
                     loading = true;
+                    timeout = 5;
                     countDowm.start();
                     login_backend.login(username.text, password.text);
                 }
@@ -142,7 +143,18 @@ Item {
             target: login_backend
             onLogined:
             {
-                console.debug("logined!!!");
+                loading = false;
+                console.debug(username.text ,"logined");
+                component = Qt.createComponent("qrc:/MainWindow.qml");
+                if(component.status === Component.Ready){
+                    mainWindow = component.createObject(parent);
+                    if(MainWindow == null){
+                        console.error("cannot create MainWindow Object");
+                        return;
+                    }
+                    root.visible = false;
+                }else
+                    console.error("cannot create MainWindow Conponent");
             }
         }
     }
