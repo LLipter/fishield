@@ -3,6 +3,12 @@
 
 <qresource prefix="/icons">
 	<file alias="add.svg">ic_add_48px.svg</file>
+	<file alias="account.svg">ic_account_circle_48px.svg</file>
+	<file alias="color.svg">ic_color_lens_48px.svg</file>
+	<file alias="language.svg">ic_language_48px.svg</file>
+	<file alias="settings.svg">ic_settings_48px.svg</file>
+	<file alias="warning.svg">ic_warning_48px.svg</file>
+	<file alias="navigation/arrow_drop_down.svg">ic_arrow_drop_down_48px.svg</file>
 </qresource>
 
 

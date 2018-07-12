@@ -2,124 +2,90 @@ import QtQuick 2.4
 import Material 0.2
 import Material.ListItems 0.1 as ListItem
 
-ApplicationWindow {
-    id: mainWindow
 
-    title: qsTr("Zuolin file Client")
-
-    // Necessary when loading the window from C++
-    visible: true
-
-    theme {
-        primaryColor: "blue"
-        accentColor: "red"
-        tabHighlightColor: "white"
-    }
+TabbedPage {
 
     property var sections: [ "History", "Files", "Transferring" ]
-
-    property var sectionTitles: [ qsTr("History"), qsTr("Files"), qsTr("Downloading/Uploading") ]
-
     property string selectedComponent: sections[0]
+    id: page
+    title: qsTr("Fishield")
+    actionBar.maxActionCount: navDrawer.enabled ? 2 : 5
 
-    initialPage: TabbedPage {
-        id: page
 
-        title: qsTr("Demo")
+    onGoBack: {
+        confirmationDialog.show()
+        event.accepted = true
+    }
 
-        actionBar.maxActionCount: navDrawer.enabled ? 3 : 4
+    actionBar.actions: [
+        Action {
+            iconName: "warning"
+            name: "Warnings"
+        },
 
-        actions: [
-            Action {
-                iconName: "alert/warning"
-                name: "Dummy error"
-                onTriggered: demo.showError("Something went wrong", "Do you want to retry?", "Close", true)
-            },
+        Action {
+            iconName: "color"
+            name: "Colors"
+            hoverAnimation: true
+            onTriggered: colorPicker.show()
+        },
 
-            Action {
-                iconName: "image/color_lens"
-                name: "Colors"
-                onTriggered: colorPicker.show()
-            },
+        Action {
+            iconName: "settings"
+            name: "Settings"
+            hoverAnimation: true
+        },
 
-            Action {
-                iconName: "action/settings"
-                name: "Settings"
-                hoverAnimation: true
-            },
+        Action {
+            iconName: "language"
+            name: "Language"
+            hoverAnimation: true
+        },
 
-            Action {
-                iconName: "action/language"
-                name: "Language"
-                enabled: false
-            },
+        Action {
+            iconName: "account"
+            name: "Accounts"
+        }
+    ]
 
-            Action {
-                iconName: "action/account_circle"
-                name: "Accounts"
-            }
-        ]
+    backAction: navDrawer.action
 
-        backAction: navDrawer.action
+    Repeater {
+        id:tabRepeater
+        model: !navDrawer.enabled ? sections : 0
 
-        NavigationDrawer {
-            id: navDrawer
+        Tab {
+            title: sections[index]
+            property string selectedComponent: modelData
+        }
+    }
 
-            enabled: page.width < dp(500)
 
-            onEnabledChanged: smallLoader.active = enabled
+    NavigationDrawer {
 
-            Flickable {
+
+        id: navDrawer
+        enabled: page.width < dp(500)
+
+        Flickable {
+            anchors.fill: parent
+            clip: true
+            Column {
                 anchors.fill: parent
 
-                contentHeight: Math.max(content.implicitHeight, height)
+                Repeater {
+                    model: sections
+                    width: parent.width
 
-                Column {
-                    id: content
-                    anchors.fill: parent
-
-                    Repeater {
-                        model: sections
-
-                        delegate: Column {
-                            width: parent.width
-
-                            ListItem.Standard {
-                                text: sectionTitles[index]
-                                selected: modelData === mainWindow.selectedComponent
-                                onClicked: {
-                                    mainWindow.selectedComponent = modelData
-                                    navDrawer.close()
-                                }
-                            }
+                    ListItem.Standard {
+                        text: sections[index]
+                        onClicked: {
+                            mainWindow.selectedComponent = modelData
+                            navDrawer.close()
                         }
                     }
                 }
             }
-        }
-
-        Repeater {
-            id:tabRepeater
-            model: !navDrawer.enabled ? sections : 0
-
-            delegate: Tab {
-                title: sectionTitles[index]
-
-                property string selectedComponent: modelData
-                property var section: modelData
-
-                sourceComponent: tabDelegate
-            }
-        }
-
-        Loader {
-            id: smallLoader
-            anchors.fill: parent
-            sourceComponent: tabDelegate
-
-            property var section: []
-            visible: active
-            active: false
         }
     }
 
@@ -127,13 +93,12 @@ ApplicationWindow {
         id: colorPicker
         title: "Pick color"
 
-        positiveButtonText: "Done"
-
         MenuField {
             id: selection
-            model: ["Primary color", "Accent color", "Background color"]
-            width: dp(160)
+            model: ["Primary color", "TabHighlight Color", "Background color"]
         }
+
+        negativeButton.visible: false
 
         Grid {
             columns: 7
@@ -161,27 +126,22 @@ ApplicationWindow {
 
                         onPressed: {
                             switch(selection.selectedIndex) {
-                                case 0:
-                                    theme.primaryColor = parent.color
-                                    break;
-                                case 1:
-                                    theme.accentColor = parent.color
-                                    break;
-                                case 2:
-                                    theme.backgroundColor = parent.color
-                                    break;
+                            case 0:
+                                theme.primaryColor = parent.color
+                                break;
+                            case 1:
+                                theme.tabHighlightColor = parent.color
+                                break;
+                            case 2:
+                                theme.backgroundColor = parent.color
+                                break;
                             }
                         }
                     }
                 }
             }
         }
-
-        onRejected: {
-            // TODO set default colors again but we currently don't know what that is
-        }
     }
-
     Component {
         id: tabDelegate
 
@@ -191,9 +151,7 @@ ApplicationWindow {
                 id: flickable
                 anchors.fill:parent
                 clip: true
-                contentHeight: Math.max(example.implicitHeight + 40, height)
                 Loader {
-                    id: example
                     anchors.fill: parent
                     asynchronous: true
                     visible: status == Loader.Ready
@@ -209,7 +167,7 @@ ApplicationWindow {
 
                 ProgressCircle {
                     anchors.centerIn: parent
-                    visible: example.status == Loader.Loading
+                    visible: example.status === Loader.Loading
                 }
             }
             Scrollbar {
@@ -217,4 +175,10 @@ ApplicationWindow {
             }
         }
     }
+
+
 }
+
+
+
+

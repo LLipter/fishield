@@ -2,7 +2,7 @@ import QtQuick 2.0
 import Material 0.3
 import Material.ListItems 0.1
 
-Item {
+Page {
     id: root
     width: 450;
     height: 220;
@@ -114,6 +114,7 @@ Item {
                 }
             }
             iconName: "add"
+            backgroundColor: "dodgerblue"
         }
 
         Timer {
@@ -130,6 +131,7 @@ Item {
                 }
             }
         }
+
         Label {
             id: timeoutlabel
             text : "login timeout, please retry"
