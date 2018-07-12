@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Material 0.3
+import Material.ListItems 0.1
 
 Item {
     id: root
@@ -9,8 +10,7 @@ Item {
 
     property bool loading : false
     property int timeout: 5
-
-
+    property alias username: username.text
 
 
     Rectangle{
@@ -89,6 +89,10 @@ Item {
             }
         }
 
+        Subheader{
+            text: "Welcome"
+        }
+
         ProgressCircle {
             anchors.centerIn: parent
             visible: loading
@@ -138,25 +142,6 @@ Item {
             }
         }
 
-        Connections
-        {
-            target: login_backend
-            onLogined:
-            {
-                loading = false;
-                console.debug(username.text ,"logined");
-                component = Qt.createComponent("qrc:/MainWindow.qml");
-                if(component.status === Component.Ready){
-                    mainWindow = component.createObject(parent);
-                    if(MainWindow == null){
-                        console.error("cannot create MainWindow Object");
-                        return;
-                    }
-                    root.visible = false;
-                }else
-                    console.error("cannot create MainWindow Conponent");
-            }
-        }
     }
 
 
