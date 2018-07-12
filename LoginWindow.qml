@@ -68,11 +68,10 @@ Item {
                 top: password.bottom
                 topMargin: 25
             }
+            enabled: !loading
 
             backgroundColor: "dodgerblue"
             onClicked: {
-                if(loading)
-                    return;
                 if(username.text.length == 0){
                     username.hasError = true;
                     username.helperText = "please enter username"
