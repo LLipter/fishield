@@ -2,6 +2,7 @@
 #define LOGIN_BACKEND_H
 
 #include <QObject>
+#include "request_manager.h"
 
 class login_backend : public QObject
 {
@@ -12,14 +13,15 @@ public:
     Q_INVOKABLE void timeout();
 
 private:
-    static QString _username;
-    static QString _password;
+    static QString _token;
     bool is_timeout;
+    request_manager requestManager;
 
 signals:
-    void loginStateChanged(bool is_login);
+    void logined();
 
 public slots:
+    void handle_login_response(QJsonObject res_json);
 };
 
 #endif // LOGIN_BACKEND_H

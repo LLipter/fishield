@@ -8,6 +8,7 @@ Item {
     anchors.centerIn: parent
 
     property bool loading : false
+    property int timeout: 5
 
 
 
@@ -72,6 +73,7 @@ Item {
 
             backgroundColor: "dodgerblue"
             onClicked: {
+                timeoutlabel.visible = false
                 if(username.text.length == 0){
                     username.hasError = true;
                     username.helperText = "please enter username"
@@ -80,6 +82,8 @@ Item {
                     password.helperText = "please enter password"
                 }else{
                     loading = true;
+                    countDowm.start();
+                    login_backend.login(username.text, password.text);
                 }
             }
         }
@@ -106,9 +110,42 @@ Item {
             }
             iconName: "add"
         }
+
+        Timer {
+            id:countDowm;
+            repeat: true;
+            interval: 1000;
+            onTriggered: {
+                root.timeout--;
+                if (root.timeout < 0) {
+                    loading = false
+                    timeoutlabel.visible = true
+                    root.timeout = 5
+                    login_backend.timeout();
+                }
+            }
+        }
+        Label {
+            id: timeoutlabel
+            text : "login timeout, please retry"
+            visible: false
+            color: "red"
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                top: login.bottom
+                topMargin: 5
+            }
+        }
+
+        Connections
+        {
+            target: login_backend
+            onLogined:
+            {
+                console.debug("logined!!!");
+            }
+        }
     }
-
-
 
 
 }

@@ -10,6 +10,7 @@ class request_manager : public QObject
     Q_OBJECT
 public:
     explicit request_manager(QObject *parent = nullptr);
+    void send(QJsonObject json, QString location);
 
 private:
     QNetworkAccessManager manager;

@@ -11,7 +11,6 @@ request_manager::request_manager(QObject *parent) : QObject(parent)
     config.setProtocol(QSsl::TlsV1_2OrLater);
 
     request.setSslConfiguration(config);
-    request.setUrl(QUrl(url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     connect(&manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(requestFinished(QNetworkReply*)));
@@ -33,4 +32,12 @@ void request_manager::requestFinished(QNetworkReply* reply){
     reply->deleteLater();
 
     emit get_response(res_json);
+}
+
+void request_manager::send(QJsonObject req_json, QString location)
+{
+    request.setUrl(QUrl(url+QString("/")+location));
+    QByteArray data = QJsonDocument(req_json).toJson();
+    qDebug() << "send request" << QString::fromUtf8(data.data(), data.size());
+    manager.post(request, data);
 }
