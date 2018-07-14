@@ -23,13 +23,13 @@ Item {
         Connections{
 
             target: backend
-            onFileLoaded: {
+//            onFileLoaded: {
 //                console.log("onFileLoaded");
 //                file_names = _file_names;
 //                file_authors = _file_authors;
 //                file_sizes = _file_sizes;
 //                loading = false;
-            }
+//            }
         }
 
         ProgressCircle {

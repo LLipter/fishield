@@ -30,25 +30,22 @@ import QtQuick.Window 2.0
 import Material 0.2
 import Material.ListItems 0.1 as ListItem
 import Material.Extras 0.1
+import "utils.js" as Utils
 
 Item {
     id:picker
     signal fileSelected(string fileName)
-    readonly property real textmargin: dp(Screen.pixelDensity, 8)
-    readonly property real textSize: dp(Screen.pixelDensity, 10)
-    readonly property real headerTextSize: dp(Screen.pixelDensity, 12)
-    readonly property real buttonHeight: dp(Screen.pixelDensity, 24)
-    readonly property real rowHeight: dp(Screen.pixelDensity, 36)
-    readonly property real toolbarHeight: dp(Screen.pixelDensity, 48)
+    readonly property real textmargin: Utils.dp(Screen.pixelDensity, 8)
+    readonly property real textSize: Utils.dp(Screen.pixelDensity, 10)
+    readonly property real headerTextSize: Utils.dp(Screen.pixelDensity, 12)
+    readonly property real buttonHeight: Utils.dp(Screen.pixelDensity, 24)
+    readonly property real rowHeight: Utils.dp(Screen.pixelDensity, 36)
+    readonly property real toolbarHeight: Utils.dp(Screen.pixelDensity, 48)
     property bool showDotAndDotDot: false
     property bool showHidden: true
     property bool showDirsFirst: true
     property string folder: currentFolder()
     property string nameFilters: "*.*"
-
-    function dp(pixelDensity,x) {
-        return (pixelDensity * 25.4 < 120) ? x : x*(pixelDensity * 25.4/160);
-    }
 
     function currentFolder() {
         return folderListModel.folder;
