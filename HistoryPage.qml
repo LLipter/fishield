@@ -9,9 +9,11 @@ Item {
     property var file_authors: ["zuolin", "vergil", "john", "unknown"]
     property var m_times: ["2 hours ago", "one day ago", "one mouth ago", "unknown"]
     property var file_sizes: ["100k", "10M", "100M", "80k"]
-    property bool loading: true
+    property bool loading: false
 
-    Component.onCompleted: client_backend.file_history()
+
+    // TODO : GET HISTORY INFOMATION FROM SERVER
+//    Component.onCompleted: backend.file_history()
 
 
     Flickable {
@@ -23,14 +25,14 @@ Item {
         contentHeight: Math.max(content.implicitHeight, height)
 
         Connections {
-            target: client_backend
-            onHistoryLoaded: {
-                console.log("onFileLoaded");
-                file_names = _file_names;
-                file_authors = _file_authors;
-                file_sizes = _file_sizes;
-                loading = false;
-            }
+            target: backend
+//            onHistoryLoaded: {
+//                console.log("onFileLoaded");
+//                file_names = _file_names;
+//                file_authors = _file_authors;
+//                file_sizes = _file_sizes;
+//                loading = false;
+//            }
         }
 
         ProgressCircle {
@@ -53,7 +55,7 @@ Item {
                     Repeater {
                         model: file_names
                         delegate: ListItem.Subtitled {
-                            iconName:"/file/file_doc"
+                            iconName:"file"
                             text: qsTr(modelData)
                             subText: "uploaded by " + file_authors[index]
                             valueText: m_times[index]
@@ -79,28 +81,28 @@ Item {
         actions: [
 
             Action {
-                iconName: "file/file_download"
+                iconName: "download"
                 name: "Download"
             },
 
             Action {
-                iconName: "action/settings"
+                iconName: "settings"
                 name: "Details"
                 hasDividerAfter: true
             },
 
             Action {
-                iconName: "content/forward"
+                iconName: "forward"
                 name: "Move"
             },
 
             Action {
-                iconName: "action/delete"
+                iconName: "delete"
                 name: "Delete"
             },
 
             Action {
-                iconName: "content/create"
+                iconName: "create"
                 name: "Rename"
             }
         ]
