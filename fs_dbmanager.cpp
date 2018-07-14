@@ -15,9 +15,8 @@ fs_DBManager::~fs_DBManager(){
 }
 
 int fs_DBManager::login(fs_user* user){
-    sql::PreparedStatement *pstmt = conn->prepareStatement("SELECT * FROM user WHERE username=? AND password=?");
+    sql::PreparedStatement *pstmt = conn->prepareStatement("SELECT * FROM user WHERE username=?");
     pstmt->setString(1,user->username);
-    pstmt->setString(2,user->password);
     sql::ResultSet* res = pstmt->executeQuery();
 
     // no such user
