@@ -2,18 +2,19 @@ obj = 	file_transfer.pb.o fs_task.pb.o fishield.o \
 	fs_client.o fs_server.o fs_task.o fs_scheduler.o
 protohead = 	file_transfer.pb.cc file_transfer.pb.h \
 		fs_task.pb.cc fs_task.pb.h
+PWD := $(shell pwd)
+linklib = 	-lboost_system -lboost_thread -lboost_filesystem \
+     		-lpthread -lprotobuf
 
 all: libfishield.so server.out client.out
 
 server.out: main_server.cpp libfishield.so
-	g++ main_server.cpp -L. -lfishield \
-	-lboost_system -lboost_thread -lboost_filesystem \
-     	-lpthread -lprotobuf -o server.out
+	g++ main_server.cpp -L${PWD} -lfishield \
+ 	${linklib} -o server.out
 
 client.out: main_client.cpp libfishield.so
-	g++ main_client.cpp -L. -lfishield \
-	-lboost_system -lboost_thread -lboost_filesystem \
-     	-lpthread -lprotobuf -o client.out
+	g++ main_client.cpp -L${PWD} -lfishield \
+	${linklib} -o client.out
 
 libfishield.so: ${obj}
 	g++ -shared ${obj} -o libfishield.so
