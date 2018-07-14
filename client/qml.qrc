@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>MainPage.qml</file>
+        <file>FilesPage.qml</file>
+        <file>HistoryPage.qml</file>
+        <file>TransferringPage.qml</file>
+        <file>FilePicker.qml</file>
+        <file>utils.js</file>
+    </qresource>
+</RCC>
