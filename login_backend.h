@@ -20,7 +20,8 @@ signals:
     void logined();
 
 public slots:
-    void handle_login_response();
+    void handle_login_success();
+    void handle_login_failed(fs::proto::Response::ResponseType error);
 };
 
 #endif // LOGIN_BACKEND_H
