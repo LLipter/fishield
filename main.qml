@@ -6,12 +6,10 @@ import Material.ListItems 0.1
 ApplicationWindow {
     id: rootwindow
     visible: true
-    width: 640
-    height: 320
-    minimumWidth: 640
+    width: 800
+    height: 480
     minimumHeight: 320
-    maximumWidth: 640
-    maximumHeight: 320
+    minimumWidth: 260
     title: qsTr("Fishield")
 
     theme {
@@ -23,22 +21,18 @@ ApplicationWindow {
 
     initialPage: Page {
         title: "Welcode"
-        id: loginwindow
-        width: 450;
-        height: 220;
-        anchors.centerIn: parent
+        id: loginpage
 
         property bool loading : false
         property int timeout: 5
-        property alias username: username.text
 
 
-        Rectangle{
+        View{
+            elevation: 2
             id: container
-            width: parent.width
-            height: parent.height
+            width: 320
+            height: 240
             anchors.centerIn: parent
-            color: "white"
 
             TextField{
                 id: username
@@ -50,7 +44,7 @@ ApplicationWindow {
 
                 placeholderText: "Username"
                 floatingLabel: true
-                enabled: !loginwindow.loading
+                enabled: !loginpage.loading
 
                 onTextChanged: {
                     hasError = false;
@@ -69,7 +63,7 @@ ApplicationWindow {
 
                 placeholderText: "Password"
                 floatingLabel: true
-                enabled: !loginwindow.loading
+                enabled: !loginpage.loading
                 echoMode: TextInput.Password
 
                 onTextChanged: {
@@ -82,14 +76,13 @@ ApplicationWindow {
             Button {
                 id: login
                 text: "Login"
-                // https://material.io/design/environment/elevation.html#elevation-in-material-design
                 elevation: 2
                 anchors {
                     horizontalCenter: parent.horizontalCenter
                     top: password.bottom
                     topMargin: 25
                 }
-                enabled: !loginwindow.loading
+                enabled: !loginpage.loading
 
                 backgroundColor: "dodgerblue"
                 onClicked: {
@@ -101,8 +94,8 @@ ApplicationWindow {
                         password.hasError = true;
                         password.helperText = "please enter password"
                     }else{
-                        loginwindow.loading = true;
-                        loginwindow.timeout = 5;
+                        loginpage.loading = true;
+                        loginpage.timeout = 5;
                         countDowm.start();
                         login_backend.login(username.text, password.text);
                     }
@@ -111,7 +104,7 @@ ApplicationWindow {
 
             ProgressCircle {
                 anchors.centerIn: parent
-                visible: loginwindow.loading
+                visible: loginpage.loading
                 color: "blue"
             }
 
@@ -120,11 +113,11 @@ ApplicationWindow {
                 repeat: true;
                 interval: 1000;
                 onTriggered: {
-                    loginwindow.timeout--;
-                    if (loginwindow.timeout < 0) {
-                        loginwindow.loading = false
+                    loginpage.timeout--;
+                    if (loginpage.timeout < 0) {
+                        loginpage.loading = false
                         timeoutlabel.visible = true
-                        loginwindow.timeout = 5
+                        loginpage.timeout = 5
                         login_backend.timeout();
                     }
                 }
@@ -132,13 +125,13 @@ ApplicationWindow {
 
             Label {
                 id: timeoutlabel
-                text : "login timeout, please retry"
+                text : "login timeout, please try again"
                 visible: false
                 color: "red"
                 anchors {
                     horizontalCenter: parent.horizontalCenter
                     top: login.bottom
-                    topMargin: 5
+                    topMargin: 15
                 }
             }
 
@@ -147,9 +140,10 @@ ApplicationWindow {
                 target: login_backend
                 onLogined:
                 {
-                    loginwindow.loading = false;
-                    console.debug(loginwindow.username ,"logined");
-                    pageStack.push(Qt.resolvedUrl("MainWindow.qml"))
+                    loginpage.loading = false;
+                    // TODO : ILLEGAL PASSWORD OR NO SUCH USER
+                    console.debug(username.text ,"logined");
+                    pageStack.push(Qt.resolvedUrl("MainPage.qml"))
                 }
             }
 

@@ -1,7 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>LoginWindow.qml</file>
-        <file>MainWindow.qml</file>
+        <file>MainPage.qml</file>
+        <file>FilesPage.qml</file>
+        <file>HistoryPage.qml</file>
+        <file>TransferringPage.qml</file>
     </qresource>
 </RCC>

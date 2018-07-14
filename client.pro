@@ -14,6 +14,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     login_backend.cpp \
+    main.cpp \
     request_manager.cpp
 
 RESOURCES += qml.qrc \
@@ -38,5 +39,9 @@ include(material/material.pri)
 QML_IMPORT_PATH += material
 
 HEADERS += \
+    sdk/fishield.h \
     login_backend.h \
     request_manager.h
+
+DISTFILES += \
+    sdk/libfishield.so

@@ -2,31 +2,25 @@ import QtQuick 2.4
 import Material 0.2
 import Material.ListItems 0.1 as ListItem
 
-
 TabbedPage {
-
-    property var sections: [ "History", "Files", "Transferring" ]
-    property string selectedComponent: sections[0]
-    id: page
+    id: mainpage
     title: qsTr("Fishield")
-    actionBar.maxActionCount: navDrawer.enabled ? 2 : 5
+    property var sections: [ "History", "Files", "Transferring" ]
+    property var sectionTitles: [ qsTr("History"), qsTr("Files"), qsTr("Downloading/Uploading") ]
+    property string selectedComponent: sections[0]
 
+    actionBar.maxActionCount: navDrawer.enabled ? 3 : 4
 
-    onGoBack: {
-        confirmationDialog.show()
-        event.accepted = true
-    }
-
-    actionBar.actions: [
+    actions: [
         Action {
             iconName: "warning"
-            name: "Warnings"
+            name: "Dummy error"
+            onTriggered: demo.showError("Something went wrong", "Do you want to retry?", "Close", true)
         },
 
         Action {
             iconName: "color"
             name: "Colors"
-            hoverAnimation: true
             onTriggered: colorPicker.show()
         },
 
@@ -39,7 +33,7 @@ TabbedPage {
         Action {
             iconName: "language"
             name: "Language"
-            hoverAnimation: true
+            enabled: false
         },
 
         Action {
@@ -50,38 +44,33 @@ TabbedPage {
 
     backAction: navDrawer.action
 
-    Repeater {
-        id:tabRepeater
-        model: !navDrawer.enabled ? sections : 0
-
-        Tab {
-            title: sections[index]
-            property string selectedComponent: modelData
-        }
-    }
-
-
     NavigationDrawer {
-
-
         id: navDrawer
-        enabled: page.width < dp(500)
+        enabled: mainpage.width < dp(500)
+        onEnabledChanged: smallLoader.active = enabled
 
         Flickable {
             anchors.fill: parent
-            clip: true
+
+            contentHeight: Math.max(content.implicitHeight, height)
+
             Column {
+                id: content
                 anchors.fill: parent
 
                 Repeater {
                     model: sections
-                    width: parent.width
 
-                    ListItem.Standard {
-                        text: sections[index]
-                        onClicked: {
-                            mainWindow.selectedComponent = modelData
-                            navDrawer.close()
+                    delegate: Column {
+                        width: parent.width
+
+                        ListItem.Standard {
+                            text: sectionTitles[index]
+                            selected: modelData === mainWindow.selectedComponent
+                            onClicked: {
+                                mainWindow.selectedComponent = modelData
+                                navDrawer.close()
+                            }
                         }
                     }
                 }
@@ -89,16 +78,41 @@ TabbedPage {
         }
     }
 
+    Repeater {
+        id:tabRepeater
+        model: !navDrawer.enabled ? sections : 0
+
+        delegate: Tab {
+            title: sectionTitles[index]
+
+            property string selectedComponent: modelData
+            property var section: modelData
+
+            sourceComponent: tabDelegate
+        }
+    }
+
+    Loader {
+        id: smallLoader
+        anchors.fill: parent
+        sourceComponent: tabDelegate
+
+        property var section: []
+        visible: active
+        active: false
+    }
+
     Dialog {
         id: colorPicker
         title: "Pick color"
+        negativeButton.visible: false
+
 
         MenuField {
             id: selection
-            model: ["Primary color", "TabHighlight Color", "Background color"]
+            model: ["Primary color", "Accent color", "Background color"]
+            width: dp(160)
         }
-
-        negativeButton.visible: false
 
         Grid {
             columns: 7
@@ -130,7 +144,7 @@ TabbedPage {
                                 theme.primaryColor = parent.color
                                 break;
                             case 1:
-                                theme.tabHighlightColor = parent.color
+                                theme.accentColor = parent.color
                                 break;
                             case 2:
                                 theme.backgroundColor = parent.color
@@ -141,7 +155,10 @@ TabbedPage {
                 }
             }
         }
+
     }
+
+
     Component {
         id: tabDelegate
 
@@ -151,23 +168,25 @@ TabbedPage {
                 id: flickable
                 anchors.fill:parent
                 clip: true
+                contentHeight: Math.max(example.implicitHeight + 40, height)
                 Loader {
+                    id: example
                     anchors.fill: parent
                     asynchronous: true
                     visible: status == Loader.Ready
                     // selectedComponent will always be valid, as it defaults to the first component
                     source: {
                         if (navDrawer.enabled) {
-                            return Qt.resolvedUrl("%Window.qml").arg(mainWindow.selectedComponent.replace(" ", ""))
+                            return Qt.resolvedUrl("%Page.qml").arg(mainWindow.selectedComponent.replace(" ", ""))
                         } else {
-                            return Qt.resolvedUrl("%Window.qml").arg(selectedComponent.replace(" ", ""))
+                            return Qt.resolvedUrl("%Page.qml").arg(selectedComponent.replace(" ", ""))
                         }
                     }
                 }
 
                 ProgressCircle {
                     anchors.centerIn: parent
-                    visible: example.status === Loader.Loading
+                    visible: example.status == Loader.Loading
                 }
             }
             Scrollbar {
@@ -178,7 +197,5 @@ TabbedPage {
 
 
 }
-
-
 
 
