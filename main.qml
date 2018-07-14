@@ -1,7 +1,5 @@
 import QtQuick 2.9
-import QtQuick.Window 2.2
 import Material 0.3
-import Material.ListItems 0.1
 
 ApplicationWindow {
     id: rootwindow
@@ -76,7 +74,6 @@ ApplicationWindow {
             Button {
                 id: login
                 text: "Login"
-                // https://material.io/design/environment/elevation.html#elevation-in-material-design
                 elevation: 2
                 anchors {
                     horizontalCenter: parent.horizontalCenter
