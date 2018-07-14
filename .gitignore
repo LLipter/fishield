@@ -72,6 +72,6 @@ Thumbs.db
 *.exe
 
 # ignore all files under build/
-build/*
+build*
 *.out
 .fs_*

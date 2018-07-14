@@ -13,15 +13,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += main.cpp \
-    ../fishield/file_transfer.pb.cc \
-    ../fishield/fishield.cpp \
-    ../fishield/fs_client.cpp \
-    ../fishield/fs_scheduler.cpp \
-    ../fishield/fs_server.cpp \
-    ../fishield/fs_task.cpp \
-    ../fishield/fs_task.pb.cc \
     backend.cpp \
-    ../fishield/fs_dbmanager.cpp
+    ../sdk/file_transfer.pb.cc \
+    ../sdk/fishield.cpp \
+    ../sdk/fs_client.cpp \
+    ../sdk/fs_dbmanager.cpp \
+    ../sdk/fs_scheduler.cpp \
+    ../sdk/fs_server.cpp \
+    ../sdk/fs_task.cpp \
+    ../sdk/fs_task.pb.cc
 RESOURCES += qml.qrc \
     icons/icons.qrc
 
@@ -44,18 +44,17 @@ include(material/material.pri)
 QML_IMPORT_PATH += material
 
 HEADERS += \
-    ../fishield/fishield.h \
-    ../fishield/file_transfer.pb.h \
-    ../fishield/fs_client.h \
-    ../fishield/fs_config.h \
-    ../fishield/fs_scheduler.h \
-    ../fishield/fs_server.h \
-    ../fishield/fs_task.h \
-
-    ../fishield/fs_task.pb.h \
     backend.h \
-    ../fishield/fs_dbmanager.h \
-    ../fishield/fs_user.h
+    ../sdk/file_transfer.pb.h \
+    ../sdk/fishield.h \
+    ../sdk/fs_client.h \
+    ../sdk/fs_config.h \
+    ../sdk/fs_dbmanager.h \
+    ../sdk/fs_scheduler.h \
+    ../sdk/fs_server.h \
+    ../sdk/fs_task.h \
+    ../sdk/fs_task.pb.h \
+    ../sdk/fs_user.h
 
 LIBS += -lboost_system -lboost_thread -lboost_filesystem
 LIBS += -lpthread
@@ -63,5 +62,5 @@ LIBS += -lmysqlcppconn
 LIBS += /usr/local/lib/libprotobuf.a
 
 
-INCLUDEPATH += ../fishield
+INCLUDEPATH += ../sdk
 
