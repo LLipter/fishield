@@ -34,4 +34,5 @@ DISTFILES += \
 LIBS += -lboost_system -lboost_thread -lboost_filesystem
 LIBS += -lpthread
 LIBS += -lprotobuf
+LIBS += -lmysqlcppconn
 

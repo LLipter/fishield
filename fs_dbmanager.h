@@ -21,6 +21,9 @@ public:
     fs_DBManager();
     ~fs_DBManager();
     int login(fs_user* user);
+    void insert_task(const fs::proto::Task& task);
+    void update_task(const fs::proto::Task& task);
+    int get_task(int task_id, fs::proto::Task& task);
 private:
     static sql::Driver* driver;
     sql::Connection* conn;

@@ -157,8 +157,9 @@ void remove_clients_thread() {
                     || task.task_status() == Task::DOWNLOADED
                     || task.task_status() == Task::CANCELED
                     || task.task_status() == Task::FAILED){
-                // TODO : save task information it in database
                 should_removed.push_back(it->first);
+                fs_DBManager manager;
+                manager.update_task(task);
             }
         }
         for(int id : should_removed)
@@ -287,20 +288,28 @@ void init_upload(const std::string& basepath,
     server_task_mutex.lock();
     tasks[task_id] = task;
     server_task_mutex.unlock();
-    // TODO : INSERT A TASK RECORD TO DATABASE
+
+    fs_DBManager manager;
+    manager.insert_task(task);
 
 }
 
 bool load_task(int taskid){
     if(tasks.find(taskid) != tasks.end())
         return true;
-    // TODO : load task from database
-    // if( find in database ) {
-    //      load it to tasks
-    //      return true;
-    // }
 
-    return false;
+    fs::proto::Task task;
+    fs_DBManager manager;
+    int ret = manager.get_task(taskid, task);
+    if(ret == FS_E_NOSUCHTASK)
+        return false;   // no such task
+
+    server_task_mutex.lock();
+    task.set_last_packet_time(std::time(0));
+    tasks[taskid] = task;
+    server_task_mutex.unlock();
+
+    return true;
 }
 
 void receive_packet(int taskid, const fs::proto::Packet& packet, fs::proto::Response& response){
@@ -393,7 +402,9 @@ void init_download(const std::string& basepath,
     server_task_mutex.lock();
     tasks[task_id] = task;
     server_task_mutex.unlock();
-    // TODO : INSERT A TASK RECORD TO DATABASE
+
+    fs_DBManager manager;
+    manager.insert_task(task);
 
 }
 
@@ -533,9 +544,11 @@ void verify_password(std::string username,
 }
 
 
-// TODO verify token
 bool verify_token(const std::string& token){
-    return true;
+    auto it = token_map.find(token);
+    if(it != token_map.end())
+        return true;
+    return false;
 }
 
 void communicate_thread(server_ptr serptr){

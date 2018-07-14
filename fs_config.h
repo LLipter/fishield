@@ -46,7 +46,7 @@
 #define FS_E_NOSUCHID                   -4      // client id is illegal
 #define FS_E_NOSUCHUSER                 -5      // no such user
 #define FS_E_ILLEGALPASSWD              -6      // illegal password
-
+#define FS_E_NOSUCHTASK                 -7      // no such task
 
 
 // fs stands for "fishield" or "file security"
