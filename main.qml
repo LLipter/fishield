@@ -95,7 +95,7 @@ ApplicationWindow {
                         loginpage.loading = true;
                         loginpage.timeout = 5;
                         countDowm.start();
-                        login_backend.login(username.text, password.text);
+                        backend.login(username.text, password.text);
                     }
                 }
             }
@@ -116,7 +116,7 @@ ApplicationWindow {
                         loginpage.loading = false
                         timeoutlabel.visible = true
                         loginpage.timeout = 5
-                        login_backend.timeout();
+                        backend.timeout();
                     }
                 }
             }
@@ -135,7 +135,7 @@ ApplicationWindow {
 
             Connections
             {
-                target: login_backend
+                target: backend
                 onLogined:
                 {
                     loginpage.loading = false;

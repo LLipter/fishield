@@ -4,7 +4,7 @@ import Material.ListItems 0.1 as ListItem
 
 
 TabbedPage {
-    id: page
+    id: mainpage
     title: qsTr("Fishield")
     actionBar.maxActionCount: navDrawer.enabled ? 3 : 4
 
@@ -50,7 +50,7 @@ TabbedPage {
     NavigationDrawer {
         id: navDrawer
 
-        enabled: page.width < dp(500)
+        enabled: mainpage.width < dp(500)
 
         onEnabledChanged: smallLoader.active = enabled
 
@@ -71,9 +71,9 @@ TabbedPage {
 
                         ListItem.Standard {
                             text: sectionTitles[index]
-                            selected: modelData === mainWindow.selectedComponent
+                            selected: modelData === mainpage.selectedComponent
                             onClicked: {
-                                mainWindow.selectedComponent = modelData
+                                mainpage.selectedComponent = modelData
                                 navDrawer.close()
                             }
                         }
@@ -184,7 +184,7 @@ TabbedPage {
                     // selectedComponent will always be valid, as it defaults to the first component
                     source: {
                         if (navDrawer.enabled) {
-                            return Qt.resolvedUrl("%Page.qml").arg(mainWindow.selectedComponent.replace(" ", ""))
+                            return Qt.resolvedUrl("%Page.qml").arg(mainpage.selectedComponent.replace(" ", ""))
                         } else {
                             return Qt.resolvedUrl("%Page.qml").arg(selectedComponent.replace(" ", ""))
                         }
