@@ -11,7 +11,8 @@ SOURCES += \
     fs_scheduler.cpp \
     fs_task.cpp \
     fs_task.pb.cc \
-    main_client.cpp
+    main_client.cpp \
+    fs_dbmanager.cpp
 
 HEADERS += \
     fishield.h \
@@ -21,7 +22,9 @@ HEADERS += \
     fs_task.h \
     fs_scheduler.h \
     fs_config.h \
-    fs_task.pb.h
+    fs_task.pb.h \
+    fs_dbmanager.h \
+    fs_user.h
 
 DISTFILES += \
     Makefile \

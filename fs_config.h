@@ -8,6 +8,7 @@
 #include <vector>
 #include <thread>
 #include <mutex>
+#include <cstdlib>
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
@@ -34,14 +35,17 @@
 #define DEFAULT_SAVE_SLEEP_TIME         boost::posix_time::seconds(2)
 #define DEFAULT_TASK_TIMEOUT            60*60
 #define DEFAULT_CLIENT_TIMEOUT          60*60
+#define DEFAULT_TOKEN_TIMEOUT           60*60
 #define DEFAULT_CLIENT_SAVE_SLEEP       boost::posix_time::seconds(30)
 #define DEFAULT_CLIENT_SCHEDULER_SLEEP  boost::posix_time::millisec(200)
-
+#define DEFAULT_TOKEN_LEN               32
 
 #define FS_E_UNKNOWN                    -1      // unknown error
 #define FS_E_TODO                       -2      // something hasn't been implemented
 #define FS_E_ILLEGAL_VALUE              -3      // illegal value
 #define FS_E_NOSUCHID                   -4      // client id is illegal
+#define FS_E_NOSUCHUSER                 -5      // no such user
+#define FS_E_ILLEGALPASSWD              -6      // illegal password
 
 
 

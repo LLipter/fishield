@@ -1,4 +1,5 @@
 #include "fs_server.h"
+#include "fs_dbmanager.h"
 
 boost::asio::io_service service;
 short _port = DEFAULT_SERV_PORT;
@@ -9,6 +10,8 @@ std::vector<server_ptr> clients;
 std::map<int,fs::proto::Task> tasks;
 std::mutex server_task_mutex;
 std::mutex server_taskid_mutex;
+std::map <std::string, fs_user> token_map;
+std::mutex token_mutex;
 
 
 int task_id;
@@ -161,6 +164,18 @@ void remove_clients_thread() {
         for(int id : should_removed)
             tasks.erase(id);
         server_task_mutex.unlock();
+
+        // erase timeout token
+        token_mutex.lock();
+        std::vector<std::string> tokens_remove;
+        for(auto it=token_map.begin();it!=token_map.end();it++){
+            fs_user& user = it->second;
+            if(std::time(0) - user.create_time > DEFAULT_TOKEN_TIMEOUT)
+                tokens_remove.push_back(it->first);
+        }
+        for(std::string token : tokens_remove)
+            token_map.erase(token);
+        token_mutex.unlock();
 
     }
 }
@@ -482,6 +497,42 @@ void cancel_task(int taskid, fs::proto::Response& response){
 }
 
 
+std::string gen_token(){
+    char buf[DEFAULT_TOKEN_LEN];
+    for(int i=0;i<DEFAULT_TOKEN_LEN;i++)
+        buf[i] = std::rand()%26 + 'A';
+    return std::string(buf);
+}
+
+void verify_password(std::string username,
+                     std::string password,
+                     fs::proto::Response& response){
+    using namespace fs::proto;
+    fs_DBManager manager;
+    fs_user user;
+    user.username = username;
+    user.password = password;
+    int ret = manager.login(&user);
+    if(ret == FS_E_NOSUCHUSER){
+        response.set_resp_type(Response::NOSUCHUSER);
+        return;
+    }
+    if(ret == FS_E_ILLEGALPASSWD){
+        response.set_resp_type(Response::ILLEGALPASSWD);
+        return;
+    }
+
+    std::string token = gen_token();
+    response.set_token(token);
+    user.create_time = std::time(0);
+    token_mutex.lock();
+    token_map[token] = user;
+    token_mutex.unlock();
+    response.set_resp_type(Response::SUCCESS);
+
+}
+
+
 // TODO verify token
 bool verify_token(const std::string& token){
     return true;
@@ -503,10 +554,9 @@ void communicate_thread(server_ptr serptr){
             break;
         Response response;
         if(request.req_type() == Request::LOGIN){
-            // TODO connect to database to verify password&username
-            // TODO generate a random token and stored it
-            response.set_resp_type(Response::SUCCESS);
-            response.set_token("ttttooookkkkeeeennnn");
+            verify_password(request.username(),
+                            request.password(),
+                            response);
         }else if(!verify_token(request.token())){
             response.set_resp_type(Response::ILLEGALTOKEN);
         }else{
