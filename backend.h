@@ -18,6 +18,8 @@ private:
 
 signals:
     void logined();
+    void no_such_user();
+    void illegal_password();
 
 public slots:
     void handle_login_success();

@@ -84,7 +84,7 @@ ApplicationWindow {
 
                 backgroundColor: "dodgerblue"
                 onClicked: {
-                    timeoutlabel.visible = false
+                    errorlabel.visible = false
                     if(username.text.length == 0){
                         username.hasError = true;
                         username.helperText = "please enter username"
@@ -114,7 +114,8 @@ ApplicationWindow {
                     loginpage.timeout--;
                     if (loginpage.timeout < 0) {
                         loginpage.loading = false
-                        timeoutlabel.visible = true
+                        errorlabel.text = "login timeout, please retry"
+                        errorlabel.visible = true
                         loginpage.timeout = 5
                         backend.timeout();
                     }
@@ -122,7 +123,7 @@ ApplicationWindow {
             }
 
             Label {
-                id: timeoutlabel
+                id: errorlabel
                 text : "login timeout, please retry"
                 visible: false
                 color: "red"
@@ -136,11 +137,24 @@ ApplicationWindow {
             Connections
             {
                 target: backend
-                onLogined:
-                {
+                onLogined:{
                     loginpage.loading = false;
                     console.debug(username.text ,"logined");
                     pageStack.push(Qt.resolvedUrl("MainPage.qml"))
+                }
+                onNo_such_user:{
+                    loginpage.loading = false;
+                    countDowm.stop();
+                    console.debug(username.text ,"no such user");
+                    errorlabel.text = "no such user"
+                    errorlabel.visible = true;
+                }
+                onIllegal_password:{
+                    loginpage.loading = false;
+                    countDowm.stop();
+                    console.debug(username.text ,"illegal password");
+                    errorlabel.text = "username or password is incorrect"
+                    errorlabel.visible = true;
                 }
             }
 

@@ -20,7 +20,8 @@ SOURCES += main.cpp \
     ../fishield/fs_server.cpp \
     ../fishield/fs_task.cpp \
     ../fishield/fs_task.pb.cc \
-    backend.cpp
+    backend.cpp \
+    ../fishield/fs_dbmanager.cpp
 RESOURCES += qml.qrc \
     icons/icons.qrc
 
@@ -51,13 +52,13 @@ HEADERS += \
     ../fishield/fs_server.h \
     ../fishield/fs_task.h \
     ../fishield/fs_task.pb.h \
-    backend.h
+    backend.h \
+    ../fishield/fs_dbmanager.h \
+    ../fishield/fs_user.h
 
 LIBS += -lboost_system -lboost_thread -lboost_filesystem
 LIBS += -lpthread
-#LIBS += -lprotobuf
-#LIBS += -lfishield
-#LIBS += -L../fishield
+LIBS += -lmysqlcppconn
 LIBS += /usr/local/lib/libprotobuf.a
 
 

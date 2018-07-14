@@ -7,7 +7,7 @@ backend::backend(QObject *parent) : QObject(parent){
 
 void backend::login(QString username, QString password){
     is_timeout = false;
-    fs_client_startup("localhost", 7614);
+    fs_client_startup("www.irran.top", 7614);
     fs_login(username.toStdString(),
              password.toStdString(),
              boost::bind(&backend::handle_login_success, this),
@@ -26,5 +26,8 @@ void backend::handle_login_success()
     emit logined();
 }
 void backend::handle_login_failed(fs::proto::Response::ResponseType error){
-    // TODO : check error
+    if(error == fs::proto::Response::NOSUCHUSER)
+        emit no_such_user();
+    else if(error == fs::proto::Response::ILLEGALPASSWD)
+        emit illegal_password();
 }
