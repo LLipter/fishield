@@ -43,7 +43,7 @@ Item {
                     Repeater {
                         model: file_name
                         delegate: ListItem.Subtitled {
-                            iconName:"/file/file_doc"
+                            iconName:"file"
                             text: qsTr(modelData)
                             subText: file_state[index]
                             valueText: transferring_process[index]
@@ -68,14 +68,13 @@ Item {
         actions: [
 
             Action {
-                iconName: "file/file_download"
+                iconName: "download"
                 name: "Pause"
             },
 
             Action {
-                iconName: "action/settings"
+                iconName: "settings"
                 name: "Cancel"
-                hasDividerAfter: true
             }
         ]
     }

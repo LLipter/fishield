@@ -14,6 +14,7 @@
 	<file alias="create.svg">ic_create_48px.svg</file>
 	<file alias="delete.svg">ic_delete_48px.svg</file>
 	<file alias="file.svg">ic_insert_drive_file_48px.svg</file>
+	<file alias="folder.svg">ic_folder_48px.svg</file>
 
 
 </qresource>

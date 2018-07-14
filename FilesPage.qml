@@ -10,8 +10,8 @@ Item {
     property var file_authors: ["zuolin", "vergil", "john", "unknown"]
     property var m_times: ["2 hours ago", "one day ago", "one mouth ago", "unknown"]
     property var file_sizes: ["100k", "10M", "100M", "80k"]
-    property var test: client_backend.file_ls("zhang")
-    property bool loading: true
+//    property var test: backend.file_ls("zhang")
+    property bool loading: false
 
     Flickable {
         id:flickable
@@ -22,13 +22,13 @@ Item {
         contentHeight: Math.max(content.implicitHeight, height)
         Connections{
 
-            target: client_backend
+            target: backend
             onFileLoaded: {
-                console.log("onFileLoaded");
-                file_names = _file_names;
-                file_authors = _file_authors;
-                file_sizes = _file_sizes;
-                loading = false;
+//                console.log("onFileLoaded");
+//                file_names = _file_names;
+//                file_authors = _file_authors;
+//                file_sizes = _file_sizes;
+//                loading = false;
             }
         }
 
@@ -52,7 +52,7 @@ Item {
                     Repeater {
                         model: file_names
                         delegate: ListItem.Subtitled {
-                            iconName:"/file/file_doc"
+                            iconName:"file"
                             text: qsTr(modelData)
                             subText: file_authors[index]
                             valueText: file_sizes[index]
@@ -80,7 +80,7 @@ Item {
             shortcut: "Ctrl+C"
             onTriggered: filePicker.visible = true
         }
-        iconName: "content/add"
+        iconName: "add"
     }
 
     Snackbar {
@@ -89,6 +89,8 @@ Item {
     Scrollbar {
         flickableItem: flickable
     }
+
+    // TODO : GET FILEPICKER
     FilePicker {
         id:filePicker
         anchors.fill: parent
@@ -105,28 +107,28 @@ Item {
         actions: [
 
             Action {
-                iconName: "file/file_download"
+                iconName: "download"
                 name: "Download"
             },
 
             Action {
-                iconName: "action/settings"
+                iconName: "settings"
                 name: "Details"
                 hasDividerAfter: true
             },
 
             Action {
-                iconName: "content/forward"
+                iconName: "forward"
                 name: "Move"
             },
 
             Action {
-                iconName: "action/delete"
+                iconName: "delete"
                 name: "Delete"
             },
 
             Action {
-                iconName: "content/create"
+                iconName: "create"
                 name: "Rename"
             }
         ]
