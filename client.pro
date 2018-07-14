@@ -13,9 +13,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += main.cpp \
-    login_backend.cpp \
-    main.cpp
-
+    ../fishield/file_transfer.pb.cc \
+    ../fishield/fishield.cpp \
+    ../fishield/fs_client.cpp \
+    ../fishield/fs_scheduler.cpp \
+    ../fishield/fs_server.cpp \
+    ../fishield/fs_task.cpp \
+    ../fishield/fs_task.pb.cc \
+    backend.cpp \
+    ../fishield/fs_dbmanager.cpp
 RESOURCES += qml.qrc \
     icons/icons.qrc
 
@@ -38,25 +44,24 @@ include(material/material.pri)
 QML_IMPORT_PATH += material
 
 HEADERS += \
-    login_backend.h \
-    ../fishield/file_transfer.pb.h \
     ../fishield/fishield.h \
+    ../fishield/file_transfer.pb.h \
     ../fishield/fs_client.h \
     ../fishield/fs_config.h \
     ../fishield/fs_scheduler.h \
     ../fishield/fs_server.h \
     ../fishield/fs_task.h \
-    ../fishield/fs_task.pb.h
 
-INCLUDEPATH += \
-    ../fishield/
-
-LIBS += \
-    -L../fishield
+    ../fishield/fs_task.pb.h \
+    backend.h \
+    ../fishield/fs_dbmanager.h \
+    ../fishield/fs_user.h
 
 LIBS += -lboost_system -lboost_thread -lboost_filesystem
 LIBS += -lpthread
-LIBS += -lprotobuf
-LIBS += -lfishield
+LIBS += -lmysqlcppconn
+LIBS += /usr/local/lib/libprotobuf.a
 
-DISTFILES +=
+
+INCLUDEPATH += ../fishield
+

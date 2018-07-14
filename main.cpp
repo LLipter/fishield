@@ -1,11 +1,11 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include "QQmlContext"
-#include "login_backend.h"
+#include "backend.h"
 
 void init(QQmlContext* context){
-    login_backend* lbackend = new login_backend;
-    context->setContextProperty("login_backend", lbackend);
+    backend* _backend = new backend;
+    context->setContextProperty("backend", _backend);
 }
 
 int main(int argc, char *argv[])

@@ -5,11 +5,13 @@ import Material.ListItems 0.1 as ListItem
 TabbedPage {
     id: mainpage
     title: qsTr("Fishield")
-    property var sections: [ "History", "Files", "Transferring" ]
-    property var sectionTitles: [ qsTr("History"), qsTr("Files"), qsTr("Downloading/Uploading") ]
-    property string selectedComponent: sections[0]
-
     actionBar.maxActionCount: navDrawer.enabled ? 3 : 4
+
+    property var sections: [ "History", "Files", "Transferring" ]
+
+    property var sectionTitles: [ qsTr("History"), qsTr("Files"), qsTr("Downloading/Uploading") ]
+
+    property string selectedComponent: sections[0]
 
     actions: [
         Action {
@@ -46,7 +48,9 @@ TabbedPage {
 
     NavigationDrawer {
         id: navDrawer
+
         enabled: mainpage.width < dp(500)
+
         onEnabledChanged: smallLoader.active = enabled
 
         Flickable {
@@ -66,9 +70,9 @@ TabbedPage {
 
                         ListItem.Standard {
                             text: sectionTitles[index]
-                            selected: modelData === mainWindow.selectedComponent
+                            selected: modelData === mainpage.selectedComponent
                             onClicked: {
-                                mainWindow.selectedComponent = modelData
+                                mainpage.selectedComponent = modelData
                                 navDrawer.close()
                             }
                         }
@@ -107,6 +111,8 @@ TabbedPage {
         title: "Pick color"
         negativeButton.visible: false
 
+
+        positiveButtonText: "Done"
 
         MenuField {
             id: selection
@@ -156,8 +162,10 @@ TabbedPage {
             }
         }
 
+        onRejected: {
+            // TODO set default colors again but we currently don't know what that is
+        }
     }
-
 
     Component {
         id: tabDelegate
@@ -178,6 +186,7 @@ TabbedPage {
                     source: {
                         if (navDrawer.enabled) {
                             return Qt.resolvedUrl("%Page.qml").arg(mainWindow.selectedComponent.replace(" ", ""))
+                            return Qt.resolvedUrl("%Page.qml").arg(mainpage.selectedComponent.replace(" ", ""))
                         } else {
                             return Qt.resolvedUrl("%Page.qml").arg(selectedComponent.replace(" ", ""))
                         }
@@ -196,6 +205,6 @@ TabbedPage {
     }
 
 
-}
 
+}
 

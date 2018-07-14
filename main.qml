@@ -1,15 +1,13 @@
 import QtQuick 2.9
-import QtQuick.Window 2.2
 import Material 0.3
-import Material.ListItems 0.1
 
 ApplicationWindow {
     id: rootwindow
     visible: true
-    width: 800
+    width: 960
     height: 480
+    minimumWidth: 320
     minimumHeight: 320
-    minimumWidth: 260
     title: qsTr("Fishield")
 
     theme {
@@ -20,19 +18,19 @@ ApplicationWindow {
 
 
     initialPage: Page {
-        title: "Welcode"
+        title: "Welcome"
         id: loginpage
 
         property bool loading : false
         property int timeout: 5
 
-
         View{
-            elevation: 2
             id: container
-            width: 320
-            height: 240
             anchors.centerIn: parent
+            width: 320
+            height: 240;
+            elevation: 2
+
 
             TextField{
                 id: username
@@ -86,7 +84,7 @@ ApplicationWindow {
 
                 backgroundColor: "dodgerblue"
                 onClicked: {
-                    timeoutlabel.visible = false
+                    errorlabel.visible = false
                     if(username.text.length == 0){
                         username.hasError = true;
                         username.helperText = "please enter username"
@@ -97,7 +95,7 @@ ApplicationWindow {
                         loginpage.loading = true;
                         loginpage.timeout = 5;
                         countDowm.start();
-                        login_backend.login(username.text, password.text);
+                        backend.login(username.text, password.text);
                     }
                 }
             }
@@ -116,16 +114,17 @@ ApplicationWindow {
                     loginpage.timeout--;
                     if (loginpage.timeout < 0) {
                         loginpage.loading = false
-                        timeoutlabel.visible = true
+                        errorlabel.text = "login timeout, please retry"
+                        errorlabel.visible = true
                         loginpage.timeout = 5
-                        login_backend.timeout();
+                        backend.timeout();
                     }
                 }
             }
 
             Label {
-                id: timeoutlabel
-                text : "login timeout, please try again"
+                id: errorlabel
+                text : "login timeout, please retry"
                 visible: false
                 color: "red"
                 anchors {
@@ -137,13 +136,25 @@ ApplicationWindow {
 
             Connections
             {
-                target: login_backend
-                onLogined:
-                {
+                target: backend
+                onLogined:{
                     loginpage.loading = false;
-                    // TODO : ILLEGAL PASSWORD OR NO SUCH USER
                     console.debug(username.text ,"logined");
                     pageStack.push(Qt.resolvedUrl("MainPage.qml"))
+                }
+                onNo_such_user:{
+                    loginpage.loading = false;
+                    countDowm.stop();
+                    console.debug(username.text ,"no such user");
+                    errorlabel.text = "no such user"
+                    errorlabel.visible = true;
+                }
+                onIllegal_password:{
+                    loginpage.loading = false;
+                    countDowm.stop();
+                    console.debug(username.text ,"illegal password");
+                    errorlabel.text = "username or password is incorrect"
+                    errorlabel.visible = true;
                 }
             }
 

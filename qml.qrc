@@ -5,5 +5,7 @@
         <file>FilesPage.qml</file>
         <file>HistoryPage.qml</file>
         <file>TransferringPage.qml</file>
+        <file>FilePicker.qml</file>
+        <file>utils.js</file>
     </qresource>
 </RCC>

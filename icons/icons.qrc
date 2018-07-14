@@ -9,6 +9,14 @@
 	<file alias="settings.svg">ic_settings_48px.svg</file>
 	<file alias="warning.svg">ic_warning_48px.svg</file>
 	<file alias="navigation/arrow_drop_down.svg">ic_arrow_drop_down_48px.svg</file>
+	<file alias="download.svg">ic_file_download_48px.svg</file>
+	<file alias="forward.svg">ic_forward_48px.svg</file>
+	<file alias="create.svg">ic_create_48px.svg</file>
+	<file alias="delete.svg">ic_delete_48px.svg</file>
+	<file alias="file.svg">ic_insert_drive_file_48px.svg</file>
+	<file alias="folder.svg">ic_folder_48px.svg</file>
+
+
 </qresource>
 
 
