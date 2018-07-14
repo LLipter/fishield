@@ -2,6 +2,7 @@
 #define LOGIN_BACKEND_H
 
 #include <QObject>
+#include "fishield.h"
 
 class login_backend : public QObject
 {
