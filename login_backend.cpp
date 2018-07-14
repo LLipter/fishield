@@ -1,7 +1,6 @@
 #include "login_backend.h"
 
 login_backend::login_backend(QObject *parent) : QObject(parent){
-    connect(&requestManager, SIGNAL(get_response(QJsonObject)), this, SLOT(handle_login_response(QJsonObject)));
 }
 
 
@@ -19,7 +18,7 @@ void login_backend::timeout(){
     is_timeout = true;
 }
 
-void login_backend::handle_login_response(QJsonObject res_json)
+void login_backend::handle_login_response()
 {
     if(is_timeout)
         return;
