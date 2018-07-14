@@ -13,8 +13,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += main.cpp \
-    login_backend.cpp \
-    request_manager.cpp
+    login_backend.cpp
 
 RESOURCES += qml.qrc \
     icons/icons.qrc
@@ -38,5 +37,4 @@ include(material/material.pri)
 QML_IMPORT_PATH += material
 
 HEADERS += \
-    login_backend.h \
-    request_manager.h
+    login_backend.h
