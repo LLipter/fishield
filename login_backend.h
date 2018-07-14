@@ -2,26 +2,24 @@
 #define LOGIN_BACKEND_H
 
 #include <QObject>
-#include "request_manager.h"
+//#include "fishield.h"
 
 class login_backend : public QObject
 {
     Q_OBJECT
 public:
     explicit login_backend(QObject *parent = nullptr);
-    Q_INVOKABLE void login(QString username, QString password);
+    Q_INVOKABLE void login(std::string username, std::string password);
     Q_INVOKABLE void timeout();
 
 private:
-    static QString _token;
     bool is_timeout;
-    request_manager requestManager;
-
 signals:
     void logined();
 
 public slots:
-    void handle_login_response(QJsonObject res_json);
+//    void handle_login_success();
+//    void handle_login_failed(fs::proto::Response::ResponseType error);
 };
 
 #endif // LOGIN_BACKEND_H

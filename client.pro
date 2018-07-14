@@ -14,8 +14,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     login_backend.cpp \
-    main.cpp \
-    request_manager.cpp
+    main.cpp
 
 RESOURCES += qml.qrc \
     icons/icons.qrc
@@ -39,9 +38,25 @@ include(material/material.pri)
 QML_IMPORT_PATH += material
 
 HEADERS += \
-    sdk/fishield.h \
     login_backend.h \
-    request_manager.h
+    ../fishield/file_transfer.pb.h \
+    ../fishield/fishield.h \
+    ../fishield/fs_client.h \
+    ../fishield/fs_config.h \
+    ../fishield/fs_scheduler.h \
+    ../fishield/fs_server.h \
+    ../fishield/fs_task.h \
+    ../fishield/fs_task.pb.h
 
-DISTFILES += \
-    sdk/libfishield.so
+INCLUDEPATH += \
+    ../fishield/
+
+LIBS += \
+    -L../fishield
+
+LIBS += -lboost_system -lboost_thread -lboost_filesystem
+LIBS += -lpthread
+LIBS += -lprotobuf
+LIBS += -lfishield
+
+DISTFILES +=
