@@ -13,8 +13,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += main.cpp \
-    login_backend.cpp
-
+    login_backend.cpp \
+    ../fishield/file_transfer.pb.cc \
+    ../fishield/fishield.cpp \
+    ../fishield/fs_client.cpp \
+    ../fishield/fs_scheduler.cpp \
+    ../fishield/fs_server.cpp \
+    ../fishield/fs_task.cpp \
+    ../fishield/fs_task.pb.cc
 RESOURCES += qml.qrc \
     icons/icons.qrc
 
@@ -38,8 +44,8 @@ QML_IMPORT_PATH += material
 
 HEADERS += \
     login_backend.h \
-    ../fishield/file_transfer.pb.h \
     ../fishield/fishield.h \
+    ../fishield/file_transfer.pb.h \
     ../fishield/fs_client.h \
     ../fishield/fs_config.h \
     ../fishield/fs_scheduler.h \
@@ -49,8 +55,11 @@ HEADERS += \
 
 LIBS += -lboost_system -lboost_thread -lboost_filesystem
 LIBS += -lpthread
-LIBS += -lprotobuf
-LIBS += -lfishield
+#LIBS += -lprotobuf
+#LIBS += -lfishield
+#LIBS += -L../fishield
+LIBS += /usr/local/lib/libprotobuf.a
+
 
 INCLUDEPATH += ../fishield
 
