@@ -27,7 +27,7 @@ int fs_DBManager::login(fs_user* user){
     }
 
     // illegal password
-    if((std::string)res->getString("username") != user->username){
+    if((std::string)res->getString("password") != user->password){
         delete pstmt;
         delete res;
         return FS_E_ILLEGALPASSWD;
