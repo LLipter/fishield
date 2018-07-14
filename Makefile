@@ -18,6 +18,7 @@ client.out: main_client.cpp libfishield.so
 
 libfishield.so: ${obj}
 	g++ -shared ${obj} -o libfishield.so
+	sudo cp libfishield.so /usr/lib
 
 file_transfer.pb.cc file_transfer.pb.h: file_transfer.proto
 	protoc --cpp_out=. file_transfer.proto
