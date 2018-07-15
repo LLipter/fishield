@@ -25,7 +25,6 @@ Item {
         loginpage.loading = true;
         loginpage.timeout = 5;
         countDowm.start();
-//        connentLoader.active = false;
         backend.getFileList(currentpath);
     }
 
@@ -57,75 +56,65 @@ Item {
             loading = false;
             countDowm.stop();
 
-            console.debug(currentpath, "onFileLoaded");
-            console.debug(file_names)
+
             file_names = _file_names;
             is_directory = _is_dir;
             file_sizes = _file_sizes;
             m_times = _m_times;
 
-//            connentLoader.active = true;
+            console.debug(currentpath, "onFileLoaded");
+            console.debug(file_names)
         }
     }
 
+    Flickable {
+        id:flickable
+        anchors {
+            fill: parent
+            margins: dp(32)
+        }
+        visible: !loading
+        contentHeight: Math.max(content.implicitHeight, height)
 
-//    Loader{
-//        id: connentLoader
-//        active: false;
-//        sourceComponent: flickable_comp
-//    }
+        Column {
+            id: content
+            anchors.fill: parent
+            width: parent.width
 
-
-//    Component{
-//        id: flickable_comp
-
-        Flickable {
-            id:flickable
-            anchors {
-                fill: parent
-                margins: dp(32)
+            ListItem.Subheader {
+                text: "Current path: " + currentpath
+                backgroundColor: "lightskyblue"
             }
-            visible: !loading
-            contentHeight: Math.max(content.implicitHeight, height)
 
-            Column {
-                id: content
-                anchors.fill: parent
-                width: parent.width
-
-                ListItem.Subheader {
-                    text: "Current path: " + currentpath
-                    backgroundColor: "lightskyblue"
-                }
-
-
-                Repeater {
-                    model: file_names
-                    delegate: ListItem.Subtitled {
-                        iconName: root.is_directory[index] ? "folder" : "file"
-                        text: root.file_names[index]
-                        subText: root.file_sizes[index]
-                        valueText: root.m_times[index]
-                        backgroundColor: "white"
-                        property int file_index: index
-                        onClicked: {
+            Repeater {
+                model: file_names
+                delegate: ListItem.Subtitled {
+                    iconName: is_directory[index] ? "folder" : "file"
+                    text: file_names[index]
+                    subText: file_sizes[index]
+                    valueText: m_times[index]
+                    backgroundColor: "white"
+                    property int file_index: index
+                    onClicked: {
+                        if(!is_directory[index]){
                             clickedindex = file_index;
                             actionSheet.open();
+                        }else{
+                            currentpath += file_names[index];
+                            currentpath += "/";
+                            loadfilelist();
                         }
+
                     }
+
                 }
             }
-
-            Scrollbar {
-                flickableItem: flickable
-            }
-
-
         }
+    }
 
-//    }
-
-
+    Scrollbar {
+        flickableItem: flickable
+    }
 
     ProgressCircle {
         anchors.centerIn: parent
@@ -137,7 +126,7 @@ Item {
 
         anchors {
             right: parent.right
-            bottom: snackbar.top
+            bottom: parent.bottom
             margins: dp(16)
         }
 
@@ -170,9 +159,34 @@ Item {
 
     }
 
-    Snackbar {
-        id: snackbar
+    ActionButton {
+        id: gobackbutton
+
+        anchors {
+            right: parent.right
+            top: parent.top
+            margins: dp(16)
+        }
+
+        action: Action {
+            text: "&GOBACK"
+            shortcut: "Backspace"
+            onTriggered: {
+                console.debug("GOBACK");
+                if(currentpath == "/")
+                    return;
+                else{
+                    var idx = currentpath.lastIndexOf('/', currentpath.length-2);
+                    currentpath = currentpath.substring(0,idx+1);
+                    loadfilelist();
+                }
+            }
+        }
+        iconName: "return"
+
     }
+
+
 
 
 
