@@ -95,7 +95,7 @@ void fs_rename(const std::string& oldpath,
  * PARAM:   `cb_progress` will be invoked whenever a packet is sent/received.
  * RETURN:  return nothing
  */
-void fs_register_task_callback(fs_fp_intdouble cb_progress,
+void fs_register_task_callback(fs_fp_tasks cb_report,
                                fs_fp_int cb_success,
                                fs_fp_interror cb_failed);
 
@@ -105,8 +105,7 @@ void fs_register_task_callback(fs_fp_intdouble cb_progress,
  * PARAM:   Both `localbasepath` and `remotebasepath` shouldn't ends with '/'(path separator).
  * RETURN:  return nothing
  */
-void fs_upload(int client_id,
-               const std::string& localbasepath,
+bool fs_upload(const std::string& localbasepath,
                const std::string& remotebasepath,
                const std::string& filename);
 
@@ -116,31 +115,30 @@ void fs_upload(int client_id,
  * PARAM:   Both `localbasepath` and `remotebasepath` shouldn't ends with '/'(path separator).
  * RETURN:  return nothing
  */
-void fs_download(int client_id,
-                 const std::string& localbasepath,
+bool fs_download(const std::string& localbasepath,
                  const std::string& remotebasepath,
                  const std::string& filename);
 
 /***
- * DESC:    Cancel a UPLOADING/DOWNLOADING task identified by `client_id`
+ * DESC:    Cancel a UPLOADING/DOWNLOADING task identified by `task_id`
  * RETURN:  return nothing
  */
-void fs_cancel(int client_id,
+void fs_cancel(int task_id,
                fs_fp_int cb_success,
                fs_fp_interror cb_failed);
 
 /***
- * DESC:    Pause a UPLOADING/DOWNLOADING task identified by `client_id`
+ * DESC:    Pause a UPLOADING/DOWNLOADING task identified by `task_id`
  * RETURN:  return nothing
  */
-void fs_pause(int client_id,
+void fs_pause(int task_id,
               fs_fp_int cb_success,
               fs_fp_interror cb_failed);
 /***
- * DESC:    Resume a PAUSED task identified by `client_id`
+ * DESC:    Resume a PAUSED task identified by `task_id`
  * RETURN:  return nothing
  */
-void fs_resume(int client_id,
+void fs_resume(int task_id,
                fs_fp_int cb_success,
                fs_fp_interror cb_failed);
 

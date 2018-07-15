@@ -9,6 +9,7 @@ extern std::mutex client_task_mutex;
 fs_fp_intdouble cb_progress = boost::bind(default_cb_progress, _1, _2);
 fs_fp_int       cb_success  = boost::bind(default_cb_success, _1);
 fs_fp_interror  cb_failed   = boost::bind(default_cb_failed, _1, _2);
+fs_fp_tasks     cb_report   = boost::bind(default_cb_report, _1);
 
 
 void _upload(fs::proto::Task& task){
@@ -28,7 +29,7 @@ void _upload(fs::proto::Task& task){
             client_task_mutex.lock();
             task.set_task_status(Task::FAILING);
             client_task_mutex.unlock();
-            cb_failed(task.client_id(), Response::ILLEGALTASKSTATUS);
+            cb_failed(task.task_id(), Response::ILLEGALTASKSTATUS);
             return;
         }
 
@@ -48,7 +49,7 @@ void _upload(fs::proto::Task& task){
             client_task_mutex.lock();
             task.set_task_status(Task::FAILING);
             client_task_mutex.unlock();
-            cb_failed(task.client_id(), Response::ILLEGALPATH);
+            cb_failed(task.task_id(), Response::ILLEGALPATH);
             return;
         }
         char* buf = new char[PACKET_SIZE];
@@ -64,7 +65,7 @@ void _upload(fs::proto::Task& task){
             client_task_mutex.lock();
             task.set_task_status(Task::UPLOAD_PAUSING);
             client_task_mutex.unlock();
-            cb_failed(task.client_id(), Response::NORESPONSE);
+            cb_failed(task.task_id(), Response::NORESPONSE);
             file.close();
             delete[] buf;
             return;
@@ -77,7 +78,7 @@ void _upload(fs::proto::Task& task){
         switch (response.resp_type()) {
         case Response::SUCCESS:
             task.set_sent_packet_no(task.sent_packet_no()+1);
-            cb_progress(task.client_id(), (double)task.sent_packet_no() / task.total_packet_no());
+            cb_progress(task.task_id(), (double)task.sent_packet_no() / task.total_packet_no());
             break;
         case Response::ILLEGALPACKETID:
             task.set_sent_packet_no(response.packet_id());
@@ -87,7 +88,7 @@ void _upload(fs::proto::Task& task){
             client_task_mutex.lock();
             task.set_task_status(Task::FAILING);
             client_task_mutex.unlock();
-            cb_failed(task.client_id(), response.resp_type());
+            cb_failed(task.task_id(), response.resp_type());
             return;
         }
     }
@@ -95,7 +96,7 @@ void _upload(fs::proto::Task& task){
     client_task_mutex.lock();
     task.set_task_status(Task::UPLOADED);
     client_task_mutex.unlock();
-    cb_success(task.client_id());
+    cb_success(task.task_id());
 }
 
 void upload(fs::proto::Task& task){
@@ -128,7 +129,7 @@ void _download(fs::proto::Task& task){
             client_task_mutex.lock();
             task.set_task_status(Task::FAILING);
             client_task_mutex.unlock();
-            cb_failed(task.client_id(), Response::ILLEGALTASKSTATUS);
+            cb_failed(task.task_id(), Response::ILLEGALTASKSTATUS);
             return;
         }
 
@@ -145,7 +146,7 @@ void _download(fs::proto::Task& task){
             client_task_mutex.lock();
             task.set_task_status(Task::UPLOAD_PAUSING);
             client_task_mutex.unlock();
-            cb_failed(task.client_id(), Response::NORESPONSE);
+            cb_failed(task.task_id(), Response::NORESPONSE);
             return;
         }
 
@@ -164,20 +165,20 @@ void _download(fs::proto::Task& task){
                 client_task_mutex.lock();
                 task.set_task_status(Task::FAILING);
                 client_task_mutex.unlock();
-                cb_failed(task.client_id(), Response::ILLEGALPATH);
+                cb_failed(task.task_id(), Response::ILLEGALPATH);
                 return;
             }
             file << response.packet().data();
             file.close();
 
             double progress = (double)task.received_packet_no() / task.total_packet_no();
-            cb_progress(task.client_id(), progress);
+            cb_progress(task.task_id(), progress);
         }else{
             // fetal error
             client_task_mutex.lock();
             task.set_task_status(Task::FAILING);
             client_task_mutex.unlock();
-            cb_failed(task.client_id(), response.resp_type());
+            cb_failed(task.task_id(), response.resp_type());
             return;
         }
     }
@@ -195,7 +196,7 @@ void _download(fs::proto::Task& task){
         client_task_mutex.lock();
         task.set_task_status(Task::UPLOAD_PAUSING);
         client_task_mutex.unlock();
-        cb_failed(task.client_id(), Response::NORESPONSE);
+        cb_failed(task.task_id(), Response::NORESPONSE);
         return;
     }
 
@@ -205,11 +206,11 @@ void _download(fs::proto::Task& task){
         client_task_mutex.lock();
         task.set_task_status(Task::FAILING);
         client_task_mutex.unlock();
-        cb_failed(task.client_id(), response.resp_type());
+        cb_failed(task.task_id(), response.resp_type());
         return;
     }
 
-    cb_success(task.client_id());
+    cb_success(task.task_id());
     task.set_task_status(Task::DOWNLOADED);
 
     boost::filesystem::rename(filepath,
@@ -221,14 +222,6 @@ void download(fs::proto::Task& task){
     thd.detach();
 }
 
-int get_taskid_by_clientid(int clientid){
-    fs_scheduler* scheduler = fs_scheduler::instance();
-    auto& task_map = scheduler->task_map_current;
-    for(auto it=task_map.begin();it!=task_map.end();it++)
-        if((int)it->second.client_id() == clientid)
-            return it->first;
-    return FS_E_NOSUCHID;
-}
 
 void get_task_from_file(std::string filepath, std::map<int, fs::proto::Task>& task_map){
     using namespace fs::proto;
@@ -282,23 +275,34 @@ bool is_timeout(const fs::proto::Task& task){
     return std::time(0) - task.last_packet_time() > DEFAULT_TASK_TIMEOUT;
 }
 
-void default_cb_progress(int clientid, double progress){
+void default_cb_progress(int task_id, double progress){
     std::cout << "callback : upload/download progress "
-              << "(clientid=" << clientid << ")"
+              << "(task_id=" << task_id << ")"
               << "(progress=" << progress << ")" << std::endl;
     std::cout << "------------------------------------" << std::endl;
 }
 
-void default_cb_success(int clientid){
-    std::cout << "callback : upload/download successfully (clientid="
-              << clientid << ")" << std::endl;
+void default_cb_success(int task_id){
+    std::cout << "callback : upload/download successfully (task_id="
+              << task_id << ")" << std::endl;
     std::cout << "------------------------------------" << std::endl;
 }
 
-void default_cb_failed(int clientid, fs::proto::Response::ResponseType error){
-    std::cout << "callback : upload/download failed (clientid="
-              << clientid << ") "
+void default_cb_failed(int task_id, fs::proto::Response::ResponseType error){
+    std::cout << "callback : upload/download failed (task_id="
+              << task_id << ") "
               << fs::proto::Response::ResponseType_Name(error)
               << std::endl;
+    std::cout << "------------------------------------" << std::endl;
+}
+
+void default_cb_report(std::vector<fs::proto::Task> tasks){
+    std::cout << "callback : upload/download report"
+              << std::endl;
+    for(auto task : tasks){
+        std::cout << "(taskid=" << task.task_id() << ")"
+                  << fs::proto::Task::TaskStatus_Name(task.task_status())
+                  << std::endl;
+    }
     std::cout << "------------------------------------" << std::endl;
 }

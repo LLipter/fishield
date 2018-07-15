@@ -7,6 +7,7 @@ extern std::string _token;
 extern fs_fp_intdouble cb_progress;
 extern fs_fp_int cb_success;
 extern fs_fp_interror cb_failed;
+extern fs_fp_tasks cb_report;
 
 int fs_client_startup(const std::string& addr, const short port){
     using namespace boost::asio::ip;
@@ -180,8 +181,7 @@ void fs_remove(const std::string& path,
     thd.detach();
 }
 
-void fs_upload(int client_id,
-               const std::string& localbasepath,
+bool fs_upload(const std::string& localbasepath,
                const std::string& remotebasepath,
                const std::string& filename){
 
@@ -190,21 +190,16 @@ void fs_upload(int client_id,
 
     // local file doesn't exist
     path local_path(localbasepath + SEPARATOR + filename);
-    if(!exists(local_path)){
-        cb_failed(client_id, Response::ILLEGALPATH);
-        return;
-    }
+    if(!exists(local_path))
+        return false;
 
     // only support upload regular file
-    if(is_directory(local_path)){
-        cb_failed(client_id, Response::ILLEGALPATH);
-        return;
-    }
+    if(is_directory(local_path))
+        return false;
 
 
     // generate a task object
     fs::proto::Task task;
-    task.set_client_id(client_id);
     task.set_localbasepath(localbasepath);
     task.set_remotebasepath(remotebasepath);
     task.set_filename(filename);
@@ -219,11 +214,10 @@ void fs_upload(int client_id,
 
     fs_scheduler::instance()->add_task(task);
 
-
+    return true;
 }
 
-void fs_download(int client_id,
-                 const std::string& localbasepath,
+bool fs_download(const std::string& localbasepath,
                  const std::string& remotebasepath,
                  const std::string& filename){
     using namespace boost::filesystem;
@@ -231,21 +225,16 @@ void fs_download(int client_id,
 
     // local file already exists
     path local_path(localbasepath + SEPARATOR + filename);
-    if(exists(local_path)){
-        cb_failed(client_id, Response::ILLEGALPATH);
-        return;
-    }
+    if(exists(local_path))
+        return false;
 
     // only support download regular file
-    if(is_directory(local_path)){
-        cb_failed(client_id, Response::ILLEGALPATH);
-        return;
-    }
+    if(is_directory(local_path))
+        return false;
 
 
     // generate a task object
     fs::proto::Task task;
-    task.set_client_id(client_id);
     task.set_localbasepath(localbasepath);
     task.set_remotebasepath(remotebasepath);
     task.set_filename(filename);
@@ -254,12 +243,14 @@ void fs_download(int client_id,
 
 
     fs_scheduler::instance()->add_task(task);
+
+    return true;
 }
 
-void fs_register_task_callback(fs_fp_intdouble cb_prog,
+void fs_register_task_callback(fs_fp_tasks cb_reprt,
                                fs_fp_int cb_succes,
                                fs_fp_interror cb_fal){
-    cb_progress = cb_prog;
+    cb_report = cb_reprt;
     cb_success = cb_succes;
     cb_failed = cb_fal;
 }
@@ -304,31 +295,28 @@ void fs_rename(const std::string& oldpath,
 }
 
 extern std::mutex client_task_mutex;
-void _fs_cancel(int client_id,
+void _fs_cancel(int task_id,
                 fs_fp_int cb_success,
                 fs_fp_interror cb_failed){
     using namespace fs::proto;
 
-    int taskid = get_taskid_by_clientid(client_id);
-    if(taskid == FS_E_NOSUCHID)
-        cb_failed(client_id, Response::ILLEGALCLIENTID);
 
     Request cancel_request;
     cancel_request.set_req_type(Request::CANCEL);
-    cancel_request.set_task_id(taskid);
+    cancel_request.set_task_id(task_id);
     cancel_request.set_token(_token);
 
     // send request and receive response
     Response response;
     if(send_receive(cancel_request,response) == false){
-        cb_failed(client_id, Response::NORESPONSE);
+        cb_failed(task_id, Response::NORESPONSE);
         return;
     }
 
     // check response type
     if(response.resp_type() == Response::SUCCESS){
         client_task_mutex.lock();
-        Task& task = fs_scheduler::instance()->task_map_current[taskid];
+        Task& task = fs_scheduler::instance()->task_map_current[task_id];
 
         switch (task.task_status()) {
         case Task::UPLOADING:
@@ -358,33 +346,35 @@ void _fs_cancel(int client_id,
         }
 
         client_task_mutex.unlock();
-        cb_success(client_id);
+        cb_success(task_id);
     }
     else
-        cb_failed(client_id, response.resp_type());
+        cb_failed(task_id, response.resp_type());
 }
 
-void fs_cancel(int client_id,
+void fs_cancel(int task_id,
                fs_fp_int cb_success,
                fs_fp_interror cb_failed){
     std::thread thd(_fs_cancel,
-                    client_id,
+                    task_id,
                     cb_success,
                     cb_failed);
     thd.detach();
 }
 
-void _fs_pause(int client_id,
+void _fs_pause(int task_id,
                fs_fp_int cb_success,
                fs_fp_interror cb_failed){
     using namespace fs::proto;
 
-    int taskid = get_taskid_by_clientid(client_id);
-    if(taskid == FS_E_NOSUCHID)
-        cb_failed(client_id, Response::ILLEGALCLIENTID);
+    auto& tmap = fs_scheduler::instance()->task_map_current;
+    if(tmap.find(task_id) == tmap.end()){
+        cb_failed(task_id, Response::ILLEGALTASKID);
+        return;
+    }
 
     client_task_mutex.lock();
-    Task& task = fs_scheduler::instance()->task_map_current[taskid];
+    Task& task = fs_scheduler::instance()->task_map_current[task_id];
     switch (task.task_status()) {
     case Task::UPLOADING:
         task.set_task_status(Task::UPLOAD_PAUSING);
@@ -397,31 +387,33 @@ void _fs_pause(int client_id,
         break;
     }
     client_task_mutex.unlock();
-    cb_success(client_id);
+    cb_success(task_id);
 }
 
 
-void fs_pause(int client_id,
+void fs_pause(int task_id,
               fs_fp_int cb_success,
               fs_fp_interror cb_failed){
     std::thread thd(_fs_pause,
-                    client_id,
+                    task_id,
                     cb_success,
                     cb_failed);
     thd.detach();
 }
 
-void _fs_resume(int client_id,
+void _fs_resume(int task_id,
                 fs_fp_int cb_success,
                 fs_fp_interror cb_failed){
     using namespace fs::proto;
 
-    int taskid = get_taskid_by_clientid(client_id);
-    if(taskid == FS_E_NOSUCHID)
-        cb_failed(client_id, Response::ILLEGALCLIENTID);
+    auto& tmap = fs_scheduler::instance()->task_map_current;
+    if(tmap.find(task_id) == tmap.end()){
+        cb_failed(task_id, Response::ILLEGALTASKID);
+        return;
+    }
 
     client_task_mutex.lock();
-    Task& task = fs_scheduler::instance()->task_map_current[taskid];
+    Task& task = fs_scheduler::instance()->task_map_current[task_id];
     switch (task.task_status()) {
     case Task::UPLOAD_PAUSED:
         task.set_task_status(Task::UPLOAD_RESUME);
@@ -431,18 +423,18 @@ void _fs_resume(int client_id,
         break;
     default:
         client_task_mutex.unlock();
-        cb_failed(client_id, Response::ILLEGALCLIENTID);
+        cb_failed(task_id, Response::ILLEGALCLIENTID);
         break;
     }
     client_task_mutex.unlock();
-    cb_success(client_id);
+    cb_success(task_id);
 }
 
-void fs_resume(int client_id,
+void fs_resume(int task_id,
                fs_fp_int cb_success,
                fs_fp_interror cb_failed){
     std::thread thd(_fs_resume,
-                    client_id,
+                    task_id,
                     cb_success,
                     cb_failed);
     thd.detach();

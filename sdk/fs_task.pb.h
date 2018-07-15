@@ -244,10 +244,10 @@ class Task : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
 
   // accessors -------------------------------------------------------
 
-  // optional string localbasepath = 3;
+  // optional string localbasepath = 2;
   bool has_localbasepath() const;
   void clear_localbasepath();
-  static const int kLocalbasepathFieldNumber = 3;
+  static const int kLocalbasepathFieldNumber = 2;
   const ::std::string& localbasepath() const;
   void set_localbasepath(const ::std::string& value);
   #if LANG_CXX11
@@ -259,10 +259,10 @@ class Task : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_localbasepath();
   void set_allocated_localbasepath(::std::string* localbasepath);
 
-  // required string remotebasepath = 4;
+  // required string remotebasepath = 3;
   bool has_remotebasepath() const;
   void clear_remotebasepath();
-  static const int kRemotebasepathFieldNumber = 4;
+  static const int kRemotebasepathFieldNumber = 3;
   const ::std::string& remotebasepath() const;
   void set_remotebasepath(const ::std::string& value);
   #if LANG_CXX11
@@ -274,10 +274,10 @@ class Task : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_remotebasepath();
   void set_allocated_remotebasepath(::std::string* remotebasepath);
 
-  // required string filename = 5;
+  // required string filename = 4;
   bool has_filename() const;
   void clear_filename();
-  static const int kFilenameFieldNumber = 5;
+  static const int kFilenameFieldNumber = 4;
   const ::std::string& filename() const;
   void set_filename(const ::std::string& value);
   #if LANG_CXX11
@@ -296,45 +296,38 @@ class Task : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::uint64 task_id() const;
   void set_task_id(::google::protobuf::uint64 value);
 
-  // optional uint64 client_id = 2;
-  bool has_client_id() const;
-  void clear_client_id();
-  static const int kClientIdFieldNumber = 2;
-  ::google::protobuf::uint64 client_id() const;
-  void set_client_id(::google::protobuf::uint64 value);
-
-  // required uint64 total_packet_no = 6;
+  // required uint64 total_packet_no = 5;
   bool has_total_packet_no() const;
   void clear_total_packet_no();
-  static const int kTotalPacketNoFieldNumber = 6;
+  static const int kTotalPacketNoFieldNumber = 5;
   ::google::protobuf::uint64 total_packet_no() const;
   void set_total_packet_no(::google::protobuf::uint64 value);
 
-  // optional uint64 received_packet_no = 8;
+  // optional uint64 received_packet_no = 7;
   bool has_received_packet_no() const;
   void clear_received_packet_no();
-  static const int kReceivedPacketNoFieldNumber = 8;
+  static const int kReceivedPacketNoFieldNumber = 7;
   ::google::protobuf::uint64 received_packet_no() const;
   void set_received_packet_no(::google::protobuf::uint64 value);
 
-  // optional uint64 sent_packet_no = 9;
+  // optional uint64 sent_packet_no = 8;
   bool has_sent_packet_no() const;
   void clear_sent_packet_no();
-  static const int kSentPacketNoFieldNumber = 9;
+  static const int kSentPacketNoFieldNumber = 8;
   ::google::protobuf::uint64 sent_packet_no() const;
   void set_sent_packet_no(::google::protobuf::uint64 value);
 
-  // optional uint64 last_packet_time = 10;
+  // optional uint64 last_packet_time = 9;
   bool has_last_packet_time() const;
   void clear_last_packet_time();
-  static const int kLastPacketTimeFieldNumber = 10;
+  static const int kLastPacketTimeFieldNumber = 9;
   ::google::protobuf::uint64 last_packet_time() const;
   void set_last_packet_time(::google::protobuf::uint64 value);
 
-  // required .fs.proto.Task.TaskStatus task_status = 7;
+  // required .fs.proto.Task.TaskStatus task_status = 6;
   bool has_task_status() const;
   void clear_task_status();
-  static const int kTaskStatusFieldNumber = 7;
+  static const int kTaskStatusFieldNumber = 6;
   ::fs::proto::Task_TaskStatus task_status() const;
   void set_task_status(::fs::proto::Task_TaskStatus value);
 
@@ -342,8 +335,6 @@ class Task : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
  private:
   void set_has_task_id();
   void clear_has_task_id();
-  void set_has_client_id();
-  void clear_has_client_id();
   void set_has_localbasepath();
   void clear_has_localbasepath();
   void set_has_remotebasepath();
@@ -371,7 +362,6 @@ class Task : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::internal::ArenaStringPtr remotebasepath_;
   ::google::protobuf::internal::ArenaStringPtr filename_;
   ::google::protobuf::uint64 task_id_;
-  ::google::protobuf::uint64 client_id_;
   ::google::protobuf::uint64 total_packet_no_;
   ::google::protobuf::uint64 received_packet_no_;
   ::google::protobuf::uint64 sent_packet_no_;
@@ -414,31 +404,7 @@ inline void Task::set_task_id(::google::protobuf::uint64 value) {
   // @@protoc_insertion_point(field_set:fs.proto.Task.task_id)
 }
 
-// optional uint64 client_id = 2;
-inline bool Task::has_client_id() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void Task::set_has_client_id() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void Task::clear_has_client_id() {
-  _has_bits_[0] &= ~0x00000010u;
-}
-inline void Task::clear_client_id() {
-  client_id_ = GOOGLE_ULONGLONG(0);
-  clear_has_client_id();
-}
-inline ::google::protobuf::uint64 Task::client_id() const {
-  // @@protoc_insertion_point(field_get:fs.proto.Task.client_id)
-  return client_id_;
-}
-inline void Task::set_client_id(::google::protobuf::uint64 value) {
-  set_has_client_id();
-  client_id_ = value;
-  // @@protoc_insertion_point(field_set:fs.proto.Task.client_id)
-}
-
-// optional string localbasepath = 3;
+// optional string localbasepath = 2;
 inline bool Task::has_localbasepath() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -504,7 +470,7 @@ inline void Task::set_allocated_localbasepath(::std::string* localbasepath) {
   // @@protoc_insertion_point(field_set_allocated:fs.proto.Task.localbasepath)
 }
 
-// required string remotebasepath = 4;
+// required string remotebasepath = 3;
 inline bool Task::has_remotebasepath() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -570,7 +536,7 @@ inline void Task::set_allocated_remotebasepath(::std::string* remotebasepath) {
   // @@protoc_insertion_point(field_set_allocated:fs.proto.Task.remotebasepath)
 }
 
-// required string filename = 5;
+// required string filename = 4;
 inline bool Task::has_filename() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -636,15 +602,15 @@ inline void Task::set_allocated_filename(::std::string* filename) {
   // @@protoc_insertion_point(field_set_allocated:fs.proto.Task.filename)
 }
 
-// required uint64 total_packet_no = 6;
+// required uint64 total_packet_no = 5;
 inline bool Task::has_total_packet_no() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
+  return (_has_bits_[0] & 0x00000010u) != 0;
 }
 inline void Task::set_has_total_packet_no() {
-  _has_bits_[0] |= 0x00000020u;
+  _has_bits_[0] |= 0x00000010u;
 }
 inline void Task::clear_has_total_packet_no() {
-  _has_bits_[0] &= ~0x00000020u;
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void Task::clear_total_packet_no() {
   total_packet_no_ = GOOGLE_ULONGLONG(0);
@@ -660,15 +626,15 @@ inline void Task::set_total_packet_no(::google::protobuf::uint64 value) {
   // @@protoc_insertion_point(field_set:fs.proto.Task.total_packet_no)
 }
 
-// required .fs.proto.Task.TaskStatus task_status = 7;
+// required .fs.proto.Task.TaskStatus task_status = 6;
 inline bool Task::has_task_status() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
+  return (_has_bits_[0] & 0x00000100u) != 0;
 }
 inline void Task::set_has_task_status() {
-  _has_bits_[0] |= 0x00000200u;
+  _has_bits_[0] |= 0x00000100u;
 }
 inline void Task::clear_has_task_status() {
-  _has_bits_[0] &= ~0x00000200u;
+  _has_bits_[0] &= ~0x00000100u;
 }
 inline void Task::clear_task_status() {
   task_status_ = 0;
@@ -685,15 +651,15 @@ inline void Task::set_task_status(::fs::proto::Task_TaskStatus value) {
   // @@protoc_insertion_point(field_set:fs.proto.Task.task_status)
 }
 
-// optional uint64 received_packet_no = 8;
+// optional uint64 received_packet_no = 7;
 inline bool Task::has_received_packet_no() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
+  return (_has_bits_[0] & 0x00000020u) != 0;
 }
 inline void Task::set_has_received_packet_no() {
-  _has_bits_[0] |= 0x00000040u;
+  _has_bits_[0] |= 0x00000020u;
 }
 inline void Task::clear_has_received_packet_no() {
-  _has_bits_[0] &= ~0x00000040u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline void Task::clear_received_packet_no() {
   received_packet_no_ = GOOGLE_ULONGLONG(0);
@@ -709,15 +675,15 @@ inline void Task::set_received_packet_no(::google::protobuf::uint64 value) {
   // @@protoc_insertion_point(field_set:fs.proto.Task.received_packet_no)
 }
 
-// optional uint64 sent_packet_no = 9;
+// optional uint64 sent_packet_no = 8;
 inline bool Task::has_sent_packet_no() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
+  return (_has_bits_[0] & 0x00000040u) != 0;
 }
 inline void Task::set_has_sent_packet_no() {
-  _has_bits_[0] |= 0x00000080u;
+  _has_bits_[0] |= 0x00000040u;
 }
 inline void Task::clear_has_sent_packet_no() {
-  _has_bits_[0] &= ~0x00000080u;
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline void Task::clear_sent_packet_no() {
   sent_packet_no_ = GOOGLE_ULONGLONG(0);
@@ -733,15 +699,15 @@ inline void Task::set_sent_packet_no(::google::protobuf::uint64 value) {
   // @@protoc_insertion_point(field_set:fs.proto.Task.sent_packet_no)
 }
 
-// optional uint64 last_packet_time = 10;
+// optional uint64 last_packet_time = 9;
 inline bool Task::has_last_packet_time() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
+  return (_has_bits_[0] & 0x00000080u) != 0;
 }
 inline void Task::set_has_last_packet_time() {
-  _has_bits_[0] |= 0x00000100u;
+  _has_bits_[0] |= 0x00000080u;
 }
 inline void Task::clear_has_last_packet_time() {
-  _has_bits_[0] &= ~0x00000100u;
+  _has_bits_[0] &= ~0x00000080u;
 }
 inline void Task::clear_last_packet_time() {
   last_packet_time_ = GOOGLE_ULONGLONG(0);

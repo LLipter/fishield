@@ -116,6 +116,20 @@ bool send_receive(const fs::proto::Request& request,fs::proto::Response& respons
 }
 
 
+extern fs_fp_tasks cb_report;
+void report_thread(){
+    while(true){
+        boost::this_thread::sleep(DEFAULT_REPORT_SLEEP_TIME);
+        std::vector<fs::proto::Task> report_tasks;
+        auto& tmap = fs_scheduler::instance()->task_map_current;
+        for(auto it=tmap.begin();it!=tmap.end();it++){
+            report_tasks.push_back(it->second);
+        }
+        cb_report(report_tasks);
+    }
+}
+
+
 extern std::string tasks_finished_path;
 extern std::string tasks_current_path;
 void fs_client::init(){
@@ -126,6 +140,8 @@ void fs_client::init(){
     get_task_from_file(tasks_current_path,
                        fs_scheduler::instance()->task_map_current);
 
+    std::thread thd(report_thread);
+    thd.detach();
 
 }
 

@@ -33,6 +33,7 @@
 #define DEFAULE_MAX_TASKNO              5
 #define DEFAULT_REMOVE_SLEEP_TIME       boost::posix_time::seconds(2)
 #define DEFAULT_SAVE_SLEEP_TIME         boost::posix_time::seconds(2)
+#define DEFAULT_REPORT_SLEEP_TIME       boost::posix_time::microseconds(500)
 #define DEFAULT_TASK_TIMEOUT            60*60
 #define DEFAULT_CLIENT_TIMEOUT          60*60
 #define DEFAULT_TOKEN_TIMEOUT           60*60
@@ -47,6 +48,8 @@
 #define FS_E_NOSUCHUSER                 -5      // no such user
 #define FS_E_ILLEGALPASSWD              -6      // illegal password
 #define FS_E_NOSUCHTASK                 -7      // no such task
+#define FS_E_UOLOADFAILED               -8      // upload failed
+#define FS_E_DOWNLOADFAILED             -9      // download failed
 
 
 // fs stands for "fishield" or "file security"
@@ -58,6 +61,8 @@ typedef boost::function<void(fs::proto::FileList)>                      fs_fp_fi
 typedef boost::function<void(int)>                                      fs_fp_int;
 typedef boost::function<void(int,double)>                               fs_fp_intdouble;
 typedef boost::function<void(int,fs::proto::Response::ResponseType)>    fs_fp_interror;
+typedef boost::function<void(std::vector<fs::proto::Task>)>             fs_fp_tasks;
+
 
 
 

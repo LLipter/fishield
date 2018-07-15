@@ -123,7 +123,7 @@ void fs_scheduler::add_upload_task(fs::proto::Task task){
     // send request and receive response
     Response response;
     if(send_receive(upload_request,response) == false){
-        cb_failed(task.client_id(), Response::NORESPONSE);
+        cb_failed(FS_E_UOLOADFAILED, Response::NORESPONSE);
         return;
     }
 
@@ -134,7 +134,7 @@ void fs_scheduler::add_upload_task(fs::proto::Task task){
         task_map_current[task.task_id()] = task;
         client_task_mutex.unlock();
     }else
-        cb_failed(task.client_id(), response.resp_type());
+        cb_failed(FS_E_UOLOADFAILED, response.resp_type());
 }
 
 void fs_scheduler::add_download_task(fs::proto::Task task){
@@ -148,7 +148,7 @@ void fs_scheduler::add_download_task(fs::proto::Task task){
     // send request and receive response
     Response response;
     if(send_receive(download_request,response) == false){
-        cb_failed(task.client_id(), Response::NORESPONSE);
+        cb_failed(FS_E_DOWNLOADFAILED, Response::NORESPONSE);
         return;
     }
 
@@ -160,7 +160,7 @@ void fs_scheduler::add_download_task(fs::proto::Task task){
         task_map_current[task.task_id()] = task;
         client_task_mutex.unlock();
     }else
-        cb_failed(task.client_id(), response.resp_type());
+        cb_failed(FS_E_DOWNLOADFAILED, response.resp_type());
 }
 
 void fs_scheduler::add_task(fs::proto::Task task){
