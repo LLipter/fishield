@@ -13,6 +13,7 @@ public:
     Q_INVOKABLE void login(QString username, QString password);
     Q_INVOKABLE void timeout();
     Q_INVOKABLE void getFileList(QString path);
+    Q_INVOKABLE void upload(QString localpath, QString remotepath);
 
 private:
     static QString _token;
@@ -32,6 +33,8 @@ public slots:
     void handle_login_failed(fs::proto::Response::ResponseType error);
     void handle_filelist_success(fs::proto::FileList filelist);
     void handle_filelist_failed(fs::proto::Response::ResponseType error);
+//    void handle_upload_success(int client_id);
+//    void handle_upload_failed(fs::proto::Response::ResponseType error);
 
 };
 

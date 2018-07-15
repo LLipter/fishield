@@ -133,7 +133,7 @@ Item {
         action: Action {
             text: "&UPLOAD"
             shortcut: "Ctrl+U"
-            onTriggered: filePicker.visible = true
+            onTriggered: fileDialog.open();
         }
         iconName: "upload"
     }
@@ -188,19 +188,15 @@ Item {
 
 
 
-
-
-    // TODO : GET FILEPICKER
-    FilePicker {
-        id:filePicker
-        anchors.fill: parent
-        showDotAndDotDot: true
-        nameFilters: "*.cpp"
-        onFileSelected: {
-            console.log("User selects file: " + currentFolder() + "/" +fileName)
-            visible = false
+    FileDialog {
+        id: fileDialog
+        title: "Please choose a file"
+        folder: shortcuts.home
+        onAccepted: {
+            console.log("You chose: " + fileDialog.fileUrls);
+            console.debug(fileDialog.fileUrls, currentpath);
+            backend.upload(fileDialog.fileUrls, currentpath);
         }
-        visible: false
     }
 
     BottomActionSheet {

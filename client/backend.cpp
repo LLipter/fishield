@@ -82,10 +82,6 @@ void backend::handle_filelist_success(fs::proto::FileList filelist){
 
     }
 
-//    for(auto filename : names)
-//        std::cout << filename.toStdString() << " ";
-//    std::cout << std::endl;
-
     emit fileLoaded(names, is_dir, filesizes, mtimes);
 
 }
@@ -94,3 +90,18 @@ void backend::handle_filelist_failed(fs::proto::Response::ResponseType error){
     // TODO : CHECK ERROR TYPE
 }
 
+void backend::upload(QString localpath, QString remotepath){
+    is_timeout = false;
+//    fs_upload();
+    std::string localbasepath = localpath.toStdString();
+    int idx = localbasepath.find_last_of(SEPARATOR);
+    std::string filename = localbasepath.substr(idx+1, localbasepath.length()-idx-1);
+    localbasepath = localbasepath.substr(0, idx);
+    std::string remotebasepath = remotepath.toStdString();
+    remotebasepath = remotebasepath.substr(0, remotebasepath.length()-1);
+
+//    std::cout << localbasepath << std::endl
+//              << filename << std::endl
+//              << remotebasepath << std::endl;
+
+}
