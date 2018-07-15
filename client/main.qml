@@ -103,7 +103,6 @@ ApplicationWindow {
             ProgressCircle {
                 anchors.centerIn: parent
                 visible: loginpage.loading
-                color: "blue"
             }
 
             Timer {
@@ -116,7 +115,6 @@ ApplicationWindow {
                         loginpage.loading = false
                         errorlabel.text = "login timeout, please retry"
                         errorlabel.visible = true
-                        loginpage.timeout = 5
                         backend.timeout();
                     }
                 }
@@ -139,8 +137,11 @@ ApplicationWindow {
                 target: backend
                 onLogined:{
                     loginpage.loading = false;
+                    countDowm.stop();
                     console.debug(username.text ,"logined");
                     pageStack.push(Qt.resolvedUrl("MainPage.qml"))
+                    errorlabel.text = "token timeout, please login again"
+                    errorlabel.visible = true;
                 }
                 onNo_such_user:{
                     loginpage.loading = false;

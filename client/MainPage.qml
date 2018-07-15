@@ -185,7 +185,6 @@ TabbedPage {
                     // selectedComponent will always be valid, as it defaults to the first component
                     source: {
                         if (navDrawer.enabled) {
-                            return Qt.resolvedUrl("%Page.qml").arg(mainWindow.selectedComponent.replace(" ", ""))
                             return Qt.resolvedUrl("%Page.qml").arg(mainpage.selectedComponent.replace(" ", ""))
                         } else {
                             return Qt.resolvedUrl("%Page.qml").arg(selectedComponent.replace(" ", ""))
