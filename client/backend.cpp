@@ -89,7 +89,7 @@ void backend::handle_filelist_success(fs::proto::FileList filelist){
 }
 
 void backend::handle_filelist_failed(fs::proto::Response::ResponseType error){
-    // TODO : CHECK ERROR TYPE
+    // TODO : CHECK ERROR TYPE (ILLEGAL TOKEN)
 }
 
 void backend::upload(QString localpath, QString remotepath){
@@ -122,10 +122,42 @@ void backend::handle_transfer_success(int taskid){
 }
 
 void backend::handle_transfer_failed(int taskid, fs::proto::Response::ResponseType error){
-    // TODO : CHECK ERROR TYPE
+    // TODO : CHECK ERROR TYPE (ILLEGAL TOKEN)
 }
 
 void backend::handle_transfer_report(std::vector<fs::proto::Task> tasks){
     // TODO : report progress
+}
+
+
+void backend::newdir(QString path){
+    is_timeout = false;
+    fs_mkdir(path.toStdString(),
+             boost::bind(&backend::handle_newdir_success, this),
+             boost::bind(&backend::handle_newdir_failed, this, _1));
+}
+
+void backend::handle_newdir_success(){
+    if(is_timeout)
+        return;
+    emit newdir_created();
+}
+
+void backend::handle_newdir_failed(fs::proto::Response::ResponseType error){
+    // TODO : CHECK ERROR TYPE (ILLEGAL TOKEN)
+}
+
+void backend::download(QString localbasepath,
+                       QString remotebasepath,
+                       QString filename){
+    is_timeout = false;
+    std::string localpath = localbasepath.toStdString();
+    localpath = localpath.substr(7, localpath.length()-7);
+    std::string remotepath = remotebasepath.toStdString();
+    remotepath = remotepath.substr(0, remotepath.length()-1);
+
+    fs_download(localpath,
+                remotepath,
+                filename.toStdString());
 }
 
