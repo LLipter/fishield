@@ -14,7 +14,9 @@ void backend::login(QString username, QString password){
              password.toStdString(),
              boost::bind(&backend::handle_login_success, this),
              boost::bind(&backend::handle_login_failed, this, _1));
-
+    fs_register_task_callback(boost::bind(&backend::handle_transfer_report, this, _1),
+                              boost::bind(&backend::handle_transfer_success, this, _1),
+                              boost::bind(&backend::handle_transfer_failed, this, _1, _2));
 }
 
 void backend::timeout(){
@@ -92,16 +94,38 @@ void backend::handle_filelist_failed(fs::proto::Response::ResponseType error){
 
 void backend::upload(QString localpath, QString remotepath){
     is_timeout = false;
-//    fs_upload();
+
     std::string localbasepath = localpath.toStdString();
     int idx = localbasepath.find_last_of(SEPARATOR);
     std::string filename = localbasepath.substr(idx+1, localbasepath.length()-idx-1);
     localbasepath = localbasepath.substr(0, idx);
+    localbasepath = localbasepath.substr(7, localbasepath.length()-7);
     std::string remotebasepath = remotepath.toStdString();
     remotebasepath = remotebasepath.substr(0, remotebasepath.length()-1);
 
-//    std::cout << localbasepath << std::endl
-//              << filename << std::endl
-//              << remotebasepath << std::endl;
+    std::cout << localbasepath << std::endl
+              << filename << std::endl
+              << remotebasepath << std::endl;
+
+    bool ret = fs_upload(localbasepath,
+                         remotebasepath,
+                         filename);
+    if(ret == false){
+        // TODO : SEND A ERROR MESSAGE
+        std::cout << "fuck ..." << std::endl;
+    }
 
 }
+
+void backend::handle_transfer_success(int taskid){
+    // TODO : SEND MESSAGE TO SHOW A MESSAGEBOX
+}
+
+void backend::handle_transfer_failed(int taskid, fs::proto::Response::ResponseType error){
+    // TODO : CHECK ERROR TYPE
+}
+
+void backend::handle_transfer_report(std::vector<fs::proto::Task> tasks){
+    // TODO : report progress
+}
+

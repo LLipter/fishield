@@ -33,8 +33,9 @@ public slots:
     void handle_login_failed(fs::proto::Response::ResponseType error);
     void handle_filelist_success(fs::proto::FileList filelist);
     void handle_filelist_failed(fs::proto::Response::ResponseType error);
-//    void handle_upload_success(int client_id);
-//    void handle_upload_failed(fs::proto::Response::ResponseType error);
+    void handle_transfer_success(int taskid);
+    void handle_transfer_failed(int taskid, fs::proto::Response::ResponseType error);
+    void handle_transfer_report(std::vector<fs::proto::Task> tasks);
 
 };
 
