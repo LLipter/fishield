@@ -151,13 +151,6 @@ void fs_resume(int task_id,
                fs_fp_interror cb_failed);
 
 /***
- * DESC:    Try to start a server program.
- * PARAM:   `port` is the port of server.
- * RETURN:  This function will never return.
- */
-void fs_server_startup(const short port);
-
-/***
  * DESC:    Get history information
  * RETURN:  return nothing
  */
@@ -221,6 +214,14 @@ fs::proto::Response fs_add_ipaddr(const std::string& ipaddr);
  * RETURN:  return a response from server
  */
 fs::proto::Response fs_remove_ipaddr(const std::string& ipaddr);
+
+
+/***
+ * DESC:    Try to start a server program.
+ * PARAM:   `port` is the port of server.
+ * RETURN:  This function will never return.
+ */
+void fs_server_startup(const short port);
 
 
 #endif

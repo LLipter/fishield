@@ -712,9 +712,19 @@ void communicate_thread(server_ptr serptr){
     int ret_req;
     int ret_resp;
 
-//    std::cout << "connection built with "
-//              << serptr->sock().remote_endpoint().address().to_string()
-//              << std::endl;
+#ifdef DEBUG
+    std::cout << "connection built with "
+              << serptr->sock().remote_endpoint().address().to_string()
+              << std::endl;
+#endif
+
+    // verify ip address
+    std::string ipaddr = serptr->sock().remote_endpoint().address().to_string();
+    fs_DBManager manager;
+    if(!manager.getIPAddr(ipaddr)){
+        serptr->set_stop(true);
+        return;
+    }
 
     while(true){
         Request request;
@@ -816,9 +826,13 @@ void communicate_thread(server_ptr serptr){
     }
 
     serptr->set_stop(true);
-//    std::cout << "connection lost with "
-//              << serptr->sock().remote_endpoint().address().to_string()
-//              << std::endl;
+
+#ifdef DEBUG
+    std::cout << "connection lost with "
+              << serptr->sock().remote_endpoint().address().to_string()
+              << std::endl;
+#endif
+
 }
 
 

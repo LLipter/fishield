@@ -30,6 +30,7 @@ public:
     void getIPList(fs::proto::IPList* iplist);
     int addIPAddr(const std::string& addr);
     void removeIPAddr(const std::string& ipaddr);
+    bool getIPAddr(const std::string& ipaddr);
 private:
     static sql::Driver* driver;
     sql::Connection* conn;

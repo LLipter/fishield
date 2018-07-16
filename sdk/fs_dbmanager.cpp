@@ -175,18 +175,8 @@ void fs_DBManager::getIPList(fs::proto::IPList* iplist){
 }
 
 int fs_DBManager::addIPAddr(const std::string& addr){
-    sql::PreparedStatement *pstmt = conn->prepareStatement("SELECT * FROM ip WHERE address=?");
-    pstmt->setString(1, addr);
-    sql::ResultSet* res = pstmt->executeQuery();
-
-    if(res->next()){
-        delete pstmt;
-        delete res;
+    if(this->getIPAddr(addr))
         return FS_E_DUPLICATE_IPADDR;
-    }
-    delete pstmt;
-    delete res;
-
 
     pstmt = conn->prepareStatement("INSERT INTO ip VALUES(?)");
     pstmt->setString(1, addr);
@@ -202,4 +192,19 @@ void fs_DBManager::removeIPAddr(const std::string& ipaddr){
     pstmt->executeUpdate();
 
     delete pstmt;
+}
+
+bool fs_DBManager::getIPAddr(const std::string& ipaddr){
+    sql::PreparedStatement *pstmt = conn->prepareStatement("SELECT * FROM ip WHERE address=?");
+    pstmt->setString(1, ipaddr);
+    sql::ResultSet* res = pstmt->executeQuery();
+    if(res->next()){
+        delete pstmt;
+        delete res;
+        return true;
+    }
+
+    delete pstmt;
+    delete res;
+    return false;
 }
