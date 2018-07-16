@@ -18,7 +18,7 @@ client.out: main_client.cpp libfishield.so
 
 fsconfig.out: admin_tool.cpp libfishield.so
 	g++ admin_tool.cpp -std=c++11 -L${PWD} -lfishield \
-	${linklib} -o client.out
+	${linklib} -o fsconfig.out
 
 libfishield.so: ${obj}
 	g++ -shared ${obj} -o libfishield.so
