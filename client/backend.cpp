@@ -126,7 +126,40 @@ void backend::handle_transfer_failed(int taskid, fs::proto::Response::ResponseTy
 }
 
 void backend::handle_transfer_report(std::vector<fs::proto::Task> tasks){
-    // TODO : report progress
+    using namespace fs::proto;
+
+    QVariantList names;
+    QVariantList states;
+    QVariantList processes;
+
+    for(Task& task : tasks){
+        names << QString::fromStdString(task.filename());
+        states << QString::fromStdString(Task::TaskStatus_Name(task.task_status()));
+        double proces;
+        switch (task.task_status()) {
+        case Task::UPLOADING:
+        case Task::UPLOAD_PAUSED:
+        case Task::UPLOAD_PAUSING:
+        case Task::UPLOAD_RESUME:
+            proces = (double)task.sent_packet_no() / task.total_packet_no();
+            break;
+        case Task::DOWNLOADING:
+        case Task::DOWNLOAD_PAUSED:
+        case Task::DOWNLOAD_PAUSING:
+        case Task::DOWNLOAD_RESUME:
+            proces = (double)task.received_packet_no() / task.total_packet_no();
+            break;
+        default:
+            break;
+        }
+        proces = std::round(proces*1000) / 10;
+        std::string proces_str = std::to_string(proces).substr(0,4) + "%";
+        processes << QString::fromStdString(proces_str);
+    }
+
+    emit process_report(names,
+                        states,
+                        processes);
 }
 
 

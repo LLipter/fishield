@@ -7,10 +7,8 @@ TabbedPage {
     title: qsTr("Fishield")
     actionBar.maxActionCount: navDrawer.enabled ? 3 : 4
 
-//    property var sections: [ "History", "Files", "Transferring" ]
-//    property var sectionTitles: [ qsTr("History"), qsTr("Files"), qsTr("Downloading/Uploading") ]
-    property var sections: ["Files", "Transferring" ]
-    property var sectionTitles: [ qsTr("Files"), qsTr("Downloading/Uploading") ]
+    property var sections: ["Files", "Transferring", "History"]
+    property var sectionTitles: [ qsTr("Files"), qsTr("Downloading/Uploading"), qsTr("History")]
 
     property string selectedComponent: sections[0]
 
@@ -19,6 +17,7 @@ TabbedPage {
             iconName: "warning"
             name: "Dummy error"
             onTriggered: demo.showError("Something went wrong", "Do you want to retry?", "Close", true)
+            enabled: false
         },
 
         Action {
@@ -31,6 +30,7 @@ TabbedPage {
             iconName: "settings"
             name: "Settings"
             hoverAnimation: true
+            enabled: false
         },
 
         Action {
@@ -42,6 +42,7 @@ TabbedPage {
         Action {
             iconName: "account"
             name: "Accounts"
+            enabled: false
         }
     ]
 

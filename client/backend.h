@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include "fishield.h"
- #include <QVariant>
+#include <QVariant>
 
 class backend : public QObject
 {
@@ -32,6 +32,9 @@ signals:
                     QVariantList _file_sizes,
                     QVariantList _m_times);
     void newdir_created();
+    void process_report(QVariantList _file_names,
+                        QVariantList _file_states,
+                        QVariantList _file_processes);
 
 public slots:
     void handle_login_success();
