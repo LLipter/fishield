@@ -131,6 +131,7 @@ void backend::handle_transfer_report(std::vector<fs::proto::Task> tasks){
     QVariantList names;
     QVariantList states;
     QVariantList processes;
+    QVariantList taskids;
 
     for(Task& task : tasks){
         names << QString::fromStdString(task.filename());
@@ -155,11 +156,13 @@ void backend::handle_transfer_report(std::vector<fs::proto::Task> tasks){
         proces = std::round(proces*1000) / 10;
         std::string proces_str = std::to_string(proces).substr(0,4) + "%";
         processes << QString::fromStdString(proces_str);
+        taskids << QString::fromStdString(std::to_string(task.task_id()));
     }
 
     emit process_report(names,
                         states,
-                        processes);
+                        processes,
+                        taskids);
 }
 
 
@@ -211,4 +214,37 @@ void backend::handle_file_history(std::vector<fs::proto::Task> tasks){
     }
 
     emit history_loaded(names, states);
+}
+
+void backend::pause_task(QString taskid){
+    is_timeout = false;
+    int id = std::stoi(taskid.toStdString());
+    fs_pause(id,
+             boost::bind(&backend::handle_pause_success, this, _1),
+             boost::bind(&backend::handle_pause_failed, this, _1, _2));
+}
+
+void backend::handle_pause_success(int taskid){
+    // TODO :
+}
+
+void backend::handle_pause_failed(int taskid, fs::proto::Response::ResponseType error){
+    // TODO : CHECK ERROR TYPE (ILLEGAL TOKEN)
+}
+
+void backend::resume_task(QString taskid){
+    is_timeout = false;
+    int id = std::stoi(taskid.toStdString());
+    fs_resume(id,
+              boost::bind(&backend::handle_resume_success, this, _1),
+              boost::bind(&backend::handle_resume_failed, this, _1, _2));
+}
+
+
+void backend::handle_resume_success(int taskid){
+    // TODO :
+}
+
+void backend::handle_resume_failed(int taskid, fs::proto::Response::ResponseType error){
+    // TODO : CHECK ERROR TYPE (ILLEGAL TOKEN)
 }

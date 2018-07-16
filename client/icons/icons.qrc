@@ -19,6 +19,8 @@
 	<file alias="upload.svg">ic_file_upload_48px.svg</file>
 	<file alias="return.svg">ic_keyboard_return_48px.svg</file>
 	<file alias="newdir.svg">ic_create_new_folder_48px.svg</file>
+	<file alias="pause.svg">ic_pause_48px.svg</file>
+	<file alias="cancel.svg">ic_cancel_48px.svg</file>
 
 
 </qresource>

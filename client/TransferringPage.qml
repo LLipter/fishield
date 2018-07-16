@@ -11,6 +11,9 @@ Item {
 
     property var transferring_processes: []
 
+    property var taskids: []
+
+    property var selectid: 0
 
     Connections{
         target: backend
@@ -19,6 +22,7 @@ Item {
             file_names = _file_names;
             file_state = _file_states;
             transferring_processes = _file_processes;
+            taskids = _task_ids;
         }
 
     }
@@ -44,7 +48,8 @@ Item {
                     valueText: transferring_processes[index]
                     backgroundColor: "white"
                     onClicked: {
-                        actionSheet.open()
+                        actionSheet.open();
+                        selectid = taskids[index];
                     }
                 }
             }
@@ -58,13 +63,23 @@ Item {
         actions: [
 
             Action {
-                iconName: "download"
+                iconName: "pause"
                 name: "Pause"
-                enabled: false
+                onTriggered: {
+                    backend.pause_task(selectid);
+                }
             },
 
             Action {
-                iconName: "settings"
+                iconName: "refresh"
+                name: "Resume"
+                onTriggered: {
+                    backend.resume_task(selectid);
+                }
+            },
+
+            Action {
+                iconName: "cancel"
                 name: "Cancel"
                 enabled: false
             }

@@ -19,6 +19,8 @@ public:
                               QString remotebasepath,
                               QString filename);
     Q_INVOKABLE void file_history();
+    Q_INVOKABLE void pause_task(QString taskid);
+    Q_INVOKABLE void resume_task(QString taskid);
 
 private:
     static QString _token;
@@ -35,7 +37,8 @@ signals:
     void newdir_created();
     void process_report(QVariantList _file_names,
                         QVariantList _file_states,
-                        QVariantList _file_processes);
+                        QVariantList _file_processes,
+                        QVariantList _task_ids);
     void history_loaded(QVariantList _file_names,
                         QVariantList _file_states);
 
@@ -50,6 +53,11 @@ public slots:
     void handle_transfer_failed(int taskid, fs::proto::Response::ResponseType error);
     void handle_transfer_report(std::vector<fs::proto::Task> tasks);
     void handle_file_history(std::vector<fs::proto::Task> tasks);
+    void handle_pause_success(int taskid);
+    void handle_pause_failed(int taskid, fs::proto::Response::ResponseType error);
+    void handle_resume_success(int taskid);
+    void handle_resume_failed(int taskid, fs::proto::Response::ResponseType error);
+
 };
 
 #endif // BACKEND_H

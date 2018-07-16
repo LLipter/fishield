@@ -422,8 +422,7 @@ void _fs_resume(int task_id,
         task.set_task_status(Task::DOWNLOAD_RESUME);
         break;
     default:
-        client_task_mutex.unlock();
-        cb_failed(task_id, Response::ILLEGALCLIENTID);
+        // do nothing
         break;
     }
     client_task_mutex.unlock();
