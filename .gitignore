@@ -75,3 +75,4 @@ Thumbs.db
 build*
 *.out
 .fs_*
+fs_root
