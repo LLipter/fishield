@@ -57,6 +57,9 @@ TabbedPage {
         Action {
             iconName: "diskspace"
             name: "Disk Space"
+            onTriggered: {
+                diskspace_dialog.open();
+            }
         }
     ]
 

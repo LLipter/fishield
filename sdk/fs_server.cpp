@@ -564,7 +564,7 @@ bool verify_token(const std::string& token){
     return false;
 }
 
-void get_dist_info(fs::proto::Response& response){
+void get_disk_info(fs::proto::Response& response){
     using namespace fs::proto;
     using namespace boost::filesystem;
 
@@ -648,7 +648,7 @@ void communicate_thread(server_ptr serptr){
                 cancel_task(request.task_id(), response);
                 break;
             case Request::DISKSPACE:
-                get_dist_info(response);
+                get_disk_info(response);
                 break;
             default:
                 response.set_resp_type(Response::ILLEGALREQUEST);

@@ -68,7 +68,7 @@ public slots:
     void cleaning_up();
     void handle_remove_success();
     void handle_remove_failed(fs::proto::Response::ResponseType error);
-    void handle_diskspace_success(int available, int total);
+    void handle_diskspace_success(long long available, long long total);
     void handle_diskspace_failed(fs::proto::Response::ResponseType error);
 
 };

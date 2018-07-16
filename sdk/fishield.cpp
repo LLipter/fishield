@@ -496,7 +496,7 @@ void fs_cleaning_up(){
     boost::this_thread::sleep(boost::posix_time::milliseconds(300));
 }
 
-void _fs_disk_space(fs_fp_ii cb_success,
+void _fs_disk_space(fs_fp_ll cb_success,
                     fs_fp_error cb_failed){
     using namespace fs::proto;
 
@@ -519,7 +519,7 @@ void _fs_disk_space(fs_fp_ii cb_success,
 }
 
 
-void fs_disk_space(fs_fp_ii cb_success,
+void fs_disk_space(fs_fp_ll cb_success,
                    fs_fp_error cb_failed){
     std::thread thd(_fs_disk_space,
                     cb_success,

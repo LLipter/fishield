@@ -319,9 +319,12 @@ QString getSizeStr(int size){
     return ret;
 }
 
-void backend::handle_diskspace_success(int available, int total){
+void backend::handle_diskspace_success(long long available, long long total){
     if(is_timeout)
         return;
+
+    std::cout << "available : " << available << std::endl;
+    std::cout << "total : " << total << std::endl;
 
     QString available_str = getSizeStr(available);
     QString total_str = getSizeStr(total);
