@@ -33,7 +33,7 @@
 #define DEFAULE_MAX_TASKNO              5
 #define DEFAULT_REMOVE_SLEEP_TIME       boost::posix_time::seconds(2)
 #define DEFAULT_SAVE_SLEEP_TIME         boost::posix_time::seconds(2)
-#define DEFAULT_REPORT_SLEEP_TIME       boost::posix_time::milliseconds(500)
+#define DEFAULT_REPORT_SLEEP_TIME       boost::posix_time::seconds(1)
 #define DEFAULT_TASK_TIMEOUT            60*60
 #define DEFAULT_CLIENT_TIMEOUT          60*60
 #define DEFAULT_TOKEN_TIMEOUT           60*60

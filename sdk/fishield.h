@@ -150,4 +150,7 @@ void fs_resume(int task_id,
 void fs_server_startup(const short port);
 
 
+void fs_history_tasks(fs_fp_tasks cb_history_tasks);
+
+
 #endif

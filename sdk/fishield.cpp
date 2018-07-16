@@ -452,3 +452,18 @@ void fs_server_startup(const short port){
     std::cout << "------------------------------------" << std::endl;
     threads.join_all();
 }
+
+void _fs_history_tasks(fs_fp_tasks cb_history_tasks){
+    std::vector<fs::proto::Task> history_tasks;
+    auto& tmap = fs_scheduler::instance()->task_map_finished;
+    for(auto it=tmap.begin();it!=tmap.end();it++){
+        history_tasks.push_back(it->second);
+    }
+    cb_history_tasks(history_tasks);
+}
+
+void fs_history_tasks(fs_fp_tasks cb_history_tasks){
+    std::thread thd(_fs_history_tasks,
+                    cb_history_tasks);
+    thd.detach();
+}
