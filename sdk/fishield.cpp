@@ -18,15 +18,19 @@ int fs_client_startup(const std::string& addr, const short port){
     tcp::resolver::iterator it = resolver.resolve(qry, err);
 
     if(err){
+#ifdef DEBUG
         std::cout << err.message() << std::endl;
+#endif
         return FS_E_ILLEGAL_VALUE;
     }
 
     tcp::resolver::iterator end;
     if(it != end){
+#ifdef DEBUG
         std::cout << addr << " : "
                   << (*it).endpoint().address().to_string()
                   << std::endl;
+#endif
         _server_addr = (*it).endpoint().address();
         _server_port = port;
     }else
@@ -525,4 +529,54 @@ void fs_disk_space(fs_fp_ll cb_success,
                     cb_success,
                     cb_failed);
     thd.detach();
+}
+
+fs::proto::Response fs_root_login(const std::string& password){
+    using namespace fs::proto;
+    Request login_request;
+    login_request.set_req_type(Request::LOGIN);
+    login_request.set_username("root");
+    login_request.set_password(password);
+
+    // send request and receive response
+    Response response;
+    if(send_receive(login_request,response) == false)
+        response.set_resp_type(Response::NORESPONSE);
+
+    // check response type
+    if(response.resp_type() == Response::SUCCESS)
+        _token = response.token();
+
+    return response;
+}
+
+fs::proto::Response fs_userlist(){
+    using namespace fs::proto;
+    Request userlist_request;
+    userlist_request.set_req_type(Request::USERLIST);
+    userlist_request.set_token(_token);
+
+
+    // send request and receive response
+    Response response;
+    if(send_receive(userlist_request,response) == false)
+        response.set_resp_type(Response::NORESPONSE);
+
+    return response;
+}
+
+fs::proto::Response fs_adduser(fs::proto::User* user){
+    using namespace fs::proto;
+    Request adduser_request;
+    adduser_request.set_req_type(Request::ADDUSER);
+    adduser_request.set_allocated_user(user);
+    adduser_request.set_token(_token);
+
+
+    // send request and receive response
+    Response response;
+    if(send_receive(adduser_request,response) == false)
+        response.set_resp_type(Response::NORESPONSE);
+
+    return response;
 }

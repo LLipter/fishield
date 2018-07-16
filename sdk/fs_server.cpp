@@ -10,7 +10,7 @@ std::vector<server_ptr> clients;
 std::map<int,fs::proto::Task> tasks;
 std::mutex server_task_mutex;
 std::mutex server_taskid_mutex;
-std::map <std::string, fs_user> token_map;
+std::map <std::string, fs::proto::User> token_map;
 std::mutex token_mutex;
 
 
@@ -170,8 +170,8 @@ void remove_clients_thread() {
         token_mutex.lock();
         std::vector<std::string> tokens_remove;
         for(auto it=token_map.begin();it!=token_map.end();it++){
-            fs_user& user = it->second;
-            if(std::time(0) - user.last_packet_time > DEFAULT_TOKEN_TIMEOUT)
+            fs::proto::User& user = it->second;
+            if(std::time(0) - user.last_packet_time() > DEFAULT_TOKEN_TIMEOUT)
                 tokens_remove.push_back(it->first);
         }
         for(std::string token : tokens_remove)
@@ -550,10 +550,10 @@ void verify_password(std::string username,
                      fs::proto::Response& response){
     using namespace fs::proto;
     fs_DBManager manager;
-    fs_user user;
-    user.username = username;
-    user.password = password;
-    int ret = manager.login(&user);
+    User user;
+    user.set_username(username);
+    user.set_password(password);
+    int ret = manager.login(user);
     if(ret == FS_E_NOSUCHUSER){
         response.set_resp_type(Response::NOSUCHUSER);
         return;
@@ -565,12 +565,12 @@ void verify_password(std::string username,
 
     std::string token = gen_token();
     response.set_token(token);
-    user.last_packet_time = std::time(0);
+    user.set_last_packet_time(std::time(0));
     token_mutex.lock();
     token_map[token] = user;
     token_mutex.unlock();
     response.set_resp_type(Response::SUCCESS);
-    response.set_privilege(user.privilege);
+    response.set_privilege(user.privilege());
 
 }
 
@@ -578,8 +578,8 @@ void verify_password(std::string username,
 bool verify_token(const std::string& token, int& privilege){
     auto it = token_map.find(token);
     if(it != token_map.end()){
-        it->second.last_packet_time = std::time(0);
-        privilege = it->second.privilege;
+        it->second.set_last_packet_time(std::time(0));
+        privilege = it->second.privilege();
         return true;
     }
     return false;
@@ -602,6 +602,41 @@ void get_disk_info(fs::proto::Response& response){
     response.set_resp_type(Response::SUCCESS);
     response.set_avai_space(info.available);
     response.set_total_space(occupied + info.available);
+}
+
+void getUserList(int privilege, fs::proto::Response& response){
+    using namespace fs::proto;
+    if(!((privilege >> ROOT_BIT) % 2)){
+        // no right
+        response.set_resp_type(Response::NOPRIVILEGE);
+        return;
+    }
+
+    response.set_resp_type(Response::SUCCESS);
+    UserList* userlist = new UserList;
+    fs_DBManager manager;
+    manager.getUserList(userlist);
+    response.set_allocated_userlist(userlist);
+
+}
+
+void adduser(int privilege, const fs::proto::User& user, fs::proto::Response& response){
+    using namespace fs::proto;
+    if(!((privilege >> ROOT_BIT) % 2)){
+        // no right
+        response.set_resp_type(Response::NOPRIVILEGE);
+        return;
+    }
+
+    fs_DBManager manager;
+    int ret = manager.addUser(user);
+    if(ret == FS_E_DUPLICATE_USER){
+        response.set_resp_type(Response::DUPLICATEUSER);
+        return;
+    }
+
+    response.set_resp_type(Response::SUCCESS);
+
 }
 
 void communicate_thread(server_ptr serptr){
@@ -673,6 +708,14 @@ void communicate_thread(server_ptr serptr){
                 break;
             case Request::DISKSPACE:
                 get_disk_info(response);
+                break;
+            case Request::USERLIST:
+                getUserList(privilege, response);
+                break;
+            case Request::ADDUSER:
+                adduser(privilege,
+                        request.user(),
+                        response);
                 break;
             default:
                 response.set_resp_type(Response::ILLEGALREQUEST);

@@ -42,6 +42,7 @@
 #define DEFAULT_TOKEN_LEN               32
 #define UPLOAD_BIT                      0
 #define DOWNLOAD_BIT                    1
+#define ROOT_BIT                        7
 
 #define FS_E_UNKNOWN                    -1      // unknown error
 #define FS_E_TODO                       -2      // something hasn't been implemented
@@ -52,6 +53,7 @@
 #define FS_E_NOSUCHTASK                 -7      // no such task
 #define FS_E_UOLOADFAILED               -8      // upload failed
 #define FS_E_DOWNLOADFAILED             -9      // download failed
+#define FS_E_DUPLICATE_USER             -10     // duplicate user
 
 
 // fs stands for "fishield" or "file security"

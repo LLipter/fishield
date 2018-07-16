@@ -172,4 +172,28 @@ void fs_disk_space(fs_fp_ll cb_success,
                    fs_fp_error cb_failed);
 
 
+/***
+ * DESC:    Used for root to login
+ * NOTE:    This function will block process when trying to communicate with server
+ * RETURN:  return a response from server
+ */
+fs::proto::Response fs_root_login(const std::string& password);
+
+
+/***
+ * DESC:    Used for root to get information about all users
+ * NOTE:    This function will block process when trying to communicate with server
+ * RETURN:  return a response from server
+ */
+fs::proto::Response fs_userlist();
+
+/***
+ * DESC:    Used for root to add a new user
+ * NOTE:    This function will block process when trying to communicate with server
+ * RETURN:  return a response from server
+ */
+fs::proto::Response fs_adduser(fs::proto::User* user);
+
+
+
 #endif

@@ -46,6 +46,8 @@ message Request
 		RENAME				= 9;	// rename or move a existing file
 		CANCEL				= 10;	// cancel a task
 		DISKSPACE			= 11;	// get disk space information
+		USERLIST			= 12;	// get all user information
+		ADDUSER				= 13;	// add a new user
 	}
 	required RequestType req_type	= 1;
 	optional string username	= 2;
@@ -58,6 +60,7 @@ message Request
 	optional uint64 task_id		= 9;	// task_id of which CANCEL/PAUSE/RESUME/PACKET
 	optional uint64	packet_id	= 10;
 	optional string new_path	= 11;	// new path of a RENAMEd file
+	optional User user		= 12;
 	
 }
 
@@ -79,6 +82,7 @@ message Response
 		ILLEGALPACKETID			= 10;	// illegal packet id
 		ILLEGALCLIENTID			= 11;	// illegal client id
 		NOPRIVILEGE			= 12;	// has no corresponding privilege
+		DUPLICATEUSER			= 13;	// Username has already exist
 	
 	}
 	required ResponseType resp_type	= 1;
@@ -91,4 +95,20 @@ message Response
 	optional uint64 avai_space	= 8;	// available disk space in server
 	optional uint64 total_space	= 9;	// total disk space in server
 	optional uint64	privilege	= 10;	// user's privilege
+	optional UserList userlist	= 11;
 }
+
+
+message User
+{
+	required string username		= 1;
+	required string password		= 2;
+	required uint64	privilege		= 3;
+	optional uint64	last_packet_time	= 4;
+}
+
+message UserList
+{
+	repeated User user		= 1;
+}
+

@@ -82,7 +82,9 @@ void fs_scheduler::scheduler_thread(){
                 removed_task.push_back(iter->first);
                 break;
             default:
+#ifdef DEBUG
                 std::cout << "fs_scheduler::scheduler() : UNKNOWN TASK STATUS" << std::endl;
+#endif
                 break;
             }
         }
@@ -175,9 +177,11 @@ void fs_scheduler::add_task(fs::proto::Task task){
     }else if(task.task_status() == Task::DOWNLOAD_INIT){
         std::thread thd(&fs_scheduler::add_download_task, this, task);
         thd.detach();
-    }else
+    }else{
+#ifdef DEBUG
         std::cout << "_add_task() : ILLEGAL TASK STATUS" << std::endl;
-
+#endif
+    }
 }
 
 

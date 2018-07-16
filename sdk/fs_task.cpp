@@ -287,27 +287,34 @@ bool is_timeout(const fs::proto::Task& task){
 }
 
 void default_cb_progress(int task_id, double progress){
+#ifdef DEBUG
     std::cout << "callback : upload/download progress "
               << "(task_id=" << task_id << ")"
               << "(progress=" << progress << ")" << std::endl;
     std::cout << "------------------------------------" << std::endl;
+#endif
 }
 
 void default_cb_success(int task_id){
+#ifdef DEBUG
     std::cout << "callback : upload/download successfully (task_id="
               << task_id << ")" << std::endl;
     std::cout << "------------------------------------" << std::endl;
+#endif
 }
 
 void default_cb_failed(int task_id, fs::proto::Response::ResponseType error){
+#ifdef DEBUG
     std::cout << "callback : upload/download failed (task_id="
               << task_id << ") "
               << fs::proto::Response::ResponseType_Name(error)
               << std::endl;
     std::cout << "------------------------------------" << std::endl;
+#endif
 }
 
 void default_cb_report(std::vector<fs::proto::Task> tasks){
+#ifdef DEBUG
     std::cout << "callback : upload/download report"
               << std::endl;
     for(auto task : tasks){
@@ -316,4 +323,5 @@ void default_cb_report(std::vector<fs::proto::Task> tasks){
                   << std::endl;
     }
     std::cout << "------------------------------------" << std::endl;
+#endif
 }

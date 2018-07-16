@@ -16,12 +16,16 @@ bool fs_client::connect(){
     boost::system::error_code error;
     _sock.connect(_ep,error);
     if(error){
+#ifdef DEBUG
         std::cout << "connect() failed : "
                   << error.message()
                   << std::endl;
+#endif
         return false;
     }
+#ifdef DEBUG
     std::cout << "connection built : " << std::endl;
+#endif
     return true;
 }
 
@@ -37,14 +41,18 @@ bool fs_client::send_request(const fs::proto::Request& request){
     boost::asio::write(_sock, boost::asio::buffer(buf,len+4), err);
     delete[] buf;
     if(err){
+#ifdef DEBUG
         std::cout << "send_request() failed : "
                   << err.message()
                   << std::endl;
+#endif
         return false;
     }
+#ifdef DEBUG
     std::cout << "send_request() success : "
               << Request::RequestType_Name(request.req_type())
               << std::endl;
+#endif
     return true;
 
 }
@@ -57,9 +65,11 @@ bool fs_client::receive_response(fs::proto::Response& response){
     boost::system::error_code err;
     boost::asio::read(_sock, boost::asio::buffer((char*)&len, 4), err);
     if(err){
+#ifdef DEBUG
         std::cout << "receive_response() read len failed : "
                   << err.message()
                   << std::endl;
+#endif
         return false;
     }
 
@@ -68,23 +78,29 @@ bool fs_client::receive_response(fs::proto::Response& response){
     boost::asio::read(_sock, boost::asio::buffer(buf,len), err);
     if(err){
         delete[] buf;
+#ifdef DEBUG
         std::cout << "receive_response() read response failed : "
                   << err.message()
                   << std::endl;
+#endif
         return false;
     }
 
     // deserialize response
     if(response.ParseFromArray(buf,len) == false){
         delete[] buf;
+#ifdef DEBUG
         std::cout << "receive_response() deserialize response failed : "
                   << std::endl;
+#endif
         return false;
     }
     delete[] buf;
+#ifdef DEBUG
     std::cout << "receive_response() success : "
               << Response::ResponseType_Name(response.resp_type())
               << std::endl;
+#endif
     return true;
 }
 
@@ -93,22 +109,28 @@ bool send_receive(const fs::proto::Request& request,fs::proto::Response& respons
     // connect to server
     fs_client client;
     if(client.connect() == false){
+#ifdef DEBUG
         std::cout << "connect() failed"
                   << std::endl;
+#endif
         return false;
     }
 
     // send request
     if(client.send_request(request) == false){
+#ifdef DEBUG
         std::cout << "send_request() failed"
                   << std::endl;
+#endif
         return false;
     }
 
     // receive response
     if(client.receive_response(response) == false){
+#ifdef DEBUG
         std::cout << "receive_response() failed"
                   << std::endl;
+#endif
         return false;
     }
 

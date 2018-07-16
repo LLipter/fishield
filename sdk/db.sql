@@ -5,7 +5,7 @@ CREATE TABLE user(
     create_time DATETIME DEFAULT NOW()
 )default charset=utf8;
 
-INSERT INTO user(username, password, privilege) VALUES('root', '123456', 3);
+INSERT INTO user(username, password, privilege) VALUES('root', '123456', 128+2+1);
 INSERT INTO user(username, password, privilege) VALUES('upload', '000000', 1);
 INSERT INTO user(username, password, privilege) VALUES('download', '000000', 2);
 

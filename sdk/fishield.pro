@@ -11,8 +11,8 @@ SOURCES += \
     fs_scheduler.cpp \
     fs_task.cpp \
     fs_task.pb.cc \
-    main_client.cpp \
-    fs_dbmanager.cpp
+    fs_dbmanager.cpp \
+    admin_tool.cpp
 
 HEADERS += \
     fishield.h \
@@ -23,8 +23,7 @@ HEADERS += \
     fs_scheduler.h \
     fs_config.h \
     fs_task.pb.h \
-    fs_dbmanager.h \
-    fs_user.h
+    fs_dbmanager.h
 
 DISTFILES += \
     Makefile \
@@ -36,3 +35,4 @@ LIBS += -lpthread
 LIBS += -lprotobuf
 LIBS += -lmysqlcppconn
 
+#DEFINES += DEBUG
