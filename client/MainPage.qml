@@ -205,6 +205,13 @@ TabbedPage {
         }
     }
 
+    Connections{
+        target: backend
+        onRelogin: {
+            mainpage.forcePop();
+        }
+    }
+
 
 
 }

@@ -22,8 +22,8 @@ Item {
     }
 
     function loadfilelist(){
-        loginpage.loading = true;
-        loginpage.timeout = 5;
+        root.loading = true;
+        root.timeout = 5;
         countDowm.start();
         backend.getFileList(currentpath);
     }
@@ -33,9 +33,9 @@ Item {
         repeat: true;
         interval: 1000;
         onTriggered: {
-            loginpage.timeout--;
-            if (loginpage.timeout < 0) {
-                loginpage.loading = false
+            root.timeout--;
+            if (root.timeout < 0) {
+                root.loading = false
                 errorlabel.visible = true
                 backend.timeout();
             }
@@ -53,7 +53,7 @@ Item {
     Connections{
         target: backend
         onFileLoaded: {
-            loading = false;
+            root.loading = false;
             countDowm.stop();
 
 
@@ -81,7 +81,7 @@ Item {
             fill: parent
             margins: dp(32)
         }
-        visible: !loading
+        visible: !root.loading
         contentHeight: Math.max(content.implicitHeight, height)
 
         Column {
@@ -126,7 +126,7 @@ Item {
 
     ProgressCircle {
         anchors.centerIn: parent
-        visible: loading
+        visible: root.loading
     }
 
     ActionButton {

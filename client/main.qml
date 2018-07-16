@@ -139,9 +139,9 @@ ApplicationWindow {
                     loginpage.loading = false;
                     countDowm.stop();
                     console.debug(username.text ,"logined");
-                    pageStack.push(Qt.resolvedUrl("MainPage.qml"))
                     errorlabel.text = "token timeout, please login again"
                     errorlabel.visible = true;
+                    pageStack.push(Qt.resolvedUrl("MainPage.qml"))
                 }
                 onNo_such_user:{
                     loginpage.loading = false;

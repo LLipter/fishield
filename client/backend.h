@@ -44,6 +44,7 @@ signals:
     void history_loaded(QVariantList _file_names,
                         QVariantList _file_states);
     void file_removed();
+    void relogin();
 
 public slots:
     void handle_login_success();

@@ -89,7 +89,9 @@ void backend::handle_filelist_success(fs::proto::FileList filelist){
 }
 
 void backend::handle_filelist_failed(fs::proto::Response::ResponseType error){
-    // TODO : CHECK ERROR TYPE (ILLEGAL TOKEN)
+    // TODO : CHECK ERROR TYPE
+    if(error == fs::proto::Response::ILLEGALTOKEN)
+        emit relogin();
 }
 
 void backend::upload(QString localpath, QString remotepath){
@@ -122,7 +124,9 @@ void backend::handle_transfer_success(int taskid){
 }
 
 void backend::handle_transfer_failed(int taskid, fs::proto::Response::ResponseType error){
-    // TODO : CHECK ERROR TYPE (ILLEGAL TOKEN)
+    // TODO : CHECK ERROR TYPE
+    if(error == fs::proto::Response::ILLEGALTOKEN)
+        emit relogin();
 }
 
 void backend::handle_transfer_report(std::vector<fs::proto::Task> tasks){
@@ -180,7 +184,9 @@ void backend::handle_newdir_success(){
 }
 
 void backend::handle_newdir_failed(fs::proto::Response::ResponseType error){
-    // TODO : CHECK ERROR TYPE (ILLEGAL TOKEN)
+    // TODO : CHECK ERROR TYPE
+    if(error == fs::proto::Response::ILLEGALTOKEN)
+        emit relogin();
 }
 
 void backend::download(QString localbasepath,
@@ -229,7 +235,9 @@ void backend::handle_pause_success(int taskid){
 }
 
 void backend::handle_pause_failed(int taskid, fs::proto::Response::ResponseType error){
-    // TODO : CHECK ERROR TYPE (ILLEGAL TOKEN)
+    // TODO : CHECK ERROR TYPE
+    if(error == fs::proto::Response::ILLEGALTOKEN)
+        emit relogin();
 }
 
 void backend::resume_task(QString taskid){
@@ -246,7 +254,9 @@ void backend::handle_resume_success(int taskid){
 }
 
 void backend::handle_resume_failed(int taskid, fs::proto::Response::ResponseType error){
-    // TODO : CHECK ERROR TYPE (ILLEGAL TOKEN)
+    // TODO : CHECK ERROR TYPE
+    if(error == fs::proto::Response::ILLEGALTOKEN)
+        emit relogin();
 }
 
 void backend::cancel_task(QString taskid){
@@ -262,7 +272,9 @@ void backend::handle_cancel_success(int taskid){
 }
 
 void backend::handle_cancel_failed(int taskid, fs::proto::Response::ResponseType error){
-    // TODO : CHECK ERROR TYPE (ILLEGAL TOKEN)
+    // TODO : CHECK ERROR TYPE
+    if(error == fs::proto::Response::ILLEGALTOKEN)
+        emit relogin();
 }
 
 void backend::cleaning_up(){
@@ -282,5 +294,7 @@ void backend::handle_remove_success(){
     emit file_removed();
 }
 void backend::handle_remove_failed(fs::proto::Response::ResponseType error){
-    // TODO : CHECK ERROR TYPE (ILLEGAL TOKEN)
+    // TODO : CHECK ERROR TYPE
+    if(error == fs::proto::Response::ILLEGALTOKEN)
+        emit relogin();
 }
