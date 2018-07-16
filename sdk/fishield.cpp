@@ -495,3 +495,34 @@ void fs_cleaning_up(){
 
     boost::this_thread::sleep(boost::posix_time::milliseconds(300));
 }
+
+void _fs_disk_space(fs_fp_ii cb_success,
+                    fs_fp_error cb_failed){
+    using namespace fs::proto;
+
+    Request disk_request;
+    disk_request.set_req_type(Request::DISKSPACE);
+    disk_request.set_token(_token);
+
+    // send request and receive response
+    Response response;
+    if(send_receive(disk_request,response) == false){
+        cb_failed(Response::NORESPONSE);
+        return;
+    }
+
+    // check response type
+    if(response.resp_type() == Response::SUCCESS)
+        cb_success(response.avai_space(),response.total_space());
+    else
+        cb_failed(response.resp_type());
+}
+
+
+void fs_disk_space(fs_fp_ii cb_success,
+                   fs_fp_error cb_failed){
+    std::thread thd(_fs_disk_space,
+                    cb_success,
+                    cb_failed);
+    thd.detach();
+}

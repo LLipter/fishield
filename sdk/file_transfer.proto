@@ -45,6 +45,7 @@ message Request
 		REMOVE				= 8;	// delete a file		
 		RENAME				= 9;	// rename or move a existing file
 		CANCEL				= 10;	// cancel a task
+		DISKSPACE			= 11;	// get disk space information
 	}
 	required RequestType req_type	= 1;
 	optional string username	= 2;
@@ -86,4 +87,6 @@ message Response
 	optional uint64	packet_id	= 5;	// packet id of packet that client should send
 	optional uint64 packet_no	= 6;	// number of packets that a DOWNLOAD task will receive
 	optional Packet	packet		= 7;
+	optional uint64 avai_space	= 8;	// available disk space in server
+	optional uint64 total_space	= 9;	// total disk space in server
 }

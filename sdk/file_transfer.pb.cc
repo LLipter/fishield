@@ -201,20 +201,24 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, packet_id_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, packet_no_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, packet_),
-  6,
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, avai_space_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, total_space_),
+  8,
   0,
   1,
   3,
   4,
   5,
   2,
+  6,
+  7,
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 10, sizeof(::fs::proto::File)},
   { 15, 22, sizeof(::fs::proto::FileList)},
   { 24, 31, sizeof(::fs::proto::Packet)},
   { 33, 49, sizeof(::fs::proto::Request)},
-  { 60, 72, sizeof(::fs::proto::Response)},
+  { 60, 74, sizeof(::fs::proto::Response)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -254,32 +258,33 @@ void AddDescriptorsImpl() {
       "RECTORY\020\001\022\013\n\007SYMLINK\020\002\022\t\n\005OTHER\020\003\"6\n\010Fil"
       "eList\022\014\n\004path\030\001 \002(\t\022\034\n\004file\030\002 \003(\0132\016.fs.p"
       "roto.File\")\n\006Packet\022\021\n\tpacket_id\030\001 \002(\004\022\014"
-      "\n\004data\030\002 \002(\014\"\254\003\n\007Request\022/\n\010req_type\030\001 \002"
+      "\n\004data\030\002 \002(\014\"\273\003\n\007Request\022/\n\010req_type\030\001 \002"
       "(\0162\035.fs.proto.Request.RequestType\022\020\n\010use"
       "rname\030\002 \001(\t\022\020\n\010password\030\003 \001(\t\022\r\n\005token\030\004"
       " \001(\t\022\023\n\013remote_path\030\005 \001(\t\022\020\n\010filename\030\006 "
       "\001(\t\022\021\n\tpacket_no\030\007 \001(\004\022 \n\006packet\030\010 \001(\0132\020"
       ".fs.proto.Packet\022\017\n\007task_id\030\t \001(\004\022\021\n\tpac"
-      "ket_id\030\n \001(\004\022\020\n\010new_path\030\013 \001(\t\"\252\001\n\013Reque"
+      "ket_id\030\n \001(\004\022\020\n\010new_path\030\013 \001(\t\"\271\001\n\013Reque"
       "stType\022\t\n\005LOGIN\020\000\022\014\n\010FILELIST\020\001\022\t\n\005MKDIR"
       "\020\002\022\n\n\006UPLOAD\020\003\022\014\n\010DOWNLOAD\020\004\022\017\n\013SEND_PAC"
       "KET\020\005\022\022\n\016RECEIVE_PACKET\020\006\022\024\n\020DOWNLOAD_CO"
       "NFIRM\020\007\022\n\n\006REMOVE\020\010\022\n\n\006RENAME\020\t\022\n\n\006CANCE"
-      "L\020\n\"\266\003\n\010Response\0222\n\tresp_type\030\001 \002(\0162\037.fs"
-      ".proto.Response.ResponseType\022\r\n\005token\030\002 "
-      "\001(\t\022%\n\tfile_list\030\003 \001(\0132\022.fs.proto.FileLi"
-      "st\022\017\n\007task_id\030\004 \001(\004\022\021\n\tpacket_id\030\005 \001(\004\022\021"
-      "\n\tpacket_no\030\006 \001(\004\022 \n\006packet\030\007 \001(\0132\020.fs.p"
-      "roto.Packet\"\346\001\n\014ResponseType\022\013\n\007SUCCESS\020"
-      "\000\022\016\n\nNOSUCHUSER\020\001\022\021\n\rILLEGALPASSWD\020\002\022\013\n\007"
-      "UNKNOWN\020\003\022\016\n\nNORESPONSE\020\004\022\020\n\014ILLEGALTOKE"
-      "N\020\005\022\017\n\013ILLEGALPATH\020\006\022\022\n\016ILLEGALREQUEST\020\007"
-      "\022\025\n\021ILLEGALTASKSTATUS\020\010\022\021\n\rILLEGALTASKID"
-      "\020\t\022\023\n\017ILLEGALPACKETID\020\n\022\023\n\017ILLEGALCLIENT"
-      "ID\020\013"
+      "L\020\n\022\r\n\tDISKSPACE\020\013\"\337\003\n\010Response\0222\n\tresp_"
+      "type\030\001 \002(\0162\037.fs.proto.Response.ResponseT"
+      "ype\022\r\n\005token\030\002 \001(\t\022%\n\tfile_list\030\003 \001(\0132\022."
+      "fs.proto.FileList\022\017\n\007task_id\030\004 \001(\004\022\021\n\tpa"
+      "cket_id\030\005 \001(\004\022\021\n\tpacket_no\030\006 \001(\004\022 \n\006pack"
+      "et\030\007 \001(\0132\020.fs.proto.Packet\022\022\n\navai_space"
+      "\030\010 \001(\004\022\023\n\013total_space\030\t \001(\004\"\346\001\n\014Response"
+      "Type\022\013\n\007SUCCESS\020\000\022\016\n\nNOSUCHUSER\020\001\022\021\n\rILL"
+      "EGALPASSWD\020\002\022\013\n\007UNKNOWN\020\003\022\016\n\nNORESPONSE\020"
+      "\004\022\020\n\014ILLEGALTOKEN\020\005\022\017\n\013ILLEGALPATH\020\006\022\022\n\016"
+      "ILLEGALREQUEST\020\007\022\025\n\021ILLEGALTASKSTATUS\020\010\022"
+      "\021\n\rILLEGALTASKID\020\t\022\023\n\017ILLEGALPACKETID\020\n\022"
+      "\023\n\017ILLEGALCLIENTID\020\013"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1204);
+      descriptor, 1260);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "file_transfer.proto", &protobuf_RegisterTypes);
 }
@@ -339,6 +344,7 @@ bool Request_RequestType_IsValid(int value) {
     case 8:
     case 9:
     case 10:
+    case 11:
       return true;
     default:
       return false;
@@ -357,6 +363,7 @@ const Request_RequestType Request::DOWNLOAD_CONFIRM;
 const Request_RequestType Request::REMOVE;
 const Request_RequestType Request::RENAME;
 const Request_RequestType Request::CANCEL;
+const Request_RequestType Request::DISKSPACE;
 const Request_RequestType Request::RequestType_MIN;
 const Request_RequestType Request::RequestType_MAX;
 const int Request::RequestType_ARRAYSIZE;
@@ -2254,6 +2261,8 @@ const int Response::kTaskIdFieldNumber;
 const int Response::kPacketIdFieldNumber;
 const int Response::kPacketNoFieldNumber;
 const int Response::kPacketFieldNumber;
+const int Response::kAvaiSpaceFieldNumber;
+const int Response::kTotalSpaceFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Response::Response()
@@ -2340,11 +2349,12 @@ void Response::Clear() {
       packet_->Clear();
     }
   }
-  if (cached_has_bits & 120u) {
+  if (cached_has_bits & 248u) {
     ::memset(&task_id_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&resp_type_) -
-        reinterpret_cast<char*>(&task_id_)) + sizeof(resp_type_));
+        reinterpret_cast<char*>(&total_space_) -
+        reinterpret_cast<char*>(&task_id_)) + sizeof(total_space_));
   }
+  resp_type_ = 0;
   _has_bits_.Clear();
   _internal_metadata_.Clear();
 }
@@ -2461,6 +2471,34 @@ bool Response::MergePartialFromCodedStream(
         break;
       }
 
+      // optional uint64 avai_space = 8;
+      case 8: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(64u /* 64 & 0xFF */)) {
+          set_has_avai_space();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &avai_space_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // optional uint64 total_space = 9;
+      case 9: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(72u /* 72 & 0xFF */)) {
+          set_has_total_space();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &total_space_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -2489,7 +2527,7 @@ void Response::SerializeWithCachedSizes(
 
   cached_has_bits = _has_bits_[0];
   // required .fs.proto.Response.ResponseType resp_type = 1;
-  if (cached_has_bits & 0x00000040u) {
+  if (cached_has_bits & 0x00000100u) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       1, this->resp_type(), output);
   }
@@ -2531,6 +2569,16 @@ void Response::SerializeWithCachedSizes(
       7, this->_internal_packet(), output);
   }
 
+  // optional uint64 avai_space = 8;
+  if (cached_has_bits & 0x00000040u) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(8, this->avai_space(), output);
+  }
+
+  // optional uint64 total_space = 9;
+  if (cached_has_bits & 0x00000080u) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(9, this->total_space(), output);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         _internal_metadata_.unknown_fields(), output);
@@ -2547,7 +2595,7 @@ void Response::SerializeWithCachedSizes(
 
   cached_has_bits = _has_bits_[0];
   // required .fs.proto.Response.ResponseType resp_type = 1;
-  if (cached_has_bits & 0x00000040u) {
+  if (cached_has_bits & 0x00000100u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       1, this->resp_type(), target);
   }
@@ -2592,6 +2640,16 @@ void Response::SerializeWithCachedSizes(
         7, this->_internal_packet(), deterministic, target);
   }
 
+  // optional uint64 avai_space = 8;
+  if (cached_has_bits & 0x00000040u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(8, this->avai_space(), target);
+  }
+
+  // optional uint64 total_space = 9;
+  if (cached_has_bits & 0x00000080u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(9, this->total_space(), target);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields(), target);
@@ -2614,7 +2672,7 @@ size_t Response::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->resp_type());
   }
-  if (_has_bits_[0 / 32] & 63u) {
+  if (_has_bits_[0 / 32] & 255u) {
     // optional string token = 2;
     if (has_token()) {
       total_size += 1 +
@@ -2657,6 +2715,20 @@ size_t Response::ByteSizeLong() const {
           this->packet_no());
     }
 
+    // optional uint64 avai_space = 8;
+    if (has_avai_space()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt64Size(
+          this->avai_space());
+    }
+
+    // optional uint64 total_space = 9;
+    if (has_total_space()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt64Size(
+          this->total_space());
+    }
+
   }
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
@@ -2686,7 +2758,7 @@ void Response::MergeFrom(const Response& from) {
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 127u) {
+  if (cached_has_bits & 255u) {
     if (cached_has_bits & 0x00000001u) {
       set_has_token();
       token_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.token_);
@@ -2707,9 +2779,15 @@ void Response::MergeFrom(const Response& from) {
       packet_no_ = from.packet_no_;
     }
     if (cached_has_bits & 0x00000040u) {
-      resp_type_ = from.resp_type_;
+      avai_space_ = from.avai_space_;
+    }
+    if (cached_has_bits & 0x00000080u) {
+      total_space_ = from.total_space_;
     }
     _has_bits_[0] |= cached_has_bits;
+  }
+  if (cached_has_bits & 0x00000100u) {
+    set_resp_type(from.resp_type());
   }
 }
 
@@ -2728,7 +2806,7 @@ void Response::CopyFrom(const Response& from) {
 }
 
 bool Response::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000040) != 0x00000040) return false;
+  if ((_has_bits_[0] & 0x00000100) != 0x00000100) return false;
   if (has_file_list()) {
     if (!this->file_list_->IsInitialized()) return false;
   }
@@ -2751,6 +2829,8 @@ void Response::InternalSwap(Response* other) {
   swap(task_id_, other->task_id_);
   swap(packet_id_, other->packet_id_);
   swap(packet_no_, other->packet_no_);
+  swap(avai_space_, other->avai_space_);
+  swap(total_space_, other->total_space_);
   swap(resp_type_, other->resp_type_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);

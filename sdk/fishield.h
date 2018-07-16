@@ -164,4 +164,12 @@ void fs_server_startup(const short port);
 void fs_history_tasks(fs_fp_tasks cb_history_tasks);
 
 
+/***
+ * DESC:    Get history information
+ * RETURN:  return nothing
+ */
+void fs_disk_space(fs_fp_ii cb_success,
+                   fs_fp_error cb_failed);
+
+
 #endif

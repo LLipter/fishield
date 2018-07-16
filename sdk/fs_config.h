@@ -62,6 +62,7 @@ typedef boost::function<void(int)>                                      fs_fp_in
 typedef boost::function<void(int,double)>                               fs_fp_intdouble;
 typedef boost::function<void(int,fs::proto::Response::ResponseType)>    fs_fp_interror;
 typedef boost::function<void(std::vector<fs::proto::Task>)>             fs_fp_tasks;
+typedef boost::function<void(int,int)>                                  fs_fp_ii;
 
 
 

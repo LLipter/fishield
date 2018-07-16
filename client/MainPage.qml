@@ -5,19 +5,28 @@ import Material.ListItems 0.1 as ListItem
 TabbedPage {
     id: mainpage
     title: qsTr("Fishield")
-    actionBar.maxActionCount: navDrawer.enabled ? 3 : 4
+    actionBar.maxActionCount: navDrawer.enabled ? 3 : 5
 
     property var sections: ["Files", "Transferring", "History"]
     property var sectionTitles: [ qsTr("Files"), qsTr("Downloading/Uploading"), qsTr("History")]
 
     property string selectedComponent: sections[0]
 
+    property var disk_available: 0
+    property var disk_total: 0
+
+
+    Component.onCompleted: {
+        backend.disk_space();
+    }
+
+
     actions: [
         Action {
             iconName: "warning"
             name: "Dummy error"
             onTriggered: demo.showError("Something went wrong", "Do you want to retry?", "Close", true)
-            enabled: false
+            visible: false
         },
 
         Action {
@@ -30,23 +39,44 @@ TabbedPage {
             iconName: "settings"
             name: "Settings"
             hoverAnimation: true
-            enabled: false
+            visible: false
         },
 
         Action {
             iconName: "language"
             name: "Language"
-            enabled: false
+            visible: false
         },
 
         Action {
             iconName: "account"
             name: "Accounts"
-            enabled: false
+            visible: false
+        },
+
+        Action {
+            iconName: "diskspace"
+            name: "Disk Space"
         }
     ]
 
     backAction: navDrawer.action
+
+    Dialog {
+        id: diskspace_dialog
+        width: dp(300)
+        title: "Disk space"
+//        text: disk_available + " / " + disk_total
+        positiveButtonText: "Done"
+        negativeButton.visible: false
+
+        Label{
+            text: "Total space : " + disk_total
+        }
+        Label{
+            text: "Available space : " + disk_available
+        }
+    }
 
     NavigationDrawer {
         id: navDrawer
@@ -209,6 +239,10 @@ TabbedPage {
         target: backend
         onRelogin: {
             mainpage.forcePop();
+        }
+        onDisk_space_loaded:{
+            disk_available = available
+            disk_total = total;
         }
     }
 

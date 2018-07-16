@@ -23,6 +23,7 @@ public:
     Q_INVOKABLE void resume_task(QString taskid);
     Q_INVOKABLE void cancel_task(QString taskid);
     Q_INVOKABLE void remove_file(QString path);
+    Q_INVOKABLE void disk_space();
 
 private:
     static QString _token;
@@ -45,6 +46,7 @@ signals:
                         QVariantList _file_states);
     void file_removed();
     void relogin();
+    void disk_space_loaded(QString available, QString total);
 
 public slots:
     void handle_login_success();
@@ -66,6 +68,9 @@ public slots:
     void cleaning_up();
     void handle_remove_success();
     void handle_remove_failed(fs::proto::Response::ResponseType error);
+    void handle_diskspace_success(int available, int total);
+    void handle_diskspace_failed(fs::proto::Response::ResponseType error);
+
 };
 
 #endif // BACKEND_H

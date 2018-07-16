@@ -22,6 +22,7 @@
 	<file alias="pause.svg">ic_pause_48px.svg</file>
 	<file alias="cancel.svg">ic_cancel_48px.svg</file>
 	<file alias="delete.svg">ic_delete_sweep_48px.svg</file>
+	<file alias="diskspace.svg">ic_perm_data_setting_48px.svg</file>
 
 </qresource>
 

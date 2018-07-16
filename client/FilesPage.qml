@@ -235,7 +235,8 @@ Item {
     Dialog {
         id: delete_confirm
         width: dp(300)
-        text: "Do you want to remove the current working directory? All files within this directory and the directory itself will be removed"
+        title: "Delete this directory"
+        text: "Do you want to remove the current working directory? All files within this directory and the directory itself will be removed."
         positiveButtonText: "confirm"
         negativeButtonText: "cancel"
         onAccepted: {

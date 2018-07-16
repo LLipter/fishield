@@ -109,11 +109,12 @@ enum Request_RequestType {
   Request_RequestType_DOWNLOAD_CONFIRM = 7,
   Request_RequestType_REMOVE = 8,
   Request_RequestType_RENAME = 9,
-  Request_RequestType_CANCEL = 10
+  Request_RequestType_CANCEL = 10,
+  Request_RequestType_DISKSPACE = 11
 };
 bool Request_RequestType_IsValid(int value);
 const Request_RequestType Request_RequestType_RequestType_MIN = Request_RequestType_LOGIN;
-const Request_RequestType Request_RequestType_RequestType_MAX = Request_RequestType_CANCEL;
+const Request_RequestType Request_RequestType_RequestType_MAX = Request_RequestType_DISKSPACE;
 const int Request_RequestType_RequestType_ARRAYSIZE = Request_RequestType_RequestType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* Request_RequestType_descriptor();
@@ -742,6 +743,8 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
     Request_RequestType_RENAME;
   static const RequestType CANCEL =
     Request_RequestType_CANCEL;
+  static const RequestType DISKSPACE =
+    Request_RequestType_DISKSPACE;
   static inline bool RequestType_IsValid(int value) {
     return Request_RequestType_IsValid(value);
   }
@@ -1138,6 +1141,20 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::uint64 packet_no() const;
   void set_packet_no(::google::protobuf::uint64 value);
 
+  // optional uint64 avai_space = 8;
+  bool has_avai_space() const;
+  void clear_avai_space();
+  static const int kAvaiSpaceFieldNumber = 8;
+  ::google::protobuf::uint64 avai_space() const;
+  void set_avai_space(::google::protobuf::uint64 value);
+
+  // optional uint64 total_space = 9;
+  bool has_total_space() const;
+  void clear_total_space();
+  static const int kTotalSpaceFieldNumber = 9;
+  ::google::protobuf::uint64 total_space() const;
+  void set_total_space(::google::protobuf::uint64 value);
+
   // required .fs.proto.Response.ResponseType resp_type = 1;
   bool has_resp_type() const;
   void clear_resp_type();
@@ -1161,6 +1178,10 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   void clear_has_packet_no();
   void set_has_packet();
   void clear_has_packet();
+  void set_has_avai_space();
+  void clear_has_avai_space();
+  void set_has_total_space();
+  void clear_has_total_space();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
@@ -1171,6 +1192,8 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::uint64 task_id_;
   ::google::protobuf::uint64 packet_id_;
   ::google::protobuf::uint64 packet_no_;
+  ::google::protobuf::uint64 avai_space_;
+  ::google::protobuf::uint64 total_space_;
   int resp_type_;
   friend struct ::protobuf_file_5ftransfer_2eproto::TableStruct;
 };
@@ -2137,13 +2160,13 @@ inline void Request::set_allocated_new_path(::std::string* new_path) {
 
 // required .fs.proto.Response.ResponseType resp_type = 1;
 inline bool Response::has_resp_type() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
+  return (_has_bits_[0] & 0x00000100u) != 0;
 }
 inline void Response::set_has_resp_type() {
-  _has_bits_[0] |= 0x00000040u;
+  _has_bits_[0] |= 0x00000100u;
 }
 inline void Response::clear_has_resp_type() {
-  _has_bits_[0] &= ~0x00000040u;
+  _has_bits_[0] &= ~0x00000100u;
 }
 inline void Response::clear_resp_type() {
   resp_type_ = 0;
@@ -2412,6 +2435,54 @@ inline void Response::set_allocated_packet(::fs::proto::Packet* packet) {
   }
   packet_ = packet;
   // @@protoc_insertion_point(field_set_allocated:fs.proto.Response.packet)
+}
+
+// optional uint64 avai_space = 8;
+inline bool Response::has_avai_space() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void Response::set_has_avai_space() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void Response::clear_has_avai_space() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void Response::clear_avai_space() {
+  avai_space_ = GOOGLE_ULONGLONG(0);
+  clear_has_avai_space();
+}
+inline ::google::protobuf::uint64 Response::avai_space() const {
+  // @@protoc_insertion_point(field_get:fs.proto.Response.avai_space)
+  return avai_space_;
+}
+inline void Response::set_avai_space(::google::protobuf::uint64 value) {
+  set_has_avai_space();
+  avai_space_ = value;
+  // @@protoc_insertion_point(field_set:fs.proto.Response.avai_space)
+}
+
+// optional uint64 total_space = 9;
+inline bool Response::has_total_space() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void Response::set_has_total_space() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void Response::clear_has_total_space() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void Response::clear_total_space() {
+  total_space_ = GOOGLE_ULONGLONG(0);
+  clear_has_total_space();
+}
+inline ::google::protobuf::uint64 Response::total_space() const {
+  // @@protoc_insertion_point(field_get:fs.proto.Response.total_space)
+  return total_space_;
+}
+inline void Response::set_total_space(::google::protobuf::uint64 value) {
+  set_has_total_space();
+  total_space_ = value;
+  // @@protoc_insertion_point(field_set:fs.proto.Response.total_space)
 }
 
 #ifdef __GNUC__

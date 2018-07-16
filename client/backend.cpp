@@ -298,3 +298,41 @@ void backend::handle_remove_failed(fs::proto::Response::ResponseType error){
     if(error == fs::proto::Response::ILLEGALTOKEN)
         emit relogin();
 }
+
+void backend::disk_space(){
+    is_timeout = false;
+    fs_disk_space(boost::bind(&backend::handle_diskspace_success, this, _1, _2),
+                  boost::bind(&backend::handle_diskspace_failed, this, _1));
+}
+
+
+QString getSizeStr(int size){
+    QString ret;
+    if(size < 1024)
+        ret = QString::fromStdString(std::to_string(size)) + "B";
+    else if(ret < 1024*1024)
+        ret = QString::fromStdString(std::to_string(size/1024)) + "K";
+    else if(ret < 1024*1024*1024)
+        ret = QString::fromStdString(std::to_string(size/1024/1024)) + "M";
+    else
+        ret = QString::fromStdString(std::to_string(size/1024/1024/1024)) + "G";
+    return ret;
+}
+
+void backend::handle_diskspace_success(int available, int total){
+    if(is_timeout)
+        return;
+
+    QString available_str = getSizeStr(available);
+    QString total_str = getSizeStr(total);
+
+
+    emit disk_space_loaded(available_str, total_str);
+}
+
+void backend::handle_diskspace_failed(fs::proto::Response::ResponseType error){
+    // TODO : CHECK ERROR TYPE
+    if(error == fs::proto::Response::ILLEGALTOKEN)
+        emit relogin();
+}
+

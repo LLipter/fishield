@@ -564,6 +564,25 @@ bool verify_token(const std::string& token){
     return false;
 }
 
+void get_dist_info(fs::proto::Response& response){
+    using namespace fs::proto;
+    using namespace boost::filesystem;
+
+    space_info info = space("/");
+
+    size_t occupied = 0;
+    for(recursive_directory_iterator it(rootdir);
+        it!=recursive_directory_iterator();
+        ++it){
+        if(!is_directory(*it))
+            occupied += file_size(*it);
+    }
+
+    response.set_resp_type(Response::SUCCESS);
+    response.set_avai_space(info.available);
+    response.set_total_space(occupied + info.available);
+}
+
 void communicate_thread(server_ptr serptr){
     using namespace fs::proto;
     int ret_req;
@@ -608,7 +627,9 @@ void communicate_thread(server_ptr serptr){
                             response);
                 break;
             case Request::SEND_PACKET:
-                receive_packet(request.task_id(), request.packet(), response);
+                receive_packet(request.task_id(),
+                               request.packet(),
+                               response);
                 break;
             case Request::DOWNLOAD:
                 init_download(request.remote_path(),
@@ -625,6 +646,9 @@ void communicate_thread(server_ptr serptr){
                 break;
             case Request::CANCEL:
                 cancel_task(request.task_id(), response);
+                break;
+            case Request::DISKSPACE:
+                get_dist_info(response);
                 break;
             default:
                 response.set_resp_type(Response::ILLEGALREQUEST);
