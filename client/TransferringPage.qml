@@ -81,7 +81,9 @@ Item {
             Action {
                 iconName: "cancel"
                 name: "Cancel"
-                enabled: false
+                onTriggered: {
+                    backend.cancel_task(selectid);
+                }
             }
         ]
     }

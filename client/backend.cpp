@@ -248,3 +248,20 @@ void backend::handle_resume_success(int taskid){
 void backend::handle_resume_failed(int taskid, fs::proto::Response::ResponseType error){
     // TODO : CHECK ERROR TYPE (ILLEGAL TOKEN)
 }
+
+void backend::cancel_task(QString taskid){
+    is_timeout = false;
+    int id = std::stoi(taskid.toStdString());
+    fs_cancel(id,
+              boost::bind(&backend::handle_cancel_success, this, _1),
+              boost::bind(&backend::handle_cancel_failed, this, _1, _2));
+}
+
+void backend::handle_cancel_success(int taskid){
+    // TODO :
+}
+
+void backend::handle_cancel_failed(int taskid, fs::proto::Response::ResponseType error){
+    // TODO : CHECK ERROR TYPE (ILLEGAL TOKEN)
+}
+

@@ -345,6 +345,11 @@ void _fs_cancel(int task_id,
             break;
         }
 
+        // remove temp file
+        std::string path = task.localbasepath() + SEPARATOR + DEFAULT_HIDDEN_PREFIX + task.filename();
+        if(boost::filesystem::exists(path))
+            boost::filesystem::remove(path);
+
         client_task_mutex.unlock();
         cb_success(task_id);
     }

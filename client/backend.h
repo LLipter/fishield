@@ -21,6 +21,7 @@ public:
     Q_INVOKABLE void file_history();
     Q_INVOKABLE void pause_task(QString taskid);
     Q_INVOKABLE void resume_task(QString taskid);
+    Q_INVOKABLE void cancel_task(QString taskid);
 
 private:
     static QString _token;
@@ -57,6 +58,8 @@ public slots:
     void handle_pause_failed(int taskid, fs::proto::Response::ResponseType error);
     void handle_resume_success(int taskid);
     void handle_resume_failed(int taskid, fs::proto::Response::ResponseType error);
+    void handle_cancel_success(int taskid);
+    void handle_cancel_failed(int taskid, fs::proto::Response::ResponseType error);
 
 };
 

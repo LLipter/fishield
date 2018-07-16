@@ -507,8 +507,17 @@ void cancel_task(int taskid, fs::proto::Response& response){
         response.set_resp_type(Response::ILLEGALTASKID);
         return;
     }
+
+    // remove temp file
+    Task& task = tasks[taskid];
+    std::string path = task.remotebasepath() + SEPARATOR + hidden_prefix + task.filename();
+    if(boost::filesystem::exists(path))
+        boost::filesystem::remove(path);
+
     server_task_mutex.unlock();
     response.set_resp_type(Response::SUCCESS);
+
+
 }
 
 
