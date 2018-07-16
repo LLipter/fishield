@@ -25,7 +25,7 @@ ApplicationWindow {
         property int timeout: 5
 
         property var can_upload: false
-        property var can_download: fals
+        property var can_download: false
 
         View{
             id: container

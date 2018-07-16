@@ -63,5 +63,5 @@ LIBS += /usr/local/lib/libprotobuf.a
 
 
 INCLUDEPATH += ../sdk
-DEFINES += DEBUG
+#DEFINES += DEBUG
 
