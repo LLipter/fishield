@@ -5,12 +5,9 @@ import Material.Extras 0.1
 
 Item {
     property var file_names: ["File one", "File two", "File Three", "File Four"]
-    property var states: ["uploaded", "uploaded", "uploaded", "uploaded"]
-    property bool loading: false
+    property var file_states: ["uploaded", "uploaded", "uploaded", "uploaded"]
 
-
-    // TODO : GET HISTORY INFOMATION FROM SERVER
-    //    Component.onCompleted: backend.file_history()
+    Component.onCompleted: backend.file_history()
 
 
     Flickable {
@@ -23,30 +20,25 @@ Item {
 
         Connections {
             target: backend
-            //            onHistoryLoaded: {
-            //                console.log("onFileLoaded");
-            //                file_names = _file_names;
-            //                file_authors = _file_authors;
-            //                file_sizes = _file_sizes;
-            //                loading = false;
-            //            }
-        }
+            onHistory_loaded: {
+                console.log("onHistoryLoaded");
+                file_names = _file_names;
+                file_states = _file_states;
 
-        ProgressCircle {
-            anchors.centerIn: parent
-            visible: loading
+                console.debug(_file_names)
+                console.debug(_file_states)
+            }
         }
 
         Column {
             id: content
             anchors.fill: parent
-            visible: !loading
             Repeater {
                 model: file_names
                 delegate: ListItem.Subtitled {
                     iconName:"file"
                     text: file_names[index]
-                    subText: states[index]
+                    subText: file_states[index]
                     backgroundColor: "white"
                     onClicked: {
                         actionSheet.open()
@@ -56,9 +48,31 @@ Item {
         }
 
     }
+
     Scrollbar {
         flickableItem: flickable
     }
+
+    ActionButton {
+        id: refreshbutton
+
+        anchors {
+            right: parent.right
+            bottom: parent.bottom
+            margins: dp(16)
+        }
+
+        action: Action {
+            shortcut: "F5"
+            onTriggered: {
+                console.debug("REFRESH HISTORY");
+                backend.file_history();
+            }
+        }
+        iconName: "refresh"
+
+    }
+
     BottomActionSheet {
         id: actionSheet
 

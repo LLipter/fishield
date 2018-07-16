@@ -44,7 +44,6 @@ void fs_scheduler::scheduler_thread(){
                 iter->second.set_task_status(Task::UPLOAD_PAUSED);
                 task_count--;
                 break;
-
             case Task::DOWNLOAD_INIT:
             case Task::DOWNLOAD_RESUME:
                 if(task_count < max_task_num) {
@@ -59,6 +58,9 @@ void fs_scheduler::scheduler_thread(){
                 break;
             case Task::UPLOADED:
             case Task::DOWNLOADED:
+                task_count--;
+                removed_task.push_back(iter->first);
+                break;
             case Task::CANCELING:
                 task_count--;
                 iter->second.set_task_status(Task::CANCELED);
@@ -97,14 +99,17 @@ void fs_scheduler::scheduler_thread(){
 }
 
 void fs_scheduler::save_thread(){
-    client_task_mutex.lock();
-
-    // save removed tasks in disk
-    save_task_to_file(tasks_finished_path, task_map_finished);
-    save_task_to_file(tasks_current_path, task_map_current);
-
-    client_task_mutex.unlock();
     boost::this_thread::sleep(DEFAULT_CLIENT_SAVE_SLEEP);
+    while(true){
+        boost::this_thread::sleep(DEFAULT_CLIENT_SAVE_SLEEP);
+        client_task_mutex.lock();
+
+        // save removed tasks in disk
+        save_task_to_file(tasks_finished_path, task_map_finished);
+        save_task_to_file(tasks_current_path, task_map_current);
+
+        client_task_mutex.unlock();
+    }
 }
 
 void fs_scheduler::set_task_max(int num){

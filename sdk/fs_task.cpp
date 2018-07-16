@@ -213,8 +213,13 @@ void _download(fs::proto::Task& task){
     cb_success(task.task_id());
     task.set_task_status(Task::DOWNLOADED);
 
+    // create an empty file
+    if(task.total_packet_no() == 0)
+        std::fstream ofile(filepath, std::ios_base::app | std::ios_base::binary);
+
     boost::filesystem::rename(filepath,
                               task.localbasepath() + SEPARATOR + task.filename());
+
 }
 
 void download(fs::proto::Task& task){

@@ -194,3 +194,21 @@ void backend::download(QString localbasepath,
                 filename.toStdString());
 }
 
+
+void backend::file_history(){
+    fs_history_tasks(boost::bind(&backend::handle_file_history, this, _1));
+
+}
+
+void backend::handle_file_history(std::vector<fs::proto::Task> tasks){
+    using namespace fs::proto;
+    QVariantList names;
+    QVariantList states;
+
+    for(Task& task : tasks){
+        names << QString::fromStdString(task.filename());
+        states << QString::fromStdString(Task::TaskStatus_Name(task.task_status()));
+    }
+
+    emit history_loaded(names, states);
+}

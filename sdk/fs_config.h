@@ -37,7 +37,7 @@
 #define DEFAULT_TASK_TIMEOUT            60*60
 #define DEFAULT_CLIENT_TIMEOUT          60*60
 #define DEFAULT_TOKEN_TIMEOUT           60*60
-#define DEFAULT_CLIENT_SAVE_SLEEP       boost::posix_time::seconds(30)
+#define DEFAULT_CLIENT_SAVE_SLEEP       boost::posix_time::seconds(10)
 #define DEFAULT_CLIENT_SCHEDULER_SLEEP  boost::posix_time::millisec(200)
 #define DEFAULT_TOKEN_LEN               32
 

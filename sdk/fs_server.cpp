@@ -353,6 +353,10 @@ void receive_packet(int taskid, const fs::proto::Packet& packet, fs::proto::Resp
 
     // the last packet has been received
     if(task.total_packet_no() == task.received_packet_no()){
+        // create an empty file
+        if(task.total_packet_no() == 0)
+            std::fstream ofile(filepath, std::ios_base::app | std::ios_base::binary);
+
         boost::filesystem::rename(filepath,
                                   task.remotebasepath() + SEPARATOR + task.filename());
         server_task_mutex.lock();

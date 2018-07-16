@@ -18,6 +18,7 @@ public:
     Q_INVOKABLE void download(QString localbasepath,
                               QString remotebasepath,
                               QString filename);
+    Q_INVOKABLE void file_history();
 
 private:
     static QString _token;
@@ -35,6 +36,8 @@ signals:
     void process_report(QVariantList _file_names,
                         QVariantList _file_states,
                         QVariantList _file_processes);
+    void history_loaded(QVariantList _file_names,
+                        QVariantList _file_states);
 
 public slots:
     void handle_login_success();
@@ -46,7 +49,7 @@ public slots:
     void handle_transfer_success(int taskid);
     void handle_transfer_failed(int taskid, fs::proto::Response::ResponseType error);
     void handle_transfer_report(std::vector<fs::proto::Task> tasks);
-
+    void handle_file_history(std::vector<fs::proto::Task> tasks);
 };
 
 #endif // BACKEND_H
