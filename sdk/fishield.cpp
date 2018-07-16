@@ -581,7 +581,7 @@ fs::proto::Response fs_adduser(fs::proto::User* user){
     return response;
 }
 
-fs::proto::Response fs_remove_user(const std::string username){
+fs::proto::Response fs_remove_user(const std::string& username){
     using namespace fs::proto;
     Request removeuser_request;
     removeuser_request.set_req_type(Request::REMOVEUSER);
@@ -592,6 +592,51 @@ fs::proto::Response fs_remove_user(const std::string username){
     // send request and receive response
     Response response;
     if(send_receive(removeuser_request,response) == false)
+        response.set_resp_type(Response::NORESPONSE);
+
+    return response;
+}
+
+
+fs::proto::Response fs_iplist(){
+    using namespace fs::proto;
+    Request iplist_request;
+    iplist_request.set_req_type(Request::IPLIST);
+    iplist_request.set_token(_token);
+
+    // send request and receive response
+    Response response;
+    if(send_receive(iplist_request,response) == false)
+        response.set_resp_type(Response::NORESPONSE);
+
+    return response;
+}
+
+fs::proto::Response fs_add_ipaddr(const std::string& ipaddr){
+    using namespace fs::proto;
+    Request addip_request;
+    addip_request.set_req_type(Request::ADDIP);
+    addip_request.set_ipaddress(ipaddr);
+    addip_request.set_token(_token);
+
+    // send request and receive response
+    Response response;
+    if(send_receive(addip_request,response) == false)
+        response.set_resp_type(Response::NORESPONSE);
+
+    return response;
+}
+
+fs::proto::Response fs_remove_ipaddr(const std::string& ipaddr){
+    using namespace fs::proto;
+    Request removeip_request;
+    removeip_request.set_req_type(Request::REMOVEIP);
+    removeip_request.set_ipaddress(ipaddr);
+    removeip_request.set_token(_token);
+
+    // send request and receive response
+    Response response;
+    if(send_receive(removeip_request,response) == false)
         response.set_resp_type(Response::NORESPONSE);
 
     return response;

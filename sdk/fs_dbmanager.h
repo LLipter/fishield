@@ -23,10 +23,13 @@ public:
     void insert_task(const fs::proto::Task& task);
     void update_task(const fs::proto::Task& task);
     int get_task(int task_id, fs::proto::Task& task);
+    int getUser(fs::proto::User& user);
     void getUserList(fs::proto::UserList* userlist);
     int addUser(const fs::proto::User& user);
-    int getUser(fs::proto::User& user);
-    void removeUser(std::string username);
+    void removeUser(const std::string& username);
+    void getIPList(fs::proto::IPList* iplist);
+    int addIPAddr(const std::string& addr);
+    void removeIPAddr(const std::string& ipaddr);
 private:
     static sql::Driver* driver;
     sql::Connection* conn;

@@ -41,6 +41,13 @@ void printUserList(const UserList& userlist){
     }
 }
 
+void printIPList(const IPList& iplist){
+    for(int i=0;i<iplist.ip_size();i++){
+        const IP& ip = iplist.ip(i);
+        cout << ip.address() << endl;
+    }
+}
+
 int main(){
     char* root_pass = getpass("Please enter root password:");
     fs_client_startup("www.irran.top", 7614);
@@ -92,19 +99,50 @@ int main(){
             else
                 cout << "OK" << endl;
         }else if(cmd == "removeuser"){
-            string username;
-            cin >> username;
-            response = fs_remove_user(username);
+            if(args.size() == 1)
+                usage();
+            else{
+                string& username = args[1];
+                response = fs_remove_user(username);
+                if(response.resp_type() != Response::SUCCESS)
+                    cout << Response::ResponseType_Name(response.resp_type()) << endl;
+                else
+                    cout << "OK" << endl;
+            }
+        }else if(cmd == "listip"){
+            response = fs_iplist();
             if(response.resp_type() != Response::SUCCESS)
                 cout << Response::ResponseType_Name(response.resp_type()) << endl;
             else
-                cout << "OK" << endl;
-        }else if(cmd == "listip"){
-
+                printIPList(response.iplist());
         }else if(cmd == "addip"){
-
+            if(args.size() == 1)
+                usage();
+            else{
+                string& addr = args[1];
+                boost::system::error_code err;
+                boost::asio::ip::address::from_string(addr, err);
+                if(err)
+                    cout << err.message( ) << endl;
+                else{
+                    response = fs_add_ipaddr(addr);
+                    if(response.resp_type() != Response::SUCCESS)
+                        cout << Response::ResponseType_Name(response.resp_type()) << endl;
+                    else
+                        cout << "OK" << endl;
+                }
+            }
         }else if(cmd == "removeip"){
-
+            if(args.size() == 1)
+                usage();
+            else{
+                string& addr = args[1];
+                response = fs_remove_ipaddr(addr);
+                if(response.resp_type() != Response::SUCCESS)
+                    cout << Response::ResponseType_Name(response.resp_type()) << endl;
+                else
+                    cout << "OK" << endl;
+            }
         }else
             usage();
         cout << "%";

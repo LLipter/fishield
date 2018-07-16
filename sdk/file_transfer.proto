@@ -49,6 +49,9 @@ message Request
 		USERLIST			= 12;	// get all user information
 		ADDUSER				= 13;	// add a new user
 		REMOVEUSER			= 14;	// remove a user
+		IPLIST				= 15;	// get ip list
+		ADDIP				= 16;	// add a new ip address
+		REMOVEIP			= 17;
 	}
 	required RequestType req_type	= 1;
 	optional string username	= 2;
@@ -62,6 +65,7 @@ message Request
 	optional uint64	packet_id	= 10;
 	optional string new_path	= 11;	// new path of a RENAMEd file
 	optional User user		= 12;
+	optional string ipaddress	= 13;
 	
 }
 
@@ -84,6 +88,7 @@ message Response
 		ILLEGALCLIENTID			= 11;	// illegal client id
 		NOPRIVILEGE			= 12;	// has no corresponding privilege
 		DUPLICATEUSER			= 13;	// Username has already exist
+		DUPLICATEIPADDR			= 14;	// duplicate ip address
 	
 	}
 	required ResponseType resp_type	= 1;
@@ -97,6 +102,7 @@ message Response
 	optional uint64 total_space	= 9;	// total disk space in server
 	optional uint64	privilege	= 10;	// user's privilege
 	optional UserList userlist	= 11;
+	optional IPList	iplist		= 12;
 }
 
 
@@ -111,5 +117,15 @@ message User
 message UserList
 {
 	repeated User user		= 1;
+}
+
+message IPList
+{
+	repeated IP ip	= 1;
+}
+
+message IP
+{
+	required string address	= 1;	
 }
 

@@ -54,6 +54,7 @@
 #define FS_E_UOLOADFAILED               -8      // upload failed
 #define FS_E_DOWNLOADFAILED             -9      // download failed
 #define FS_E_DUPLICATE_USER             -10     // duplicate user
+#define FS_E_DUPLICATE_IPADDR           -101    // duplicate ip address
 
 
 // fs stands for "fishield" or "file security"

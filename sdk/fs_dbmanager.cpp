@@ -152,10 +152,53 @@ int fs_DBManager::addUser(const fs::proto::User& user){
     return 0;
 }
 
-void fs_DBManager::removeUser(std::string username){
-
+void fs_DBManager::removeUser(const std::string& username){
     sql::PreparedStatement *pstmt = conn->prepareStatement("DELETE FROM user WHERE username=?");
     pstmt->setString(1, username);
+    pstmt->executeUpdate();
+
+    delete pstmt;
+}
+
+void fs_DBManager::getIPList(fs::proto::IPList* iplist){
+    using namespace fs::proto;
+    sql::PreparedStatement *pstmt = conn->prepareStatement("SELECT * FROM ip");
+    sql::ResultSet* res = pstmt->executeQuery();
+
+    while(res->next()){
+        IP* ipaddress = iplist->add_ip();
+        ipaddress->set_address(res->getString("address"));
+    }
+
+    delete pstmt;
+    delete res;
+}
+
+int fs_DBManager::addIPAddr(const std::string& addr){
+    sql::PreparedStatement *pstmt = conn->prepareStatement("SELECT * FROM ip WHERE address=?");
+    pstmt->setString(1, addr);
+    sql::ResultSet* res = pstmt->executeQuery();
+
+    if(res->next()){
+        delete pstmt;
+        delete res;
+        return FS_E_DUPLICATE_IPADDR;
+    }
+    delete pstmt;
+    delete res;
+
+
+    pstmt = conn->prepareStatement("INSERT INTO ip VALUES(?)");
+    pstmt->setString(1, addr);
+    pstmt->executeUpdate();
+    delete pstmt;
+    return 0;
+
+}
+
+void fs_DBManager::removeIPAddr(const std::string& ipaddr){
+    sql::PreparedStatement *pstmt = conn->prepareStatement("DELETE FROM ip WHERE username=?");
+    pstmt->setString(1, ipaddr);
     pstmt->executeUpdate();
 
     delete pstmt;

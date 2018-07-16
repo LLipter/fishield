@@ -20,3 +20,11 @@ CREATE TABLE task(
     sent_packet_no INT,
     last_packet_time BIGINT
 )default charset=utf8;
+
+
+
+CREATE TABLE ip(
+    address VARCHAR(200) PRIMARY KEY
+)default charset=utf8;
+
+INSERT INTO ip VALUES('10.42.0.1');

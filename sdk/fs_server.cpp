@@ -656,6 +656,57 @@ void remove_user(int privilege,
     response.set_resp_type(Response::SUCCESS);
 }
 
+void get_ip_list(int privilege, fs::proto::Response& response){
+    using namespace fs::proto;
+    if(!((privilege >> ROOT_BIT) % 2)){
+        // no right
+        response.set_resp_type(Response::NOPRIVILEGE);
+        return;
+    }
+
+    response.set_resp_type(Response::SUCCESS);
+    IPList* iplist = new IPList;
+    fs_DBManager manager;
+    manager.getIPList(iplist);
+    response.set_allocated_iplist(iplist);
+}
+
+void add_ipaddr(int privilege,
+                std::string ipaddr,
+                fs::proto::Response& response){
+    using namespace fs::proto;
+    if(!((privilege >> ROOT_BIT) % 2)){
+        // no right
+        response.set_resp_type(Response::NOPRIVILEGE);
+        return;
+    }
+
+    fs_DBManager manager;
+    int ret = manager.addIPAddr(ipaddr);
+    if(ret == FS_E_DUPLICATE_IPADDR){
+        response.set_resp_type(Response::DUPLICATEIPADDR);
+        return;
+    }
+
+    response.set_resp_type(Response::SUCCESS);
+}
+
+
+void remove_ipaddr(int privilege,
+                   std::string ipaddr,
+                   fs::proto::Response& response){
+    using namespace fs::proto;
+    if(!((privilege >> ROOT_BIT) % 2)){
+        // no right
+        response.set_resp_type(Response::NOPRIVILEGE);
+        return;
+    }
+
+    fs_DBManager manager;
+    manager.removeIPAddr(ipaddr);
+    response.set_resp_type(Response::SUCCESS);
+}
+
 void communicate_thread(server_ptr serptr){
     using namespace fs::proto;
     int ret_req;
@@ -738,6 +789,19 @@ void communicate_thread(server_ptr serptr){
                 remove_user(privilege,
                             request.username(),
                             response);
+                break;
+            case Request::IPLIST:
+                get_ip_list(privilege, response);
+                break;
+            case Request::ADDIP:
+                add_ipaddr(privilege,
+                           request.ipaddress(),
+                           response);
+                break;
+            case Request::REMOVEIP:
+                remove_ipaddr(privilege,
+                              request.ipaddress(),
+                              response);
                 break;
             default:
                 response.set_resp_type(Response::ILLEGALREQUEST);

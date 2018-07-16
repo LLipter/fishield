@@ -199,8 +199,28 @@ fs::proto::Response fs_adduser(fs::proto::User* user);
  * NOTE:    This function will block process when trying to communicate with server
  * RETURN:  return a response from server
  */
-fs::proto::Response fs_remove_user(const std::string username);
+fs::proto::Response fs_remove_user(const std::string& username);
 
+/***
+ * DESC:    Used for root to get ip address list
+ * NOTE:    This function will block process when trying to communicate with server
+ * RETURN:  return a response from server
+ */
+fs::proto::Response fs_iplist();
+
+/***
+ * DESC:    Used for root to add a new ip address
+ * NOTE:    This function will block process when trying to communicate with server
+ * RETURN:  return a response from server
+ */
+fs::proto::Response fs_add_ipaddr(const std::string& ipaddr);
+
+/***
+ * DESC:    Used for root to remove a ip address
+ * NOTE:    This function will block process when trying to communicate with server
+ * RETURN:  return a response from server
+ */
+fs::proto::Response fs_remove_ipaddr(const std::string& ipaddr);
 
 
 #endif
