@@ -33,6 +33,8 @@ int fs_DBManager::login(fs_user* user){
         return FS_E_ILLEGALPASSWD;
     }
 
+    user->privilege = res->getInt("privilege");
+
     delete pstmt;
     delete res;
     return 0;

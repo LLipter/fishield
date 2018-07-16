@@ -36,7 +36,7 @@ int fs_client_startup(const std::string& addr,
  */
 void fs_login(const std::string& username,
               const std::string& password,
-              fs_fp_void cb_success,
+              fs_fp_int cb_success,
               fs_fp_error cb_failed);
 
 /***

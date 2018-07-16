@@ -7,7 +7,7 @@ struct fs_user{
     std::string username;
     std::string password;
     int privilege;
-    long long create_time;
+    long long last_packet_time;
 };
 
 #endif // FS_USER_H

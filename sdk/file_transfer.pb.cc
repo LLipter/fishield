@@ -203,7 +203,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, packet_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, avai_space_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, total_space_),
-  8,
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::fs::proto::Response, privilege_),
+  9,
   0,
   1,
   3,
@@ -212,13 +213,14 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   2,
   6,
   7,
+  8,
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 10, sizeof(::fs::proto::File)},
   { 15, 22, sizeof(::fs::proto::FileList)},
   { 24, 31, sizeof(::fs::proto::Packet)},
   { 33, 49, sizeof(::fs::proto::Request)},
-  { 60, 74, sizeof(::fs::proto::Response)},
+  { 60, 75, sizeof(::fs::proto::Response)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -269,22 +271,23 @@ void AddDescriptorsImpl() {
       "\020\002\022\n\n\006UPLOAD\020\003\022\014\n\010DOWNLOAD\020\004\022\017\n\013SEND_PAC"
       "KET\020\005\022\022\n\016RECEIVE_PACKET\020\006\022\024\n\020DOWNLOAD_CO"
       "NFIRM\020\007\022\n\n\006REMOVE\020\010\022\n\n\006RENAME\020\t\022\n\n\006CANCE"
-      "L\020\n\022\r\n\tDISKSPACE\020\013\"\337\003\n\010Response\0222\n\tresp_"
+      "L\020\n\022\r\n\tDISKSPACE\020\013\"\203\004\n\010Response\0222\n\tresp_"
       "type\030\001 \002(\0162\037.fs.proto.Response.ResponseT"
       "ype\022\r\n\005token\030\002 \001(\t\022%\n\tfile_list\030\003 \001(\0132\022."
       "fs.proto.FileList\022\017\n\007task_id\030\004 \001(\004\022\021\n\tpa"
       "cket_id\030\005 \001(\004\022\021\n\tpacket_no\030\006 \001(\004\022 \n\006pack"
       "et\030\007 \001(\0132\020.fs.proto.Packet\022\022\n\navai_space"
-      "\030\010 \001(\004\022\023\n\013total_space\030\t \001(\004\"\346\001\n\014Response"
-      "Type\022\013\n\007SUCCESS\020\000\022\016\n\nNOSUCHUSER\020\001\022\021\n\rILL"
-      "EGALPASSWD\020\002\022\013\n\007UNKNOWN\020\003\022\016\n\nNORESPONSE\020"
-      "\004\022\020\n\014ILLEGALTOKEN\020\005\022\017\n\013ILLEGALPATH\020\006\022\022\n\016"
-      "ILLEGALREQUEST\020\007\022\025\n\021ILLEGALTASKSTATUS\020\010\022"
-      "\021\n\rILLEGALTASKID\020\t\022\023\n\017ILLEGALPACKETID\020\n\022"
-      "\023\n\017ILLEGALCLIENTID\020\013"
+      "\030\010 \001(\004\022\023\n\013total_space\030\t \001(\004\022\021\n\tprivilege"
+      "\030\n \001(\004\"\367\001\n\014ResponseType\022\013\n\007SUCCESS\020\000\022\016\n\n"
+      "NOSUCHUSER\020\001\022\021\n\rILLEGALPASSWD\020\002\022\013\n\007UNKNO"
+      "WN\020\003\022\016\n\nNORESPONSE\020\004\022\020\n\014ILLEGALTOKEN\020\005\022\017"
+      "\n\013ILLEGALPATH\020\006\022\022\n\016ILLEGALREQUEST\020\007\022\025\n\021I"
+      "LLEGALTASKSTATUS\020\010\022\021\n\rILLEGALTASKID\020\t\022\023\n"
+      "\017ILLEGALPACKETID\020\n\022\023\n\017ILLEGALCLIENTID\020\013\022"
+      "\017\n\013NOPRIVILEGE\020\014"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1260);
+      descriptor, 1296);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "file_transfer.proto", &protobuf_RegisterTypes);
 }
@@ -386,6 +389,7 @@ bool Response_ResponseType_IsValid(int value) {
     case 9:
     case 10:
     case 11:
+    case 12:
       return true;
     default:
       return false;
@@ -405,6 +409,7 @@ const Response_ResponseType Response::ILLEGALTASKSTATUS;
 const Response_ResponseType Response::ILLEGALTASKID;
 const Response_ResponseType Response::ILLEGALPACKETID;
 const Response_ResponseType Response::ILLEGALCLIENTID;
+const Response_ResponseType Response::NOPRIVILEGE;
 const Response_ResponseType Response::ResponseType_MIN;
 const Response_ResponseType Response::ResponseType_MAX;
 const int Response::ResponseType_ARRAYSIZE;
@@ -2263,6 +2268,7 @@ const int Response::kPacketNoFieldNumber;
 const int Response::kPacketFieldNumber;
 const int Response::kAvaiSpaceFieldNumber;
 const int Response::kTotalSpaceFieldNumber;
+const int Response::kPrivilegeFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Response::Response()
@@ -2354,7 +2360,11 @@ void Response::Clear() {
         reinterpret_cast<char*>(&total_space_) -
         reinterpret_cast<char*>(&task_id_)) + sizeof(total_space_));
   }
-  resp_type_ = 0;
+  if (cached_has_bits & 768u) {
+    ::memset(&privilege_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&resp_type_) -
+        reinterpret_cast<char*>(&privilege_)) + sizeof(resp_type_));
+  }
   _has_bits_.Clear();
   _internal_metadata_.Clear();
 }
@@ -2499,6 +2509,20 @@ bool Response::MergePartialFromCodedStream(
         break;
       }
 
+      // optional uint64 privilege = 10;
+      case 10: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(80u /* 80 & 0xFF */)) {
+          set_has_privilege();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &privilege_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -2527,7 +2551,7 @@ void Response::SerializeWithCachedSizes(
 
   cached_has_bits = _has_bits_[0];
   // required .fs.proto.Response.ResponseType resp_type = 1;
-  if (cached_has_bits & 0x00000100u) {
+  if (cached_has_bits & 0x00000200u) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       1, this->resp_type(), output);
   }
@@ -2579,6 +2603,11 @@ void Response::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(9, this->total_space(), output);
   }
 
+  // optional uint64 privilege = 10;
+  if (cached_has_bits & 0x00000100u) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(10, this->privilege(), output);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         _internal_metadata_.unknown_fields(), output);
@@ -2595,7 +2624,7 @@ void Response::SerializeWithCachedSizes(
 
   cached_has_bits = _has_bits_[0];
   // required .fs.proto.Response.ResponseType resp_type = 1;
-  if (cached_has_bits & 0x00000100u) {
+  if (cached_has_bits & 0x00000200u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       1, this->resp_type(), target);
   }
@@ -2648,6 +2677,11 @@ void Response::SerializeWithCachedSizes(
   // optional uint64 total_space = 9;
   if (cached_has_bits & 0x00000080u) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(9, this->total_space(), target);
+  }
+
+  // optional uint64 privilege = 10;
+  if (cached_has_bits & 0x00000100u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(10, this->privilege(), target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -2730,6 +2764,13 @@ size_t Response::ByteSizeLong() const {
     }
 
   }
+  // optional uint64 privilege = 10;
+  if (has_privilege()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt64Size(
+        this->privilege());
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
@@ -2786,8 +2827,14 @@ void Response::MergeFrom(const Response& from) {
     }
     _has_bits_[0] |= cached_has_bits;
   }
-  if (cached_has_bits & 0x00000100u) {
-    set_resp_type(from.resp_type());
+  if (cached_has_bits & 768u) {
+    if (cached_has_bits & 0x00000100u) {
+      privilege_ = from.privilege_;
+    }
+    if (cached_has_bits & 0x00000200u) {
+      resp_type_ = from.resp_type_;
+    }
+    _has_bits_[0] |= cached_has_bits;
   }
 }
 
@@ -2806,7 +2853,7 @@ void Response::CopyFrom(const Response& from) {
 }
 
 bool Response::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000100) != 0x00000100) return false;
+  if ((_has_bits_[0] & 0x00000200) != 0x00000200) return false;
   if (has_file_list()) {
     if (!this->file_list_->IsInitialized()) return false;
   }
@@ -2831,6 +2878,7 @@ void Response::InternalSwap(Response* other) {
   swap(packet_no_, other->packet_no_);
   swap(avai_space_, other->avai_space_);
   swap(total_space_, other->total_space_);
+  swap(privilege_, other->privilege_);
   swap(resp_type_, other->resp_type_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);

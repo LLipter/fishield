@@ -24,6 +24,9 @@ ApplicationWindow {
         property bool loading : false
         property int timeout: 5
 
+        property var can_upload: false
+        property var can_download: fals
+
         View{
             id: container
             anchors.centerIn: parent
@@ -137,6 +140,8 @@ ApplicationWindow {
                 target: backend
                 onLogined:{
                     loginpage.loading = false;
+                    loginpage.can_upload = _can_upload;
+                    loginpage.can_download = _can_download;
                     countDowm.stop();
                     console.debug(username.text ,"logined");
                     errorlabel.text = "token timeout, please login again"

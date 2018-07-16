@@ -78,6 +78,7 @@ message Response
 		ILLEGALTASKID			= 9;	// illegal task id
 		ILLEGALPACKETID			= 10;	// illegal packet id
 		ILLEGALCLIENTID			= 11;	// illegal client id
+		NOPRIVILEGE			= 12;	// has no corresponding privilege
 	
 	}
 	required ResponseType resp_type	= 1;
@@ -89,4 +90,5 @@ message Response
 	optional Packet	packet		= 7;
 	optional uint64 avai_space	= 8;	// available disk space in server
 	optional uint64 total_space	= 9;	// total disk space in server
+	optional uint64	privilege	= 10;	// user's privilege
 }

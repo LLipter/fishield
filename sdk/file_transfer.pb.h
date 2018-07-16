@@ -139,11 +139,12 @@ enum Response_ResponseType {
   Response_ResponseType_ILLEGALTASKSTATUS = 8,
   Response_ResponseType_ILLEGALTASKID = 9,
   Response_ResponseType_ILLEGALPACKETID = 10,
-  Response_ResponseType_ILLEGALCLIENTID = 11
+  Response_ResponseType_ILLEGALCLIENTID = 11,
+  Response_ResponseType_NOPRIVILEGE = 12
 };
 bool Response_ResponseType_IsValid(int value);
 const Response_ResponseType Response_ResponseType_ResponseType_MIN = Response_ResponseType_SUCCESS;
-const Response_ResponseType Response_ResponseType_ResponseType_MAX = Response_ResponseType_ILLEGALCLIENTID;
+const Response_ResponseType Response_ResponseType_ResponseType_MAX = Response_ResponseType_NOPRIVILEGE;
 const int Response_ResponseType_ResponseType_ARRAYSIZE = Response_ResponseType_ResponseType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* Response_ResponseType_descriptor();
@@ -1058,6 +1059,8 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
     Response_ResponseType_ILLEGALPACKETID;
   static const ResponseType ILLEGALCLIENTID =
     Response_ResponseType_ILLEGALCLIENTID;
+  static const ResponseType NOPRIVILEGE =
+    Response_ResponseType_NOPRIVILEGE;
   static inline bool ResponseType_IsValid(int value) {
     return Response_ResponseType_IsValid(value);
   }
@@ -1155,6 +1158,13 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::uint64 total_space() const;
   void set_total_space(::google::protobuf::uint64 value);
 
+  // optional uint64 privilege = 10;
+  bool has_privilege() const;
+  void clear_privilege();
+  static const int kPrivilegeFieldNumber = 10;
+  ::google::protobuf::uint64 privilege() const;
+  void set_privilege(::google::protobuf::uint64 value);
+
   // required .fs.proto.Response.ResponseType resp_type = 1;
   bool has_resp_type() const;
   void clear_resp_type();
@@ -1182,6 +1192,8 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   void clear_has_avai_space();
   void set_has_total_space();
   void clear_has_total_space();
+  void set_has_privilege();
+  void clear_has_privilege();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
@@ -1194,6 +1206,7 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::uint64 packet_no_;
   ::google::protobuf::uint64 avai_space_;
   ::google::protobuf::uint64 total_space_;
+  ::google::protobuf::uint64 privilege_;
   int resp_type_;
   friend struct ::protobuf_file_5ftransfer_2eproto::TableStruct;
 };
@@ -2160,13 +2173,13 @@ inline void Request::set_allocated_new_path(::std::string* new_path) {
 
 // required .fs.proto.Response.ResponseType resp_type = 1;
 inline bool Response::has_resp_type() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
+  return (_has_bits_[0] & 0x00000200u) != 0;
 }
 inline void Response::set_has_resp_type() {
-  _has_bits_[0] |= 0x00000100u;
+  _has_bits_[0] |= 0x00000200u;
 }
 inline void Response::clear_has_resp_type() {
-  _has_bits_[0] &= ~0x00000100u;
+  _has_bits_[0] &= ~0x00000200u;
 }
 inline void Response::clear_resp_type() {
   resp_type_ = 0;
@@ -2483,6 +2496,30 @@ inline void Response::set_total_space(::google::protobuf::uint64 value) {
   set_has_total_space();
   total_space_ = value;
   // @@protoc_insertion_point(field_set:fs.proto.Response.total_space)
+}
+
+// optional uint64 privilege = 10;
+inline bool Response::has_privilege() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void Response::set_has_privilege() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void Response::clear_has_privilege() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void Response::clear_privilege() {
+  privilege_ = GOOGLE_ULONGLONG(0);
+  clear_has_privilege();
+}
+inline ::google::protobuf::uint64 Response::privilege() const {
+  // @@protoc_insertion_point(field_get:fs.proto.Response.privilege)
+  return privilege_;
+}
+inline void Response::set_privilege(::google::protobuf::uint64 value) {
+  set_has_privilege();
+  privilege_ = value;
+  // @@protoc_insertion_point(field_set:fs.proto.Response.privilege)
 }
 
 #ifdef __GNUC__

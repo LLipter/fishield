@@ -171,7 +171,7 @@ void remove_clients_thread() {
         std::vector<std::string> tokens_remove;
         for(auto it=token_map.begin();it!=token_map.end();it++){
             fs_user& user = it->second;
-            if(std::time(0) - user.create_time > DEFAULT_TOKEN_TIMEOUT)
+            if(std::time(0) - user.last_packet_time > DEFAULT_TOKEN_TIMEOUT)
                 tokens_remove.push_back(it->first);
         }
         for(std::string token : tokens_remove)
@@ -246,12 +246,20 @@ void makedir(const std::string& ph, fs::proto::Response& response){
 
 }
 
-void init_upload(const std::string& basepath,
+void init_upload(int privilege,
+                 const std::string& basepath,
                  const std::string& filename,
                  int packet_no,
                  fs::proto::Response& response){
     using namespace fs::proto;
     using namespace boost::filesystem;
+
+    if(!((privilege >> UPLOAD_BIT) % 2)){
+        // no right to upload
+        response.set_resp_type(Response::NOPRIVILEGE);
+        return;
+    }
+
 
     std::string base = rootdir + basepath;
     if(!exists(base)){
@@ -367,11 +375,20 @@ void receive_packet(int taskid, const fs::proto::Packet& packet, fs::proto::Resp
 
 }
 
-void init_download(const std::string& basepath,
+void init_download(int privilege,
+                   const std::string& basepath,
                    const std::string& filename,
                    fs::proto::Response& response){
     using namespace fs::proto;
     using namespace boost::filesystem;
+
+
+    if(!((privilege >> DOWNLOAD_BIT) % 2)){
+        // no right to download
+        response.set_resp_type(Response::NOPRIVILEGE);
+        return;
+    }
+
 
     std::string base_str = rootdir + basepath;
     std::string filepath_str = base_str + SEPARATOR + filename;
@@ -548,19 +565,23 @@ void verify_password(std::string username,
 
     std::string token = gen_token();
     response.set_token(token);
-    user.create_time = std::time(0);
+    user.last_packet_time = std::time(0);
     token_mutex.lock();
     token_map[token] = user;
     token_mutex.unlock();
     response.set_resp_type(Response::SUCCESS);
+    response.set_privilege(user.privilege);
 
 }
 
 
-bool verify_token(const std::string& token){
+bool verify_token(const std::string& token, int& privilege){
     auto it = token_map.find(token);
-    if(it != token_map.end())
+    if(it != token_map.end()){
+        it->second.last_packet_time = std::time(0);
+        privilege = it->second.privilege;
         return true;
+    }
     return false;
 }
 
@@ -598,11 +619,12 @@ void communicate_thread(server_ptr serptr){
         if(ret_req == false)
             break;
         Response response;
+        int privilege;
         if(request.req_type() == Request::LOGIN){
             verify_password(request.username(),
                             request.password(),
                             response);
-        }else if(!verify_token(request.token())){
+        }else if(!verify_token(request.token(), privilege)){
             response.set_resp_type(Response::ILLEGALTOKEN);
         }else{
             switch (request.req_type()) {
@@ -621,7 +643,8 @@ void communicate_thread(server_ptr serptr){
                             response);
                 break;
             case Request::UPLOAD:
-                init_upload(request.remote_path(),
+                init_upload(privilege,
+                            request.remote_path(),
                             request.filename(),
                             request.packet_no(),
                             response);
@@ -632,7 +655,8 @@ void communicate_thread(server_ptr serptr){
                                response);
                 break;
             case Request::DOWNLOAD:
-                init_download(request.remote_path(),
+                init_download(privilege,
+                              request.remote_path(),
                               request.filename(),
                               response);
                 break;

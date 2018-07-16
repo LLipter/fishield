@@ -41,7 +41,7 @@ int fs_client_startup(const std::string& addr, const short port){
 
 void _fs_login(const std::string& username,
                const std::string& password,
-               fs_fp_void cb_success,
+               fs_fp_int cb_success,
                fs_fp_error cb_failed){
     using namespace fs::proto;
     Request login_request;
@@ -59,7 +59,7 @@ void _fs_login(const std::string& username,
     // check response type
     if(response.resp_type() == Response::SUCCESS){
         _token = response.token();
-        cb_success();
+        cb_success(response.privilege());
     }else
         cb_failed(response.resp_type());
 }
@@ -67,7 +67,7 @@ void _fs_login(const std::string& username,
 
 void fs_login(const std::string& username,
               const std::string& password,
-              fs_fp_void cb_success,
+              fs_fp_int cb_success,
               fs_fp_error cb_failed){
     std::thread thd(_fs_login,
                     username,

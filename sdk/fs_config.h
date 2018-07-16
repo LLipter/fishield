@@ -40,6 +40,8 @@
 #define DEFAULT_CLIENT_SAVE_SLEEP       boost::posix_time::seconds(30)
 #define DEFAULT_CLIENT_SCHEDULER_SLEEP  boost::posix_time::millisec(200)
 #define DEFAULT_TOKEN_LEN               32
+#define UPLOAD_BIT                      0
+#define DOWNLOAD_BIT                    1
 
 #define FS_E_UNKNOWN                    -1      // unknown error
 #define FS_E_TODO                       -2      // something hasn't been implemented

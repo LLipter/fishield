@@ -30,7 +30,7 @@ private:
     bool is_timeout;
 
 signals:
-    void logined();
+    void logined(bool _can_upload, bool _can_download);
     void no_such_user();
     void illegal_password();
     void fileLoaded(QVariantList _file_names,
@@ -49,7 +49,7 @@ signals:
     void disk_space_loaded(QString available, QString total);
 
 public slots:
-    void handle_login_success();
+    void handle_login_success(int privilege);
     void handle_login_failed(fs::proto::Response::ResponseType error);
     void handle_filelist_success(fs::proto::FileList filelist);
     void handle_filelist_failed(fs::proto::Response::ResponseType error);

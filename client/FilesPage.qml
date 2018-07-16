@@ -132,6 +132,8 @@ Item {
     ActionButton {
         id: uploadbutton
 
+        visible: loginpage.can_upload
+
         anchors {
             right: parent.right
             bottom: parent.bottom
@@ -295,6 +297,8 @@ Item {
                     fileDialog.selectFolder = true;
                     fileDialog.open();
                 }
+
+                visible: loginpage.can_download
             },
 
             Action {
