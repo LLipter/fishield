@@ -12,7 +12,7 @@ SOURCES += \
     fs_task.cpp \
     fs_task.pb.cc \
     fs_dbmanager.cpp \
-    admin_tool.cpp
+    main_server.cpp
 
 HEADERS += \
     fishield.h \
