@@ -197,7 +197,7 @@ int fs_DBManager::addIPAddr(const std::string& addr){
 }
 
 void fs_DBManager::removeIPAddr(const std::string& ipaddr){
-    sql::PreparedStatement *pstmt = conn->prepareStatement("DELETE FROM ip WHERE username=?");
+    sql::PreparedStatement *pstmt = conn->prepareStatement("DELETE FROM ip WHERE address=?");
     pstmt->setString(1, ipaddr);
     pstmt->executeUpdate();
 
