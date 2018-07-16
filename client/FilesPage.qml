@@ -299,14 +299,14 @@ Item {
             Action {
                 iconName: "settings"
                 name: "Details"
-                hasDividerAfter: true
-                enabled: false
+//                hasDividerAfter: true
+                visible: false
             },
 
             Action {
                 iconName: "forward"
                 name: "Move"
-                enabled: false
+                visible: false
             },
 
             Action {
@@ -321,7 +321,7 @@ Item {
             Action {
                 iconName: "create"
                 name: "Rename"
-                enabled: false
+                visible: false
             }
         ]
     }

@@ -41,7 +41,7 @@ Item {
                     subText: file_states[index]
                     backgroundColor: "white"
                     onClicked: {
-                        actionSheet.open()
+//                        actionSheet.open()
                     }
                 }
             }
