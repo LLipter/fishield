@@ -120,11 +120,12 @@ enum Request_RequestType {
   Request_RequestType_CANCEL = 10,
   Request_RequestType_DISKSPACE = 11,
   Request_RequestType_USERLIST = 12,
-  Request_RequestType_ADDUSER = 13
+  Request_RequestType_ADDUSER = 13,
+  Request_RequestType_REMOVEUSER = 14
 };
 bool Request_RequestType_IsValid(int value);
 const Request_RequestType Request_RequestType_RequestType_MIN = Request_RequestType_LOGIN;
-const Request_RequestType Request_RequestType_RequestType_MAX = Request_RequestType_ADDUSER;
+const Request_RequestType Request_RequestType_RequestType_MAX = Request_RequestType_REMOVEUSER;
 const int Request_RequestType_RequestType_ARRAYSIZE = Request_RequestType_RequestType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* Request_RequestType_descriptor();
@@ -761,6 +762,8 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
     Request_RequestType_USERLIST;
   static const RequestType ADDUSER =
     Request_RequestType_ADDUSER;
+  static const RequestType REMOVEUSER =
+    Request_RequestType_REMOVEUSER;
   static inline bool RequestType_IsValid(int value) {
     return Request_RequestType_IsValid(value);
   }

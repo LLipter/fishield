@@ -26,6 +26,7 @@ public:
     void getUserList(fs::proto::UserList* userlist);
     int addUser(const fs::proto::User& user);
     int getUser(fs::proto::User& user);
+    void removeUser(std::string username);
 private:
     static sql::Driver* driver;
     sql::Connection* conn;

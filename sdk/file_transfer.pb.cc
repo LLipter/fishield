@@ -333,40 +333,40 @@ void AddDescriptorsImpl() {
       "RECTORY\020\001\022\013\n\007SYMLINK\020\002\022\t\n\005OTHER\020\003\"6\n\010Fil"
       "eList\022\014\n\004path\030\001 \002(\t\022\034\n\004file\030\002 \003(\0132\016.fs.p"
       "roto.File\")\n\006Packet\022\021\n\tpacket_id\030\001 \002(\004\022\014"
-      "\n\004data\030\002 \002(\014\"\364\003\n\007Request\022/\n\010req_type\030\001 \002"
+      "\n\004data\030\002 \002(\014\"\204\004\n\007Request\022/\n\010req_type\030\001 \002"
       "(\0162\035.fs.proto.Request.RequestType\022\020\n\010use"
       "rname\030\002 \001(\t\022\020\n\010password\030\003 \001(\t\022\r\n\005token\030\004"
       " \001(\t\022\023\n\013remote_path\030\005 \001(\t\022\020\n\010filename\030\006 "
       "\001(\t\022\021\n\tpacket_no\030\007 \001(\004\022 \n\006packet\030\010 \001(\0132\020"
       ".fs.proto.Packet\022\017\n\007task_id\030\t \001(\004\022\021\n\tpac"
       "ket_id\030\n \001(\004\022\020\n\010new_path\030\013 \001(\t\022\034\n\004user\030\014"
-      " \001(\0132\016.fs.proto.User\"\324\001\n\013RequestType\022\t\n\005"
+      " \001(\0132\016.fs.proto.User\"\344\001\n\013RequestType\022\t\n\005"
       "LOGIN\020\000\022\014\n\010FILELIST\020\001\022\t\n\005MKDIR\020\002\022\n\n\006UPLO"
       "AD\020\003\022\014\n\010DOWNLOAD\020\004\022\017\n\013SEND_PACKET\020\005\022\022\n\016R"
       "ECEIVE_PACKET\020\006\022\024\n\020DOWNLOAD_CONFIRM\020\007\022\n\n"
       "\006REMOVE\020\010\022\n\n\006RENAME\020\t\022\n\n\006CANCEL\020\n\022\r\n\tDIS"
-      "KSPACE\020\013\022\014\n\010USERLIST\020\014\022\013\n\007ADDUSER\020\r\"\274\004\n\010"
-      "Response\0222\n\tresp_type\030\001 \002(\0162\037.fs.proto.R"
-      "esponse.ResponseType\022\r\n\005token\030\002 \001(\t\022%\n\tf"
-      "ile_list\030\003 \001(\0132\022.fs.proto.FileList\022\017\n\007ta"
-      "sk_id\030\004 \001(\004\022\021\n\tpacket_id\030\005 \001(\004\022\021\n\tpacket"
-      "_no\030\006 \001(\004\022 \n\006packet\030\007 \001(\0132\020.fs.proto.Pac"
-      "ket\022\022\n\navai_space\030\010 \001(\004\022\023\n\013total_space\030\t"
-      " \001(\004\022\021\n\tprivilege\030\n \001(\004\022$\n\010userlist\030\013 \001("
-      "\0132\022.fs.proto.UserList\"\212\002\n\014ResponseType\022\013"
-      "\n\007SUCCESS\020\000\022\016\n\nNOSUCHUSER\020\001\022\021\n\rILLEGALPA"
-      "SSWD\020\002\022\013\n\007UNKNOWN\020\003\022\016\n\nNORESPONSE\020\004\022\020\n\014I"
-      "LLEGALTOKEN\020\005\022\017\n\013ILLEGALPATH\020\006\022\022\n\016ILLEGA"
-      "LREQUEST\020\007\022\025\n\021ILLEGALTASKSTATUS\020\010\022\021\n\rILL"
-      "EGALTASKID\020\t\022\023\n\017ILLEGALPACKETID\020\n\022\023\n\017ILL"
-      "EGALCLIENTID\020\013\022\017\n\013NOPRIVILEGE\020\014\022\021\n\rDUPLI"
-      "CATEUSER\020\r\"W\n\004User\022\020\n\010username\030\001 \002(\t\022\020\n\010"
-      "password\030\002 \002(\t\022\021\n\tprivilege\030\003 \002(\004\022\030\n\020las"
-      "t_packet_time\030\004 \001(\004\"(\n\010UserList\022\034\n\004user\030"
-      "\001 \003(\0132\016.fs.proto.User"
+      "KSPACE\020\013\022\014\n\010USERLIST\020\014\022\013\n\007ADDUSER\020\r\022\016\n\nR"
+      "EMOVEUSER\020\016\"\274\004\n\010Response\0222\n\tresp_type\030\001 "
+      "\002(\0162\037.fs.proto.Response.ResponseType\022\r\n\005"
+      "token\030\002 \001(\t\022%\n\tfile_list\030\003 \001(\0132\022.fs.prot"
+      "o.FileList\022\017\n\007task_id\030\004 \001(\004\022\021\n\tpacket_id"
+      "\030\005 \001(\004\022\021\n\tpacket_no\030\006 \001(\004\022 \n\006packet\030\007 \001("
+      "\0132\020.fs.proto.Packet\022\022\n\navai_space\030\010 \001(\004\022"
+      "\023\n\013total_space\030\t \001(\004\022\021\n\tprivilege\030\n \001(\004\022"
+      "$\n\010userlist\030\013 \001(\0132\022.fs.proto.UserList\"\212\002"
+      "\n\014ResponseType\022\013\n\007SUCCESS\020\000\022\016\n\nNOSUCHUSE"
+      "R\020\001\022\021\n\rILLEGALPASSWD\020\002\022\013\n\007UNKNOWN\020\003\022\016\n\nN"
+      "ORESPONSE\020\004\022\020\n\014ILLEGALTOKEN\020\005\022\017\n\013ILLEGAL"
+      "PATH\020\006\022\022\n\016ILLEGALREQUEST\020\007\022\025\n\021ILLEGALTAS"
+      "KSTATUS\020\010\022\021\n\rILLEGALTASKID\020\t\022\023\n\017ILLEGALP"
+      "ACKETID\020\n\022\023\n\017ILLEGALCLIENTID\020\013\022\017\n\013NOPRIV"
+      "ILEGE\020\014\022\021\n\rDUPLICATEUSER\020\r\"W\n\004User\022\020\n\010us"
+      "ername\030\001 \002(\t\022\020\n\010password\030\002 \002(\t\022\021\n\tprivil"
+      "ege\030\003 \002(\004\022\030\n\020last_packet_time\030\004 \001(\004\"(\n\010U"
+      "serList\022\034\n\004user\030\001 \003(\0132\016.fs.proto.User"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1541);
+      descriptor, 1557);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "file_transfer.proto", &protobuf_RegisterTypes);
 }
@@ -429,6 +429,7 @@ bool Request_RequestType_IsValid(int value) {
     case 11:
     case 12:
     case 13:
+    case 14:
       return true;
     default:
       return false;
@@ -450,6 +451,7 @@ const Request_RequestType Request::CANCEL;
 const Request_RequestType Request::DISKSPACE;
 const Request_RequestType Request::USERLIST;
 const Request_RequestType Request::ADDUSER;
+const Request_RequestType Request::REMOVEUSER;
 const Request_RequestType Request::RequestType_MIN;
 const Request_RequestType Request::RequestType_MAX;
 const int Request::RequestType_ARRAYSIZE;

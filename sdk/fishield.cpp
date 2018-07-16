@@ -580,3 +580,19 @@ fs::proto::Response fs_adduser(fs::proto::User* user){
 
     return response;
 }
+
+fs::proto::Response fs_remove_user(const std::string username){
+    using namespace fs::proto;
+    Request removeuser_request;
+    removeuser_request.set_req_type(Request::REMOVEUSER);
+    removeuser_request.set_username(username);
+    removeuser_request.set_token(_token);
+
+
+    // send request and receive response
+    Response response;
+    if(send_receive(removeuser_request,response) == false)
+        response.set_resp_type(Response::NORESPONSE);
+
+    return response;
+}

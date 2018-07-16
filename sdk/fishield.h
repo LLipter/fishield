@@ -194,6 +194,13 @@ fs::proto::Response fs_userlist();
  */
 fs::proto::Response fs_adduser(fs::proto::User* user);
 
+/***
+ * DESC:    Used for root to remove a user
+ * NOTE:    This function will block process when trying to communicate with server
+ * RETURN:  return a response from server
+ */
+fs::proto::Response fs_remove_user(const std::string username);
+
 
 
 #endif

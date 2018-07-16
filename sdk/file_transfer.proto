@@ -48,6 +48,7 @@ message Request
 		DISKSPACE			= 11;	// get disk space information
 		USERLIST			= 12;	// get all user information
 		ADDUSER				= 13;	// add a new user
+		REMOVEUSER			= 14;	// remove a user
 	}
 	required RequestType req_type	= 1;
 	optional string username	= 2;

@@ -25,7 +25,7 @@ void usage(){
          << "       removeuser <username>   : remove a user" << endl
          << "       listip                  : list all allowed ip addresses" << endl
          << "       addip      <address>    : add a new ip address" << endl
-         << "       removeip   <address>    : add a new ip address" << endl;
+         << "       removeip   <address>    : remove a ip address" << endl;
 }
 
 void printUserList(const UserList& userlist){
@@ -61,6 +61,8 @@ int main(){
         string arg;
         while(ss >> arg)
             args.push_back(arg);
+        if(args.size() == 0)
+            continue;
         string& cmd = args[0];
         if(cmd == "listuser"){
             response = fs_userlist();
@@ -69,7 +71,7 @@ int main(){
             else
                 printUserList(response.userlist());
         }else if(cmd == "adduser"){
-            cout << "Please enter username : ";
+            cout << "Please enter username:";
             string username;
             cin >> username;
             char* password = getpass("Please enter password:");
@@ -84,11 +86,19 @@ int main(){
             if(can_download)
                 privilege += (1 << DOWNLOAD_BIT);
             user->set_privilege(privilege);
-            // TODO : fs_adduser(user);
+            response = fs_adduser(user);
+            if(response.resp_type() != Response::SUCCESS)
+                cout << Response::ResponseType_Name(response.resp_type()) << endl;
+            else
+                cout << "OK" << endl;
         }else if(cmd == "removeuser"){
             string username;
             cin >> username;
-            // TODO : fs_remove_user(username);
+            response = fs_remove_user(username);
+            if(response.resp_type() != Response::SUCCESS)
+                cout << Response::ResponseType_Name(response.resp_type()) << endl;
+            else
+                cout << "OK" << endl;
         }else if(cmd == "listip"){
 
         }else if(cmd == "addip"){

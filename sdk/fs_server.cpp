@@ -620,7 +620,9 @@ void getUserList(int privilege, fs::proto::Response& response){
 
 }
 
-void adduser(int privilege, const fs::proto::User& user, fs::proto::Response& response){
+void adduser(int privilege,
+             const fs::proto::User& user,
+             fs::proto::Response& response){
     using namespace fs::proto;
     if(!((privilege >> ROOT_BIT) % 2)){
         // no right
@@ -637,6 +639,21 @@ void adduser(int privilege, const fs::proto::User& user, fs::proto::Response& re
 
     response.set_resp_type(Response::SUCCESS);
 
+}
+
+void remove_user(int privilege,
+                 std::string username,
+                 fs::proto::Response& response){
+    using namespace fs::proto;
+    if(!((privilege >> ROOT_BIT) % 2)){
+        // no right
+        response.set_resp_type(Response::NOPRIVILEGE);
+        return;
+    }
+
+    fs_DBManager manager;
+    manager.removeUser(username);
+    response.set_resp_type(Response::SUCCESS);
 }
 
 void communicate_thread(server_ptr serptr){
@@ -716,6 +733,11 @@ void communicate_thread(server_ptr serptr){
                 adduser(privilege,
                         request.user(),
                         response);
+                break;
+            case Request::REMOVEUSER:
+                remove_user(privilege,
+                            request.username(),
+                            response);
                 break;
             default:
                 response.set_resp_type(Response::ILLEGALREQUEST);

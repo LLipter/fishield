@@ -151,3 +151,12 @@ int fs_DBManager::addUser(const fs::proto::User& user){
     delete pstmt;
     return 0;
 }
+
+void fs_DBManager::removeUser(std::string username){
+
+    sql::PreparedStatement *pstmt = conn->prepareStatement("DELETE FROM user WHERE username=?");
+    pstmt->setString(1, username);
+    pstmt->executeUpdate();
+
+    delete pstmt;
+}
