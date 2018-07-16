@@ -63,7 +63,7 @@ void cb_cancel_failed(int client, fs::proto::Response::ResponseType error){
 
 int main()
 {
-    int ret = fs_client_startup("localhost", 7614);
+    int ret = fs_client_startup("www.irran.top", 7614);
     if(ret == 0)
         cout << "client startup ok" << endl;
     else if (ret == FS_E_ILLEGAL_VALUE)
@@ -74,10 +74,10 @@ int main()
         return 1;
     splitline();
 
-//    fs_login(username,
-//             password,
-//             boost::bind(cb_login_success),
-//             boost::bind(cb_fail,_1,"login"));
+    fs_login(username,
+             password,
+             boost::bind(cb_login_success),
+             boost::bind(cb_fail,_1,"login"));
 
 //    fs_filelist("/",
 //                boost::bind(cb_filelist_success, _1),
@@ -104,10 +104,12 @@ int main()
 //    if(boost::filesystem::exists("/home/irran/Desktop/fs_root/music.mp3"))
 //        boost::filesystem::remove("/home/irran/Desktop/fs_root/music.mp3");
 
-//    fs_upload(1,
-//              "/home/irran/Desktop",
-//              "",                   // upload to root directory
-//              "music.mp3");
+    boost::thread::sleep(boost::get_system_time() + boost::posix_time::millisec(1000));
+
+
+    fs_upload("/home/irran/Desktop",
+              "",                   // upload to root directory
+              "music.mp3");
 
 //    fs_download(2
 //                ,"/home/irran/Desktop",

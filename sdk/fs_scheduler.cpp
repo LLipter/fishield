@@ -19,7 +19,7 @@ fs_scheduler* fs_scheduler::instance(){
 fs_scheduler::fs_scheduler(){
     max_task_num = DEFAULE_MAX_TASKNO;
     task_count = 0;
-    std::thread scheduler_thread(&fs_scheduler::save_thread, this);
+    std::thread scheduler_thread(&fs_scheduler::scheduler_thread, this);
     scheduler_thread.detach();
     std::thread save_thread(&fs_scheduler::save_thread, this);
     save_thread.detach();

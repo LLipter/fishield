@@ -7,9 +7,10 @@ TabbedPage {
     title: qsTr("Fishield")
     actionBar.maxActionCount: navDrawer.enabled ? 3 : 4
 
-    property var sections: [ "History", "Files", "Transferring" ]
-
-    property var sectionTitles: [ qsTr("History"), qsTr("Files"), qsTr("Downloading/Uploading") ]
+//    property var sections: [ "History", "Files", "Transferring" ]
+//    property var sectionTitles: [ qsTr("History"), qsTr("Files"), qsTr("Downloading/Uploading") ]
+    property var sections: ["Files", "Transferring" ]
+    property var sectionTitles: [ qsTr("Files"), qsTr("Downloading/Uploading") ]
 
     property string selectedComponent: sections[0]
 

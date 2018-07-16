@@ -2,7 +2,7 @@ import QtQuick 2.4
 import Material 0.2
 import Material.ListItems 0.1 as ListItem
 import Material.Extras 0.1
-import QtQuick.Dialogs 1.2
+import QtQuick.Dialogs 1.2 as QDialogs
 
 Item {
     id: root
@@ -64,6 +64,10 @@ Item {
 
             console.debug(currentpath, "onFileLoaded");
             console.debug(file_names)
+        }
+
+        onNewdir_created:{
+            loadfilelist();
         }
     }
 
@@ -131,9 +135,11 @@ Item {
         }
 
         action: Action {
-            text: "&UPLOAD"
             shortcut: "Ctrl+U"
-            onTriggered: fileDialog.open();
+            onTriggered:{
+                fileDialog.selectFolder = false;
+                fileDialog.open();
+            }
         }
         iconName: "upload"
     }
@@ -148,7 +154,6 @@ Item {
         }
 
         action: Action {
-            text: "&REFRESH"
             shortcut: "F5"
             onTriggered: {
                 console.debug("REFRESH");
@@ -169,7 +174,6 @@ Item {
         }
 
         action: Action {
-            text: "&GOBACK"
             shortcut: "Backspace"
             onTriggered: {
                 console.debug("GOBACK");
@@ -183,19 +187,62 @@ Item {
             }
         }
         iconName: "return"
+    }
 
+    ActionButton {
+        id: newdir
+
+        anchors {
+            right: parent.right
+            bottom: refreshbutton.top
+            margins: dp(16)
+        }
+
+        action: Action {
+            shortcut: "Ctrl+N"
+            onTriggered: {
+                console.debug("NEWDIR");
+                textFieldDialog.open();
+            }
+        }
+        iconName: "newdir"
     }
 
 
 
-    FileDialog {
+    Dialog {
+        id: textFieldDialog
+        title: "Name of new directory"
+        hasActions: true
+
+        TextField {
+            id: optionText
+            width: parent.width
+            placeholderText: "Directory name"
+        }
+
+        onAccepted: {
+            console.debug("new dirname", optionText.text);
+            backend.newdir(currentpath + optionText.text);
+        }
+    }
+
+
+
+    QDialogs.FileDialog {
         id: fileDialog
         title: "Please choose a file"
         folder: shortcuts.home
         onAccepted: {
             console.log("You chose: " + fileDialog.fileUrls);
             console.debug(fileDialog.fileUrls, currentpath);
-            backend.upload(fileDialog.fileUrls, currentpath);
+            if(selectFolder == false)
+                backend.upload(fileDialog.fileUrls, currentpath);
+            else{
+                backend.download(fileDialog.fileUrls,
+                                 currentpath,
+                                 file_names[clickedindex])
+            }
         }
     }
 
@@ -206,27 +253,36 @@ Item {
             Action {
                 iconName: "download"
                 name: "Download"
+
+                onTriggered: {
+                    fileDialog.selectFolder = true;
+                    fileDialog.open();
+                }
             },
 
             Action {
                 iconName: "settings"
                 name: "Details"
                 hasDividerAfter: true
+                enabled: false
             },
 
             Action {
                 iconName: "forward"
                 name: "Move"
+                enabled: false
             },
 
             Action {
                 iconName: "delete"
                 name: "Delete"
+                enabled: false
             },
 
             Action {
                 iconName: "create"
                 name: "Rename"
+                enabled: false
             }
         ]
     }
