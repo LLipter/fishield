@@ -178,7 +178,7 @@ int fs_DBManager::addIPAddr(const std::string& addr){
     if(this->getIPAddr(addr))
         return FS_E_DUPLICATE_IPADDR;
 
-    pstmt = conn->prepareStatement("INSERT INTO ip VALUES(?)");
+    sql::PreparedStatement* pstmt = conn->prepareStatement("INSERT INTO ip VALUES(?)");
     pstmt->setString(1, addr);
     pstmt->executeUpdate();
     delete pstmt;
