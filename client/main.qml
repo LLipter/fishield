@@ -5,7 +5,7 @@ ApplicationWindow {
     id: rootwindow
     visible: true
     width: 960
-    height: 480
+    height: 640
     minimumWidth: 320
     minimumHeight: 320
     title: qsTr("Fishield")

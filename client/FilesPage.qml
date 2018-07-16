@@ -69,6 +69,10 @@ Item {
         onNewdir_created:{
             loadfilelist();
         }
+
+        onFile_removed:{
+            loadfilelist();
+        }
     }
 
     Flickable {
@@ -208,6 +212,38 @@ Item {
         iconName: "newdir"
     }
 
+    ActionButton {
+        id: deletedir
+
+        anchors {
+            right: parent.right
+            bottom: newdir.top
+            margins: dp(16)
+        }
+
+        action: Action {
+            onTriggered: {
+                if(currentpath == "/")
+                    return;
+                console.debug("REMOVE DIR");
+                delete_confirm.open();
+            }
+        }
+        iconName: "delete"
+    }
+
+    Dialog {
+        id: delete_confirm
+        width: dp(300)
+        text: "Do you want to remove the current working directory? All files within this directory and the directory itself will be removed"
+        positiveButtonText: "confirm"
+        negativeButtonText: "cancel"
+        onAccepted: {
+            backend.remove_file(currentpath);
+            gobackbutton.action.trigger();
+        }
+    }
+
 
 
     Dialog {
@@ -276,7 +312,10 @@ Item {
             Action {
                 iconName: "delete"
                 name: "Delete"
-                enabled: false
+
+                onTriggered: {
+                    backend.remove_file(currentpath + file_names[clickedindex])
+                }
             },
 
             Action {

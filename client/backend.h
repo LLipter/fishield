@@ -22,6 +22,7 @@ public:
     Q_INVOKABLE void pause_task(QString taskid);
     Q_INVOKABLE void resume_task(QString taskid);
     Q_INVOKABLE void cancel_task(QString taskid);
+    Q_INVOKABLE void remove_file(QString path);
 
 private:
     static QString _token;
@@ -42,6 +43,7 @@ signals:
                         QVariantList _task_ids);
     void history_loaded(QVariantList _file_names,
                         QVariantList _file_states);
+    void file_removed();
 
 public slots:
     void handle_login_success();
@@ -60,7 +62,9 @@ public slots:
     void handle_resume_failed(int taskid, fs::proto::Response::ResponseType error);
     void handle_cancel_success(int taskid);
     void handle_cancel_failed(int taskid, fs::proto::Response::ResponseType error);
-
+    void cleaning_up();
+    void handle_remove_success();
+    void handle_remove_failed(fs::proto::Response::ResponseType error);
 };
 
 #endif // BACKEND_H

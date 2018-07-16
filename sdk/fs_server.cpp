@@ -461,7 +461,7 @@ void remove_file(const std::string& ph, fs::proto::Response& response){
 
     std::string path_str = rootdir + ph;
     boost::system::error_code err;
-    remove(path_str,err);
+    remove_all(path_str,err);
     if(err){
         // something wrong here
         response.set_resp_type(Response::ILLEGALPATH);

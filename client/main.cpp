@@ -3,10 +3,6 @@
 #include "QQmlContext"
 #include "backend.h"
 
-void init(QQmlContext* context){
-    backend* _backend = new backend;
-    context->setContextProperty("backend", _backend);
-}
 
 int main(int argc, char *argv[])
 {
@@ -18,8 +14,15 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     QPM_INIT(engine)
-    init(engine.rootContext());
+
+    // register backend object
+    backend* _backend = new backend;
+    engine.rootContext()->setContextProperty("backend", _backend);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+
+    // register cleaning up function
+    QObject::connect(&app, SIGNAL(aboutToQuit()), _backend, SLOT(cleaning_up()));
+
     if (engine.rootObjects().isEmpty())
         return -1;
 

@@ -134,6 +134,14 @@ void fs_cancel(int task_id,
 void fs_pause(int task_id,
               fs_fp_int cb_success,
               fs_fp_interror cb_failed);
+
+/***
+ * DESC:    Cleaning up function. (pause all task)
+ * RETURN:  return nothing
+ */
+void fs_cleaning_up();
+
+
 /***
  * DESC:    Resume a PAUSED task identified by `task_id`
  * RETURN:  return nothing

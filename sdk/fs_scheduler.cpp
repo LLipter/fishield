@@ -102,13 +102,11 @@ void fs_scheduler::save_thread(){
     boost::this_thread::sleep(DEFAULT_CLIENT_SAVE_SLEEP);
     while(true){
         boost::this_thread::sleep(DEFAULT_CLIENT_SAVE_SLEEP);
-        client_task_mutex.lock();
 
         // save removed tasks in disk
         save_task_to_file(tasks_finished_path, task_map_finished);
         save_task_to_file(tasks_current_path, task_map_current);
 
-        client_task_mutex.unlock();
     }
 }
 

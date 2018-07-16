@@ -471,3 +471,27 @@ void fs_history_tasks(fs_fp_tasks cb_history_tasks){
                     cb_history_tasks);
     thd.detach();
 }
+
+
+extern std::string tasks_finished_path;
+extern std::string tasks_current_path;
+void fs_cleaning_up(){
+    using namespace fs::proto;
+
+    client_task_mutex.lock();
+    auto& tmap = fs_scheduler::instance()->task_map_current;
+    for(auto it=tmap.begin();it!=tmap.end();it++){
+        Task& task = it->second;
+        if(task.task_status() == Task::UPLOADING)
+            task.set_task_status(Task::UPLOAD_PAUSING);
+        if(task.task_status() == Task::DOWNLOADING)
+            task.set_task_status(Task::DOWNLOAD_PAUSING);
+    }
+    client_task_mutex.unlock();
+
+    save_task_to_file(tasks_finished_path, fs_scheduler::instance()->task_map_finished);
+    save_task_to_file(tasks_current_path, fs_scheduler::instance()->task_map_current);
+
+
+    boost::this_thread::sleep(boost::posix_time::milliseconds(300));
+}

@@ -265,3 +265,22 @@ void backend::handle_cancel_failed(int taskid, fs::proto::Response::ResponseType
     // TODO : CHECK ERROR TYPE (ILLEGAL TOKEN)
 }
 
+void backend::cleaning_up(){
+    fs_cleaning_up();
+}
+
+void backend::remove_file(QString path){
+    is_timeout = false;
+    fs_remove(path.toStdString(),
+              boost::bind(&backend::handle_remove_success, this),
+              boost::bind(&backend::handle_remove_failed, this, _1));
+}
+
+void backend::handle_remove_success(){
+    if(is_timeout)
+        return;
+    emit file_removed();
+}
+void backend::handle_remove_failed(fs::proto::Response::ResponseType error){
+    // TODO : CHECK ERROR TYPE (ILLEGAL TOKEN)
+}

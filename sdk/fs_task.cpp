@@ -236,6 +236,8 @@ void get_task_from_file(std::string filepath, std::map<int, fs::proto::Task>& ta
     char* buf = new char[size];
     int len;
 
+    client_task_mutex.lock();
+
     std::ifstream file(filepath, std::ios::binary);
     while(file.read((char*)&len, 4)){
         if(len > size){             // buffer is not big enough
@@ -248,6 +250,8 @@ void get_task_from_file(std::string filepath, std::map<int, fs::proto::Task>& ta
         task_map[task.task_id()] = task;
     }
 
+    client_task_mutex.unlock();
+
     file.close();
     delete[] buf;
 }
@@ -258,6 +262,7 @@ void save_task_to_file(std::string filepath, std::map<int, fs::proto::Task>& tas
     int size = BUFFER_SIZE;         // buffer size
     char* buf = new char[size];
 
+    client_task_mutex.lock();
     std::ofstream file(filepath, std::ios::binary | std::ios::trunc);
     for(auto it=task_map.begin();it!=task_map.end();it++){
         Task& task = it->second;
@@ -272,6 +277,7 @@ void save_task_to_file(std::string filepath, std::map<int, fs::proto::Task>& tas
         file.write((char*)&len, 4);
         file.write(buf, len);
     }
+    client_task_mutex.unlock();
     file.close();
     delete[] buf;
 }
