@@ -6,7 +6,7 @@ PWD := $(shell pwd)
 linklib = 	-lboost_system -lboost_thread -lboost_filesystem \
      		-lpthread -lprotobuf -lmysqlcppconn
 
-all: libfishield.so server.out client.out
+all: libfishield.so server.out client.out fsconfig.out
 
 server.out: main_server.cpp libfishield.so
 	g++ main_server.cpp -std=c++11 -L${PWD} -lfishield \
@@ -14,6 +14,10 @@ server.out: main_server.cpp libfishield.so
 
 client.out: main_client.cpp libfishield.so
 	g++ main_client.cpp -std=c++11 -L${PWD} -lfishield \
+	${linklib} -o client.out
+
+fsconfig.out: admin_tool.cpp libfishield.so
+	g++ admin_tool.cpp -std=c++11 -L${PWD} -lfishield \
 	${linklib} -o client.out
 
 libfishield.so: ${obj}
