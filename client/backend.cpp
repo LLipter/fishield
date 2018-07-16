@@ -44,6 +44,40 @@ void backend::getFileList(QString path){
                 boost::bind(&backend::handle_filelist_failed, this, _1));
 }
 
+QString getSizeStr(long long size){
+    QString ret;
+    long long unit = 1;
+    if(size < (unit *= 1024))
+        ret = QString::fromStdString(std::to_string(size)) + "B";
+    else if(size < (unit *= 1024))
+        ret = QString::fromStdString(std::to_string(size/1024)) + "K";
+    else if(size < (unit *= 1024))
+        ret = QString::fromStdString(std::to_string(size/1024/1024)) + "M";
+    else
+        ret = QString::fromStdString(std::to_string(size/1024/1024/1024)) + "G";
+
+    return ret;
+}
+
+QString getTimeStr(long long modify_diff){
+    QString ret;
+    long long unit = 1;
+    if(modify_diff < (unit *= 60))
+        ret = QString::fromStdString(std::to_string(modify_diff)) + " seconds ago";
+    else if(modify_diff < (unit *= 60))
+        ret = QString::fromStdString(std::to_string(modify_diff/60)) + " mintues ago";
+    else if(modify_diff < (unit *= 24))
+        ret = QString::fromStdString(std::to_string(modify_diff/60/60)) + " hours ago";
+    else if(modify_diff < (unit *= 30))
+        ret = QString::fromStdString(std::to_string(modify_diff/60/60/24)) + " days ago";
+    else if(modify_diff < (unit *= 12))
+        ret = QString::fromStdString(std::to_string(modify_diff/60/60/24/30)) + " months ago";
+    else
+        ret = QString::fromStdString(std::to_string(modify_diff/60/60/24/30/12)) + " years ago";
+
+    return ret;
+}
+
 void backend::handle_filelist_success(fs::proto::FileList filelist){
     QVariantList names;
     QVariantList is_dir;
@@ -58,30 +92,9 @@ void backend::handle_filelist_success(fs::proto::FileList filelist){
             filesizes << " ";
         }else{
             is_dir << false;
-            int fsize = file.size();
-            if(fsize < 1024)
-                filesizes << (QString::fromStdString(std::to_string(fsize)) + "B");
-            else if(fsize < 1024*1024)
-                filesizes << (QString::fromStdString(std::to_string(fsize/1024)) + "K");
-            else if(fsize < 1024*1024*1024)
-                filesizes << (QString::fromStdString(std::to_string(fsize/1024/1024)) + "M");
-            else
-                filesizes << (QString::fromStdString(std::to_string(fsize/1024/1024/1024)) + "G");
+            filesizes << getSizeStr(file.size());
         }
-        int modify_diff = std::time(0) - file.mtime();
-        if(modify_diff < 60)
-            mtimes << (QString::fromStdString(std::to_string(modify_diff)) + " seconds ago");
-        else if(modify_diff < 60*60)
-            mtimes << (QString::fromStdString(std::to_string(modify_diff/60)) + " mintues ago");
-        else if(modify_diff < 24*60*60)
-            mtimes << (QString::fromStdString(std::to_string(modify_diff/60/60)) + " hours ago");
-        else if(modify_diff < 30*24*60*60)
-            mtimes << (QString::fromStdString(std::to_string(modify_diff/60/60/24)) + " days ago");
-        else if(modify_diff < 12*30*24*60*60)
-            mtimes << (QString::fromStdString(std::to_string(modify_diff/60/60/24/30)) + " months ago");
-        else
-            mtimes << (QString::fromStdString(std::to_string(modify_diff/60/60/24/30/12)) + " years ago");
-
+        mtimes << getTimeStr(std::time(0) - file.mtime());
     }
 
     emit fileLoaded(names, is_dir, filesizes, mtimes);
@@ -305,19 +318,6 @@ void backend::disk_space(){
                   boost::bind(&backend::handle_diskspace_failed, this, _1));
 }
 
-
-QString getSizeStr(int size){
-    QString ret;
-    if(size < 1024)
-        ret = QString::fromStdString(std::to_string(size)) + "B";
-    else if(ret < 1024*1024)
-        ret = QString::fromStdString(std::to_string(size/1024)) + "K";
-    else if(ret < 1024*1024*1024)
-        ret = QString::fromStdString(std::to_string(size/1024/1024)) + "M";
-    else
-        ret = QString::fromStdString(std::to_string(size/1024/1024/1024)) + "G";
-    return ret;
-}
 
 void backend::handle_diskspace_success(long long available, long long total){
     if(is_timeout)
