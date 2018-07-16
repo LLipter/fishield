@@ -41,7 +41,7 @@ fs_client.o: fs_client.cpp fs_client.h fs_config.h file_transfer.pb.h \
 	g++ fs_client.cpp 	-std=c++11	-c -fPIC
 
 fs_server.o: fs_server.cpp fs_server.h fs_config.h file_transfer.pb.h \
- fs_task.pb.h fs_task.h fs_dbmanager.h fs_client.h fs_user.h
+ fs_task.pb.h fs_task.h fs_dbmanager.h fs_client.h
 	g++ fs_server.cpp 	-std=c++11	-c -fPIC
 
 fs_task.o: fs_task.cpp fs_task.h fs_config.h file_transfer.pb.h \
@@ -53,7 +53,7 @@ fs_scheduler.o: fs_scheduler.cpp fs_scheduler.h fs_config.h \
 	g++ fs_scheduler.cpp 	-std=c++11	-c -fPIC
 
 fs_dbmanager.o: fs_dbmanager.cpp fs_dbmanager.h fs_client.h fs_config.h \
- file_transfer.pb.h fs_task.pb.h fs_user.h
+ file_transfer.pb.h fs_task.pb.h
 	g++ fs_dbmanager.cpp 	-std=c++11	-c -fPIC
 
 clean:
