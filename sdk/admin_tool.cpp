@@ -149,5 +149,5 @@ int main(){
         cout.flush();
     }
 
-
+    cout << endl;
 }
