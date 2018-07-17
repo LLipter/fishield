@@ -28,6 +28,9 @@ void _upload(fs::proto::Task& task){
         }
 
         while(client.is_open()){
+            if(task.sent_packet_no() >= task.total_packet_no())
+                break;
+
             if(task.task_status() == Task::CANCELED ||
                     task.task_status() == Task::CANCELING ||
                     task.task_status() == Task::UPLOAD_PAUSED ||
@@ -140,6 +143,10 @@ void _download(fs::proto::Task& task){
         }
 
         while(client.is_open()){
+            if(task.received_packet_no() >= task.total_packet_no())
+                break;
+
+
             if(task.task_status() == Task::CANCELED ||
                     task.task_status() == Task::CANCELING ||
                     task.task_status() == Task::DOWNLOAD_PAUSED ||
