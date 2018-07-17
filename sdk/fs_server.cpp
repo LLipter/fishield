@@ -716,6 +716,13 @@ void communicate_thread(server_ptr serptr){
     std::cout << "connection built with "
               << serptr->sock().remote_endpoint().address().to_string()
               << std::endl;
+#else
+    std::ofstream ofile(DEFAULT_LOG_FILE, std::ios::app);
+    time_t ticks = std::time(0);
+    std::string time_str = std::ctime(&ticks);
+    time_str = time_str.substr(0,time_str.length()-1);
+    std::string addr_str = serptr->sock().remote_endpoint().address().to_string();
+    ofile << time_str << " " << addr_str << endl;
 #endif
 
     // verify ip address

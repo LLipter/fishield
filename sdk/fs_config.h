@@ -30,6 +30,7 @@
 #define DEFAULT_TASKID_FILE             ".fs_taskid"
 #define DEFAULT_TASKS_FINISHED_FILE     ".fs_tasks_finished"
 #define DEFAULT_TASKS_CURRENT_FILE      ".fs_tasks_current"
+#define DEFAULT_LOG_FILE                ".fs_log"
 #define DEFAULE_MAX_TASKNO              5
 #define DEFAULT_REMOVE_SLEEP_TIME       boost::posix_time::seconds(2)
 #define DEFAULT_SAVE_SLEEP_TIME         boost::posix_time::seconds(2)
@@ -54,7 +55,7 @@
 #define FS_E_UOLOADFAILED               -8      // upload failed
 #define FS_E_DOWNLOADFAILED             -9      // download failed
 #define FS_E_DUPLICATE_USER             -10     // duplicate user
-#define FS_E_DUPLICATE_IPADDR           -101    // duplicate ip address
+#define FS_E_DUPLICATE_IPADDR           -11     // duplicate ip address
 
 
 // fs stands for "fishield" or "file security"
