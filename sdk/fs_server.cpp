@@ -723,7 +723,6 @@ void communicate_thread(server_ptr serptr){
     time_str = time_str.substr(0,time_str.length()-1);
     std::string addr_str = serptr->sock().remote_endpoint().address().to_string();
     ofile << time_str << " " << addr_str << std::endl;
-    ofile.close();
 #endif
 
     // verify ip address
@@ -741,6 +740,10 @@ void communicate_thread(server_ptr serptr){
             break;
         Response response;
         int privilege;
+#ifndef DEBUG
+        ofile << "Received : " << Request::RequestType_Name(request.req_type()) << std::endl;
+#endif
+
         if(request.req_type() == Request::LOGIN){
             verify_password(request.username(),
                             request.password(),
@@ -827,7 +830,9 @@ void communicate_thread(server_ptr serptr){
             }
 
         }
-
+#ifndef DEBUG
+        ofile << "Send : " << Response::ResponseType_Name(response.resp_type()) << std::endl;
+#endif
         ret_resp = serptr->send_response(response);
         if(ret_resp == false)
             break;
@@ -839,6 +844,8 @@ void communicate_thread(server_ptr serptr){
     std::cout << "connection lost with "
               << serptr->sock().remote_endpoint().address().to_string()
               << std::endl;
+#else
+    ofile.close();
 #endif
 
 }
