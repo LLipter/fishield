@@ -722,7 +722,7 @@ void communicate_thread(server_ptr serptr){
     std::string time_str = std::ctime(&ticks);
     time_str = time_str.substr(0,time_str.length()-1);
     std::string addr_str = serptr->sock().remote_endpoint().address().to_string();
-    ofile << time_str << " " << addr_str << endl;
+    ofile << time_str << " " << addr_str << std::endl;
 #endif
 
     // verify ip address
