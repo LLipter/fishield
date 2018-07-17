@@ -12,6 +12,10 @@ fs_client::fs_client():
     _sock(service),
     _ep(_server_addr, _server_port){}
 
+bool fs_client::is_open(){
+    return _sock.is_open();
+}
+
 bool fs_client::connect(){
     boost::system::error_code error;
     _sock.connect(_ep,error);

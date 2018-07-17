@@ -723,6 +723,7 @@ void communicate_thread(server_ptr serptr){
     time_str = time_str.substr(0,time_str.length()-1);
     std::string addr_str = serptr->sock().remote_endpoint().address().to_string();
     ofile << time_str << " " << addr_str << std::endl;
+    ofile.close();
 #endif
 
     // verify ip address

@@ -16,80 +16,92 @@ void _upload(fs::proto::Task& task){
     using namespace fs::proto;
 
     while(task.sent_packet_no() < task.total_packet_no()){
-        if(task.task_status() == Task::CANCELED ||
-                task.task_status() == Task::CANCELING ||
-                task.task_status() == Task::UPLOAD_PAUSED ||
-                task.task_status() == Task::UPLOAD_PAUSING ||
-                task.task_status() == Task::FAILED ||
-                task.task_status() == Task::FAILING)
-            return;
 
-        if(task.task_status() != Task::UPLOADING){
-            // fetal error
-            client_task_mutex.lock();
-            task.set_task_status(Task::FAILING);
-            client_task_mutex.unlock();
-            cb_failed(task.task_id(), Response::ILLEGALTASKSTATUS);
-            return;
-        }
-
-        Request packet_request;
-        packet_request.set_req_type(Request::SEND_PACKET);
-        packet_request.set_task_id(task.task_id());
-        packet_request.set_token(_token);
-
-
-        // generate packet
-        Packet* packet = packet_request.mutable_packet();
-        packet->set_packet_id(task.sent_packet_no());
-        std::string filepath = task.localbasepath() + SEPARATOR + task.filename();
-        std::ifstream file(filepath, std::ios::binary);
-        if(!file){
-            // fetal error
-            client_task_mutex.lock();
-            task.set_task_status(Task::FAILING);
-            client_task_mutex.unlock();
-            cb_failed(task.task_id(), Response::ILLEGALPATH);
-            return;
-        }
-        char* buf = new char[PACKET_SIZE];
-        file.seekg(task.sent_packet_no() * PACKET_SIZE);
-        file.read(buf, PACKET_SIZE);
-        packet->set_data(buf, file.gcount());
-
-
-        // send request and receive response
-        Response response;
-        if(send_receive(packet_request,response) == false){
+        fs_client client;
+        if(client.connect() == false){
             // non-fetal error
             client_task_mutex.lock();
             task.set_task_status(Task::UPLOAD_PAUSING);
             client_task_mutex.unlock();
             cb_failed(task.task_id(), Response::NORESPONSE);
-            file.close();
-            delete[] buf;
             return;
         }
 
-        file.close();
-        delete[] buf;
+        while(client.is_open()){
+            if(task.task_status() == Task::CANCELED ||
+                    task.task_status() == Task::CANCELING ||
+                    task.task_status() == Task::UPLOAD_PAUSED ||
+                    task.task_status() == Task::UPLOAD_PAUSING ||
+                    task.task_status() == Task::FAILED ||
+                    task.task_status() == Task::FAILING)
+                return;
+            if(task.task_status() != Task::UPLOADING){
+                // fetal error
+                client_task_mutex.lock();
+                task.set_task_status(Task::FAILING);
+                client_task_mutex.unlock();
+                cb_failed(task.task_id(), Response::ILLEGALTASKSTATUS);
+                return;
+            }
 
-        // check response type
-        switch (response.resp_type()) {
-        case Response::SUCCESS:
-            task.set_sent_packet_no(task.sent_packet_no()+1);
-            cb_progress(task.task_id(), (double)task.sent_packet_no() / task.total_packet_no());
-            break;
-        case Response::ILLEGALPACKETID:
-            task.set_sent_packet_no(response.packet_id());
-            break;
-        default:
-            // fetal error
-            client_task_mutex.lock();
-            task.set_task_status(Task::FAILING);
-            client_task_mutex.unlock();
-            cb_failed(task.task_id(), response.resp_type());
-            return;
+            Request packet_request;
+            packet_request.set_req_type(Request::SEND_PACKET);
+            packet_request.set_task_id(task.task_id());
+            packet_request.set_token(_token);
+
+            // generate packet
+            Packet* packet = packet_request.mutable_packet();
+            packet->set_packet_id(task.sent_packet_no());
+            std::string filepath = task.localbasepath() + SEPARATOR + task.filename();
+            std::ifstream file(filepath, std::ios::binary);
+            if(!file){
+                // fetal error
+                client_task_mutex.lock();
+                task.set_task_status(Task::FAILING);
+                client_task_mutex.unlock();
+                cb_failed(task.task_id(), Response::ILLEGALPATH);
+                return;
+            }
+            char* buf = new char[PACKET_SIZE];
+            file.seekg(task.sent_packet_no() * PACKET_SIZE);
+            file.read(buf, PACKET_SIZE);
+            packet->set_data(buf, file.gcount());
+
+
+            // send request and receive response
+            Response response;
+            if(client.send_request(packet_request) == false
+                    || client.receive_response(response) == false){
+                // non-fetal error
+                client_task_mutex.lock();
+                task.set_task_status(Task::UPLOAD_PAUSING);
+                client_task_mutex.unlock();
+                cb_failed(task.task_id(), Response::NORESPONSE);
+                file.close();
+                delete[] buf;
+                return;
+            }
+
+            file.close();
+            delete[] buf;
+
+            // check response type
+            switch (response.resp_type()) {
+            case Response::SUCCESS:
+                task.set_sent_packet_no(task.sent_packet_no()+1);
+                cb_progress(task.task_id(), (double)task.sent_packet_no() / task.total_packet_no());
+                break;
+            case Response::ILLEGALPACKETID:
+                task.set_sent_packet_no(response.packet_id());
+                break;
+            default:
+                // fetal error
+                client_task_mutex.lock();
+                task.set_task_status(Task::FAILING);
+                client_task_mutex.unlock();
+                cb_failed(task.task_id(), response.resp_type());
+                return;
+            }
         }
     }
 
@@ -112,36 +124,13 @@ void _download(fs::proto::Task& task){
                             + DEFAULT_HIDDEN_PREFIX
                             + task.filename();
 
-    if(boost::filesystem::exists(filepath))
+    if(task.received_packet_no() == 0 && boost::filesystem::exists(filepath))
         boost::filesystem::remove(filepath);
 
     while(task.received_packet_no() < task.total_packet_no()){
-        if(task.task_status() == Task::CANCELED ||
-                task.task_status() == Task::CANCELING ||
-                task.task_status() == Task::DOWNLOAD_PAUSED ||
-                task.task_status() == Task::DOWNLOAD_PAUSING ||
-                task.task_status() == Task::FAILED ||
-                task.task_status() == Task::FAILING)
-            return;
 
-        if(task.task_status() != Task::DOWNLOADING){
-            // fetal error
-            client_task_mutex.lock();
-            task.set_task_status(Task::FAILING);
-            client_task_mutex.unlock();
-            cb_failed(task.task_id(), Response::ILLEGALTASKSTATUS);
-            return;
-        }
-
-        Request packet_request;
-        packet_request.set_req_type(Request::RECEIVE_PACKET);
-        packet_request.set_task_id(task.task_id());
-        packet_request.set_packet_id(task.received_packet_no());
-        packet_request.set_token(_token);
-
-        // send request and receive response
-        Response response;
-        if(send_receive(packet_request,response) == false){
+        fs_client client;
+        if(client.connect() == false){
             // non-fetal error
             client_task_mutex.lock();
             task.set_task_status(Task::UPLOAD_PAUSING);
@@ -150,36 +139,73 @@ void _download(fs::proto::Task& task){
             return;
         }
 
-        // check response type
-        if(response.resp_type() == Response::SUCCESS){
-
-            if(response.packet().packet_id() != task.received_packet_no())
-                continue;
-
-            task.set_received_packet_no(task.received_packet_no()+1);
-
-            // write data in file
-            std::ofstream file(filepath, std::ios_base::app | std::ios_base::binary);
-            if(!file){
+        while(client.is_open()){
+            if(task.task_status() == Task::CANCELED ||
+                    task.task_status() == Task::CANCELING ||
+                    task.task_status() == Task::DOWNLOAD_PAUSED ||
+                    task.task_status() == Task::DOWNLOAD_PAUSING ||
+                    task.task_status() == Task::FAILED ||
+                    task.task_status() == Task::FAILING)
+                return;
+            if(task.task_status() != Task::DOWNLOADING){
                 // fetal error
                 client_task_mutex.lock();
                 task.set_task_status(Task::FAILING);
                 client_task_mutex.unlock();
-                cb_failed(task.task_id(), Response::ILLEGALPATH);
+                cb_failed(task.task_id(), Response::ILLEGALTASKSTATUS);
                 return;
             }
-            file << response.packet().data();
-            file.close();
 
-            double progress = (double)task.received_packet_no() / task.total_packet_no();
-            cb_progress(task.task_id(), progress);
-        }else{
-            // fetal error
-            client_task_mutex.lock();
-            task.set_task_status(Task::FAILING);
-            client_task_mutex.unlock();
-            cb_failed(task.task_id(), response.resp_type());
-            return;
+            Request packet_request;
+            packet_request.set_req_type(Request::RECEIVE_PACKET);
+            packet_request.set_task_id(task.task_id());
+            packet_request.set_packet_id(task.received_packet_no());
+            packet_request.set_token(_token);
+
+
+            // send request and receive response
+            Response response;
+            if(client.send_request(packet_request) == false ||
+                    client.receive_response(response) == false){
+                // non-fetal error
+                client_task_mutex.lock();
+                task.set_task_status(Task::UPLOAD_PAUSING);
+                client_task_mutex.unlock();
+                cb_failed(task.task_id(), Response::NORESPONSE);
+                return;
+            }
+
+            // check response type
+            if(response.resp_type() == Response::SUCCESS){
+
+                if(response.packet().packet_id() != task.received_packet_no())
+                    continue;
+
+                task.set_received_packet_no(task.received_packet_no()+1);
+
+                // write data in file
+                std::ofstream file(filepath, std::ios_base::app | std::ios_base::binary);
+                if(!file){
+                    // fetal error
+                    client_task_mutex.lock();
+                    task.set_task_status(Task::FAILING);
+                    client_task_mutex.unlock();
+                    cb_failed(task.task_id(), Response::ILLEGALPATH);
+                    return;
+                }
+                file << response.packet().data();
+                file.close();
+
+                double progress = (double)task.received_packet_no() / task.total_packet_no();
+                cb_progress(task.task_id(), progress);
+            }else{
+                // fetal error
+                client_task_mutex.lock();
+                task.set_task_status(Task::FAILING);
+                client_task_mutex.unlock();
+                cb_failed(task.task_id(), response.resp_type());
+                return;
+            }
         }
     }
 
