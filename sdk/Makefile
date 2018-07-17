@@ -6,7 +6,7 @@ PWD := $(shell pwd)
 linklib = 	-lboost_system -lboost_thread -lboost_filesystem \
      		-lpthread -lprotobuf -lmysqlcppconn
 
-all: libfishield.so server.out client.out fsconfig.out
+all: libfishield.so server.out server_debug.out client.out fsconfig.out
 
 server.out: main_server.cpp libfishield.so
 	g++ main_server.cpp -std=c++11 -L${PWD} -lfishield \
@@ -59,6 +59,13 @@ fs_scheduler.o: fs_scheduler.cpp fs_scheduler.h fs_config.h \
 fs_dbmanager.o: fs_dbmanager.cpp fs_dbmanager.h fs_client.h fs_config.h \
  file_transfer.pb.h fs_task.pb.h
 	g++ fs_dbmanager.cpp 	-std=c++11	-c -fPIC
+
+debug: 
+	g++ fs_server.cpp 	-std=c++11	-c -fPIC -D DEBUG
+	g++ -shared ${obj} -o libfishield.so
+	sudo cp libfishield.so /usr/lib
+	g++ main_server.cpp -std=c++11 -L${PWD} -lfishield \
+ 	${linklib} -o server.out -D DEBUG
 
 clean:
 	-rm ${obj}
