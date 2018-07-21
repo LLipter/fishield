@@ -1,3 +1,5 @@
+USE fishield
+
 CREATE TABLE user(
     username VARCHAR(100) PRIMARY KEY,
     password VARCHAR(100) NOT NULL,
@@ -27,4 +29,4 @@ CREATE TABLE ip(
     address VARCHAR(200) PRIMARY KEY
 )default charset=utf8;
 
-INSERT INTO ip VALUES('10.42.0.1');
+INSERT INTO ip VALUES('127.0.0.1');
