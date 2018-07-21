@@ -1,3 +1,6 @@
+CREATE USER 'fishield'@'%' IDENTIFIED BY 'fishield'; 
+GRANT ALL ON fishield.* TO 'fishield'@'%' 
+
 USE fishield
 
 CREATE TABLE user(
